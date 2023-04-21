@@ -1,12 +1,11 @@
 Package: selenider
-Title: What the Package Does (One Line, Title Case)
+Title: Concise, lazy and asynchronous wrapper for RSelenium
 Version: 0.0.0.9000
 Authors@R: 
     person("Ashby", "Thorpe", , "ashbythorpe@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-3106-099X"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+Description: A wrapper for RSelenium that is much easier to use.
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
