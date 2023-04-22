@@ -15,3 +15,6 @@ Imports:
     RSelenium
 URL: https://github.com/ashbythorpe/selenider
 BugReports: https://github.com/ashbythorpe/selenider/issues
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3

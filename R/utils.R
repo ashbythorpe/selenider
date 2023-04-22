@@ -50,3 +50,30 @@ find_elements <- function(x, using, value) {
     x$findElements(using = using, value = value)
   }
 }
+
+# Adapted from scales::ordinal()
+ordinal <- function(x) {
+  if (x == 1) {
+    return("first")
+  } else if (x == 2) {
+    return("second")
+  } else if (x == 3) {
+    return("third")
+  }
+  
+  rules <- list(
+    st = "(?<!1)1$",
+    nd = "(?<!1)2$",
+    rd = "(?<!1)3$",
+    th = "(?<=1)[123]$",
+    th = "[0456789]$",
+    th = "."
+  )
+  
+  out <- utils::stack(lapply(rules, grep, x = x, perl = TRUE))
+  out <- out[!duplicated(out$values), ] # only first result should be considered
+  paste0(
+    x,
+    out$ind[order(out$values)]
+  )
+}

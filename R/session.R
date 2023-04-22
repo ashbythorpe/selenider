@@ -4,7 +4,8 @@ selenider_session <- function(browser = c(
                                 "phantomjs", "internet explorer"
                               ),
                               timeout = 4,
-                              driver = NULL) {
+                              driver = NULL,
+                              global = TRUE) {
   browser <- rlang::arg_match(browser)
 
   chromever <- if (browser == "chrome") "latest" else NULL
@@ -22,7 +23,13 @@ selenider_session <- function(browser = c(
     )
   }
   
-  new_selenider_session(driver, timeout)
+  session <- new_selenider_session(driver, timeout)
+  
+  if (global) {
+    set_session(session)
+  }
+  
+  session
 }
 
 new_selenider_session <- function(driver, timeout) {
