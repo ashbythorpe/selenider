@@ -14,6 +14,25 @@ html_elements.selenider_session <- function(x,
   new_selenider_elements(x, selector)
 }
 
+#' @export
+html_elements.selenider_element <- function(x,
+                                           css = NULL,
+                                           xpath = NULL,
+                                           id = NULL,
+                                           class_name = NULL,
+                                           name = NULL,
+                                           link_text = NULL) {
+  selector <- new_selector(css, xpath, id, class_name, name, link_text, filter = NULL)
+  
+  x$selectors <- append(x$selectors, list(selector))
+  
+  x$to_be_found <- x$to_be_found + 1
+  
+  class(x) <- "selenider_elements"
+  
+  x
+}
+
 new_selenider_elements <- function(x, selector) {
   res <- list(
     element = session$driver$client,
@@ -57,4 +76,75 @@ get_actual_elements <- function(x) {
   }
   
   element
+}
+
+format_elements <- function(selector, first = FALSE) {
+  child <- if (first) "" else " child"
+  
+  filter <- selector$filter
+  
+  selector$filter <- NULL
+  
+  names <- names(selector)
+  
+  values <- unlist(selector, use.names = FALSE)
+  
+  names <- ifelse(
+    names == "css",
+    "css selector",
+    gsub("_", " ", names, fixed = TRUE)
+  )
+  
+  values <- paste0("{.val ", values, "}")
+  
+  to_pluralize <- paste(names, values)
+  
+  text <- cli::pluralize("{to_pluralize}")
+  
+  if (is.null(filter)) {
+    paste0("The", child, " elements with ", text)
+  } else {
+    body <- rlang::fn_body(filter)[-1]
+    if (length(body) == 1) {
+      paste0("The", child, " elements with ", text, " matching the following condition:\n", body)
+    } else {
+      paste0("The", child, " elements with ", text, " matching a custom condition")
+    }
+  }
+}
+
+#' @export
+print.selenider_elements <- function(x, ...) {
+  selectors <- x$selectors
+  
+  if (length(selectors) == 1) {
+    formatted <- format_elements(selectors[[1]], first = TRUE)
+    
+    cat("A collection of selenider elements selecting:\n")
+    cli::cli_text(formatted)
+  } else if (length(selectors) == 2) {
+    first <- format_element(selectors[[1]], first = TRUE)
+    
+    last <- format_elements(selectors[[2]])
+    
+    cat("A collection of selenider elements selecting:\n")
+    cli::cli_bullets(c("*" = first, "*" = last))
+  } else {
+    first <- format_element(selectors[[1]], first = TRUE)
+    
+    last <- format_elements(selectors[[length(selectors)]])
+    
+    formatted <- vapply(
+      selectors[c(-1, -length(selectors))], 
+      format_element, 
+      FUN.VALUE = character(1)
+    )
+    
+    names(first) <- "*"
+    names(last) <- "*"
+    names(formatted) <- rep("*", length(formatted))
+    
+    cat("A selenider element selecting:\n")
+    cli::cli_bullets(c(first, formatted, last))
+  }
 }
