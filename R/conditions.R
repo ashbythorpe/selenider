@@ -13,9 +13,11 @@ is_absent <- is_missing
 is_visible <- function(x) {
   element <- update_element(x)
   
-  stopifnot(element$element$isElementDisplayed())
-
-  TRUE
+  if (!is.null(element)) {
+    element$element$isElementDisplayed()
+  } else {
+    FALSE
+  }
 }
 
 is_displayed <- is_visible
@@ -26,10 +28,12 @@ is_hidden <- function(x) {
 
 is_enabled <- function(x) {
   element <- update_element(x)
-
-  stopifnot(element$element$isElementEnabled())
-
-  element
+  
+  if (!is.null(element)) {
+    element$element$isElementEnabled()
+  } else {
+    FALSE
+  }
 }
 
 
