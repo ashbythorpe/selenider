@@ -1,9 +1,10 @@
 open_url <- function(x, url = NULL) {
   if(inherits(x, "selenider_session")) {
-    x$driver$navigate(url)
+    x$driver$client$navigate(url)
   } else {
     session <- get_session()
     session$driver$client$navigate(x)
+    session$current_url <- x
   }
 }
 

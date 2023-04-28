@@ -26,7 +26,7 @@ html_element.selenider_element <- function(x,
                                            link_text = NULL) {
   selector <- new_selector(css, xpath, id, class_name, name, link_text)
   
-  x$selectors <- append(x$selectors, list(selector))
+  x$selectors <- append(x$selectors, selector)
   
   x$to_be_found <- x$to_be_found + 1
   
@@ -48,8 +48,12 @@ new_selenider_element <- function(session, selector) {
 
 update_element <- function(x) {
   actual_element <- get_actual_element(x)
-
-  x$element <- actual_element
+  
+  if (is.null(actual_element)) {
+    x$element <- list(actual_element)
+  } else {
+    x$element <- actual_element
+  }
   x$to_be_found <- 0
 
   x
@@ -102,13 +106,9 @@ format_element <- function(selector, first = FALSE) {
 
   values <- unlist(selector, use.names = FALSE)
   
-  names <- ifelse(
-    names == "css",
-    "css selector",
-    gsub("_", " ", names, fixed = TRUE)
-  )
+  names <- gsub("_", " ", names)
 
-  values <- paste0("{.val ", values, "}")
+  values <- paste0("{.val ", x, "}")
   
   to_pluralize <- paste(names, values)
 
@@ -119,7 +119,7 @@ format_element <- function(selector, first = FALSE) {
   } else {
     body <- rlang::fn_body(filter)[-1]
     if (length(body) == 1) {
-      paste0("The", child, " element with ", text, " matching the following condition:\n", body)
+      paste0("The", child, " element with ", text, " matching the following condition:\n ", body)
     } else {
       paste0("The", child, " element with ", text, " matching a custom condition")
     }
@@ -137,12 +137,9 @@ print.selenider_element <- function(x, ...) {
     cli::cli_text(formatted)
   } else {
     first <- format_element(selectors[[1]], first = TRUE)
-    
-    formatted <- vapply(selectors[-1], format_element, FUN.VALUE = character(1))
-    
-    names(first) <- "*"
-    names(formatted) <- rep("*", length(formatted))
-    
+
+    formatted <- vapply(selectors[-1], format_element, FUN.VALUE = character(0))
+
     cat("A selenider element selecting:\n")
     cli::cli_bullets(c(first, formatted))
   }

@@ -13,7 +13,9 @@ is_absent <- is_missing
 is_visible <- function(x) {
   element <- update_element(x)
   
-  if (!is.null(element)) {
+  actual <- element$element
+  
+  if (!is.list(actual) || length(actual) != 1 || !is.null(actual[[1]])) {
     element$element$isElementDisplayed()
   } else {
     FALSE
@@ -29,7 +31,9 @@ is_hidden <- function(x) {
 is_enabled <- function(x) {
   element <- update_element(x)
   
-  if (!is.null(element)) {
+  actual <- element$element
+  
+  if (!is.list(actual) || length(actual) != 1 || !is.null(actual[[1]])) {
     element$element$isElementEnabled()
   } else {
     FALSE
