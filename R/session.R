@@ -50,6 +50,7 @@ new_selenider_session <- function(driver, timeout) {
   res
 }
 
+#' @export
 close_session <- function(x = NULL) {
   if (is.null(x)) {
     x <- get_session()

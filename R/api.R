@@ -1,3 +1,4 @@
+#' @export
 s <- function(css = NULL,
               xpath = NULL,
               id = NULL,
@@ -9,6 +10,7 @@ s <- function(css = NULL,
   html_element(session, css, xpath, id, class_name, name, link_text)
 }
 
+#' @export
 ss <- function(css = NULL,
                xpath = NULL,
                id = NULL,

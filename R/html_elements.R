@@ -1,7 +1,9 @@
+#' @export
 html_elements <- function(x, ...) {
   UseMethod("html_elements")
 }
 
+#' @export
 html_elements.selenider_session <- function(x,
                                            css = NULL,
                                            xpath = NULL,
