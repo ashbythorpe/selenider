@@ -1,0 +1,6 @@
+#! /usr/bin/env sh
+
+# Copied from purrr
+# https://github.com/tidyverse/purrr/blob/main/cleanup
+
+rm -f man/macros/examples.Rd
