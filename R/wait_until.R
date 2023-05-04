@@ -1,5 +1,7 @@
 #' @export
-html_wait_for <- function(x, ...) {
+#' 
+#' @rdname html_expect
+html_wait_until <- function(x, ...) {
   x <- rlang::enquo(x)
   dots <- rlang::enquos(...)
   

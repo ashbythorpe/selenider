@@ -53,14 +53,14 @@ find_elements <- function(x, using, value) {
 
 # Adapted from scales::ordinal()
 ordinal <- function(x) {
-  if (x == 1) {
-    return("first")
-  } else if (x == 2) {
-    return("second")
-  } else if (x == 3) {
-    return("third")
-  }
-  
+  res <- character(length(x))
+  res[x == 1] <- "first"
+  res[x == 2] <- "second"
+  res[x == 3] <- "third"
+  res[res == ""] <- ordinal_numbers(x[res == ""])
+}
+
+ordinal_numbers <- function(x) {
   rules <- list(
     st = "(?<!1)1$",
     nd = "(?<!1)2$",

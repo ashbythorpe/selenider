@@ -29,9 +29,7 @@ new_selector <- function(css,
   args
 }
 
-use_selector <- function(selector, element) {
-  filter <- selector$filter
-
+use_selector <- function(selector, element, multiple = FALSE) {
   selector$filter <- NULL
 
   if (identical(filter, 1) && length(selector) == 1) {
@@ -43,7 +41,9 @@ use_selector <- function(selector, element) {
       names(selector)
     )
     
-    find_element(element, using = using, value = selector[[1]])
+    res <- find_element(element, using = using, value = selector[[1]])
+
+    list(res)
   } else {
     element_list <- .mapply(function(name, value) {
       using <- switch(
@@ -57,29 +57,7 @@ use_selector <- function(selector, element) {
       find_elements(element, using = using, value = value)
     }, list(names(selector), selector), NULL)
 
-    elements <- Reduce(intersect, element_list)
- 
-    if (is.null(filter)) {
-      elements
-    } else if (is.numeric(filter)) {
-      elements[[filter]]
-    } else {
-      res <- NULL
-      .f <- filter
-      
-      for (element in elements) {
-        if (.f(element)) {
-          res <- element
-          break
-        }
-      }
-      
-      if (is.null(res)) {
-        return(NULL)
-      }
-      
-      res
-    }
+    Reduce(intersect, element_list)
   }
 }
 

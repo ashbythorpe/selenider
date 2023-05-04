@@ -1,9 +1,49 @@
+#' Get a single HTML element
+#' 
+#' Find the first HTML element using a CSS selector, an XPath, or a variety
+#' of other methods.
+#' 
+#' @param x A selenider session or element.
+#' @param css A css selector.
+#' @param xpath An XPath.
+#' @param id The id of the element you want to select.
+#' @param class_name The class name of the element you want to select.
+#' @param name The name attribute of the element you want to select.
+#' 
+#' @details 
+#' If more than one method is used to select an element (e.g. `css` and 
+#' `xpath`), the first element which satisfies all conditions will be found.
+#' 
+#' @returns 
+#' A `selenider_element` object.
+#' 
+#' @seealso 
+#' * [s()] to quickly select an element without specifying the session.
+#' * [html_elements()] to select multiple elements.
+#' * [selenider_session()] to begin a session.
+#' 
+#' @examples 
+#' session <- mock_selenider_session()
+#' 
+#' session |>
+#'   html_element(".class1")
+#'
+#' session |>
+#'   html_element(".class1") |>
+#'   html_element(".class2")
+#'   
+#' # The above can be shortened to:
+#' s(".class1") |>
+#'   html_element(".class2")
+#' 
 #' @export
 html_element <- function(x, ...) {
   UseMethod("html_element")
 }
 
 #' @export
+#' 
+#' @rdname html_element
 html_element.selenider_session <- function(x,
                                            css = NULL,
                                            xpath = NULL,
@@ -17,6 +57,8 @@ html_element.selenider_session <- function(x,
 }
 
 #' @export
+#' 
+#' @rdname html_element
 html_element.selenider_element <- function(x,
                                            css = NULL,
                                            xpath = NULL,
@@ -47,7 +89,7 @@ new_selenider_element <- function(session, selector) {
 }
 
 update_element <- function(x) {
-  actual_element <- get_actual_element(x)
+  actual_element <- get_actual_webelement(x)
   
   if (is.null(actual_element)) {
     x$element <- list(actual_element)
@@ -57,42 +99,6 @@ update_element <- function(x) {
   x$to_be_found <- 0
 
   x
-}
-
-get_actual_element <- function(x) {
-  if (x$to_be_found %% 1 == 0.5) {
-    if (is.numeric(x$filter)) {
-      element <- x$element[[x$filter]]
-    } else {
-      res <- NULL
-      .f <- x$filter
-      elements <- x$element
-
-      for (element in elements) {
-        if (.f(element)) {
-          res <- element
-          break
-        }
-      }
-
-      if (is.null(res)) {
-        return(NULL)
-      }
-
-      element <- res
-    }
-    x$to_be_found <- x$to_be_found - 0.5
-  } else {
-    element <- x$element
-  }
-
-  selectors <- tail(x$selectors, x$to_be_found)
- 
-  for(selector in selectors) {
-    element <- use_selector(selector, element)
-  }
-
-  element
 }
 
 format_element <- function(selector, first = FALSE) {
@@ -108,7 +114,7 @@ format_element <- function(selector, first = FALSE) {
   
   names <- gsub("_", " ", names)
 
-  values <- paste0("{.val ", x, "}")
+  values <- paste0("{.val ", values, "}")
   
   to_pluralize <- paste(names, values)
 

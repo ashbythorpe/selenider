@@ -1,3 +1,22 @@
+#' Start a session
+#'
+#' Begin a session in selenider, setting the session globally unless otherwise
+#' specified.
+#'
+#' @param browser The name of the browser to run the session in.
+#' @param timeout The default time to wait when collecting an element.
+#' @param driver A driver object to use instead of creating one manually.
+#' @param global Whether to set the session as the global session object.
+#'
+#' @details
+#' `selenider_session()` uses [RSelenium::rsDriver()] to create a browser
+#' session.
+#'
+#' @seealso [close_session()]
+#'
+#' @returns
+#' A `selenider_session` object.
+#'
 #' @export
 selenider_session <- function(browser = c(
                                 "chrome", "firefox", 
@@ -50,6 +69,21 @@ new_selenider_session <- function(driver, timeout) {
   res
 }
 
+#' Close a session object
+#'
+#' Shut down a session object, closing the browser and stopping the server.
+#'
+#' @param x A `selenider_session` object. If omitted, the global session object
+#'   will be closed.
+#'
+#' @examples
+#' session <- mock_selenider_session()
+#'
+#' close_session(session)
+#'
+#' # Or:
+#' close_session()
+#'
 #' @export
 close_session <- function(x = NULL) {
   if (is.null(x)) {

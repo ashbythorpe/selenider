@@ -77,5 +77,5 @@ parse_condition <- function(x, elem) {
     }
   }
   
-  rlang::new_quosure(rlang::call2(rlang::quo_get_expr(x), x = elem), env)
+  rlang::new_quosure(rlang::call2(rlang::quo_get_expr(x), elem), env)
 }
