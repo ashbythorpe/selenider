@@ -9,25 +9,25 @@
 \alias{take_screenshot}
 \title{Actions on the current webpage}
 \usage{
-open_url(x, url = NULL)
+open_url(url, session = NULL)
 
-back(x = NULL)
+back(session = NULL)
 
-forward(x = NULL)
+forward(session = NULL)
 
-reload(x = NULL)
+reload(session = NULL)
 
-refresh(x = NULL)
+refresh(session = NULL)
 
-take_screenshot(x, file = NULL)
+take_screenshot(session, file = NULL)
 }
 \arguments{
-\item{x}{A `selenider_session object. If not specified, the global session
-object is used.}
-
 \item{url}{The URL to navigate to.}
 
-\item{file}{The file path to save the image to.}
+\item{session}{A `selenider_session object. If not specified, the global
+session object (the result of \code{\link[=get_session]{get_session()}}) is used.}
+
+\item{file}{The file path to save the screenshot to.}
 }
 \value{
 The session object, invisibly.

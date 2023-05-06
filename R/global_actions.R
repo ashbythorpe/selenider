@@ -19,16 +19,17 @@
 #' `take_screenshot()` takes a screenshot of the page currently being viewed,
 #' saving it to a file.
 #'
-#' @param x A `selenider_session object. If not specified, the global session 
-#'   object is used.
+#' @param session A `selenider_session object. If not specified, the global 
+#'   session object (the result of [get_session()]) is used.
 #' @param url The URL to navigate to.
+#' @param file The file path to save the screenshot to.
 #'
 #' @details
 #' Arguments to all functions are processed in a way such that enable the
 #' session argument to be omitted.
 #' 
 #' @returns
-#' The session object, invisibly
+#' The session object, invisibly.
 #'
 #' @examples
 #' session <- mock_selenider_session()
@@ -38,47 +39,72 @@
 #' # Or:
 #' open_url("https://www.google.com")
 #'
-open_url <- function(x, url = NULL) {
-  if(inherits(x, "selenider_session")) {
-    x$driver$client$navigate(url)
-  } else {
+#' @rdname selenider-actions
+#'
+#' @export
+open_url <- function(url, session = NULL) {
+  if (is.null(session)) {
     session <- get_session()
-    session$driver$client$navigate(x)
-    session$current_url <- x
-  }
-}
-
-back <- function(x = NULL) {
-  if (is.null(x)) {
-    x <- get_session()
   }
   
-  x$driver$client$goBack()
+  session$driver$client$navigate(url)
+  
+  invisible(session)
 }
 
-forward <- function(x = NULL) {
-  if (is.null(x)) {
-    x <- get_session()
+#' @rdname selenider-actions
+#'
+#' @export
+back <- function(session = NULL) {
+  if (is.null(session)) {
+    session <- get_session()
   }
   
-  x$driver$client$goForward()
+  session$driver$client$goBack()
+  
+  invisible(session)
 }
 
-reload <- function(x = NULL) {
-  if (is.null(x)) {
-    x <- get_session()
+#' @rdname selenider-actions
+#'
+#' @export
+forward <- function(session = NULL) {
+  if (is.null(session)) {
+    session <- get_session()
   }
   
-  x$driver$client$refresh()
+  session$driver$client$goForward()
+  
+  invisible(session)
 }
 
+#' @rdname selenider-actions
+#'
+#' @export
+reload <- function(session = NULL) {
+  if (is.null(session)) {
+    session <- get_session()
+  }
+  
+  session$driver$client$refresh()
+  
+  invisible(session)
+}
+
+#' @rdname selenider-actions
+#'
+#' @export
 refresh <- reload
 
-take_screenshot <- function(x, file = NULL) {
-  if(inherits(x, "selenider_session")) {
-    x$driver$client$screenshot(file)
-  } else {
+#' @rdname selenider-actions
+#'
+#' @export
+take_screenshot <- function(session, file = NULL) {
+  if (is.null(session)) {
     session <- get_session()
-    session$driver$client$screenshot(x)
   }
+  
+  session$driver$client$screenshot(file)
+  
+  invisible(session)
 }
