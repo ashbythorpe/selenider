@@ -2,32 +2,95 @@
 % Please edit documentation in R/aaa_env.R
 \name{get_session}
 \alias{get_session}
-\alias{set_session}
-\title{Set or get the global selenider session}
+\alias{local_session}
+\alias{with_session}
+\title{Get or set the local selenider session}
 \usage{
-get_session()
+get_session(...)
 
-set_session(session)
+local_session(session, .local_envir = rlang::caller_env(), close = TRUE)
+
+with_session(session, code, close = TRUE)
 }
 \arguments{
-\item{session}{The session to set: a \code{\link[=selenider_session]{selenider_session()}} object.}
+\item{...}{Not used}
+
+\item{session}{The \code{\link[=selenider_session]{selenider_session()}} object to use.}
+
+\item{.local_envir}{The environment where the session is being used. When
+the function associated with this environment finishes execution, the
+session will be reset.}
+
+\item{close}{Should we close \code{session} when the local session is reset? Set
+this to \code{FALSE} if you want to use the session even if it is no longer the
+local session. If you want to close the session manually, use
+\code{\link[=close_session]{close_session()}}.}
+
+\item{code}{The code to run with the local session set.}
 }
 \value{
-\code{get_session()} returns the current global \code{selenider_session} object, or
-\code{NULL} if none have been created.
-\code{set_session()} returns the previous global session.
+\code{get_session()} returns the local \code{\link[=selenider_session]{selenider_session()}} object, or \code{NULL} if
+none have been set.
+
+\code{local_session()} returns the \emph{previous} local session object (or \code{NULL}).
+This is the same as running \code{get_session()} before this function.
+
+\code{with_session()} returns the result of \code{code}.
 }
 \description{
-\code{get_session()} gets the selenider session that is currently being used.
-\code{set_session()} changes this session.
+Change the locally defined \code{\link[=selenider_session]{selenider_session()}} object, allowing it to be
+used in functions like \code{\link[=s]{s()}} without explicitly providing it.
+
+\code{get_session()} retrieves the current local session, or \code{NULL} if none have
+been created.
+
+\code{local_session()} sets the local session. The function uses \code{\link[withr:defer]{withr::defer()}}
+to make sure the session is closed and the local session is set to its
+previous value when it is no longer needed.
+
+\code{with_session()} runs some code with a temporary local session. The session
+is closed and the local session is set to its previous value when the code
+finishes executing.
+}
+\details{
+Use \code{\link[withr:defer]{withr::deferred_run()}} to reset any local sessions set using
+\code{local_session()}.
 }
 \examples{
-session <- mock_session(set = FALSE)
+# Don't set the local session, since we want to do it manually.
+session_1 <- mock_selenider_session(local = FALSE)
+session_2 <- mock_selenider_session(local = FALSE)
 
 get_session() # NULL
 
-set_session(session)
+local_session(session_1)
 
 get_session()
 
+withr::deferred_run()
+
+get_session() # NULL
+
+# By default, the local session is only set inside the function that it is
+# called.
+# If we want to set the local session outside the scope of a function, we
+# need to use the `.local_envir` argument.
+set_my_session <- function(env = rlang::caller_env()) {
+  # caller_env() is the environment where the function is called.
+  local_session(session_1, .local_envir = env)
+}
+
+set_my_session()
+
+with_session(
+  session_2,
+  {get_session()}
+) # session_2
+
+get_session() # session_1
+
+}
+\seealso{
+\code{local_session()} is called by \code{\link[=selenider_session]{selenider_session()}} unless otherwise
+specified.
 }

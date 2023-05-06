@@ -10,6 +10,9 @@ close_session(x = NULL)
 \item{x}{A \code{selenider_session} object. If omitted, the global session object
 will be closed.}
 }
+\value{
+Nothing.
+}
 \description{
 Shut down a session object, closing the browser and stopping the server.
 }

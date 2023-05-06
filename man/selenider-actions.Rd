@@ -2,18 +2,35 @@
 % Please edit documentation in R/global_actions.R
 \name{open_url}
 \alias{open_url}
+\alias{back}
+\alias{forward}
+\alias{reload}
+\alias{refresh}
+\alias{take_screenshot}
 \title{Actions on the current webpage}
 \usage{
 open_url(x, url = NULL)
+
+back(x = NULL)
+
+forward(x = NULL)
+
+reload(x = NULL)
+
+refresh(x = NULL)
+
+take_screenshot(x, file = NULL)
 }
 \arguments{
 \item{x}{A `selenider_session object. If not specified, the global session
 object is used.}
 
 \item{url}{The URL to navigate to.}
+
+\item{file}{The file path to save the image to.}
 }
 \value{
-The session object, invisibly
+The session object, invisibly.
 }
 \description{
 These functions perform certain actions that are specific to the current

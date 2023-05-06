@@ -8,7 +8,8 @@ selenider_session(
   browser = c("chrome", "firefox", "phantomjs", "internet explorer"),
   timeout = 4,
   driver = NULL,
-  global = TRUE
+  local = TRUE,
+  .env = rlang::caller_env()
 )
 }
 \arguments{
@@ -18,7 +19,13 @@ selenider_session(
 
 \item{driver}{A driver object to use instead of creating one manually.}
 
-\item{global}{Whether to set the session as the global session object.}
+\item{local}{Whether to set the session as the local session object,
+using \code{\link[=local_session]{local_session()}}.}
+
+\item{.env}{Passed into \code{\link[=local_session]{local_session()}} function, to define the
+environment in which the session is used. Change this if you want to
+create the session inside a function and then use it outside the
+function.}
 }
 \value{
 A \code{selenider_session} object.
