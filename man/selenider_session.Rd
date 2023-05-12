@@ -9,6 +9,7 @@ selenider_session(
   timeout = 4,
   driver = NULL,
   local = TRUE,
+  quiet = TRUE,
   .env = rlang::caller_env()
 )
 }
@@ -36,8 +37,60 @@ specified.
 }
 \details{
 \code{selenider_session()} uses \code{\link[RSelenium:rsDriver]{RSelenium::rsDriver()}} to create a browser
-session.
+session. It then uses withr to set the session locally (unless otherwise
+specified). To reset the local session object, use \code{\link[withr:defer]{withr::deferred_run()}}.
+}
+\examples{
+\dontrun{
+# Note that these examples will create real browser sessions, so should only be
+# run interactively.
+
+session <- selenider_session(browser = "firefox")
+
+withr::deferred_run() # Reset the session
+
+# If we want to use the session manually:
+selenider_session(local = FALSE)
+
+session_1 <- selenider_session(timeout = 10)
+# session_1 is the local session here
+
+my_function <- function() {
+  session <- selenider_session(browser = "internet explorer")
+
+  # In here, session_2 is the local session
+  get_session()
+} # When the function finishes executing, the session is closed
+
+my_function() # Returns `session_2`
+
+# But outside the function, session_1 is the global session again
+
+get_session() # Returns `session_1`
+ 
+withr::deferred_run() # Close `session_1`
+
+# If we want to use a session outside the scope of a function,
+# we need to use the `.env` argument.
+create_session <- function(timeout = 10, .env = rlang::caller_env()) {
+  # caller_env() is the environment where the function is called
+  selenider_session(browser = "firefox", timeout = timeout, .env = .env)
+}
+
+my_session <- create_session()
+
+# We can now use this session outside the `create_session()` function
+get_session()
+
+withr::deferred_run() # Close `my_session`
+}
+
 }
 \seealso{
-\code{\link[=close_session]{close_session()}}
+\itemize{
+\item \code{\link[=close_session]{close_session()}} to close the session. Note that this will not reset the
+result of \code{\link[=get_session]{get_session()}}, which is why \code{\link[withr:defer]{withr::deferred_run()}} is preferred.
+\item \code{\link[=local_session]{local_session()}} and \code{\link[=with_session]{with_session()}} to manually set the local session
+object.
+}
 }
