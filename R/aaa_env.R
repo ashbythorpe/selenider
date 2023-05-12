@@ -141,3 +141,38 @@ with_session <- function (session, code, close = TRUE) {
   
   force(code)
 }
+
+set_timeout <- function(timeout) {
+  set_in_env(timeout = timeout)
+}
+
+get_local_timeout <- function(...) {
+  get_from_env("timeout")
+}
+
+reset_timeout <- function(old_timeout) {
+  set_in_env(timeout = old_timeout)
+}
+
+with_timeout <- function (new, code) {
+  old <- get_local_timeout(timeout = new)
+  on.exit(reset_timeout(old))
+  set_timeout(timeout = new)
+  force(code)
+}
+
+get_timeout <- function(user_timeout, element_timeout) {
+  if (!is.null(user_timeout)) {
+    return(user_timeout)
+  }
+
+  local_timeout <- get_local_timeout()
+
+  if (!is.null(local_timeout)) {
+    local_timeout
+  } else if (!is.null(element_timeout)) {
+    element_timeout
+  } else {
+    get_session()$timeout
+  }
+}
