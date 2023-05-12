@@ -166,7 +166,11 @@ close_session <- function(x = NULL) {
     x$driver$client$close(),
     error = function(e) {
       x$driver$server$stop()
-      cli::cli_abort("Could not close session", parent = e)
+      cli::cli_abort(
+        "Could not close session", 
+        class = "selenider_error_close_session", 
+        parent = e
+      )
     }
   )
   

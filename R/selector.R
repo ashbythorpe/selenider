@@ -18,10 +18,7 @@ new_selector <- function(css,
   args <- args[!vapply(args, is.null, logical(1))]
   
   if (length(args) == 0) {
-    cli::cli_abort(c(
-      "No arguments specified to select elements with",
-      "i" = "Use `css = '*'` to select all elements"
-    ))
+    stop_bad_selector()
   }
   
   class(args) <- "selenider_selector"

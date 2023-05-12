@@ -68,7 +68,7 @@ html_element.selenider_element <- function(x,
                                            link_text = NULL) {
   selector <- new_selector(css, xpath, id, class_name, name, link_text)
   
-  x$selectors <- append(x$selectors, selector)
+  x$selectors <- append(x$selectors, list(selector))
   
   x$to_be_found <- x$to_be_found + 1
   
@@ -77,7 +77,8 @@ html_element.selenider_element <- function(x,
 
 new_selenider_element <- function(session, selector) {
   res <- list(
-    element = session$driver$client,
+    driver = session$driver$client,
+    element = NULL,
     timeout = session$timeout,
     selectors = list(selector),
     to_be_found = 1
@@ -88,7 +89,7 @@ new_selenider_element <- function(session, selector) {
   res
 }
 
-update_element <- function(x) {
+cache_element <- function(x) {
   actual_element <- get_actual_webelement(x)
   
   if (is.null(actual_element)) {
@@ -96,6 +97,7 @@ update_element <- function(x) {
   } else {
     x$element <- actual_element
   }
+
   x$to_be_found <- 0
 
   x
@@ -144,7 +146,7 @@ print.selenider_element <- function(x, ...) {
   } else {
     first <- format_element(selectors[[1]], first = TRUE)
 
-    formatted <- vapply(selectors[-1], format_element, FUN.VALUE = character(0))
+    formatted <- vapply(selectors[-1], format_element, FUN.VALUE = character(1))
 
     cat("A selenider element selecting:\n")
     cli::cli_bullets(c(first, formatted))

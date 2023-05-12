@@ -40,9 +40,7 @@
 #'
 #' @export
 get_actual_webelement <- function(x, timeout = NULL) {
-  if (is.null(timeout)) {
-    timeout <- x$timeout
-  }
+  timeout <- get_timeout(timeout, x$timeout)
 
   res <- get_with_timeout(timeout, get_element, x)
 }
@@ -51,16 +49,26 @@ get_actual_webelement <- function(x, timeout = NULL) {
 #'
 #' @export
 get_actual_webelements <- function(x) {
-  get_elements(x)
+  timeout <- get_timeout(timeout, x$timeout)
+
+  res <- get_with_timeout(timeout, get_elements, x)
 }
 
 get_element <- function(x) {
   element <- x$element
+
+  if (is.null(element)) {
+    element <- x$driver
+  }
   
   if (!inherits(element, c("webElement", "remoteDriver"))) {
     filter <- x$selectors[[length(x$selectors) - x$to_be_found]]$filter
 
     element <- filter_elements(element, filter)
+
+    if (is.null(element)) {
+      return(NULL)
+    }
   }
 
   if (x$to_be_found == 0) {
@@ -72,6 +80,9 @@ get_element <- function(x) {
   for (selector in selectors) {
     elements <- use_selector(selector, element)
     element <- filter_elements(elements, selector$filter)
+    if (is.null(element)) {
+      return(NULL)
+    }
   }
 
   element
@@ -79,6 +90,10 @@ get_element <- function(x) {
 
 get_elements <- function(x) {
   element <- x$element
+
+  if (is.null(element)) {
+    element <- x$driver
+  }
 
   if (x$to_be_found == 0) {
     return(element)
@@ -88,6 +103,10 @@ get_elements <- function(x) {
     filter <- x$selectors[[length(x$selectors) - x$to_be_found]]$filter
 
     element <- filter_elements(element, filter)
+
+    if (is.null(element)) {
+      return(NULL)
+    }
   }
 
   selectors <- tail(x$selectors, x$to_be_found)
@@ -95,6 +114,10 @@ get_elements <- function(x) {
   for (selector in head(selectors, -1)) {
     elements <- use_selector(selector, element)
     element <- filter_elements(elements, selector$filter)
+
+    if (is.null(element)) {
+      return(NULL)
+    }
   }
   
   selector <- selectors[[length(selectors)]]
@@ -107,6 +130,10 @@ filter_elements <- function(elements, filter, multiple = FALSE) {
     stopifnot(multiple) # we need a filter to get a single element
     elements
   } else if (is.numeric(filter)) {
+    if (length(elements) < filter) {
+      return(NULL)
+    }
+
     res <- elements[[filter]]
 
     if (multiple) {
@@ -130,7 +157,7 @@ filter_elements <- function(elements, filter, multiple = FALSE) {
       }
       
       if (is.null(res)) {
-        return(null)
+        return(NULL)
       }
       
       res
