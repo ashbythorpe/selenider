@@ -33,7 +33,9 @@
 #' 
 #' @export
 exists <- function(x) {
-  !is.null(update_element(x))
+  element <- get_element(x)
+  
+  !is.null(element)
 }
 
 #' @rdname html-conditions
@@ -60,14 +62,12 @@ is_absent <- is_missing
 #' 
 #' @export
 is_visible <- function(x) {
-  element <- update_element(x)
+  element <- get_element(x)
   
-  actual <- element$element
-  
-  if (!is.list(actual) || length(actual) != 1 || !is.null(actual[[1]])) {
+  if (!is.null(element)) {
     element$element$isElementDisplayed()
   } else {
-    FALSE
+    stop_absent_element()
   }
 }
 
@@ -79,9 +79,7 @@ is_displayed <- is_visible
 #' @rdname html-conditions
 #' 
 #' @export
-is_hidden <- function(x) {
-  !is_visible(x)
-}
+is_hidden <- function(x) !is_visible(x)
 
 #' @rdname html-conditions
 #' 
@@ -92,15 +90,17 @@ is_invisible <- is_hidden
 #' 
 #' @export
 is_enabled <- function(x) {
-  element <- update_element(x)
+  element <- get_element(x)
   
-  actual <- element$element
-  
-  if (!is.list(actual) || length(actual) != 1 || !is.null(actual[[1]])) {
+  if (!is.null(element)) {
     element$element$isElementEnabled()
   } else {
-    FALSE
+    stop_absent_element()
   }
 }
 
+#' @rdname html-conditions
+#' 
+#' @export
+is_disabled <- function(x) !is_enabled(x)
 

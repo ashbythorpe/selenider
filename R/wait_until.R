@@ -1,16 +1,13 @@
 #' @export
 #' 
 #' @rdname html_expect
-html_wait_until <- function(x, ...) {
+html_wait_until <- function(x, ..., timeout = NULL) {
   x <- rlang::enquo(x)
   dots <- rlang::enquos(...)
   
-  result <- eval_conditions(x, dots)
-  timeout <- result$timeout
-  error_exprs <- result$error_exprs
-  exprs <- result$exprs
+  result <- eval_conditions(x, dots, timeout)
   res <- result$res
 
-  return(res)
+  return(isTRUE(res))
 }
 

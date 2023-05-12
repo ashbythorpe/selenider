@@ -129,9 +129,9 @@ message.
 # Check that an element exists
 s(".myclass") |>
   html_expect(exists)
-  
+
 # Whoops! This element is not visible!
-s(".invisible") |>
+s(".invisible") |> 
   html_expect(is_visible)
 #> Error in `html_expect()`:
 #> ! Condition failed after waiting for 4 seconds:
@@ -140,7 +140,7 @@ s(".invisible") |>
 
 # Check that an element is visible and enabled
 s(".myclass") |>
-  s("#mychild") |>
+  html_element("#mychild") |>
   html_expect(is_visible, is_enabled)
 ```
 

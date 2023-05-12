@@ -1,19 +1,94 @@
-retry_with_timeout <- function(timeout, exprs) {
+retry_with_timeout <- function(timeout, exprs, data_mask = NULL) {
   end <- Sys.time() + timeout
 
   if(length(exprs) == 0) {
     return(TRUE)
   } else if (length(exprs) == 1) {
-    while (Sys.time() <= end) {
-      val <- rlang::eval_tidy(exprs[[1]])
+    if (timeout == 0) {
+      val <- eval_condition(exprs[[1]], data_mask)
+    } else {
+      while (Sys.time() <= end) {
+        val <- eval_condition(exprs[[1]], data_mask)
+      }
     }
-    return(isTRUE(val))
+
+    if (isTRUE(val)) {
+      return(TRUE)
+    } else {
+      res <- list(
+        n = 1,
+        val = val
+      )
+    }
   } else {
-    while (Sys.time() <= end) {
-      vals <- lapply(exprs, rlang::eval_tidy)
-      lgls <- vapply(vals, isTRUE, FUN.VALUE = logical(1))
+    if (timeout == 0) {
+      pass <- TRUE
+
+      for (a in seq_along(exprs)) {
+        expr <- exprs[[a]]
+        val <- eval_condition(expr, data_mask)
+        if (!isTRUE(val)) {
+          res <- list(
+            n = a,
+            val = val
+          )
+
+          pass <- FALSE
+
+          break
+        }
+      }
+    } else {
+      while (Sys.time() <= end) {
+        pass <- TRUE
+
+        for (a in seq_along(exprs)) {
+          expr <- exprs[[a]]
+          val <- eval_condition(expr, data_mask)
+          if (!isTRUE(val)) {
+            res <- list(
+              n = a,
+              val = val
+            )
+
+            pass <- FALSE
+
+            break
+          }
+        }
+      }
+
+      if (pass) {
+        return(TRUE)
+      }
     }
-    return(all(lgls))
+  }
+
+  return(res)
+}
+
+eval_condition <- function(x, data_mask = NULL) {
+  rlang::try_fetch(
+    with_timeout(0, rlang::eval_tidy(x, data = data_mask)),
+    error = function(x) x
+  )
+}
+
+get_with_timeout <- function(timeout, .f, ...) {
+  if (timeout == 0) {
+    .f(...)
+  } else {
+    end = Sys.time() + timeout
+
+    while (Sys.time() < timeout) {
+      res <- .f(...)
+
+      if (!is.null(res)) {
+        return(res)
+      }
+    }
+
+    NULL
   }
 }
 
@@ -77,3 +152,18 @@ ordinal_numbers <- function(x) {
     out$ind[order(out$values)]
   )
 }
+
+call_insert <- function(call, elem_name, quo = TRUE) {
+  new_call <- rlang::call2(
+    as.list(call)[[1]], 
+    rlang::parse_expr(elem_name), 
+    !!!rlang::call_args(call)
+  )
+
+  if (quo) {
+    rlang::new_quosure(new_call, rlang::quo_get_env(call))
+  } else {
+    new_call
+  }
+}
+

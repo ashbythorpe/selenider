@@ -5,9 +5,9 @@
 \alias{html_wait_until}
 \title{Test one or more conditions on HTML elements}
 \usage{
-html_expect(x, ...)
+html_expect(x, ..., timeout = NULL)
 
-html_wait_until(x, ...)
+html_wait_until(x, ..., timeout = NULL)
 }
 \arguments{
 \item{x}{A \code{selenider_element}/\code{selenider_elements} object, or a condition.}
@@ -15,6 +15,10 @@ html_wait_until(x, ...)
 \item{...}{<\code{\link[rlang:dyn-dots]{dynamic-dots}}> Function calls or functions
 that must return a logical value. If multiple conditions are given, they
 must all be \code{TRUE} for the test to pass.}
+
+\item{timeout}{The number of seconds to wait for a condition to pass. If not
+specified, the timeout used for \code{x} will be used, or the timeout of the
+local session if an element is not given.}
 }
 \value{
 \code{html_expect()} returns the element(s) \code{x} when the test passes, or \code{NULL} if
@@ -31,8 +35,13 @@ informative error is thrown. Otherwise, the original element is returned.
 \code{html_wait_until()} does the same, but returns a logical value (whether or
 not the test passed), allowing you to handle the failure case explicitly.
 }
-\details{
-Conditions can be functions or calls.
+\section{Custom conditions}{
+Any function which takes a selenider element or element collection as its
+first argument, and returns a logical value, can be used as a condition.
+}
+
+\section{Conditions}{
+Conditions can be supplied as functions or calls.
 
 Functions allow you to use unary conditions without formatting them as a
 call (e.g. \code{exists} rather than \code{exists()}). It also allows you to make
@@ -41,11 +50,10 @@ custom conditions. \code{x} will be used as the first argument of this function.
 
 Function calls allow you to use conditions that take multiple arguments (e.g.
 \code{has_text()}) without the use of an intermediate function. The call will
-be modified so that \code{x} is the argument \code{x} to the function call. For
-example, \code{has_text("a")} will be modified to become: \code{has_text("a", x = x)}.
-This means that for a custom condition to work as a call, its first argument
-must be named \code{x}.
+be modified so that \code{x} is the first argument to the function call. For
+example, \code{has_text("a")} will be modified to become: \code{has_text(x, "a")}.
 }
+
 \examples{
 session <- mock_selenider_session()
 

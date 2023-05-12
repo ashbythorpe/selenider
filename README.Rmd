@@ -40,7 +40,7 @@ remotes::install_github("ashbythorpe/selenider")
 
 To use selenider, you first have to create a session.
 
-``` r
+``` {r, eval = FALSE}
 library(selenider)
 
 session <- selenider_session("firefox")
@@ -58,13 +58,13 @@ This session object is stored globally, so we don't need to pass it into any sub
 
 To navigate to a website, use `open_url()`
 
-``` r
+``` {r, eval = FALSE}
 open_url("https://www.google.com/")
 ```
 
 Use `html_element()` to select an element. By default, CSS selectors are used, but other options are available.
 
-``` r
+``` {r, eval = FALSE}
 html_element(session, ".myclass")
 #> A selenider element selecting:
 #> The first element with css selector ".myclass"
@@ -76,7 +76,7 @@ html_element(session, xpath = "//div/a")
 
 However, there is a more concise way, that allows you to skip specifying the session, using `s()`. The above code can be translated to:
 
-``` r
+``` {r, eval = FALSE}
 s(".myclass")
 #> A selenider element selecting:
 #> The first element with css selector ".myclass"
@@ -88,7 +88,7 @@ s("//div/a")
 
 These functions can be chained to find child elements, providing a much nicer syntax than complex XPaths.
 
-```r
+``` {r, eval = FALSE}
 s(".myclass") |>
   html_element(class_name = "mydiv") |>
   html_element("#mychild")
@@ -100,7 +100,7 @@ s(".myclass") |>
 
 If you want to select all matching HTML elements rather than just one, use `ss()` or `html_elements()`.
 
-``` r
+``` {r, eval = FALSE}
 # Select all <div> elements
 ss("div")
 #> A collection of selenider elements selecting:
@@ -121,13 +121,13 @@ Note that unless we do something with these elements, they will not actually be 
 
 selenider provides a concise testing interface using the `html_expect()` function. Provide an element, and one or more conditions, and the function will wait until all the conditions are met. If the session's timeout is reached, then the function will provide an informative error message.
 
-``` r
+``` {r, eval = FALSE}
 # Check that an element exists
 s(".myclass") |>
   html_expect(exists)
-  
+
 # Whoops! This element is not visible!
-s(".invisible") |>
+s(".invisible") |> 
   html_expect(is_visible)
 #> Error in `html_expect()`:
 #> ! Condition failed after waiting for 4 seconds:
@@ -136,13 +136,13 @@ s(".invisible") |>
 
 # Check that an element is visible and enabled
 s(".myclass") |>
-  s("#mychild") |>
+  html_element("#mychild") |>
   html_expect(is_visible, is_enabled)
 ```
 
 And (`&&`), or (`||`) and not (`!`) can be used as if the conditions were logical values.
 
-``` r
+``` {r, eval = FALSE}
 # Check that an element doesn't exist
 s(".myclass") |>
   html_expect(!exists)
@@ -154,7 +154,7 @@ s(".myclass") |>
 
 `html_expect()` accepts both functions (`exists`) and calls (`exists()`), allowing expectations to be defined for multiple elements. Note that the first argument to `html_expect()` can be an element *or* a condition.
 
-``` r
+``` {r, eval = FALSE}
 elem_1 <- s(".class1")
 
 elem_2 <- s(".class2")

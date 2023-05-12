@@ -3,3 +3,4 @@
 ^README\.Rmd$
 ^LICENSE\.md$
 ^man/macros/examples[.]Rd$
+^data-raw$

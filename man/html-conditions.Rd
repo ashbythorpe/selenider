@@ -11,6 +11,7 @@
 \alias{is_hidden}
 \alias{is_invisible}
 \alias{is_enabled}
+\alias{is_disabled}
 \title{Conditions for selenider elements}
 \usage{
 exists(x)
@@ -32,6 +33,8 @@ is_hidden(x)
 is_invisible(x)
 
 is_enabled(x)
+
+is_disabled(x)
 }
 \arguments{
 \item{x}{A \code{selenider_element} object.}

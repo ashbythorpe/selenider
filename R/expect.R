@@ -12,10 +12,18 @@
 #' @param ... <[`dynamic-dots`][rlang::dyn-dots]> Function calls or functions
 #'   that must return a logical value. If multiple conditions are given, they
 #'   must all be `TRUE` for the test to pass.
+#' @param timeout The number of seconds to wait for a condition to pass. If not
+#'   specified, the timeout used for `x` will be used, or the timeout of the
+#'   local session if an element is not given.
 #' 
 #' @details 
-#' 
-#' Conditions can be functions or calls.
+#'
+#' # Custom conditions
+#' Any function which takes a selenider element or element collection as its
+#' first argument, and returns a logical value, can be used as a condition.
+#'
+#' # Conditions
+#' Conditions can be supplied as functions or calls.
 #' 
 #' Functions allow you to use unary conditions without formatting them as a
 #' call (e.g. `exists` rather than `exists()`). It also allows you to make
@@ -24,10 +32,8 @@
 #' 
 #' Function calls allow you to use conditions that take multiple arguments (e.g.
 #' `has_text()`) without the use of an intermediate function. The call will
-#' be modified so that `x` is the argument `x` to the function call. For 
-#' example, `has_text("a")` will be modified to become: `has_text("a", x = x)`.
-#' This means that for a custom condition to work as a call, its first argument
-#' must be named `x`.
+#' be modified so that `x` is the first argument to the function call. For 
+#' example, `has_text("a")` will be modified to become: `has_text(x, "a")`.
 #' 
 #' @returns 
 #' `html_expect()` returns the element(s) `x` when the test passes, or `NULL` if
@@ -99,34 +105,145 @@
 #' }
 #' 
 #' @export
-html_expect <- function(x, ...) {
+html_expect <- function(x, ..., timeout = NULL) {
   x <- rlang::enquo(x)
   dots <- rlang::enquos(...)
   
-  result <- eval_conditions(x, dots)
+  result <- eval_conditions(x, dots, timeout)
   timeout <- result$timeout
-  error_exprs <- result$error_exprs
+  calls <- result$calls
   exprs <- result$exprs
   res <- result$res
+  x_res <- result$x_res
 
-  if (!res) {
-    for (a in seq_along(exprs)) {
-      expr <- exprs[[a]]
-      error_expr <- error_exprs[[a]]
-      
-      expr_res <- rlang::eval_tidy(expr)
-      if (!expr_res) {
-        cli::cli_abort(c(
-          "Condition failed after waiting for {timeout} seconds:",
-          "{.code {rlang::quo_get_expr(error_expr)}}"
-        ))
+  if (!isTRUE(res)) {
+    n <- res$n
+    val <- res$val
+    x_res <- if (inherits(x_res, c("selenider_element", "selenider_elements"))) x_res else NULL
+    call <- calls[[n]]
+    expr <- exprs[[n]]
+
+    diagnose_condition(x_res, n, call, expr, val, timeout)
+  }
+
+  if (inherits(x_res, c("selenider_element", "selenider_elements"))) {
+    update_element(x_res)
+  } else {
+    NULL
+  }
+}
+
+diagnose_condition <- function(x, n, call, original_expr, result, timeout, call_name = NULL, negated_call_name = NULL, call_env = rlang::caller_env()) {
+  if (is.null(call_name)) {
+    call_name <- if (rlang::is_call_simple(call)) rlang::call_name(call) else ""
+  }
+  
+  expr_print <- paste0(
+    rlang::expr_deparse(rlang::quo_squash(original_expr)), collapse = "\n"
+  )
+
+  condition <- c(
+    "Condition failed after waiting for {timeout} seconds:",
+    "{.code {expr_print}}"
+  )
+  
+  call_name <- switch(call_name,
+      is_in_dom = "is in the DOM",
+      gsub("_", " ", call_name, fixed = TRUE)
+  )
+
+  parent <- NULL
+  if (!identical(result, FALSE)) {
+    if (inherits(result, "error")) {
+      parent <- result
+    } else {
+      condition <- c(
+        condition,
+        "i" = "The condition returned {.obj_type_friendly {result}} instead of {.val {TRUE}}."
+      )
+
+      if (is.function(result) && n == 1) {
+        condition <- c(
+          condition,
+          "i" = "Did you forget to supply {.arg x}?",
+          "x" = "Instead of {.code html_expect({expr_print})}",
+          "v" = "Use: {.code html_expect(element, {expr_print})}"
+        )
       }
     }
   }
 
-  if (is.logical(x_res)) {
-    NULL
-  } else {
-    update_element(x_res)
+  if (call_name == "!") {
+    invert <- TRUE
+    inner_call_name <- call_name
+    while (inner_call_name == "!") {
+      new_call <- rlang::call_args(call)[[1]]
+      inner_call_name <- if (rlang::is_call_simple(new_call)) rlang::call_name(new_call) else ""
+      invert <- !invert
+    }
+    
+    if (!invert) {
+      return(diagnose_condition(
+        x, n, new_call, original_expr, result, timeout, inner_call_name,
+        call_env = call_env
+      ))
+    }
+
+    new_call_name <- negate_call_name(inner_call_name)
+
+    if (!is.null(x)) {
+      return(diagnose_condition(
+        x,
+        n = n,
+        call = new_call,
+        original_expr = original_expr,
+        result = result,
+        timeout = timeout,
+        call_name = new_call_name,
+        negated_call_name = inner_call_name,
+        call_env = call_env
+      ))
+    }
+  } else if (call_name %in% condition_dependencies$none) {
+    if (is.null(negated_call_name)) {
+      negated_call_name <- negate_call_name(call_name)
+    }
+
+    condition <- c(
+      condition,
+      "i" = "{.arg x} {negated_call_name}."
+    )
+  } else if (!is.null(x)) {
+    if (exists(x)) {
+      condition <- c(
+        condition,
+        "i" = "{.arg x} exists, but the condition still failed."
+      )
+    } else {
+      condition <- c(
+        condition,
+        "i" = "{.arg x} does not exist, which may have caused the condition to fail."
+      )
+    }
   }
+
+  stop_expect_error(condition, parent = parent, call = call_env)
+}
+
+negate_call_name <- function(x) {
+  # Replace e.g. !exists with doesn't exist, but cancel out double negatives
+  switch(x,
+    "exists" = "doesn't exist",
+    "is present" = "is not present",
+    "is in_dom" = "is not in the DOM",
+    "is missing" = "is present", 
+    "is absent" = "is in the DOM",
+    "is visible" = "is not visible",
+    "is displayed" = "is not displayed",
+    "is hidden" = "is displayed", 
+    "is invisible" = "is visible",
+    "is enabled" = "is not enabled",
+    "is disabled" = "is enabled",
+    NULL
+  )
 }
