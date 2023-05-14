@@ -34,12 +34,15 @@
 #' @examples
 #' session <- mock_selenider_session()
 #'
-#' open_url(session, "https://www.google.com")
+#' open_url(session = session, "https://www.google.com")
 #'
 #' # Or:
 #' open_url("https://www.google.com")
 #'
-#' @rdname selenider-actions
+#' @name global-actions
+NULL
+
+#' @rdname global-actions
 #'
 #' @export
 open_url <- function(url, session = NULL) {
@@ -52,7 +55,7 @@ open_url <- function(url, session = NULL) {
   invisible(session)
 }
 
-#' @rdname selenider-actions
+#' @rdname global-actions
 #'
 #' @export
 back <- function(session = NULL) {
@@ -65,7 +68,7 @@ back <- function(session = NULL) {
   invisible(session)
 }
 
-#' @rdname selenider-actions
+#' @rdname global-actions
 #'
 #' @export
 forward <- function(session = NULL) {
@@ -78,7 +81,7 @@ forward <- function(session = NULL) {
   invisible(session)
 }
 
-#' @rdname selenider-actions
+#' @rdname global-actions
 #'
 #' @export
 reload <- function(session = NULL) {
@@ -91,12 +94,12 @@ reload <- function(session = NULL) {
   invisible(session)
 }
 
-#' @rdname selenider-actions
+#' @rdname global-actions
 #'
 #' @export
 refresh <- reload
 
-#' @rdname selenider-actions
+#' @rdname global-actions
 #'
 #' @export
 take_screenshot <- function(session, file = NULL) {

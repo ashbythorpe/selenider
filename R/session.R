@@ -8,6 +8,8 @@
 #' @param driver A driver object to use instead of creating one manually.
 #' @param local Whether to set the session as the local session object, 
 #'   using [local_session()].
+#' @param quiet Whether to let [RSelenium::rsDriver()] display messages. By
+#'   default, this output is suppressed, as it is not usually useful.
 #' @param .env Passed into [local_session()] function, to define the 
 #'   environment in which the session is used. Change this if you want to
 #'   create the session inside a function and then use it outside the
@@ -69,7 +71,7 @@
 #' # We can now use this session outside the `create_session()` function
 #' get_session()
 #'
-#' withr::deferred_run() # Close `my_session`
+#' # `my_session` will be closed automatically.
 #' }
 #'
 #' @export
@@ -95,7 +97,7 @@ selenider_session <- function(browser = c(
 
   if (is.null(driver)) {
     if (quiet) {
-      capture.output({
+      utils::capture.output({
         driver <- suppressMessages(RSelenium::rsDriver(
           browser = browser,
           chromever = chromever,
@@ -149,12 +151,19 @@ new_selenider_session <- function(driver, timeout) {
 #' Nothing.
 #' 
 #' @examples
-#' session <- mock_selenider_session()
+#' session <- mock_selenider_session(local = FALSE)
 #'
 #' close_session(session)
+#' 
+#' # Reopen the session, this time letting it be set locally.
+#' session <- mock_selenider_session()
 #'
-#' # Or:
+#' # We don't have to specify the session if it is set locally.
 #' close_session()
+#'
+#' # Since we already closed `session`, we don't need the deferred events to
+#' # run
+#' withr::deferred_clear()
 #'
 #' @export
 close_session <- function(x = NULL) {

@@ -17,11 +17,18 @@ Nothing.
 Shut down a session object, closing the browser and stopping the server.
 }
 \examples{
-session <- mock_selenider_session()
+session <- mock_selenider_session(local = FALSE)
 
 close_session(session)
 
-# Or:
+# Reopen the session, this time letting it be set locally.
+session <- mock_selenider_session()
+
+# We don't have to specify the session if it is set locally.
 close_session()
+
+# Since we already closed `session`, we don't need the deferred events to
+# run
+withr::deferred_clear()
 
 }

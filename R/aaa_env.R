@@ -18,6 +18,8 @@ set_session <- function(session) {
   old_session <- get_session()
   
   set_in_env(session = session)
+  
+  old_session
 }
 
 reset_session <- function(old_session, close) {
@@ -25,7 +27,7 @@ reset_session <- function(old_session, close) {
     rlang::try_fetch(
       close_session(get_session()),
       error = function(e) {
-        set_in_env(session = old_session)
+        #set_in_env(session = old_session)
         rlang::zap() # Throw error but reset session object first
       }
     )

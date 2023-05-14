@@ -49,6 +49,9 @@ lazy, meaning that the elements are not fetched and filtered until they are need
 Conditions can be functions or function calls (see \code{\link[=html_expect]{html_expect()}} for more details).
 }
 \examples{
+\dontshow{if (getRversion() >= "4.3") (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+session <- mock_selenider_session()
+
 # Gives the same result as s()
 ss(".class1")[[1]]
 
@@ -63,8 +66,8 @@ ss(".class1") |>
 # The above is equivalent to:
 ss(".class1") |>
   html_filter(is_visible) |>
-  _[[1]]
-
+  _[[1]] # This only works in R >= 4.3.0
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \itemize{

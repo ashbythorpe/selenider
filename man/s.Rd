@@ -2,9 +2,19 @@
 % Please edit documentation in R/api.R
 \name{s}
 \alias{s}
+\alias{ss}
 \title{Quickly select HTML elements}
 \usage{
 s(
+  css = NULL,
+  xpath = NULL,
+  id = NULL,
+  class_name = NULL,
+  name = NULL,
+  link_text = NULL
+)
+
+ss(
   css = NULL,
   xpath = NULL,
   id = NULL,
@@ -23,6 +33,9 @@ s(
 \item{class_name}{The class name of the element you want to select.}
 
 \item{name}{The name attribute of the element you want to select.}
+
+\item{link_text}{The link text of the link element that you would like to
+select.}
 }
 \value{
 \code{s()} returns a \code{selenider_element} object.
@@ -42,7 +55,7 @@ Both functions allow the starting point for chains of selectors to be made
 more concise. Both use \code{\link[=get_session]{get_session()}} to get the global session object.
 }
 \examples{
-session <- mock_session()
+session <- mock_selenider_session()
 
 s(".class1")
 

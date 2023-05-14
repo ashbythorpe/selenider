@@ -128,7 +128,7 @@ message.
 ``` r
 # Check that an element exists
 s(".myclass") |>
-  html_expect(exists)
+  html_expect(is_present)
 
 # Whoops! This element is not visible!
 s(".invisible") |> 
@@ -150,15 +150,15 @@ were logical values.
 ``` r
 # Check that an element doesn't exist
 s(".myclass") |>
-  html_expect(!exists)
+  html_expect(!is_present)
 
 # Check that an element is visible or enabled
 s(".myclass") |>
   html_expect(is_visible || is_enabled)
 ```
 
-`html_expect()` accepts both functions (`exists`) and calls
-(`exists()`), allowing expectations to be defined for multiple elements.
+`html_expect()` accepts both functions (`is_present`) and calls
+(`is_present()`), allowing expectations to be defined for multiple elements.
 Note that the first argument to `html_expect()` can be an element *or* a
 condition.
 
@@ -168,7 +168,7 @@ elem_1 <- s(".class1")
 elem_2 <- s(".class2")
 
 # Test that either the first or second element exists
-html_expect(exists(elem_1) || exists(elem_2))
+html_expect(is_present(elem_1) || is_present(elem_2))
 ```
 
 (Todo: Link to documentation of conditions)

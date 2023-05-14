@@ -44,7 +44,7 @@ first argument, and returns a logical value, can be used as a condition.
 Conditions can be supplied as functions or calls.
 
 Functions allow you to use unary conditions without formatting them as a
-call (e.g. \code{exists} rather than \code{exists()}). It also allows you to make
+call (e.g. \code{is_present} rather than \code{is_present()}). It also allows you to make
 use of R's \link[base:function]{anonymous function syntax} to quickly create
 custom conditions. \code{x} will be used as the first argument of this function.
 
@@ -58,7 +58,7 @@ example, \code{has_text("a")} will be modified to become: \code{has_text(x, "a")
 session <- mock_selenider_session()
 
 s(".class1") |>
-  html_expect(exists)
+  html_expect(is_present)
 
 s(".class1") |>
   html_expect(is_visible, is_enabled)
@@ -67,7 +67,8 @@ s(".class1") |>
   html_expect(is_visible || is_enabled)
 
 s(".class2") |>
-  html_expect(!exists)
+  html_expect(!is_present) |>
+  try() # Since this condition will fail
 # Or is_absent, etc.
 
 # html_expect() returns the element, so can be used in chains
@@ -77,28 +78,28 @@ s(".button1") |>
 # Note that click() will do this automatically
 
 s(".text1") |>
-  html_expect(has_exact_text("Hello"))
+  html_expect(has_exact_text("Example text"))
 
 # Or use an anonymous function
 s(".text1") |>
-  html_expect(\(elem) identical(html_text(elem), "Hello"))
+  html_expect(\(elem) identical(html_text(elem), "Example text"))
 
 # This is useful for complex conditions:
 s(".text1") |>
   html_expect(
     \(elem) elem |>
       html_text() |>
-      grepl("Hello .*", x = _)
+      grepl("Example .*", x = _)
   )
 
 # If your conditions are not specific to an element, you can omit the `x` argument
 elem_1 <- s(".class1")
 elem_2 <- s(".class2")
 
-html_expect(exists(elem_1) || exists(elem_2))
+html_expect(is_present(elem_1) || is_present(elem_2))
 
 # We can now use the conditions on their own to figure out which element exists
-if (exists(elem_1)) {
+if (is_present(elem_1)) {
   click(elem_1)
 } else {
   click(elem_2)
@@ -106,7 +107,7 @@ if (exists(elem_1)) {
 
 # Use html_wait_for() to handle failures manually
 elem <- s(".class2")
-if (html_wait_for(elem, exists)) {
+if (html_wait_until(elem, is_present)) {
   click(elem)
 } else {
   reload()
@@ -115,7 +116,7 @@ if (html_wait_for(elem, exists)) {
 }
 \seealso{
 \itemize{
-\item \link{html-conditions} for predicates for a single HTML element.
-\item \link{html-conditions-multiple} for predicates for multiple HTML elements.
+\item \code{\link{html-conditions}} for predicates for a single HTML element.
+\item \code{\link{html-conditions-multiple}} for predicates for multiple HTML elements.
 }
 }

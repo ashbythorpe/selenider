@@ -4,7 +4,7 @@ new_selector <- function(css,
                          class_name,
                          name,
                          link_text,
-                         filter = 1) {
+                         filter = list(1)) {
   args <- list(
     css = css,
     xpath = xpath,
@@ -27,9 +27,11 @@ new_selector <- function(css,
 }
 
 use_selector <- function(selector, element, multiple = FALSE) {
+  filter <- selector$filter
+
   selector$filter <- NULL
 
-  if (identical(filter, 1) && length(selector) == 1) {
+  if (length(filter) == 1 && identical(filter[[1]], 1) && length(selector) == 1) {
     using <- switch(
       names(selector),
       css = "css selector",

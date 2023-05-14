@@ -9,7 +9,10 @@
 #' @param id The id of the element you want to select.
 #' @param class_name The class name of the element you want to select.
 #' @param name The name attribute of the element you want to select.
-#' 
+#' @param link_text The link text of the link element that you would like to
+#'   select.
+#' @inheritParams rlang::args_dots_used
+#'
 #' @details 
 #' If more than one method is used to select an element (e.g. `css` and 
 #' `xpath`), the first element which satisfies all conditions will be found.
@@ -50,7 +53,10 @@ html_element.selenider_session <- function(x,
                                            id = NULL,
                                            class_name = NULL,
                                            name = NULL,
-                                           link_text = NULL) {
+                                           link_text = NULL,
+                                           ...) {
+  rlang::check_dots_used()
+
   selector <- new_selector(css, xpath, id, class_name, name, link_text)
   
   new_selenider_element(x, selector)
@@ -65,7 +71,10 @@ html_element.selenider_element <- function(x,
                                            id = NULL,
                                            class_name = NULL,
                                            name = NULL,
-                                           link_text = NULL) {
+                                           link_text = NULL,
+                                           ...) {
+  rlang::check_dots_used()
+
   selector <- new_selector(css, xpath, id, class_name, name, link_text)
   
   x$selectors <- append(x$selectors, list(selector))
@@ -122,15 +131,20 @@ format_element <- function(selector, first = FALSE) {
 
   text <- cli::pluralize("{to_pluralize}")
 
-  if (is.numeric(filter)) {
-    paste0("The ", ordinal(filter), child, " element with ", text) 
+  if (length(filter) == 1) {
+    paste0("The ", ordinal(filter[[1]]), child, " element with ", text) 
   } else {
-    body <- rlang::fn_body(filter)[-1]
-    if (length(body) == 1) {
-      paste0("The", child, " element with ", text, " matching the following condition:\n ", body)
-    } else {
-      paste0("The", child, " element with ", text, " matching a custom condition")
+    last <- filter[[length(filter)]]
+    stopifnot(is.numeric(last))
+
+    if (length(filter) == 2) {
+      body <- as.character(rlang::fn_body(filter[[1]]))[-1]
+      if (length(body) == 1 && !grepl("\n", body, fixed = TRUE)) {
+        return(paste0("The", ordinal(last),  child, " element with ", text, " matching the following condition:\n {.code ", escape_squirlies(body), "}"))
+      }
     }
+
+    paste0("The", ordinal(last), child, " element with ", text, " matching a custom condition")
   }
 }
 

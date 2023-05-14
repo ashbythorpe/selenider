@@ -9,6 +9,9 @@
 #' @param id The id of the element you want to select.
 #' @param class_name The class name of the element you want to select.
 #' @param name The name attribute of the element you want to select.
+#' @param link_text The link text of the link element that you would like to
+#'   select.
+#' @inheritParams rlang::args_dots_used
 #' 
 #' @details 
 #' If more than one method is used to select an element (e.g. `css` and 
@@ -53,7 +56,10 @@ html_elements.selenider_session <- function(x,
                                            id = NULL,
                                            class_name = NULL,
                                            name = NULL,
-                                           link_text = NULL) {
+                                           link_text = NULL,
+                                           ...) {
+  rlang::check_dots_used()
+
   selector <- new_selector(css, xpath, id, class_name, name, link_text, filter = NULL)
 
   new_selenider_elements(x, selector)
@@ -68,7 +74,10 @@ html_elements.selenider_element <- function(x,
                                            id = NULL,
                                            class_name = NULL,
                                            name = NULL,
-                                           link_text = NULL) {
+                                           link_text = NULL,
+                                           ...) {
+  rlang::check_dots_used()
+
   selector <- new_selector(css, xpath, id, class_name, name, link_text, filter = NULL)
   
   x$selectors <- append(x$selectors, list(selector))
@@ -80,9 +89,10 @@ html_elements.selenider_element <- function(x,
   x
 }
 
-new_selenider_elements <- function(x, selector) {
+new_selenider_elements <- function(session, selector) {
   res <- list(
-    element = session$driver$client,
+    driver = session$driver$client,
+    element = NULL,
     timeout = session$timeout,
     selectors = list(selector),
     to_be_found = 1
@@ -130,29 +140,49 @@ format_elements <- function(selector, first = FALSE) {
   
   if (is.null(filter)) {
     paste0("The", child, " elements with ", text)
-  } else if (is.numeric(filter)) {
-    if (all(filter) >= 0) {
-      if (length(filter) == 1) {
-        paste0("The ", ordinal(filter), child, " element with ", text)
-      } else {
-        numbers <- cli::pluralize("{ordinal_numbers(filter)}")
-        paste0("The ", numbers, child, " elements with ", text)
-      }
+  } else if (length(filter) == 1) {
+    if (is.numeric(filter[[1]])) {
+      format_ordinal(filter[[1]], child, text)
     } else {
-      if (length(filter) == 1) {
-        paste0("All", child, " elements with ", text, " except the ", ordinal(-filter))
+      body <- rlang::fn_body(filter[[1]])[-1]
+      if (length(body) == 1) {
+        paste0("The", child, " elements with ", text, " matching the following condition:\n, {.code ", escape_squirlies(body), "}")
       } else {
-        numbers <- cli::pluralize("{ordinal_numbers(-filter)}")
-        paste0("All", child, " elements with ", text, " except the ", numbers)
+        paste0("The", child, " elements with ", text, " matching a custom condition")
       }
     }
   } else {
-    body <- rlang::fn_body(filter)[-1]
-    if (length(body) == 1) {
-      paste0("The", child, " elements with ", text, " matching the following condition:\n", body)
+    last <- filter[[length(filter)]]
+
+    if (is.numeric(last)) {
+      if (length(filter) == 2) {
+        body <- as.character(rlang::fn_body(filter[[1]]))[-1]
+        if (length(body) == 1 && !grepl("\n", body, fixed = TRUE)) {
+          return(format_ordinal(last, child, text, paste0(" matching the following condition:\n ", body)))
+        }
+      }
+
+      format_ordinal(last, child, text,  " matching a custom condition")
     } else {
       paste0("The", child, " elements with ", text, " matching a custom condition")
     }
+  }
+}
+
+format_ordinal <- function(x, child, text, condition = "") {
+  if (all(x) >= 0) {
+    element <- if (length(x) == 1) " element" else " elements"
+    paste0("The ", subscript_ordinal(x), child, element, " with ", text)
+  } else {
+    paste0("All", child, " elements with ", text, " except the ", subscript_ordinal(x))
+  }
+}
+
+subscript_ordinal <- function(x) {
+  if (length(x) == 1) {
+    ordinal(x)
+  } else {
+    cli::pluralize("{ordinal_numbers(x)}")
   }
 }
 

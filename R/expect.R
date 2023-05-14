@@ -26,7 +26,7 @@
 #' Conditions can be supplied as functions or calls.
 #' 
 #' Functions allow you to use unary conditions without formatting them as a
-#' call (e.g. `exists` rather than `exists()`). It also allows you to make
+#' call (e.g. `is_present` rather than `is_present()`). It also allows you to make
 #' use of R's [anonymous function syntax][base::function] to quickly create
 #' custom conditions. `x` will be used as the first argument of this function.
 #' 
@@ -43,14 +43,14 @@
 #' otherwise.
 #' 
 #' @seealso 
-#' * [html-conditions] for predicates for a single HTML element.
-#' * [html-conditions-multiple] for predicates for multiple HTML elements.
+#' * [`html-conditions`] for predicates for a single HTML element.
+#' * [`html-conditions-multiple`] for predicates for multiple HTML elements.
 #' 
 #' @examples
 #' session <- mock_selenider_session()
 #'
 #' s(".class1") |>
-#'   html_expect(exists)
+#'   html_expect(is_present)
 #'
 #' s(".class1") |>
 #'   html_expect(is_visible, is_enabled)
@@ -59,7 +59,8 @@
 #'   html_expect(is_visible || is_enabled)
 #' 
 #' s(".class2") |>
-#'   html_expect(!exists)
+#'   html_expect(!is_present) |>
+#'   try() # Since this condition will fail
 #' # Or is_absent, etc.
 #'
 #' # html_expect() returns the element, so can be used in chains
@@ -69,28 +70,28 @@
 #' # Note that click() will do this automatically
 #'
 #' s(".text1") |>
-#'   html_expect(has_exact_text("Hello"))
+#'   html_expect(has_exact_text("Example text"))
 #'
 #' # Or use an anonymous function
 #' s(".text1") |>
-#'   html_expect(\(elem) identical(html_text(elem), "Hello"))
+#'   html_expect(\(elem) identical(html_text(elem), "Example text"))
 #'
 #' # This is useful for complex conditions:
 #' s(".text1") |>
 #'   html_expect(
 #'     \(elem) elem |>
 #'       html_text() |>
-#'       grepl("Hello .*", x = _)
+#'       grepl("Example .*", x = _)
 #'   )
 #' 
 #' # If your conditions are not specific to an element, you can omit the `x` argument
 #' elem_1 <- s(".class1")
 #' elem_2 <- s(".class2")
 #'
-#' html_expect(exists(elem_1) || exists(elem_2))
+#' html_expect(is_present(elem_1) || is_present(elem_2))
 #' 
 #' # We can now use the conditions on their own to figure out which element exists
-#' if (exists(elem_1)) {
+#' if (is_present(elem_1)) {
 #'   click(elem_1)
 #' } else {
 #'   click(elem_2)
@@ -98,7 +99,7 @@
 #'
 #' # Use html_wait_for() to handle failures manually
 #' elem <- s(".class2")
-#' if (html_wait_for(elem, exists)) {
+#' if (html_wait_until(elem, is_present)) {
 #'   click(elem)
 #' } else {
 #'   reload()
@@ -127,7 +128,7 @@ html_expect <- function(x, ..., timeout = NULL) {
   }
 
   if (inherits(x_res, c("selenider_element", "selenider_elements"))) {
-    update_element(x_res)
+    x_res
   } else {
     NULL
   }
@@ -214,7 +215,7 @@ diagnose_condition <- function(x, n, call, original_expr, result, timeout, call_
       "i" = "{.arg x} {negated_call_name}."
     )
   } else if (!is.null(x)) {
-    if (exists(x)) {
+    if (is_present(x)) {
       condition <- c(
         condition,
         "i" = "{.arg x} exists, but the condition still failed."
@@ -231,11 +232,10 @@ diagnose_condition <- function(x, n, call, original_expr, result, timeout, call_
 }
 
 negate_call_name <- function(x) {
-  # Replace e.g. !exists with doesn't exist, but cancel out double negatives
+  # Replace e.g. !is present with is not present, but cancel out double negatives
   switch(x,
-    "exists" = "doesn't exist",
     "is present" = "is not present",
-    "is in_dom" = "is not in the DOM",
+    "is in dom" = "is not in the DOM",
     "is missing" = "is present", 
     "is absent" = "is in the DOM",
     "is visible" = "is not visible",

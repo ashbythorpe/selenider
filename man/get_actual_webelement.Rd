@@ -7,7 +7,7 @@
 \usage{
 get_actual_webelement(x, timeout = NULL)
 
-get_actual_webelements(x)
+get_actual_webelements(x, timeout = NULL)
 }
 \arguments{
 \item{x}{A \code{selenider_element} or \code{selenider_elements} object, produced by

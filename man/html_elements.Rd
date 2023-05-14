@@ -15,7 +15,8 @@ html_elements(x, ...)
   id = NULL,
   class_name = NULL,
   name = NULL,
-  link_text = NULL
+  link_text = NULL,
+  ...
 )
 
 \method{html_elements}{selenider_element}(
@@ -25,11 +26,14 @@ html_elements(x, ...)
   id = NULL,
   class_name = NULL,
   name = NULL,
-  link_text = NULL
+  link_text = NULL,
+  ...
 )
 }
 \arguments{
 \item{x}{A selenider session or element.}
+
+\item{...}{Arguments passed to methods.}
 
 \item{css}{A css selector.}
 
@@ -40,6 +44,9 @@ html_elements(x, ...)
 \item{class_name}{The class name of the element you want to select.}
 
 \item{name}{The name attribute of the element you want to select.}
+
+\item{link_text}{The link text of the link element that you would like to
+select.}
 }
 \value{
 A \code{selenider_elements} object.

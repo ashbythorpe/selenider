@@ -1,3 +1,37 @@
+#' Perform actions on a selenider element.
+#'
+#' @description
+#' These functions define various actions to be performed on a selenider
+#' element.
+#'
+#' `click()` clicks the element.
+#'
+#' `send_keys()` sends a set of keys to an input element.
+#'
+#' `clear_element()` clears the value of an input element.
+#'
+#' `set_input()` sets the value of an input to a specified string.
+#'
+#' @param x A `selenider_element` object.
+#' @param js Whether to cick the element using JavaScript.
+#' @param ... The keys to send to the element.
+#' @param text The text to set the input to.
+#' @param timeout How long to wait for the element to exist.
+#'
+#' @returns `x`, invisibly.
+#'
+#' @examples
+#' session <- mock_selenider_session()
+#'
+#' s(".class1") |>
+#'   click()
+#'
+#' @name html-actions
+NULL
+
+#' @rdname html-actions
+#'
+#' @export
 click <- function(x, js = FALSE, timeout = NULL) {
   timeout <- get_timeout(timeout, x$timeout)
   
@@ -50,6 +84,9 @@ click <- function(x, js = FALSE, timeout = NULL) {
   invisible(x)
 }
 
+#' @rdname html-actions
+#'
+#' @export
 send_keys <- function(x, ..., timeout = NULL) {
   keys <- rlang::list2(...)
 
@@ -69,6 +106,9 @@ send_keys <- function(x, ..., timeout = NULL) {
   invisible(x)
 }
 
+#' @rdname html-actions
+#'
+#' @export
 clear_input <- function(x, timeout = NULL) {
   timeout <- get_timeout(timeout, x$timeout)
 
@@ -86,6 +126,9 @@ clear_input <- function(x, timeout = NULL) {
   invisible(x)
 }
 
+#' @rdname html-actions
+#'
+#' @export
 set_input <- function(x, text, timeout = NULL) {
   timeout <- get_timeout(timeout, x$timeout)
 
@@ -108,8 +151,14 @@ set_input <- function(x, text, timeout = NULL) {
 }
 
 get_element_for_action <- function(x, action, conditions, timeout, failure_messages, conditions_text, call = rlang::caller_env()) {
-  if (!rlang::inject(html_wait_until(!!!conditions, timeout = timeout))) {
-    if (!exists(x)) {
+  meets_condition <- if (length(conditions) != 0) {
+    rlang::inject(html_wait_until(x, is_present, !!!conditions, timeout = timeout))
+  } else {
+    html_wait_until(x, is_present, timeout = timeout)
+  }
+
+  if (!meets_condition) {
+    if (length(conditions) == 0 || !is_present(x)) {
       stop_not_actionable(c(
         paste0("To ", action, ", it must exist"),
         "i" = "After {timeout} seconds, {.arg x} was not present"
