@@ -9,6 +9,10 @@ retry_with_timeout <- function(timeout, exprs, data_mask = NULL) {
     } else {
       while (Sys.time() <= end) {
         val <- eval_condition(exprs[[1]], data_mask)
+
+        if (isTRUE(val)) {
+          return(TRUE)
+        }
       }
     }
 
@@ -56,10 +60,10 @@ retry_with_timeout <- function(timeout, exprs, data_mask = NULL) {
             break
           }
         }
-      }
 
-      if (pass) {
-        return(TRUE)
+        if (pass) {
+          return(TRUE)
+        }
       }
     }
   }
@@ -78,9 +82,9 @@ get_with_timeout <- function(timeout, .f, ...) {
   if (timeout == 0) {
     .f(...)
   } else {
-    end = Sys.time() + timeout
+    end <- Sys.time() + timeout
 
-    while (Sys.time() < timeout) {
+    while (Sys.time() <= end) {
       res <- .f(...)
 
       if (!is.null(res)) {
@@ -93,7 +97,7 @@ get_with_timeout <- function(timeout, .f, ...) {
 }
 
 find_element <- function(x, using, value) {
-  if (inherits(x, "webElement")) {
+  if (inherits(x, c("webElement", "mock_element"))) {
     rlang::try_fetch(
       suppressMessages(x$findChildElement(using = using, value = value)),
       error = function(cnd) {
@@ -104,14 +108,14 @@ find_element <- function(x, using, value) {
         }
       }
     )
-  } else {
+  } else if (inherits(x, c("webDriver", "mock_client"))) {
     rlang::try_fetch(
       suppressMessages(x$findElement(using = using, value = value)),
       error = function(cnd) {
         if (grepl("NoSuchElement", cnd$message, fixed = TRUE)) {
-          NULL
+          return(NULL)
         } else {
-          rlang::zap()
+          return(rlang::zap())
         }
       }
     )
@@ -154,16 +158,27 @@ ordinal_numbers <- function(x) {
 }
 
 call_insert <- function(call, elem_name, quo = TRUE) {
-  new_call <- rlang::call2(
-    as.list(call)[[1]], 
-    rlang::parse_expr(elem_name), 
-    !!!rlang::call_args(call)
-  )
-
   if (quo) {
+    new_call <- rlang::call2(
+      as.list(rlang::quo_get_expr(call))[[1]], 
+      rlang::parse_expr(elem_name), 
+      !!!rlang::call_args(call)
+    )
+
     rlang::new_quosure(new_call, rlang::quo_get_env(call))
   } else {
+    new_call <- rlang::call2(
+      as.list(call)[[1]], 
+      rlang::parse_expr(elem_name), 
+      !!!rlang::call_args(call)
+    )
+
     new_call
   }
+}
+
+escape_squirlies <- function(x) {
+  x <- gsub("{", "{{", x, fixed = TRUE)
+  gsub("}", "}}", x, fixed = TRUE)
 }
 

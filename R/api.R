@@ -14,6 +14,8 @@
 #' @param id The id of the element you want to select.
 #' @param class_name The class name of the element you want to select.
 #' @param name The name attribute of the element you want to select.
+#' @param link_text The link text of the link element that you would like to
+#'   select.
 #' 
 #' @details 
 #' Both functions allow the starting point for chains of selectors to be made
@@ -28,7 +30,11 @@
 #' * [selenider_session()] to begin a session.
 #' 
 #' @examples 
-#' session <- mock_session()
+#' \dontshow{
+#' # This allows `local_session()` to work when being sourced.
+#' prev_options <- options(withr.hook_source = TRUE)
+#' }
+#' session <- mock_selenider_session()
 #' 
 #' s(".class1")
 #' 
@@ -44,6 +50,9 @@
 #' s(".class1") |>
 #'   html_element(".innerclass") |>
 #'   html_element("#item1")
+#' \dontshow{
+#' options(prev_options)
+#' }
 #' 
 #' @export
 s <- function(css = NULL,
@@ -57,6 +66,8 @@ s <- function(css = NULL,
   html_element(session, css, xpath, id, class_name, name, link_text)
 }
 
+#' @rdname s
+#'
 #' @export
 ss <- function(css = NULL,
                xpath = NULL,

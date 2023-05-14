@@ -23,6 +23,9 @@ selenider_session(
 \item{local}{Whether to set the session as the local session object,
 using \code{\link[=local_session]{local_session()}}.}
 
+\item{quiet}{Whether to let \code{\link[RSelenium:rsDriver]{RSelenium::rsDriver()}} display messages. By
+default, this output is suppressed, as it is not usually useful.}
+
 \item{.env}{Passed into \code{\link[=local_session]{local_session()}} function, to define the
 environment in which the session is used. Change this if you want to
 create the session inside a function and then use it outside the

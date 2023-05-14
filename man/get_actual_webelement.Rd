@@ -7,7 +7,7 @@
 \usage{
 get_actual_webelement(x, timeout = NULL)
 
-get_actual_webelements(x)
+get_actual_webelements(x, timeout = NULL)
 }
 \arguments{
 \item{x}{A \code{selenider_element} or \code{selenider_elements} object, produced by
@@ -32,6 +32,10 @@ exist in the DOM.
 of \link[RSelenium:webElement-class]{RSelenium::webElement} objects.
 }
 \examples{
+\dontshow{
+# This allows `local_session()` to work when being sourced.
+prev_options <- options(withr.hook_source = TRUE)
+}
 session <- mock_selenider_session()
 
 elem <- s(".class1") |>
@@ -43,6 +47,10 @@ elems <- ss(".class2") |>
   get_actual_webelements()
 
 elems[[1]]$getElementSize()
+
+\dontshow{
+options(prev_options)
+}
 
 }
 \seealso{

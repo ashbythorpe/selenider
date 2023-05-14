@@ -122,7 +122,7 @@ parse_condition_expr <- function(x, elem_name) {
     }
   }
   
-  rlang::call2(x, rlang::parse_expr(elem))
+  rlang::call2(x, rlang::parse_expr(elem_name))
 }
 
 make_elem_name <- function(x) {
@@ -144,5 +144,5 @@ make_elem_name <- function(x) {
 }
 
 get_expr_string <- function(x) {
-  paste0(as.character(rlang::quo_squash(x)), collapse = "")
+  paste0(deparse(rlang::quo_squash(x)), collapse = "")
 }

@@ -13,8 +13,12 @@
 #' 
 #' `is_disabled()` checks that an element has the `disabled` attribute set to 
 #' `TRUE`, while `is_enabled()` checks that it does not.
+#'
+#' `has_text()` checks that an element's inner text contains a string, while
+#' `has_exact_text()` checks that the inner text *only* contains the string.
 #' 
 #' @param x A `selenider_element` object.
+#' @param text A string, used to test the element's inner text.
 #' 
 #' @details 
 #' These functions do not implement a retry mechanism, and only test a condition
@@ -25,10 +29,20 @@
 #' A boolean value: TRUE or FALSE.
 #' 
 #' @examples 
+#' \dontshow{
+#' # This allows `local_session()` to work when being sourced.
+#' prev_options <- options(withr.hook_source = TRUE)
+#' }
 #' session <- mock_selenider_session()
 #' 
 #' exists(s(".class1"))
+#' \dontshow{
+#' options(prev_options)
+#' }
 #' 
+#' @name html-conditions
+NULL
+
 #' @rdname html-conditions
 #' 
 #' @export
@@ -65,7 +79,7 @@ is_visible <- function(x) {
   element <- get_element(x)
   
   if (!is.null(element)) {
-    element$element$isElementDisplayed()
+    element$isElementDisplayed()
   } else {
     stop_absent_element()
   }
@@ -93,7 +107,7 @@ is_enabled <- function(x) {
   element <- get_element(x)
   
   if (!is.null(element)) {
-    element$element$isElementEnabled()
+    element$isElementEnabled()
   } else {
     stop_absent_element()
   }
@@ -104,3 +118,28 @@ is_enabled <- function(x) {
 #' @export
 is_disabled <- function(x) !is_enabled(x)
 
+#' @rdname html-conditions
+#' 
+#' @export
+has_text <- function(x, text) {
+  element <- get_element(x)
+  
+  if (!is.null(element)) {
+    grepl(text, element$getElementText(), fixed = TRUE)
+  } else {
+    stop_absent_element()
+  }
+}
+
+#' @rdname html-conditions
+#' 
+#' @export
+has_exact_text <- function(x, text) {
+  element <- get_element(x)
+  
+  if (!is.null(element)) {
+    identical(element$getElementText(), text)
+  } else {
+    stop_absent_element()
+  }
+}

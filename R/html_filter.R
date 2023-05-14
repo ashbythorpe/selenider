@@ -34,7 +34,13 @@
 #' * [html_elements()] and [ss()] to get elements to filter.
 #' * [html-conditions] for conditions to filter by.
 #'
-#' @examples
+#' @examplesIf getRversion() >= "4.3"
+#' \dontshow{
+#' # This allows `local_session()` to work when being sourced.
+#' prev_options <- options(withr.hook_source = TRUE)
+#' }
+#' session <- mock_selenider_session()
+#'
 #' # Gives the same result as s()
 #' ss(".class1")[[1]]
 #'
@@ -49,17 +55,23 @@
 #' # The above is equivalent to:
 #' ss(".class1") |>
 #'   html_filter(is_visible) |>
-#'   _[[1]]
+#'   _[[1]] # This only works in R >= 4.3.0
+#' \dontshow{
+#' options(prev_options)
+#' }
 #'
 #' @export
 html_filter <- function(x, ...) {
   exprs <- rlang::enquos(x)
   elem_name <- make_elem_name(exprs)
-  calls <- lapply(dots, parse_condition, elem_name)
+  calls <- lapply(exprs, parse_condition, elem_name)
 
   functions <- lapply(calls, condition_to_function, elem_name = elem_name)
+  
+  selectors <- x$selectors
 
-  x$filter <- c(x$filter, functions)
+  x$selectors[[length(selectors)]]$filter <-
+    c(x$selectors[[length(selectors)]]$filter, functions)
 
   x
 }
@@ -70,7 +82,7 @@ html_filter <- function(x, ...) {
 html_find <- function(x, ...) {
   res <- html_filter(x, ...)
   
-  res <- add_numeric_filter(res, i)
+  res <- add_numeric_filter(res, 1)
 
   class(res) <- "selenider_element"
 
@@ -96,7 +108,7 @@ html_find <- function(x, ...) {
     stop_subscript_type(i)
   } else if (!is.numeric(i)) {
     NextMethod()
-  } else if (length(i) != 0) {
+  } else if (length(i) != 1) {
     stop_subscript_length(i)
   }
 
@@ -108,11 +120,13 @@ html_find <- function(x, ...) {
 }
 
 add_numeric_filter <- function(x, i, call = rlang::caller_env()) {
-  filters <- x$filter
-  
-  numeric_filters <- Filter(filters, is.numeric)
+  selectors <- x$selectors
 
-  min_length <- min(lengths(numeric_filters))
+  filters <- selectors[[length(selectors)]]$filter
+  
+  numeric_filters <- Filter(is.numeric, filters)
+
+  min_length <- if (length(numeric_filters) != 0) min(lengths(numeric_filters)) else Inf
   max_sub <- max(i, na.rm = TRUE)
 
   if (max_sub >= min_length) {
@@ -127,9 +141,10 @@ add_numeric_filter <- function(x, i, call = rlang::caller_env()) {
   if (is.numeric(last_filter)) {
     new_filter <- last_filter[i]
 
-    x$filters[[length(filters)]] <- new_filter
+    x$selectors[[length(selectors)]]$filter[[length(filters)]] <- new_filter
   } else {
-    x$filters <- append(x$filters, list(i))
+    x$selectors[[length(selectors)]]$filter <- 
+      append(x$selectors[[length(selectors)]]$filter, list(i))
   }
 
   x

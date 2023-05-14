@@ -43,10 +43,14 @@
 #' otherwise.
 #' 
 #' @seealso 
-#' * [html-conditions] for predicates for a single HTML element.
-#' * [html-conditions-multiple] for predicates for multiple HTML elements.
+#' * [`html-conditions`] for predicates for a single HTML element.
+#' * [`html-conditions-multiple`] for predicates for multiple HTML elements.
 #' 
 #' @examples
+#' \dontshow{
+#' # This allows `local_session()` to work when being sourced.
+#' prev_options <- options(withr.hook_source = TRUE)
+#' }
 #' session <- mock_selenider_session()
 #'
 #' s(".class1") |>
@@ -59,7 +63,8 @@
 #'   html_expect(is_visible || is_enabled)
 #' 
 #' s(".class2") |>
-#'   html_expect(!exists)
+#'   html_expect(!exists) |>
+#'   try() # Since this condition will fail
 #' # Or is_absent, etc.
 #'
 #' # html_expect() returns the element, so can be used in chains
@@ -69,18 +74,18 @@
 #' # Note that click() will do this automatically
 #'
 #' s(".text1") |>
-#'   html_expect(has_exact_text("Hello"))
+#'   html_expect(has_exact_text("Example text"))
 #'
 #' # Or use an anonymous function
 #' s(".text1") |>
-#'   html_expect(\(elem) identical(html_text(elem), "Hello"))
+#'   html_expect(\(elem) identical(html_text(elem), "Example text"))
 #'
 #' # This is useful for complex conditions:
 #' s(".text1") |>
 #'   html_expect(
 #'     \(elem) elem |>
 #'       html_text() |>
-#'       grepl("Hello .*", x = _)
+#'       grepl("Example .*", x = _)
 #'   )
 #' 
 #' # If your conditions are not specific to an element, you can omit the `x` argument
@@ -98,10 +103,13 @@
 #'
 #' # Use html_wait_for() to handle failures manually
 #' elem <- s(".class2")
-#' if (html_wait_for(elem, exists)) {
+#' if (html_wait_until(elem, exists)) {
 #'   click(elem)
 #' } else {
 #'   reload()
+#' }
+#' \dontshow{
+#' options(prev_options)
 #' }
 #' 
 #' @export
@@ -127,7 +135,7 @@ html_expect <- function(x, ..., timeout = NULL) {
   }
 
   if (inherits(x_res, c("selenider_element", "selenider_elements"))) {
-    update_element(x_res)
+    x_res
   } else {
     NULL
   }

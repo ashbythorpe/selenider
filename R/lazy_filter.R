@@ -1,11 +1,4 @@
 lazy_filter <- function(x, .f, ...) {
-  if (is.numeric(.f)) {
-    return(lazy_slice(
-      x = x,
-      n = .f
-    ))
-  }
-  
   res <- list(
     x = x,
     fun = .f,
@@ -65,7 +58,7 @@ item_slice <- function(x, n) {
   if (inherits(x, "lazy_filter")) {
     if (is.numeric(n) && all(n >= 0)) {
       n <- n[n != 0]
-      if (length(na.rm(n)) == 0) {
+      if (length(stats::na.omit(n)) == 0) {
         return(rep(NA, length(n)))
       }
 

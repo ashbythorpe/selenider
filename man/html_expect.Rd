@@ -55,6 +55,10 @@ example, \code{has_text("a")} will be modified to become: \code{has_text(x, "a")
 }
 
 \examples{
+\dontshow{
+# This allows `local_session()` to work when being sourced.
+prev_options <- options(withr.hook_source = TRUE)
+}
 session <- mock_selenider_session()
 
 s(".class1") |>
@@ -67,7 +71,8 @@ s(".class1") |>
   html_expect(is_visible || is_enabled)
 
 s(".class2") |>
-  html_expect(!exists)
+  html_expect(!exists) |>
+  try() # Since this condition will fail
 # Or is_absent, etc.
 
 # html_expect() returns the element, so can be used in chains
@@ -77,18 +82,18 @@ s(".button1") |>
 # Note that click() will do this automatically
 
 s(".text1") |>
-  html_expect(has_exact_text("Hello"))
+  html_expect(has_exact_text("Example text"))
 
 # Or use an anonymous function
 s(".text1") |>
-  html_expect(\(elem) identical(html_text(elem), "Hello"))
+  html_expect(\(elem) identical(html_text(elem), "Example text"))
 
 # This is useful for complex conditions:
 s(".text1") |>
   html_expect(
     \(elem) elem |>
       html_text() |>
-      grepl("Hello .*", x = _)
+      grepl("Example .*", x = _)
   )
 
 # If your conditions are not specific to an element, you can omit the `x` argument
@@ -106,16 +111,19 @@ if (exists(elem_1)) {
 
 # Use html_wait_for() to handle failures manually
 elem <- s(".class2")
-if (html_wait_for(elem, exists)) {
+if (html_wait_until(elem, exists)) {
   click(elem)
 } else {
   reload()
+}
+\dontshow{
+options(prev_options)
 }
 
 }
 \seealso{
 \itemize{
-\item \link{html-conditions} for predicates for a single HTML element.
-\item \link{html-conditions-multiple} for predicates for multiple HTML elements.
+\item \code{\link{html-conditions}} for predicates for a single HTML element.
+\item \code{\link{html-conditions-multiple}} for predicates for multiple HTML elements.
 }
 }

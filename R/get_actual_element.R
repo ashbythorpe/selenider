@@ -26,17 +26,25 @@
 #'   do with them.
 #'
 #' @examples
+#' \dontshow{
+#' # This allows `local_session()` to work when being sourced.
+#' prev_options <- options(withr.hook_source = TRUE)
+#' }
 #' session <- mock_selenider_session()
 #'
 #' elem <- s(".class1") |>
 #'   get_actual_webelement()
-#'
+#' 
 #' elem$getElementLocation()
 #'
 #' elems <- ss(".class2") |>
 #'   get_actual_webelements()
 #'
 #' elems[[1]]$getElementSize()
+#'
+#' \dontshow{
+#' options(prev_options)
+#' }
 #'
 #' @export
 get_actual_webelement <- function(x, timeout = NULL) {
@@ -48,24 +56,25 @@ get_actual_webelement <- function(x, timeout = NULL) {
 #' @rdname get_actual_webelement
 #'
 #' @export
-get_actual_webelements <- function(x) {
+get_actual_webelements <- function(x, timeout = NULL) {
   timeout <- get_timeout(timeout, x$timeout)
 
   res <- get_with_timeout(timeout, get_elements, x)
 }
 
 get_element <- function(x) {
+  if (!is.list(x)) stop(as.character(x))
   element <- x$element
 
   if (is.null(element)) {
     element <- x$driver
   }
   
-  if (!inherits(element, c("webElement", "remoteDriver"))) {
-    filter <- x$selectors[[length(x$selectors) - x$to_be_found]]$filter
+  if (!inherits(element, c("webelement", "remotedriver", "mock_element", "mock_client"))) {
+    filter <- x$selectors[[length(x$selectors) - x$to_be_found + 1]]$filter
 
     element <- filter_elements(element, filter)
-
+    
     if (is.null(element)) {
       return(NULL)
     }
@@ -75,7 +84,7 @@ get_element <- function(x) {
     return(element)
   }
 
-  selectors <- tail(x$selectors, x$to_be_found)
+  selectors <- utils::tail(x$selectors, x$to_be_found)
 
   for (selector in selectors) {
     elements <- use_selector(selector, element)
@@ -98,8 +107,8 @@ get_elements <- function(x) {
   if (x$to_be_found == 0) {
     return(element)
   }
-
-  if (!inherits(element, c("webelement", "remotedriver"))) {
+  
+  if (!inherits(element, c("webelement", "remotedriver", "mock_element", "mock_client"))) {
     filter <- x$selectors[[length(x$selectors) - x$to_be_found]]$filter
 
     element <- filter_elements(element, filter)
@@ -109,9 +118,9 @@ get_elements <- function(x) {
     }
   }
 
-  selectors <- tail(x$selectors, x$to_be_found)
+  selectors <- utils::tail(x$selectors, x$to_be_found)
 
-  for (selector in head(selectors, -1)) {
+  for (selector in utils::head(selectors, -1)) {
     elements <- use_selector(selector, element)
     element <- filter_elements(elements, selector$filter)
 
@@ -129,24 +138,33 @@ filter_elements <- function(elements, filter, multiple = FALSE) {
   if (is.null(filter)) {
     stopifnot(multiple) # we need a filter to get a single element
     elements
-  } else if (is.numeric(filter)) {
-    if (length(elements) < filter) {
-      return(NULL)
-    }
+  } else if (length(filter) == 1 && is.numeric(filter[[1]])) {
+    if (length(filter[[1]]) == 1) {
+      if (length(elements) < filter[[1]]) {
+        return(NULL)
+      }
 
-    res <- elements[[filter]]
+      res <- elements[[filter[[1]]]]
 
-    if (multiple) {
-      list(res)
+      if (multiple) {
+        list(res)
+      } else {
+        res
+      }
     } else {
-      res
+      stopifnot(multiple)
+      if (length(elements) < min(filter[[1]])) {
+        return(NULL)
+      }
+
+      elements[filter[[1]]]
     }
-  } else if (is.function(filter)) {
-    res <- null
-    .f <- filter
+  } else if (is.function(filter[[1]])) {
+    res <- NULL
+    .f <- filter[[1]]
     
     if (multiple) {
-      filter(.f, elements)
+      Filter(.f, elements)
     } else {
       nth_found <- 1
       for (element in elements) {
@@ -167,7 +185,7 @@ filter_elements <- function(elements, filter, multiple = FALSE) {
       last <- 1
     } else {
       last <- filter[[length(filter)]]
-      filter[[length(filter)]] <- null
+      filter[[length(filter)]] <- NULL
     }
 
     for (f in filter) {
