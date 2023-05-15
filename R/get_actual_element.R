@@ -26,6 +26,10 @@
 #'   do with them.
 #'
 #' @examples
+#' \dontshow{
+#' # This allows `local_session()` to work when being sourced.
+#' prev_options <- options(withr.hook_source = TRUE)
+#' }
 #' session <- mock_selenider_session()
 #'
 #' elem <- s(".class1") |>
@@ -37,6 +41,10 @@
 #'   get_actual_webelements()
 #'
 #' elems[[1]]$getElementSize()
+#'
+#' \dontshow{
+#' options(prev_options)
+#' }
 #'
 #' @export
 get_actual_webelement <- function(x, timeout = NULL) {

@@ -47,6 +47,10 @@
 #' * [`html-conditions-multiple`] for predicates for multiple HTML elements.
 #' 
 #' @examples
+#' \dontshow{
+#' # This allows `local_session()` to work when being sourced.
+#' prev_options <- options(withr.hook_source = TRUE)
+#' }
 #' session <- mock_selenider_session()
 #'
 #' s(".class1") |>
@@ -103,6 +107,9 @@
 #'   click(elem)
 #' } else {
 #'   reload()
+#' }
+#' \dontshow{
+#' options(prev_options)
 #' }
 #' 
 #' @export

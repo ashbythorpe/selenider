@@ -26,6 +26,10 @@
 #' * [selenider_session()] to begin a session.
 #' 
 #' @examples 
+#' \dontshow{
+#' # This allows `local_session()` to work when being sourced.
+#' prev_options <- options(withr.hook_source = TRUE)
+#' }
 #' session <- mock_selenider_session()
 #' 
 #' session |>
@@ -38,6 +42,9 @@
 #' # The above can be shortened to:
 #' s(".class1") |>
 #'   html_element(".class2")
+#' \dontshow{
+#' options(prev_options)
+#' }
 #' 
 #' @export
 html_element <- function(x, ...) {

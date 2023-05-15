@@ -60,6 +60,10 @@ If more than one method is used to select an element (e.g. \code{css} and
 \code{xpath}), the first element which satisfies all conditions will be found.
 }
 \examples{
+\dontshow{
+# This allows `local_session()` to work when being sourced.
+prev_options <- options(withr.hook_source = TRUE)
+}
 session <- mock_selenider_session()
 
 session |>
@@ -72,6 +76,9 @@ session |>
 # The above can be shortened to:
 s(".class1") |>
   html_element(".class2")
+\dontshow{
+options(prev_options)
+}
 
 }
 \seealso{

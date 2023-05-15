@@ -29,6 +29,10 @@
 #' A boolean value: TRUE or FALSE.
 #' 
 #' @examples 
+#' \dontshow{
+#' # This allows `local_session()` to work when being sourced.
+#' prev_options <- options(withr.hook_source = TRUE)
+#' }
 #' session <- mock_selenider_session()
 #' 
 #' is_present(s(".class1"))
