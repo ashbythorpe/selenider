@@ -18,7 +18,8 @@ Imports:
     utils,
     vctrs,
     withr
-URL: https://github.com/ashbythorpe/selenider
+URL: https://github.com/ashbythorpe/selenider,
+    https://ashbythorpe.github.io/selenider/
 BugReports: https://github.com/ashbythorpe/selenider/issues
 Suggests: 
     testthat (>= 3.0.0)

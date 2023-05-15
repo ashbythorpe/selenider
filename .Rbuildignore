@@ -5,3 +5,6 @@
 ^man/macros/examples[.]Rd$
 ^data-raw$
 ^\.github$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

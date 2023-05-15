@@ -12,6 +12,7 @@ A wrapper for 'RSelenium' that is much easier to use.
 Useful links:
 \itemize{
   \item \url{https://github.com/ashbythorpe/selenider}
+  \item \url{https://ashbythorpe.github.io/selenider/}
   \item Report bugs at \url{https://github.com/ashbythorpe/selenider/issues}
 }
 
