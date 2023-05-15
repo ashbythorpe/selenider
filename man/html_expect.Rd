@@ -55,6 +55,7 @@ example, \code{has_text("a")} will be modified to become: \code{has_text(x, "a")
 }
 
 \examples{
+\dontshow{if (getRversion() >= "4.3.0") (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 session <- mock_selenider_session()
 
 s(".class1") |>
@@ -112,7 +113,7 @@ if (html_wait_until(elem, is_present)) {
 } else {
   reload()
 }
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \itemize{

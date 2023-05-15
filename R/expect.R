@@ -46,7 +46,7 @@
 #' * [`html-conditions`] for predicates for a single HTML element.
 #' * [`html-conditions-multiple`] for predicates for multiple HTML elements.
 #' 
-#' @examples
+#' @examplesIf getRversion() >= "4.3.0"
 #' session <- mock_selenider_session()
 #'
 #' s(".class1") |>
