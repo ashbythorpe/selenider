@@ -34,7 +34,7 @@
 #' * [html_elements()] and [ss()] to get elements to filter.
 #' * [html-conditions] for conditions to filter by.
 #'
-#' @examplesIf getRversion() >= "4.3"
+#' @examples
 #' session <- mock_selenider_session()
 #'
 #' # Gives the same result as s()
@@ -49,9 +49,15 @@
 #'   html_find(is_visible)
 #'
 #' # The above is equivalent to:
-#' ss(".class1") |>
-#'   html_filter(is_visible) |>
-#'   _[[1]] # This only works in R >= 4.3.0
+#' elems <- ss(".class1") |>
+#'   html_filter(is_visible)
+#' 
+#' elems[[1]]
+#'
+#' # In R >= 4.3.0, we can instead do:
+#' # ss(".class1") |>
+#' #   html_filter(is_visible) |>
+#' #   _[[1]]
 #'
 #' @export
 html_filter <- function(x, ...) {

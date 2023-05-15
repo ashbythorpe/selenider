@@ -46,7 +46,7 @@
 #' * [`html-conditions`] for predicates for a single HTML element.
 #' * [`html-conditions-multiple`] for predicates for multiple HTML elements.
 #' 
-#' @examplesIf getRversion() >= "4.3.0"
+#' @examples
 #' session <- mock_selenider_session()
 #'
 #' s(".class1") |>
@@ -81,7 +81,7 @@
 #'   html_expect(
 #'     \(elem) elem |>
 #'       html_text() |>
-#'       grepl("Example .*", x = _)
+#'       grepl(pattern = "Example .*")
 #'   )
 #' 
 #' # If your conditions are not specific to an element, you can omit the `x` argument

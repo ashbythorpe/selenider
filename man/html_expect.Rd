@@ -55,7 +55,6 @@ example, \code{has_text("a")} will be modified to become: \code{has_text(x, "a")
 }
 
 \examples{
-\dontshow{if (getRversion() >= "4.3.0") (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 session <- mock_selenider_session()
 
 s(".class1") |>
@@ -90,7 +89,7 @@ s(".text1") |>
   html_expect(
     \(elem) elem |>
       html_text() |>
-      grepl("Example .*", x = _)
+      grepl(pattern = "Example .*")
   )
 
 # If your conditions are not specific to an element, you can omit the `x` argument
@@ -113,7 +112,7 @@ if (html_wait_until(elem, is_present)) {
 } else {
   reload()
 }
-\dontshow{\}) # examplesIf}
+
 }
 \seealso{
 \itemize{
