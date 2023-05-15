@@ -4,6 +4,8 @@
 # selenider
 
 <!-- badges: start -->
+
+[![R-CMD-check](https://github.com/ashbythorpe/selenider/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ashbythorpe/selenider/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 selenider aims to make web testing and scraping using Selenium much
@@ -158,9 +160,9 @@ s(".myclass") |>
 ```
 
 `html_expect()` accepts both functions (`is_present`) and calls
-(`is_present()`), allowing expectations to be defined for multiple elements.
-Note that the first argument to `html_expect()` can be an element *or* a
-condition.
+(`is_present()`), allowing expectations to be defined for multiple
+elements. Note that the first argument to `html_expect()` can be an
+element *or* a condition.
 
 ``` r
 elem_1 <- s(".class1")
