@@ -162,7 +162,7 @@ get_element_for_action <- function(x, action, conditions, timeout, failure_messa
       stop_not_actionable(c(
         paste0("To ", action, ", it must exist"),
         "i" = "After {timeout} seconds, {.arg x} was not present"
-      ), call = call)
+      ), call = call, exists = TRUE)
     }
 
     for (n in seq_along(conditions)) {

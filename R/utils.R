@@ -74,7 +74,7 @@ retry_with_timeout <- function(timeout, exprs, data_mask = NULL) {
 eval_condition <- function(x, data_mask = NULL) {
   rlang::try_fetch(
     with_timeout(0, rlang::eval_tidy(x, data = data_mask)),
-    error = function(x) x
+    selenider_error_absent_element = function(x) x
   )
 }
 

@@ -55,6 +55,10 @@ parse_condition <- function(x, elem_name) {
   if (rlang::quo_is_call(x)) {
     if (rlang::is_call_simple(x)) {
       name <- rlang::call_name(x)
+
+      if (name == "exists") {
+        stop_condition_exists()
+      }
       
       if (name %in% c("(", "!", "negate", "Negate")) {
         return(rlang::new_quosure(rlang::call2(
@@ -85,6 +89,10 @@ parse_condition <- function(x, elem_name) {
     }
   }
   
+  if (identical(deparse(rlang::quo_get_expr(x)), "exists")) {
+    stop_condition_exists()
+  }
+
   rlang::new_quosure(rlang::call2(
     rlang::quo_get_expr(x),
     rlang::parse_expr(elem_name)

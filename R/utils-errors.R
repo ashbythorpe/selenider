@@ -5,9 +5,14 @@ stop_absent_element <- function(call = rlang::caller_env()) {
 }
 
 stop_absent_parent_element <- function(call = rlang::caller_env()) {
-  cli::cli_abort(c(
-    "{.arg x}'s parent element does not exist in the DOM."
-  ), class = "selenider_error_absent_parent_element", call = call)
+  cli::cli_abort(
+    c("{.arg x}'s parent element does not exist in the DOM."), 
+    class = c(
+      "selenider_error_absent_parent_element",
+      "selenider_error_absent_element"
+    ),
+    call = call
+  )
 }
 
 stop_expect_error <- function(condition, parent, call, env = rlang::caller_env()) {
@@ -27,10 +32,16 @@ stop_bad_selector <- function() {
   ), class = "selenider_error_bad_selector")
 }
 
-stop_not_actionable <- function(x, call, env = rlang::caller_env()) {
+stop_not_actionable <- function(x, call, exists = FALSE, env = rlang::caller_env()) {
+  class <- "selenider_error_not_actionable"
+
+  if (exists) {
+    class <- c(class, "selenider_error_absent_element")
+  }
+
   cli::cli_abort(
     x,
-    class = "selenider_error_not_actionable",
+    class = class,
     call = call,
     .envir = env
   )
@@ -80,5 +91,12 @@ stop_no_conditions <- function(call = rlang::caller_env()) {
     "i" = "Try specifying a condition",
     "x" = "Instead of: {.code html_expect(element)}",
     "v" = "Try: {.code html_expect(element, is_present)}"
-  ), call = call)
+  ), class = "selenider_error_no_conditions", call = call)
+}
+
+stop_condition_exists <- function(call = rlang::caller_env()) {
+  cli::cli_abort(c(
+    "{.code exists} is not a selenider condition.",
+    "i" = "Did you mean {.code is_present} or {.code is_in_dom}?"
+  ), class = "selenider_error_base_exists", call = call)
 }
