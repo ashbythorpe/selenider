@@ -82,10 +82,6 @@ reset_session <- function(old_session, close) {
 #' specified.
 #' 
 #' @examples 
-#' \dontshow{
-#' # This allows `local_session()` to work when being sourced.
-#' prev_options <- options(withr.hook_source = TRUE)
-#' }
 #' # Don't set the local session, since we want to do it manually.
 #' session_1 <- mock_selenider_session(local = FALSE)
 #' session_2 <- mock_selenider_session(local = FALSE)
@@ -117,9 +113,6 @@ reset_session <- function(old_session, close) {
 #' ) # session_2
 #' 
 #' get_session() # session_1
-#' \dontshow{
-#' options(prev_options)
-#' }
 #' 
 #' @export
 get_session <- function(...) {

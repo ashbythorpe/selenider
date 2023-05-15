@@ -55,10 +55,6 @@ example, \code{has_text("a")} will be modified to become: \code{has_text(x, "a")
 }
 
 \examples{
-\dontshow{
-# This allows `local_session()` to work when being sourced.
-prev_options <- options(withr.hook_source = TRUE)
-}
 session <- mock_selenider_session()
 
 s(".class1") |>
@@ -115,9 +111,6 @@ if (html_wait_until(elem, is_present)) {
   click(elem)
 } else {
   reload()
-}
-\dontshow{
-options(prev_options)
 }
 
 }

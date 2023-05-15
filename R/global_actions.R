@@ -32,19 +32,12 @@
 #' The session object, invisibly.
 #'
 #' @examples
-#' \dontshow{
-#' # This allows `local_session()` to work when being sourced.
-#' prev_options <- options(withr.hook_source = TRUE)
-#' }
 #' session <- mock_selenider_session()
 #'
 #' open_url(session = session, "https://www.google.com")
 #'
 #' # Or:
 #' open_url("https://www.google.com")
-#' \dontshow{
-#' options(prev_options)
-#' }
 #'
 #' @name global-actions
 NULL

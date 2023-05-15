@@ -69,8 +69,6 @@ ss(".class1") |>
   _[[1]] # This only works in R >= 4.3.0
 \dontshow{\}) # examplesIf}
 }
-\dontshow{\}) # examplesIf}
-}
 \seealso{
 \itemize{
 \item \code{\link[=html_elements]{html_elements()}} and \code{\link[=ss]{ss()}} to get elements to filter.

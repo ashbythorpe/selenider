@@ -71,10 +71,6 @@ once. Use \code{\link[=html_expect]{html_expect()}} or \code{\link[=html_wait_un
 tests.
 }
 \examples{
-\dontshow{
-# This allows `local_session()` to work when being sourced.
-prev_options <- options(withr.hook_source = TRUE)
-}
 session <- mock_selenider_session()
 
 is_present(s(".class1"))

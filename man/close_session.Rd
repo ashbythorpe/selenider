@@ -32,5 +32,3 @@ close_session()
 withr::deferred_clear()
 
 }
-
-}

@@ -57,10 +57,6 @@ Use \code{\link[withr:defer]{withr::deferred_run()}} to reset any local sessions
 \code{local_session()}.
 }
 \examples{
-\dontshow{
-# This allows `local_session()` to work when being sourced.
-prev_options <- options(withr.hook_source = TRUE)
-}
 # Don't set the local session, since we want to do it manually.
 session_1 <- mock_selenider_session(local = FALSE)
 session_2 <- mock_selenider_session(local = FALSE)
@@ -92,9 +88,6 @@ with_session(
 ) # session_2
 
 get_session() # session_1
-\dontshow{
-options(prev_options)
-}
 
 }
 \seealso{

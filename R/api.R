@@ -46,9 +46,6 @@
 #' s(".class1") |>
 #'   html_element(".innerclass") |>
 #'   html_element("#item1")
-#' \dontshow{
-#' options(prev_options)
-#' }
 #' 
 #' @export
 s <- function(css = NULL,
