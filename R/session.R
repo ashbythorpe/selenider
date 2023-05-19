@@ -3,7 +3,10 @@
 #' Begin a session in selenider, setting the session globally unless otherwise
 #' specified.
 #'
-#' @param browser The name of the browser to run the session in.
+#' @param browser The name of the browser to run the session in; one of
+#'   "chrome", "firefox", "phantomjs" or "internet explorer" (only on
+#'   Windows). IF `NULL`, the function will try to work out which browser
+#'   you have installed.
 #' @param timeout The default time to wait when collecting an element.
 #' @param driver A driver object to use instead of creating one manually.
 #' @param local Whether to set the session as the local session object, 
@@ -75,45 +78,98 @@
 #' }
 #'
 #' @export
-selenider_session <- function(browser = c(
-                                "chrome", "firefox", 
-                                "phantomjs", "internet explorer"
-                              ),
+selenider_session <- function(browser = NULL,
                               timeout = 4,
                               driver = NULL,
                               local = TRUE,
                               quiet = TRUE,
                               .env = rlang::caller_env()) {
-  # Allow e.g. 'Firefox'
-  browser <- rlang::arg_match0(
-    browser[1],
-    c(browser, tools::toTitleCase(browser), "PhantomJS")
-  )
+  if (is.null(browser)) {
+    bv <- find_browser_and_version()
 
-  chromever <- if (browser == "chrome") "latest" else NULL
-  geckover <- if (browser == "firefox") "latest" else NULL
-  iedrver <- if (browser == "internet explorer") "latest" else NULL
+    if (is.null(bv)) {
+      stop_default_browser()
+    }
+
+    browser <- bv$browser
+    version <- bv$version
+  } else {
+    browser <- tolower(browser)
+
+    browser_opts <- c(
+      "chrome", "firefox", 
+      "phantomjs", "internet explorer"
+    )
+
+    # Allow e.g. 'Firefox'
+    browser <- rlang::arg_match0(browser, browser_opts)
+    
+    if (browser != "phantomjs") {
+      version <- get_browser_version(browser)
+    }
+  }
+
+  chromever <- if (browser == "chrome") version else NULL
+  geckover <- if (browser == "firefox") version else NULL
+  iedrver <- if (browser == "internet explorer") version else NULL
   phantomver <- if (browser == "phantomjs") "latest" else NULL
 
   if (is.null(driver)) {
-    if (quiet) {
-      utils::capture.output({
-        driver <- suppressMessages(RSelenium::rsDriver(
+    driver <- rlang::try_fetch(
+      if (quiet) {
+        capture.output({
+          RSelenium::rsDriver(
+            browser = browser,
+            chromever = chromever,
+            geckover = geckover,
+            iedrver = iedrver,
+            phantomver = phantomver,
+            verbose = FALSE
+          )
+        })
+      } else {
+        RSelenium::rsDriver(
           browser = browser,
           chromever = chromever,
           geckover = geckover,
           iedrver = iedrver,
           phantomver = phantomver
-        ))
-      })
-    } else {
-      driver <- RSelenium::rsDriver(
-        browser = browser,
-        chromever = chromever,
-        geckover = geckover,
-        iedrver = iedrver,
-        phantomver = phantomver
-      )
+        )
+      }, error = function(e) {
+        if (grepl("Selenium server  couldn't be started", e$message)) {
+          output <- wdman::selenium(
+            browser = browser,
+            chromever = chromever,
+            geckover = geckover,
+            iedrver = iedrver,
+            phantomver = phantomver,
+            verbose = FALSE,
+            retcommand = TRUE
+          )
+          
+          pattern <- "'[^']+LICENSE.chromedriver'"
+          license <- regmatches(output, regexpr(pattern, output))[1]
+          license <- gsub("'", "", license, fixed = TRUE)
+
+          if (!is.null(license)) {
+            cli::cli_abort(c(
+              "The server of the session could not be started",
+              "i" = "Try deleting the following directory:",
+              " " = "{.file {license}}"
+            ), parent = e)
+          }
+        }
+
+        rlang::zap()
+      }
+    )
+    
+    print(driver$client)
+    if (is.character(driver$client)) {
+      cli::cli_abort(c(
+        "The session browser failed to open",
+        "{driver$client}"
+      ))
     }
   }
   
@@ -168,7 +224,7 @@ new_selenider_session <- function(driver, timeout) {
 #' @export
 close_session <- function(x = NULL) {
   if (is.null(x)) {
-    x <- get_session()
+    x <- get_session(create = FALSE, check_open = FALSE)
   }
   
   rlang::try_fetch(

@@ -18,10 +18,6 @@
 #' 
 #' @details 
 #'
-#' # Custom conditions
-#' Any function which takes a selenider element or element collection as its
-#' first argument, and returns a logical value, can be used as a condition.
-#'
 #' # Conditions
 #' Conditions can be supplied as functions or calls.
 #' 
@@ -34,10 +30,38 @@
 #' `has_text()`) without the use of an intermediate function. The call will
 #' be modified so that `x` is the first argument to the function call. For 
 #' example, `has_text("a")` will be modified to become: `has_text(x, "a")`.
+#'
+#' The and (`&&`), or (`||`) and not (`!`) functions can be used on both types
+#' of conditions. If more than one condition are given in `...`, they are
+#' combined using `&&`.
 #' 
+#' # Custom conditions
+#' Any function which takes a selenider element or element collection as its
+#' first argument, and returns a logical value, can be used as a condition.
+#'
+#' Additionally, these functions provide a few features that make creating
+#' custom conditions easy:
+#'
+#' * Errors with class `selenider_element_absent_element` are handled, and
+#'   the function is prevented from terminating early. This means that if
+#'   an element is not found, the function will retry instead of immediately
+#'   throwing an error.
+#' * `selenider` functions used inside conditions have their timeout, by
+#'   default, set to 0, ignoring the local timeout. This is important, since
+#'   `html_expect()` and `html_wait_until()` implement a retry mechanic
+#'   manually. To override this default, manually specify a timeout.
+#'
+#' These two features allow you to use functions like [html_text()] to access
+#' properties of an element, without needing to worry about the errors that
+#' they throw or the timeouts that they use. See Examples for an example of a
+#' custom condition.
+#'
+#' These custom conditions can also be used with [html_filter()] and
+#' [html_find()].
+#'
 #' @returns 
-#' `html_expect()` returns the element(s) `x` when the test passes, or `NULL` if
-#' an element or collection of elements was not given in `x`.
+#' `html_expect()` returns the element(s) `x`, or `NULL` if an element or
+#' collection of elements was not given in `x`.
 #' 
 #' `html_wait_for()` returns a boolean flag: TRUE if the test passes, FALSE
 #' otherwise.
@@ -76,14 +100,6 @@
 #' s(".text1") |>
 #'   html_expect(\(elem) identical(html_text(elem), "Example text"))
 #'
-#' # This is useful for complex conditions:
-#' s(".text1") |>
-#'   html_expect(
-#'     \(elem) elem |>
-#'       html_text() |>
-#'       grepl(pattern = "Example .*")
-#'   )
-#' 
 #' # If your conditions are not specific to an element, you can omit the `x` argument
 #' elem_1 <- s(".class1")
 #' elem_2 <- s(".class2")
@@ -104,6 +120,24 @@
 #' } else {
 #'   reload()
 #' }
+#'
+#' # Creating a custom condition is easiest with an anonymous function
+#' s(".text1") |>
+#'   html_expect(
+#'     \(elem) elem |>
+#'       html_text() |>
+#'       grepl(pattern = "Example .*")
+#'   )
+#' 
+#' # Or create a function, to reuse the condition multiple times
+#' text_contains <- function(x, pattern) {
+#'   text <- html_text(x)
+#'   
+#'   grepl(pattern, text)
+#' }
+#'
+#' s(".text1") |>
+#'   html_expect(text_contains("Example *"))
 #' 
 #' @export
 html_expect <- function(x, ..., timeout = NULL) {

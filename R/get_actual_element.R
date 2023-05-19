@@ -1,4 +1,4 @@
-#' Get the webElement associated with a selenium element
+#' Get the webElement associated with a selenider element
 #'
 #' @description
 #' Turn a lazy selenium element or element collection into a 
@@ -62,9 +62,9 @@ get_element <- function(x) {
     element <- x$driver
   }
   
-  if (!inherits(element, c("webelement", "remotedriver", "mock_element", "mock_client"))) {
+  if (!inherits(element, c("webElement", "remoteDriver", "mock_element", "mock_client"))) {
     filter <- x$selectors[[length(x$selectors) - x$to_be_found + 1]]$filter
-
+    
     element <- filter_elements(element, filter)
     
     if (is.null(element)) {
@@ -201,4 +201,3 @@ filter_elements <- function(elements, filter, multiple = FALSE) {
     all_items(elements)
   }
 }
-

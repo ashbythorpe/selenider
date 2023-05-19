@@ -54,7 +54,7 @@ s <- function(css = NULL,
               class_name = NULL,
               name = NULL,
               link_text = NULL) {
-  session <- get_session()
+  session <- get_session(.env = rlang::caller_env())
   
   html_element(session, css, xpath, id, class_name, name, link_text)
 }
@@ -68,7 +68,7 @@ ss <- function(css = NULL,
                class_name = NULL,
                name = NULL,
                link_text = NULL) {
-  session <- get_session()
+  session <- get_session(.env = rlang::caller_env())
   
   html_elements(session, css, xpath, id, class_name, name, link_text)
 }

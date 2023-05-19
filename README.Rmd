@@ -116,6 +116,26 @@ s(".myclass") |>
 #> • The child elements with css selector ".multiplechild"
 ```
 
+You can then subset/filter these elements to get a specific element.
+
+``` {r, eval = FALSE}
+elements <- ss("p")
+
+# Get the first element
+elements[[1]]
+
+# Find the first visible element
+elements |>
+  html_find(is_visible)
+
+# Get the 1st-5th elements
+elements[1:5]
+
+# Get all visible elements
+elements |>
+  html_filter(is_visible)
+```
+
 Note that unless we do something with these elements, they will not actually be collected from the website.
 
 (Todo: Element specific actions e.g. click)

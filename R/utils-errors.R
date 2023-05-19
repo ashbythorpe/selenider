@@ -100,3 +100,24 @@ stop_condition_exists <- function(call = rlang::caller_env()) {
     "i" = "Did you mean {.code is_present} or {.code is_in_dom}?"
   ), class = "selenider_error_base_exists", call = call)
 }
+
+stop_default_browser <- function(call = rlang::caller_env()) {
+  cli::cli_abort(c(
+    "Could not find default browser.",
+    "i" = "Try specifying the browser specifically."
+  ), class = "selenider_error_default_browser", call = call)
+}
+
+stop_create_session_browser <- function(call = rlang::caller_env()) {
+  cli::cli_abort(
+    c(
+      "Could not find default browser.",
+      "Try creating the session manually using {.fun selenider::selenider_session} and specifying {.arg browser}"
+    ),
+    class = c(
+      "selenider_error_default_browser"
+      "selenider_error_create_session_browser"
+    ),
+    call = call
+  )
+}

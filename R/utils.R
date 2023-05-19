@@ -182,6 +182,12 @@ escape_squirlies <- function(x) {
   gsub("}", "}}", x, fixed = TRUE)
 }
 
+is_windows <- function() .Platform$OS.type == "windows"
+
+is_mac <- function() Sys.info()[['sysname']] == 'Darwin'
+
+is_linux <- function() Sys.info()[['sysname']] == 'Linux'
+
 run_examples <- function(...) {
   if (utils::packageVersion("withr") < "2.99.0.9000") {
     cli::cli_abort(c(

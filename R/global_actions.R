@@ -47,7 +47,7 @@ NULL
 #' @export
 open_url <- function(url, session = NULL) {
   if (is.null(session)) {
-    session <- get_session()
+    session <- get_session(.env = rlang::caller_env())
   }
   
   session$driver$client$navigate(url)
@@ -60,7 +60,7 @@ open_url <- function(url, session = NULL) {
 #' @export
 back <- function(session = NULL) {
   if (is.null(session)) {
-    session <- get_session()
+    session <- get_session(.env = rlang::caller_env())
   }
   
   session$driver$client$goBack()
@@ -73,7 +73,7 @@ back <- function(session = NULL) {
 #' @export
 forward <- function(session = NULL) {
   if (is.null(session)) {
-    session <- get_session()
+    session <- get_session(.env = rlang::caller_env())
   }
   
   session$driver$client$goForward()
@@ -86,7 +86,7 @@ forward <- function(session = NULL) {
 #' @export
 reload <- function(session = NULL) {
   if (is.null(session)) {
-    session <- get_session()
+    session <- get_session(.env = rlang::caller_env())
   }
   
   session$driver$client$refresh()
@@ -104,7 +104,7 @@ refresh <- reload
 #' @export
 take_screenshot <- function(session, file = NULL) {
   if (is.null(session)) {
-    session <- get_session()
+    session <- get_session(.env = rlang::caller_env())
   }
   
   session$driver$client$screenshot(file)
