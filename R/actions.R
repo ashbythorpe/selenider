@@ -150,9 +150,20 @@ set_input <- function(x, text, timeout = NULL) {
   element$sendKeysToElement(list(text))
 }
 
-get_element_for_action <- function(x, action, conditions, timeout, failure_messages, conditions_text, call = rlang::caller_env()) {
+get_element_for_action <- function(x,
+                                   action,
+                                   conditions,
+                                   timeout,
+                                   failure_messages,
+                                   conditions_text,
+                                   call = rlang::caller_env()) {
   meets_condition <- if (length(conditions) != 0) {
-    rlang::inject(html_wait_until(x, is_present, !!!conditions, timeout = timeout))
+    rlang::inject(html_wait_until(
+      x,
+      is_present,
+      !!!conditions,
+      timeout = timeout
+    ))
   } else {
     html_wait_until(x, is_present, timeout = timeout)
   }

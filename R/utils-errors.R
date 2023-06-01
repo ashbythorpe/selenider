@@ -115,7 +115,7 @@ stop_create_session_browser <- function(call = rlang::caller_env()) {
       "Try creating the session manually using {.fun selenider::selenider_session} and specifying {.arg browser}"
     ),
     class = c(
-      "selenider_error_default_browser"
+      "selenider_error_default_browser",
       "selenider_error_create_session_browser"
     ),
     call = call

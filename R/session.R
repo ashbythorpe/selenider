@@ -117,7 +117,7 @@ selenider_session <- function(browser = NULL,
   if (is.null(driver)) {
     driver <- rlang::try_fetch(
       if (quiet) {
-        capture.output({
+        utils::capture.output({
           RSelenium::rsDriver(
             browser = browser,
             chromever = chromever,

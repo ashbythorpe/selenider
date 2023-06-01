@@ -21,8 +21,8 @@ specified, the timeout used for \code{x} will be used, or the timeout of the
 local session if an element is not given.}
 }
 \value{
-\code{html_expect()} returns the element(s) \code{x} when the test passes, or \code{NULL} if
-an element or collection of elements was not given in \code{x}.
+\code{html_expect()} returns the element(s) \code{x}, or \code{NULL} if an element or
+collection of elements was not given in \code{x}.
 
 \code{html_wait_for()} returns a boolean flag: TRUE if the test passes, FALSE
 otherwise.
@@ -35,11 +35,6 @@ informative error is thrown. Otherwise, the original element is returned.
 \code{html_wait_until()} does the same, but returns a logical value (whether or
 not the test passed), allowing you to handle the failure case explicitly.
 }
-\section{Custom conditions}{
-Any function which takes a selenider element or element collection as its
-first argument, and returns a logical value, can be used as a condition.
-}
-
 \section{Conditions}{
 Conditions can be supplied as functions or calls.
 
@@ -52,6 +47,36 @@ Function calls allow you to use conditions that take multiple arguments (e.g.
 \code{has_text()}) without the use of an intermediate function. The call will
 be modified so that \code{x} is the first argument to the function call. For
 example, \code{has_text("a")} will be modified to become: \code{has_text(x, "a")}.
+
+The and (\code{&&}), or (\code{||}) and not (\code{!}) functions can be used on both types
+of conditions. If more than one condition are given in \code{...}, they are
+combined using \code{&&}.
+}
+
+\section{Custom conditions}{
+Any function which takes a selenider element or element collection as its
+first argument, and returns a logical value, can be used as a condition.
+
+Additionally, these functions provide a few features that make creating
+custom conditions easy:
+\itemize{
+\item Errors with class \code{selenider_element_absent_element} are handled, and
+the function is prevented from terminating early. This means that if
+an element is not found, the function will retry instead of immediately
+throwing an error.
+\item \code{selenider} functions used inside conditions have their timeout, by
+default, set to 0, ignoring the local timeout. This is important, since
+\code{html_expect()} and \code{html_wait_until()} implement a retry mechanic
+manually. To override this default, manually specify a timeout.
+}
+
+These two features allow you to use functions like \code{\link[=html_text]{html_text()}} to access
+properties of an element, without needing to worry about the errors that
+they throw or the timeouts that they use. See Examples for an example of a
+custom condition.
+
+These custom conditions can also be used with \code{\link[=html_filter]{html_filter()}} and
+\code{\link[=html_find]{html_find()}}.
 }
 
 \examples{
@@ -84,14 +109,6 @@ s(".text1") |>
 s(".text1") |>
   html_expect(\(elem) identical(html_text(elem), "Example text"))
 
-# This is useful for complex conditions:
-s(".text1") |>
-  html_expect(
-    \(elem) elem |>
-      html_text() |>
-      grepl(pattern = "Example .*")
-  )
-
 # If your conditions are not specific to an element, you can omit the `x` argument
 elem_1 <- s(".class1")
 elem_2 <- s(".class2")
@@ -112,6 +129,24 @@ if (html_wait_until(elem, is_present)) {
 } else {
   reload()
 }
+
+# Creating a custom condition is easiest with an anonymous function
+s(".text1") |>
+  html_expect(
+    \(elem) elem |>
+      html_text() |>
+      grepl(pattern = "Example .*")
+  )
+
+# Or create a function, to reuse the condition multiple times
+text_contains <- function(x, pattern) {
+  text <- html_text(x)
+  
+  grepl(pattern, text)
+}
+
+s(".text1") |>
+  html_expect(text_contains("Example *"))
 
 }
 \seealso{

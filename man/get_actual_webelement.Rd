@@ -3,7 +3,7 @@
 \name{get_actual_webelement}
 \alias{get_actual_webelement}
 \alias{get_actual_webelements}
-\title{Get the webElement associated with a selenium element}
+\title{Get the webElement associated with a selenider element}
 \usage{
 get_actual_webelement(x, timeout = NULL)
 

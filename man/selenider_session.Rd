@@ -5,7 +5,7 @@
 \title{Start a session}
 \usage{
 selenider_session(
-  browser = c("chrome", "firefox", "phantomjs", "internet explorer"),
+  browser = NULL,
   timeout = 4,
   driver = NULL,
   local = TRUE,
@@ -14,7 +14,10 @@ selenider_session(
 )
 }
 \arguments{
-\item{browser}{The name of the browser to run the session in.}
+\item{browser}{The name of the browser to run the session in; one of
+"chrome", "firefox", "phantomjs" or "internet explorer" (only on
+Windows). IF \code{NULL}, the function will try to work out which browser
+you have installed.}
 
 \item{timeout}{The default time to wait when collecting an element.}
 
