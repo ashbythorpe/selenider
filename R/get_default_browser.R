@@ -260,25 +260,5 @@ selenium_version <- function(x, browser) {
     return("latest")
   }
 
-  # TODO: Use rlang::check_installed() if we move RSelenium to Suggests
-  driver_name <- switch(browser,
-    chrome = "chromedriver",
-    firefox = "geckodriver",
-    "internet explorer" = "iedriverserver"
-  )
-
-  versions <- unlist(binman::list_versions(driver_name))
-
-  if (version %in% versions) {
-    version 
-  } else {
-    cli::cli_warn(c(
-      "Version of {tools::toTitleCase(browser)} is not supported.",
-      "i" = "Supported versions: {versions}.",
-      "x" = "Actual version: {version}",
-      "i" = "Using version \"latest\" instead."
-    ))
-
-    "latest"
-  }
+  version
 }

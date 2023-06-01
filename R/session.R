@@ -117,8 +117,9 @@ selenider_session <- function(browser = NULL,
   if (is.null(driver)) {
     driver <- rlang::try_fetch(
       if (quiet) {
+        res <- NULL
         utils::capture.output({
-          RSelenium::rsDriver(
+          res <- RSelenium::rsDriver(
             browser = browser,
             chromever = chromever,
             geckover = geckover,
@@ -127,6 +128,7 @@ selenider_session <- function(browser = NULL,
             verbose = FALSE
           )
         })
+        res
       } else {
         RSelenium::rsDriver(
           browser = browser,
@@ -153,18 +155,19 @@ selenider_session <- function(browser = NULL,
 
           if (!is.null(license)) {
             cli::cli_abort(c(
-              "The server of the session could not be started",
+              "The server of the session could not be started.",
               "i" = "Try deleting the following directory:",
               " " = "{.file {license}}"
             ), parent = e)
           }
         }
 
-        rlang::zap()
+        cli::cli_abort(c(
+          "The server of the session could not be started."
+        ), parent = e)
       }
     )
     
-    print(driver$client)
     if (is.character(driver$client)) {
       cli::cli_abort(c(
         "The session browser failed to open",
