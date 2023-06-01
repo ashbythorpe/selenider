@@ -87,17 +87,12 @@ local session if an element is not given.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p><code>html_expect()</code> returns the element(s) <code>x</code> when the test passes, or <code>NULL</code> if
-an element or collection of elements was not given in <code>x</code>.</p>
+<p><code>html_expect()</code> returns the element(s) <code>x</code>, or <code>NULL</code> if an element or
+collection of elements was not given in <code>x</code>.</p>
 
 
 <p><code>html_wait_for()</code> returns a boolean flag: TRUE if the test passes, FALSE
 otherwise.</p>
-    </div>
-    <div class="section level2">
-    <h2 id="custom-conditions">Custom conditions<a class="anchor" aria-label="anchor" href="#custom-conditions"></a></h2>
-    <p>Any function which takes a selenider element or element collection as its
-first argument, and returns a logical value, can be used as a condition.</p>
     </div>
     <div class="section level2">
     <h2 id="conditions">Conditions<a class="anchor" aria-label="anchor" href="#conditions"></a></h2>
@@ -110,6 +105,29 @@ custom conditions. <code>x</code> will be used as the first argument of this fun
 <code><a href="html-conditions.html">has_text()</a></code>) without the use of an intermediate function. The call will
 be modified so that <code>x</code> is the first argument to the function call. For
 example, <code>has_text("a")</code> will be modified to become: <code>has_text(x, "a")</code>.</p>
+<p>The and (<code>&amp;&amp;</code>), or (<code>||</code>) and not (<code>!</code>) functions can be used on both types
+of conditions. If more than one condition are given in <code>...</code>, they are
+combined using <code>&amp;&amp;</code>.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="custom-conditions">Custom conditions<a class="anchor" aria-label="anchor" href="#custom-conditions"></a></h2>
+    <p>Any function which takes a selenider element or element collection as its
+first argument, and returns a logical value, can be used as a condition.</p>
+<p>Additionally, these functions provide a few features that make creating
+custom conditions easy:</p><ul><li><p>Errors with class <code>selenider_element_absent_element</code> are handled, and
+the function is prevented from terminating early. This means that if
+an element is not found, the function will retry instead of immediately
+throwing an error.</p></li>
+<li><p><code>selenider</code> functions used inside conditions have their timeout, by
+default, set to 0, ignoring the local timeout. This is important, since
+<code>html_expect()</code> and <code>html_wait_until()</code> implement a retry mechanic
+manually. To override this default, manually specify a timeout.</p></li>
+</ul><p>These two features allow you to use functions like <code><a href="html-properties.html">html_text()</a></code> to access
+properties of an element, without needing to worry about the errors that
+they throw or the timeouts that they use. See Examples for an example of a
+custom condition.</p>
+<p>These custom conditions can also be used with <code><a href="html_filter.html">html_filter()</a></code> and
+<code><a href="html_filter.html">html_find()</a></code>.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -164,16 +182,6 @@ example, <code>has_text("a")</code> will be modified to become: <code>has_text(x
 <span class="r-out co"><span class="r-pr">#&gt;</span> A selenider element selecting:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The element with css <span style="color: #0000BB;">".text1"</span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># This is useful for complex conditions:</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".text1"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">html_expect</span><span class="op">(</span></span></span>
-<span class="r-in"><span>    \<span class="op">(</span><span class="va">elem</span><span class="op">)</span> <span class="va">elem</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>      <span class="fu"><a href="html-properties.html">html_text</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"Example .*"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> A selenider element selecting:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The element with css <span style="color: #0000BB;">".text1"</span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># If your conditions are not specific to an element, you can omit the `x` argument</span></span></span>
 <span class="r-in"><span><span class="va">elem_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class1"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">elem_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class2"</span><span class="op">)</span></span></span>
@@ -195,6 +203,28 @@ example, <code>has_text("a")</code> will be modified to become: <code>has_text(x
 <span class="r-in"><span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="global-actions.html">reload</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Creating a custom condition is easiest with an anonymous function</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".text1"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">html_expect</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    \<span class="op">(</span><span class="va">elem</span><span class="op">)</span> <span class="va">elem</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>      <span class="fu"><a href="html-properties.html">html_text</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"Example .*"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> A selenider element selecting:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The element with css <span style="color: #0000BB;">".text1"</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Or create a function, to reuse the condition multiple times</span></span></span>
+<span class="r-in"><span><span class="va">text_contains</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">pattern</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">text</span> <span class="op">&lt;-</span> <span class="fu"><a href="html-properties.html">html_text</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  </span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="va">pattern</span>, <span class="va">text</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".text1"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">html_expect</span><span class="op">(</span><span class="fu">text_contains</span><span class="op">(</span><span class="st">"Example *"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> A selenider element selecting:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The element with css <span style="color: #0000BB;">".text1"</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
