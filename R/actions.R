@@ -1,24 +1,13 @@
-#' Perform actions on a selenider element.
-#'
-#' @description
-#' These functions define various actions to be performed on a selenider
-#' element.
-#'
-#' `click()` clicks the element.
-#'
-#' `send_keys()` sends a set of keys to an input element.
-#'
-#' `clear_element()` clears the value of an input element.
-#'
-#' `set_input()` sets the value of an input to a specified string.
-#'
+#' Click an element
+#' 
+#' Clicks on an HTML element, either by simulating a mouse click or by triggering 
+#' the element's "click" event.
+#' 
 #' @param x A `selenider_element` object.
 #' @param js Whether to cick the element using JavaScript.
-#' @param ... The keys to send to the element.
-#' @param text The text to set the input to.
 #' @param timeout How long to wait for the element to exist.
-#'
-#' @returns `x`, invisibly.
+#' 
+#' @returns `x`, invisibly
 #'
 #' @examples
 #' session <- mock_selenider_session()
@@ -26,10 +15,7 @@
 #' s(".class1") |>
 #'   click()
 #'
-#' @name html-actions
-NULL
-
-#' @rdname html-actions
+#' @family actions
 #'
 #' @export
 click <- function(x, js = FALSE, timeout = NULL) {
@@ -84,49 +70,28 @@ click <- function(x, js = FALSE, timeout = NULL) {
   invisible(x)
 }
 
-#' @rdname html-actions
+#' Set the value of an input
 #'
-#' @export
-send_keys <- function(x, ..., timeout = NULL) {
-  keys <- rlang::list2(...)
-
-  timeout <- get_timeout(timeout, x$timeout)
-
-  element <- get_element_for_action(
-    x,
-    action = "send keys to {.arg x}",
-    conditions = list(is_enabled),
-    timeout = timeout,
-    failure_messages = c("was not enabled"),
-    conditions_text = c("be enabled")
-  )
-
-  element$sendKeysToElement(keys)
-
-  invisible(x)
-}
-
-#' @rdname html-actions
+#' `set_input()` sets the value of an HTML input element to a string.
 #'
-#' @export
-clear_input <- function(x, timeout = NULL) {
-  timeout <- get_timeout(timeout, x$timeout)
-
-  element <- get_element_for_action(
-    x,
-    action = "send keys to {.arg x}",
-    conditions = list(is_enabled),
-    timeout = timeout,
-    failure_messages = c("was not enabled"),
-    conditions_text = c("be enabled")
-  )
-
-  element$clearElement()
-
-  invisible(x)
-}
-
-#' @rdname html-actions
+#' `send_keys()` sends a set of inputs to an element.
+#'
+#' `clear_input()` sets the value of an HTML element to `""`, removing any
+#' existing content.
+#'
+#' @param x A `selenider_element` object.
+#' @param text A string to set the input 
+#' @param timeout How long to wait for the element to exist.
+#' 
+#' @returns `x`, invisibly
+#'
+#' @examples
+#' session <- mock_selenider_session()
+#'
+#' s(".class1") |>
+#'   set_input("my text")
+#'
+#' @family actions
 #'
 #' @export
 set_input <- function(x, text, timeout = NULL) {
@@ -148,6 +113,50 @@ set_input <- function(x, text, timeout = NULL) {
 
   element$clearElement()
   element$sendKeysToElement(list(text))
+}
+
+#' @rdname set_input
+#'
+#' @param ... A set of inputs to send to `x`.
+#' 
+#' @export
+send_keys <- function(x, ..., timeout = NULL) {
+  keys <- rlang::list2(...)
+
+  timeout <- get_timeout(timeout, x$timeout)
+
+  element <- get_element_for_action(
+    x,
+    action = "send keys to {.arg x}",
+    conditions = list(is_enabled),
+    timeout = timeout,
+    failure_messages = c("was not enabled"),
+    conditions_text = c("be enabled")
+  )
+
+  element$sendKeysToElement(keys)
+
+  invisible(x)
+}
+
+#' @rdname set_input
+#'
+#' @export
+clear_input <- function(x, timeout = NULL) {
+  timeout <- get_timeout(timeout, x$timeout)
+
+  element <- get_element_for_action(
+    x,
+    action = "send keys to {.arg x}",
+    conditions = list(is_enabled),
+    timeout = timeout,
+    failure_messages = c("was not enabled"),
+    conditions_text = c("be enabled")
+  )
+
+  element$clearElement()
+
+  invisible(x)
 }
 
 get_element_for_action <- function(x,

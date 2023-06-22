@@ -137,6 +137,7 @@ ordinal <- function(x) {
   res[x == 2] <- "second"
   res[x == 3] <- "third"
   res[res == ""] <- ordinal_numbers(x[res == ""])
+  res
 }
 
 ordinal_numbers <- function(x) {

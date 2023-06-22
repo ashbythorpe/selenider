@@ -1,28 +1,20 @@
-#' Get the properties of selenider elements
+#' Get tag name of an element
 #'
-#' @description
-#' Get various properties of an HTML element.
-#'
-#' `html_name()` gets the tag name of an element.
-#'
-#' `html_text()` gets the inner text of an element.
+#' Get the tag name (e.g. `"p"` for a `<p>` tag) of a `selenider_element` object.
 #'
 #' @param x A `selenider_element` object.
 #' @param timeout The time to wait for `x` to exist.
 #'
 #' @returns
-#' A string.
+#' A string
 #'
 #' @examples
 #' session <- mock_selenider_session()
 #'
 #' s(".class1") |>
 #'   html_name()
-#'
-#' @name html-properties
-NULL
-
-#' @rdname html-properties
+#' 
+#' @family properties
 #'
 #' @export
 html_name <- function(x, timeout = NULL) {
@@ -37,7 +29,21 @@ html_name <- function(x, timeout = NULL) {
   element$getElementTagName()
 }
 
-#' @rdname html-properties
+#' Get element text
+#'
+#' Get the inner text of a `selenider_element` object.
+#'
+#' @inheritParams html_name
+#'
+#' @returns A string
+#'
+#' @family properties
+#'
+#' @examples
+#' session <- mock_selenider_session()
+#'
+#' s(".class1") |>
+#'   html_text()
 #'
 #' @export
 html_text <- function(x, timeout = NULL) {
@@ -50,6 +56,45 @@ html_text <- function(x, timeout = NULL) {
   )
 
   element$getElementText()
+}
+
+#' Get element attribute
+#'
+#' Get an attribute of a `selenider_element` object.
+#'
+#' @param x A `selenider_element` object.
+#' @param name The name of the attribute to get; a string.
+#' @param default The default value to use if the attribute does not exist in 
+#'   the element.
+#' @param timeout The time to wait for `x` to exist.
+#'
+#' @returns A character vector.
+#'
+#' @family properties
+#'
+#' @examples
+#' session <- mock_selenider_session()
+#'
+#' s(".class1") |>
+#'   html_attr("href")
+#'
+#' @export
+html_attr <- function(x, name, default = NA_character_, timeout = NULL) {
+  timeout <- get_timeout(timeout, x$timeout)
+
+  element <- get_element_for_property(
+    x,
+    action = paste0("get the \"", name, "\" attribute of {.arg x}"),
+    timeout = timeout,
+  )
+
+  result <- element$getElementAttribute(name)
+
+  if (is.null(result)) {
+    default
+  } else {
+    result
+  }
 }
 
 get_element_for_property <- function(x, action, timeout, call = rlang::caller_env()) {
