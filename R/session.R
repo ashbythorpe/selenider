@@ -109,71 +109,11 @@ selenider_session <- function(browser = NULL,
     }
   }
 
-  chromever <- if (browser == "chrome") version else NULL
-  geckover <- if (browser == "firefox") version else NULL
-  iedrver <- if (browser == "internet explorer") version else NULL
-  phantomver <- if (browser == "phantomjs") "latest" else NULL
-
   if (is.null(driver)) {
-    driver <- rlang::try_fetch(
-      if (quiet) {
-        res <- NULL
-        utils::capture.output({
-          res <- RSelenium::rsDriver(
-            browser = browser,
-            chromever = chromever,
-            geckover = geckover,
-            iedrver = iedrver,
-            phantomver = phantomver,
-            verbose = FALSE
-          )
-        })
-        res
-      } else {
-        RSelenium::rsDriver(
-          browser = browser,
-          chromever = chromever,
-          geckover = geckover,
-          iedrver = iedrver,
-          phantomver = phantomver
-        )
-      }, error = function(e) {
-        if (grepl("Selenium server  couldn't be started", e$message)) {
-          output <- wdman::selenium(
-            browser = browser,
-            chromever = chromever,
-            geckover = geckover,
-            iedrver = iedrver,
-            phantomver = phantomver,
-            verbose = FALSE,
-            retcommand = TRUE
-          )
-          
-          pattern <- "'[^']+LICENSE.chromedriver'"
-          license <- regmatches(output, regexpr(pattern, output))[1]
-          license <- gsub("'", "", license, fixed = TRUE)
-
-          if (!is.null(license)) {
-            cli::cli_abort(c(
-              "The server of the session could not be started.",
-              "i" = "Try deleting the following directory:",
-              " " = "{.file {license}}"
-            ), parent = e)
-          }
-        }
-
-        cli::cli_abort(c(
-          "The server of the session could not be started."
-        ), parent = e)
-      }
+    driver <- list(
+      server = create_server(browser, version, quiet),
+      client = create_client(browser)
     )
-    
-    if (is.character(driver$client)) {
-      cli::cli_abort(c(
-        "The session browser failed to open",
-        "{driver$client}"
-      ))
-    }
   }
   
   session <- new_selenider_session(driver, timeout)
@@ -183,6 +123,92 @@ selenider_session <- function(browser = NULL,
   }
   
   session
+}
+
+create_server <- function(browser, version, quiet) {
+  chromever <- if (browser == "chrome") version else NULL
+  geckover <- if (browser == "firefox") version else NULL
+  iedrver <- if (browser == "internet explorer") version else NULL
+  phantomver <- if (browser == "phantomjs") "latest" else NULL
+
+  rlang::try_fetch(
+    wdman::selenium(
+      browser = browser,
+      chromever = chromever,
+      geckover = geckover,
+      iedrver = iedrver,
+      phantomver = phantomver,
+      verbose = !quiet
+    ),
+    error = function(e) {
+      if (grepl("Selenium server  couldn't be started", e$message)) {
+        output <- wdman::selenium(
+          browser = browser,
+          chromever = chromever,
+          geckover = geckover,
+          iedrver = iedrver,
+          phantomver = phantomver,
+          verbose = FALSE,
+          retcommand = TRUE
+        )
+        
+        pattern <- "'[^']+LICENSE.chromedriver'"
+        license <- regmatches(output, regexpr(pattern, output))[1]
+        license <- gsub("'", "", license, fixed = TRUE)
+
+        if (!is.null(license)) {
+          cli::cli_abort(c(
+            "The server of the session could not be started.",
+            "i" = "Try deleting the following directory:",
+            " " = "{.file {license}}"
+          ), parent = e)
+        }
+      }
+
+      cli::cli_abort(c(
+        "The server of the session could not be started."
+      ), parent = e)
+    }
+  )
+}
+
+create_client <- function(browser) {
+  driver <- RSelenium::remoteDriver(browserName = browser, port = 4567L)
+  
+  count <- 1L
+  res <- NULL
+  repeat {
+    res <- rlang::try_fetch(
+      driver$getStatus(),
+      error = function(e) {
+        print(e)
+        if (count >= 5) {
+          cli::cli_abort(c(
+            "We could not determine whether the server was successfully started after {count} attempts."
+          ), parent = e)
+        }
+        NULL
+      }
+    )
+
+    if (is.null(res)) {
+      count <- count + 1L
+      Sys.sleep(1)
+    } else {
+       break
+    }
+  }
+
+  rlang::try_fetch(
+    driver$open(silent = TRUE),
+    error = function(e) {
+      cli::cli_abort(c(
+        "The client of the session ({tools::toTitleCase(browser)}) failed to start."
+      ), parent = e)
+    }
+  )
+
+  driver
 }
 
 new_selenider_session <- function(driver, timeout) {
@@ -227,7 +253,7 @@ new_selenider_session <- function(driver, timeout) {
 #' @export
 close_session <- function(x = NULL) {
   if (is.null(x)) {
-    x <- get_session(create = FALSE, check_open = FALSE)
+    x <- get_session(set = FALSE)
   }
   
   rlang::try_fetch(
