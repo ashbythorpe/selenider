@@ -15,7 +15,7 @@ set_in_env <- function(...) {
 }
 
 set_session <- function(session) {
-  old_session <- get_session()
+  old_session <- get_session(create = FALSE)
   
   set_in_env(session = session)
   
@@ -25,7 +25,7 @@ set_session <- function(session) {
 reset_session <- function(old_session, close) {
   if (close) {
     rlang::try_fetch(
-      close_session(get_session()),
+      close_session(get_session(create = FALSE)),
       error = function(e) {
         set_in_env(session = old_session)
         rlang::zap() # Throw error but reset session object first
@@ -42,8 +42,8 @@ reset_session <- function(old_session, close) {
 #' Change the locally defined [selenider_session()] object, allowing it to be
 #' used in functions like [s()] without explicitly providing it.
 #' 
-#' `get_session()` retrieves the current local session, or `NULL` if none have
-#' been created.
+#' `get_session()` retrieves the current local session. If none have been
+#' created, a session is created automatically.
 #' 
 #' `local_session()` sets the local session. The function uses [withr::defer()]
 #' to make sure the session is closed and the local session is set to its
@@ -62,15 +62,18 @@ reset_session <- function(old_session, close) {
 #'   this to `FALSE` if you want to use the session even if it is no longer the
 #'   local session. If you want to close the session manually, use 
 #'   [close_session()].
-#' @param ... Not used
+#' @param create If a session is not found, should we create a new one? If this is
+#'   `FALSE` and a session is not found, `NULL` is returned.
+#' @param .env If `get_session()` creates a session, the environment where this
+#'   session is being used.
 #' 
 #' @details 
 #' Use [withr::deferred_run()] to reset any local sessions set using
 #' `local_session()`.
 #' 
 #' @returns 
-#' `get_session()` returns the local [selenider_session()] object, or `NULL` if
-#' none have been set.
+#' `get_session()` returns the local [selenider_session()] object (or a newly
+#' created session).
 #' 
 #' `local_session()` returns the *previous* local session object (or `NULL`). 
 #' This is the same as running `get_session()` before this function.
@@ -115,8 +118,14 @@ reset_session <- function(old_session, close) {
 #' get_session() # session_1
 #' 
 #' @export
-get_session <- function(...) {
-  get_from_env("session")
+get_session <- function(create = TRUE, .env = rlang::caller_env()) {
+  session <- get_from_env("session")
+  
+  if (is.null(session) && create) {
+    selenider_session(.env = .env)
+  } else {
+    session
+  }
 }
 
 #' @rdname get_session
@@ -125,7 +134,7 @@ get_session <- function(...) {
 local_session <- function(session,
                           .local_envir = rlang::caller_env(),
                           close = TRUE) {
-  old <- get_session(session = session)
+  old <- get_session(create = FALSE)
   withr::defer(reset_session(old, close), envir = .local_envir)
   set_session(session = session)
   invisible(old)
@@ -135,7 +144,7 @@ local_session <- function(session,
 #' 
 #' @export
 with_session <- function(session, code, close = TRUE) {
-  old <- get_session(session = session)
+  old <- get_session(create = FALSE)
   on.exit(reset_session(old))
   set_session(session = session)
   
