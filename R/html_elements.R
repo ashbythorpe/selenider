@@ -116,6 +116,10 @@ update_elements <- function(x) {
 }
 
 format_elements <- function(selector, first = FALSE) {
+  if (inherits(selector, "selenider_flattened_selector")) {
+    return(format_flattened_selector(selector, multiple = TRUE))
+  }
+
   child <- if (first) "" else " child"
   
   filter <- selector$filter
@@ -158,7 +162,7 @@ format_elements <- function(selector, first = FALSE) {
       if (length(filter) == 2) {
         body <- as.character(rlang::fn_body(filter[[1]]))[-1]
         if (length(body) == 1 && !grepl("\n", body, fixed = TRUE)) {
-          return(format_ordinal(last, child, text, paste0(" matching the following condition:\n ", body)))
+          return(format_ordinal(last, child, text, paste0(" matching the following condition:\n {.code ", escape_squirlies(body), "}")))
         }
       }
 
@@ -172,9 +176,9 @@ format_elements <- function(selector, first = FALSE) {
 format_ordinal <- function(x, child, text, condition = "") {
   if (all(x) >= 0) {
     element <- if (length(x) == 1) " element" else " elements"
-    paste0("The ", subscript_ordinal(x), child, element, " with ", text)
+    paste0("The ", subscript_ordinal(x), child, element, " with ", text, condition)
   } else {
-    paste0("All", child, " elements with ", text, " except the ", subscript_ordinal(x))
+    paste0("All", child, " elements with ", text, " except the ", subscript_ordinal(x), condition)
   }
 }
 

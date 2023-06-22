@@ -79,7 +79,7 @@ get_element <- function(x) {
   selectors <- utils::tail(x$selectors, x$to_be_found)
 
   for (selector in selectors) {
-    elements <- use_selector(selector, element)
+    elements <- use_selector(selector, element, driver = x$driver)
     element <- filter_elements(elements, selector$filter)
     if (is.null(element)) {
       return(NULL)
@@ -113,7 +113,7 @@ get_elements <- function(x) {
   selectors <- utils::tail(x$selectors, x$to_be_found)
 
   for (selector in utils::head(selectors, -1)) {
-    elements <- use_selector(selector, element)
+    elements <- use_selector(selector, element, driver = x$driver)
     element <- filter_elements(elements, selector$filter)
 
     if (is.null(element)) {
@@ -122,10 +122,10 @@ get_elements <- function(x) {
   }
   
   selector <- selectors[[length(selectors)]]
-  elements <- use_selector(selector, element, multiple = TRUE)
+  elements <- use_selector(selector, element, driver = x$driver, multiple = TRUE)
   filter_elements(elements, selector$filter, multiple = TRUE)
 }
-    
+
 filter_elements <- function(elements, filter, multiple = FALSE) {
   if (is.null(filter)) {
     stopifnot(multiple) # we need a filter to get a single element

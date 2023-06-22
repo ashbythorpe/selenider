@@ -26,7 +26,12 @@ new_selector <- function(css,
   args
 }
 
-use_selector <- function(selector, element, multiple = FALSE) {
+use_selector <- function(selector, element, driver, multiple = FALSE) {
+  if (inherits(selector, "selenider_flattened_selector")) {
+    elements <- lapply(selector$selectors, function(selector) get_elements(list(selectors = selector, driver = driver)))
+    return(unlist(elements, recursive = FALSE))
+  }
+
   filter <- selector$filter
 
   selector$filter <- NULL
