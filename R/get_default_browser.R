@@ -11,7 +11,8 @@ find_browser_and_version <- function() {
         processx::run(path, "--product-version", timeout = 10)$stdout,
         error = function(e) NULL
       )
-
+      
+      # The version of chromedriver depends on the chrome version
       return(list(
         browser = "chrome",
         version = selenium_version(version, "chrome")
@@ -21,19 +22,9 @@ find_browser_and_version <- function() {
     path <- Sys.which("firefox")
 
     if (nchar(path) != 0) {
-      version <- tryCatch(
-        processx::run(path, "--version")$stdout,
-        error = function(e) {
-          tryCatch(
-            processx::run(path, "-v")$stdout,
-            error = function(e) NULL
-          )
-        }
-      )
-
       return(list(
         browser = "firefox",
-        version = selenium_version(version, "firefox")
+        version = "latest"
       ))
     }
   } else if (is_windows()) {
@@ -62,14 +53,9 @@ find_browser_and_version <- function() {
     })
 
     if (!is.null(path)) {
-      version <- tryCatch(
-        processx::run(path, "--version", timeout = 10)$stdout,
-        error = function(e) NULL
-      )
-
       return(list(
         browser = "firefox",
-        version = selenium_version(version, "firefox")
+        version = "latest"
       ))
     }
 
@@ -81,12 +67,9 @@ find_browser_and_version <- function() {
     })
     
     if (!is.null(path)) {
-      batch_file <- system.file("scripts/get_ie_version.bat", package = "selenider")
-      version <- tryCatch(shell.exec(batch_file), error = function(e) NULL)
-      
       return(list(
         browser = "internet explorer",
-        version = selenium_version(version, "internet explorer")
+        version = "latest"
       ))
     }
   } else if (is_linux()) {
@@ -113,19 +96,9 @@ find_browser_and_version <- function() {
     path <- Sys.which("firefox")
 
     if (nchar(path) != 0) {
-      version <- tryCatch(
-        processx::run(path, "--version")$stdout,
-        error = function(e) {
-          tryCatch(
-            processx::run(path, "-v")$stdout,
-            error = function(e) NULL
-          )
-        }
-      )
-
       return(list(
         browser = "firefox",
-        version = selenium_version(version, "firefox")
+        version = "latest"
       ))
     }
   }
@@ -134,8 +107,8 @@ find_browser_and_version <- function() {
 }
 
 get_browser_version <- function(x) {
-  if (is_mac()) {
-    if (x == "chrome") {
+  if (x == "chrome") {
+    if (is_mac()) {
       path <- "/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
 
       if (file.exists(path)) {
@@ -146,25 +119,7 @@ get_browser_version <- function(x) {
 
         return(selenium_version(version, "chrome"))
       }
-    } else if (x == "firefox") {
-      path <- Sys.which("firefox")
-
-      if (nchar(path) != 0) {
-        version <- tryCatch(
-          processx::run(path, "--version")$stdout,
-          error = function(e) {
-            tryCatch(
-              processx::run(path, "-v")$stdout,
-              error = function(e) NULL
-            )
-          }
-        )
-
-        return(selenium_version(version, "firefox"))
-      }
-    }
-  } else if (is_windows()) {
-    if (x == "chrome") {
+    } else if (is_windows()) {
       path <- tryCatch({
         path <- utils::readRegistry("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\chrome.exe\\")
         path[["(Default)"]]
@@ -178,39 +133,7 @@ get_browser_version <- function(x) {
         
         return(selenium_version(version, "chrome"))
       }
-    } else if (x == "firefox") {
-      path <- tryCatch({
-        path <- utils::readRegistry("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\firefox.exe\\")
-        path[["(Default)"]]
-      }, error = function(e) {
-        NULL
-      })
-
-      if (!is.null(path)) {
-        version <- tryCatch(
-          processx::run(path, "--version", timeout = 10)$stdout,
-          error = function(e) NULL
-        )
-
-        return(selenium_version(version, "firefox"))
-      }
-    } else {
-      path <- tryCatch({
-        path <- utils::readRegistry("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\iexplore.exe\\")
-        path[["(Default)"]]
-      }, error = function(e) {
-        NULL
-      })
-      
-      if (!is.null(path)) {
-        batch_file <- system.file("scripts/get_ie_version.bat", package = "selenider")
-        version <- tryCatch(shell.exec(batch_file), error = function(e) NULL)
-        
-        return(selenium_version(version, "internet explorer"))
-      }
-    }
-  } else if (is_linux()) {
-    if (x == "chrome") {
+    } else if (is_linux()) {
       path <- Sys.which("google-chrome")
       if (nchar(path) == 0) {
         path <- Sys.which("chromium-browser")
@@ -227,22 +150,6 @@ get_browser_version <- function(x) {
 
         return(selenium_version(version, "chrome"))
       }
-    } else if (x == "firefox") {
-      path <- Sys.which("firefox")
-
-      if (nchar(path) != 0) {
-        version <- tryCatch(
-          processx::run(path, "--version")$stdout,
-          error = function(e) {
-            tryCatch(
-              processx::run(path, "-v")$stdout,
-              error = function(e) NULL
-            )
-          }
-        )
-
-        return(selenium_version(version, "firefox"))
-      }
     }
   }
   
@@ -253,7 +160,8 @@ selenium_version <- function(x, browser) {
   if (is.null(x)) {
     return("latest")
   }
-
+  
+  # Very simple version matching for now: will only match numeric versions
   version <- regmatches(x, regexpr("[0-9]+(?:\\.[0-9]+)+", x))[[1]][1]
 
   if (length(version) == 0) {
