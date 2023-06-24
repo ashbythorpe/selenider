@@ -85,7 +85,7 @@ html_attr <- function(x, name, default = NA_character_, timeout = NULL) {
   element <- get_element_for_property(
     x,
     action = paste0("get the \"", name, "\" attribute of {.arg x}"),
-    timeout = timeout,
+    timeout = timeout
   )
 
   result <- element$getElementAttribute(name)
@@ -95,6 +95,25 @@ html_attr <- function(x, name, default = NA_character_, timeout = NULL) {
   } else {
     result
   }
+}
+
+html_attrs <- function(x, timeout = NULL) {
+  timeout <- get_timeout(timeout, x$timeout)
+
+  element <- get_element_for_property(
+    x,
+    action = "get the attributes of {.arg x}",
+    timeout = timeout
+  )
+
+  x$driver$executeScript("
+    let element = arguments[0];
+    let attributes = {};
+    for (let i = 0; i < element.attributes.length; i++) {
+      attributes[element.attributes[i].name] = element.attributes[i].value;
+    }
+    return attributes;
+  ", list(element))
 }
 
 get_element_for_property <- function(x, action, timeout, call = rlang::caller_env()) {

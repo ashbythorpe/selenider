@@ -6,7 +6,8 @@ condition_dependencies <- list(
     "is not in the DOM", "is missing", "is absent",
     "is visible", "is displayed", "is not visible", "is not displayed",
     "is hidden", "is invisible", "is enabled", "is not enabled", "is disabled"
-  )
+  ),
+  text = c("has_text", "has_exact_text")
 )
 
 usethis::use_data(condition_dependencies, internal = TRUE, overwrite = TRUE)

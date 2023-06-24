@@ -158,7 +158,7 @@ html_expect <- function(x, ..., timeout = NULL) {
     call <- calls[[n]]
     expr <- exprs[[n]]
 
-    diagnose_condition(x_res, n, call, expr, val, timeout)
+    diagnose_condition(x_res, n, call, expr, val, timeout, original_env = rlang::quo_get_env(x))
   }
 
   if (inherits(x_res, c("selenider_element", "selenider_elements"))) {
@@ -168,7 +168,7 @@ html_expect <- function(x, ..., timeout = NULL) {
   }
 }
 
-diagnose_condition <- function(x, n, call, original_expr, result, timeout, call_name = NULL, negated_call_name = NULL, call_env = rlang::caller_env()) {
+diagnose_condition <- function(x, n, call, original_expr, result, timeout, call_name = NULL, negated_call_name = NULL, call_env = rlang::caller_env(), original_env) {
   if (is.null(call_name)) {
     call_name <- if (rlang::is_call_simple(call)) rlang::call_name(call) else ""
   }
@@ -248,6 +248,27 @@ diagnose_condition <- function(x, n, call, original_expr, result, timeout, call_
       condition,
       "i" = "{.arg x} {negated_call_name}."
     )
+  } else if (call_name %in% condition_dependencies$text) {
+    if (is.null(negated_call_name)) {
+      negated_call_name <- negate_call_name(call_name)
+    }
+
+    target_text <- rlang::eval_tidy(rlang::call_args(call)[[1]], env = original_env)
+
+    if (is.null(x)) {
+      condition <- c(
+        condition,
+        "i" = "{.arg x} {negated_call_name} {.val {target_text}}."
+      )
+    } else {
+      actual_text <- tryCatch(html_text(x, timeout = 0), error = function(e) NULL)
+
+      condition <- c(
+        condition,
+        "i" = "{.arg x} {negated_call_name} {.val {target_text}}.",
+        "i" = "Actual text: {.val {actual_text}}."
+      )
+    }
   } else if (!is.null(x)) {
     if (is_present(x)) {
       condition <- c(
@@ -278,6 +299,8 @@ negate_call_name <- function(x) {
     "is invisible" = "is visible",
     "is enabled" = "is not enabled",
     "is disabled" = "is enabled",
+    "has text" = "does not have text",
+    "has exact text" = "does not have exact text",
     NULL
   )
 }

@@ -159,3 +159,14 @@ has_exact_text <- function(x, text) {
     stop_absent_element()
   }
 }
+
+has_attr <- function(x, name, value) {
+  element <- get_element(x)
+  
+  if (!is.null(element)) {
+    actual <- element$getElementAttribute(name)
+    res <- vctrs::vec_cast_common()
+  } else {
+    stop_absent_element()
+  }
+}
