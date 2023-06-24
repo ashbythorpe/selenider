@@ -130,6 +130,58 @@ find_elements <- function(x, using, value) {
   }
 }
 
+selenium_intersect <- function(x) {
+  if (length(x) == 0) {
+    return(NULL)
+  } else if (length(x) == 1) {
+    return(x[[1]])
+  }
+
+  result <- list()
+
+  shortest_index <- which.min(lengths(x))
+  
+  repeat {
+    if (any(lengths(x) == 0)) {
+      break
+    }
+
+    current <- x[[shortest_index]][[1]]
+    x[[shortest_index]] <- x[[shortest_index]][-1]
+
+    intersection <- TRUE
+    for (i in seq_along(x)) {
+      if (i == shortest_index) {
+        next
+      }
+
+      current_list <- x[[i]]
+      
+      found <- FALSE
+      for (j in seq_along(current_list)) {
+        to_compare <- current_list[[j]]
+
+        if (tryCatch(current$compareElement(to_compare), error = function(e) FALSE)) {
+          x[[i]] <- x[[i]][-j]
+          found <- TRUE
+          break
+        }
+      }
+
+      if (!found) {
+        intersection <- FALSE
+        break
+      }
+    }
+
+    if (intersection) {
+      result <- append(result, list(current))
+    }
+  }
+
+  result
+}
+
 # Adapted from scales::ordinal()
 ordinal <- function(x) {
   res <- character(length(x))

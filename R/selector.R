@@ -61,7 +61,7 @@ use_selector <- function(selector, element, driver, multiple = FALSE) {
       find_elements(element, using = using, value = value)
     }, list(names(selector), selector), NULL)
 
-    Reduce(intersect, element_list)
+    selenium_intersect(element_list)
   }
 }
 
