@@ -42,6 +42,8 @@ s(".class1") |>
 }
 \seealso{
 Other actions: 
-\code{\link{click}()}
+\code{\link{click}()},
+\code{\link{hover}()},
+\code{\link{scroll_to}()}
 }
 \concept{actions}

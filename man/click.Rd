@@ -2,14 +2,20 @@
 % Please edit documentation in R/actions.R
 \name{click}
 \alias{click}
+\alias{double_click}
+\alias{right_click}
 \title{Click an element}
 \usage{
 click(x, js = FALSE, timeout = NULL)
+
+double_click(x, js = FALSE, timeout = NULL)
+
+right_click(x, js = FALSE, timeout = NULL)
 }
 \arguments{
 \item{x}{A \code{selenider_element} object.}
 
-\item{js}{Whether to cick the element using JavaScript.}
+\item{js}{Whether to click the element using JavaScript.}
 
 \item{timeout}{How long to wait for the element to exist.}
 }
@@ -19,6 +25,10 @@ click(x, js = FALSE, timeout = NULL)
 \description{
 Clicks on an HTML element, either by simulating a mouse click or by triggering
 the element's "click" event.
+
+\code{click()} left clicks on the element, \code{double_click()} left clicks on the
+element two times in a short period of time, while \code{right_click()} right
+clicks on an element, opening its context menu.
 }
 \examples{
 session <- mock_selenider_session()
@@ -29,6 +39,8 @@ s(".class1") |>
 }
 \seealso{
 Other actions: 
+\code{\link{hover}()},
+\code{\link{scroll_to}()},
 \code{\link{set_input}()}
 }
 \concept{actions}

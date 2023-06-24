@@ -1,10 +1,15 @@
 #' Click an element
 #' 
+#' @description
 #' Clicks on an HTML element, either by simulating a mouse click or by triggering 
 #' the element's "click" event.
 #' 
+#' `click()` left clicks on the element, `double_click()` left clicks on the
+#' element two times in a short period of time, while `right_click()` right
+#' clicks on an element, opening its context menu.
+#' 
 #' @param x A `selenider_element` object.
-#' @param js Whether to cick the element using JavaScript.
+#' @param js Whether to click the element using JavaScript.
 #' @param timeout How long to wait for the element to exist.
 #' 
 #' @returns `x`, invisibly
@@ -31,7 +36,7 @@ click <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("be enabled")
     )
 
-    x$driver$execute_script("arguments[0].click();", list(element))
+    x$driver$executeScript("arguments[0].click();", list(element))
   } else {
     element <- get_element_for_action(
       x,
@@ -65,6 +70,163 @@ click <- function(x, js = FALSE, timeout = NULL) {
     }
 
     element$clickElement()
+  }
+
+  invisible(x)
+}
+
+#' @rdname click
+#' 
+#' @export
+double_click <- function(x, js = FALSE, timeout = NULL) {
+  timeout <- get_timeout(timeout, x$timeout)
+  
+  if (js) {
+    element <- get_element_for_action(
+      x,
+      action = "double click {.arg x} using javascript",
+      conditions = list(is_enabled),
+      timeout = timeout,
+      failure_messages = c("was not enabled"),
+      conditions_text = c("be enabled")
+    )
+    
+    x$driver$executeScript("
+      element = arguments[0];
+      element.click(); 
+      element.click();
+      let clickevent = document.createevent('mouseevents');
+      clickevent.initevent('dblclick', true, true);
+      element.dispatchevent(clickevent);
+    ", list(element))
+  } else {
+    element <- get_element_for_action(
+      x,
+      action = "double click {.arg x}",
+      conditions = list(is_visible, is_enabled),
+      timeout = timeout,
+      failure_messages = c("was not visible", "was not enabled"),
+      conditions_text = c("be visible and enabled")
+    )
+    
+    size <- element$getElementSize()
+
+    x$driver$mouseMoveToLocation(
+      x = round(size$width / 3),
+      y = round(size$height / 3),
+      webelement = element
+    )
+    
+    x$driver$doubleclick()
+  }
+  
+  invisible(x)
+}
+
+#' @rdname click
+#' 
+#' @export
+right_click <- function(x, js = FALSE, timeout = NULL) {
+  timeout <- get_timeout(timeout, x$timeout)
+  
+  if (js) {
+    element <- get_element_for_action(
+      x,
+      action = "right click {.arg x} using javascript",
+      conditions = list(is_enabled),
+      timeout = timeout,
+      failure_messages = c("was not enabled"),
+      conditions_text = c("be enabled")
+    )
+    
+    x$driver$executeScript("
+      element = arguments[0];
+      element.click(); 
+      let clickevent = document.createevent('mouseevents');
+      clickevent.initevent('contextmenu', true, true);
+      element.dispatchevent(clickevent);
+    ", list(element))
+  } else {
+    element <- get_element_for_action(
+      x,
+      action = "right click {.arg x}",
+      conditions = list(is_visible, is_enabled),
+      timeout = timeout,
+      failure_messages = c("was not visible", "was not enabled"),
+      conditions_text = c("be visible and enabled")
+    )
+    
+    size <- element$getElementSize()
+
+    x$driver$mouseMoveToLocation(
+      x = round(size$width / 3),
+      y = round(size$height / 3),
+      webelement = element
+    )
+    
+    x$driver$click(2)
+  }
+  
+  invisible(x)
+}
+
+#' Hover over an element
+#' 
+#' Move the mouse over to an HTML element and hover over it, without actually
+#' clicking or interacting with it.
+#'
+#' @param x A `selenider_element` object.
+#' @param js Whether to hover the element using JavaScript.
+#' @param timeout How long to wait for the element to exist.
+#'
+#' @returns `x`, invisibly
+#'
+#' @family actions
+#'
+#' @examples
+#' session <- mock_selenider_session()
+#'
+#' s(".class1") |>
+#'   hover()
+#' 
+#' @export
+hover <- function(x, js = FALSE, timeout = NULL) {
+  timeout <- get_timeout(timeout, x$timeout)
+
+  if (js) {
+    element <- get_element_for_action(
+      x,
+      action = "hover over {.arg x} using javascript",
+      conditions = list(is_enabled),
+      timeout = timeout,
+      failure_messages = c("was not enabled"),
+      conditions_text = c("be enabled")
+    )
+
+    x$driver$executeScript("
+      element = arguments[0];
+      element.moveToElement(element);
+      let clickevent = document.createevent('mouseevents');
+      clickevent.initevent('mouseover', true, true);
+      element.dispatchevent(clickevent);
+    ", list(element))
+  } else {
+    element <- get_element_for_action(
+      x,
+      action = "hover over {.arg x}",
+      conditions = list(is_visible, is_enabled),
+      timeout = timeout,
+      failure_messages = c("was not visible", "was not enabled"),
+      conditions_text = c("be visible and enabled")
+    )
+
+    size <- element$getElementSize()
+
+    x$driver$mouseMoveToLocation(
+      x = round(size$width / 3),
+      y = round(size$height / 3),
+      webelement = element
+    )
   }
 
   invisible(x)
@@ -166,18 +328,14 @@ get_element_for_action <- function(x,
                                    failure_messages,
                                    conditions_text,
                                    call = rlang::caller_env()) {
-  meets_condition <- if (length(conditions) != 0) {
+  meets_condition <- 
     rlang::inject(html_wait_until(
       x,
       is_present,
       !!!conditions,
       timeout = timeout
     ))
-  } else {
-    html_wait_until(x, is_present, timeout = timeout)
-  }
-
-  if (!meets_condition) {
+  if (length(conditions) != 0 && !meets_condition) {
     if (length(conditions) == 0 || !is_present(x)) {
       stop_not_actionable(c(
         paste0("To ", action, ", it must exist"),
@@ -207,4 +365,60 @@ get_element_for_action <- function(x,
   }
 
   element
+}
+
+#' Scroll to an element
+#'
+#' Scrolls to an HTML element.
+#'
+#' @param x A `selenider_element` object.
+#' @param js Whether to scroll to the element using JavaScript.
+#' @param timeout How long to wait for the element to exist.
+#'
+#' @returns `x`, invisibly
+#'
+#' @family actions
+#'
+#' @examples
+#' session <- mock_selenider_session()
+#'
+#' s(".class1") |>
+#'   scroll_to()
+#'
+#' @export
+scroll_to <- function(x, js = FALSE, timeout = NULL) {
+  timeout <- get_timeout(timeout, x$timeout)
+
+  if (js) {
+    element <- get_element_for_action(
+      x,
+      action = "scroll to {.arg x} using JavaScript",
+      conditions = list(is_enabled),
+      timeout = timeout,
+      failure_messages = c("was not enabled"),
+      conditions_text = c("be enabled")
+    )
+
+    x$driver$executeScript("
+      element = arguments[0];
+      element.scrollIntoView();
+    ", list(element))
+  } else {
+    element <- get_element_for_action(
+      x,
+      action = "scroll to {.arg x}",
+      conditions = list(is_visible, is_enabled),
+      timeout = timeout,
+      failure_messages = c("was not visible", "was not enabled"),
+      conditions_text = c("be visible and enabled")
+    )
+
+    size <- element$getElementSize()
+
+    x$driver$mouseMoveToLocation(
+      webelement = element
+    )
+  }
+
+  invisible(x)
 }
