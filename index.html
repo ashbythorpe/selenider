@@ -95,9 +95,9 @@
 <span><span class="co">#&gt; • Currently opened: Nothing</span></span>
 <span><span class="co">#&gt; • Timeout: 4s</span></span></code></pre></div>
 <p>This session object is stored globally, so we don’t need to pass it into any subsequent functions.</p>
-<p>To navigate to a website, use <code><a href="reference/global-actions.html">open_url()</a></code></p>
+<p>To navigate to a website, use <code><a href="reference/open_url.html">open_url()</a></code></p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/global-actions.html">open_url</a></span><span class="op">(</span><span class="st">"https://www.google.com/"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/open_url.html">open_url</a></span><span class="op">(</span><span class="st">"https://www.google.com/"</span><span class="op">)</span></span></code></pre></div>
 <p>Use <code><a href="reference/html_element.html">html_element()</a></code> to select an element. By default, CSS selectors are used, but other options are available.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/html_element.html">html_element</a></span><span class="op">(</span><span class="va">session</span>, <span class="st">".myclass"</span><span class="op">)</span></span>
@@ -168,14 +168,14 @@
 <span><span class="co"># Check that an element is visible or enabled</span></span>
 <span><span class="fu"><a href="reference/s.html">s</a></span><span class="op">(</span><span class="st">".myclass"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/html_expect.html">html_expect</a></span><span class="op">(</span><span class="va">is_visible</span> <span class="op">||</span> <span class="va">is_enabled</span><span class="op">)</span></span></code></pre></div>
-<p><code><a href="reference/html_expect.html">html_expect()</a></code> accepts both functions (<code>is_present</code>) and calls (<code><a href="reference/html-conditions.html">is_present()</a></code>), allowing expectations to be defined for multiple elements. Note that the first argument to <code><a href="reference/html_expect.html">html_expect()</a></code> can be an element <em>or</em> a condition.</p>
+<p><code><a href="reference/html_expect.html">html_expect()</a></code> accepts both functions (<code>is_present</code>) and calls (<code><a href="reference/is_present.html">is_present()</a></code>), allowing expectations to be defined for multiple elements. Note that the first argument to <code><a href="reference/html_expect.html">html_expect()</a></code> can be an element <em>or</em> a condition.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">elem_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/s.html">s</a></span><span class="op">(</span><span class="st">".class1"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">elem_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/s.html">s</a></span><span class="op">(</span><span class="st">".class2"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Test that either the first or second element exists</span></span>
-<span><span class="fu"><a href="reference/html_expect.html">html_expect</a></span><span class="op">(</span><span class="fu"><a href="reference/html-conditions.html">is_present</a></span><span class="op">(</span><span class="va">elem_1</span><span class="op">)</span> <span class="op">||</span> <span class="fu"><a href="reference/html-conditions.html">is_present</a></span><span class="op">(</span><span class="va">elem_2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="reference/html_expect.html">html_expect</a></span><span class="op">(</span><span class="fu"><a href="reference/is_present.html">is_present</a></span><span class="op">(</span><span class="va">elem_1</span><span class="op">)</span> <span class="op">||</span> <span class="fu"><a href="reference/is_present.html">is_present</a></span><span class="op">(</span><span class="va">elem_2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>(Todo: Link to documentation of conditions)</p>
 </div>
 </div>

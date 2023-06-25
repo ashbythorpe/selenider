@@ -58,6 +58,16 @@
         <dd>Format a difftime</dd>
       </dl><dl><dt>
           
+          <code><a href="back.html">back()</a></code> <code><a href="back.html">forward()</a></code> 
+        </dt>
+        <dd>Move back or forward in browsing history</dd>
+      </dl><dl><dt>
+          
+          <code><a href="click.html">click()</a></code> <code><a href="click.html">double_click()</a></code> <code><a href="click.html">right_click()</a></code> 
+        </dt>
+        <dd>Click an element</dd>
+      </dl><dl><dt>
+          
           <code><a href="close_session.html">close_session()</a></code> 
         </dt>
         <dd>Close a session object</dd>
@@ -73,29 +83,24 @@
         <dd>Get or set the local selenider session</dd>
       </dl><dl><dt>
           
-          <code><a href="global-actions.html">open_url()</a></code> <code><a href="global-actions.html">back()</a></code> <code><a href="global-actions.html">forward()</a></code> <code><a href="global-actions.html">reload()</a></code> <code><a href="global-actions.html">refresh()</a></code> <code><a href="global-actions.html">take_screenshot()</a></code> 
+          <code><a href="has_length.html">has_length()</a></code> <code><a href="has_length.html">has_size()</a></code> <code><a href="has_length.html">has_at_least()</a></code> 
         </dt>
-        <dd>Actions on the current webpage</dd>
+        <dd>Does a collection have a certain number of elements?</dd>
       </dl><dl><dt>
           
-          <code><a href="html-actions.html">click()</a></code> <code><a href="html-actions.html">send_keys()</a></code> <code><a href="html-actions.html">clear_input()</a></code> <code><a href="html-actions.html">set_input()</a></code> 
+          <code><a href="has_text.html">has_text()</a></code> <code><a href="has_text.html">has_exact_text()</a></code> 
         </dt>
-        <dd>Perform actions on a selenider element.</dd>
+        <dd>Does an element contain a pattern?</dd>
       </dl><dl><dt>
           
-          <code><a href="html-conditions-multiple.html">has_length()</a></code> <code><a href="html-conditions-multiple.html">has_size()</a></code> 
+          <code><a href="hover.html">hover()</a></code> 
         </dt>
-        <dd>Conditions for selenider element collections</dd>
+        <dd>Hover over an element</dd>
       </dl><dl><dt>
           
-          <code><a href="html-conditions.html">is_present()</a></code> <code><a href="html-conditions.html">is_in_dom()</a></code> <code><a href="html-conditions.html">is_missing()</a></code> <code><a href="html-conditions.html">is_absent()</a></code> <code><a href="html-conditions.html">is_visible()</a></code> <code><a href="html-conditions.html">is_displayed()</a></code> <code><a href="html-conditions.html">is_hidden()</a></code> <code><a href="html-conditions.html">is_invisible()</a></code> <code><a href="html-conditions.html">is_enabled()</a></code> <code><a href="html-conditions.html">is_disabled()</a></code> <code><a href="html-conditions.html">has_text()</a></code> <code><a href="html-conditions.html">has_exact_text()</a></code> 
+          <code><a href="html_attr.html">html_attr()</a></code> 
         </dt>
-        <dd>Conditions for selenider elements</dd>
-      </dl><dl><dt>
-          
-          <code><a href="html-properties.html">html_name()</a></code> <code><a href="html-properties.html">html_text()</a></code> 
-        </dt>
-        <dd>Get the properties of selenider elements</dd>
+        <dd>Get element attribute</dd>
       </dl><dl><dt>
           
           <code><a href="html_element.html">html_element()</a></code> 
@@ -118,9 +123,59 @@
         <dd>Extract a subset of HTML elements</dd>
       </dl><dl><dt>
           
+          <code><a href="html_flatten.html">html_flatten()</a></code> <code><a href="html_flatten.html">c(<i>&lt;selenider_element&gt;</i>)</a></code> <code><a href="html_flatten.html">c(<i>&lt;selenider_elements&gt;</i>)</a></code> 
+        </dt>
+        <dd>Combine multiple HTML elements</dd>
+      </dl><dl><dt>
+          
+          <code><a href="html_name.html">html_name()</a></code> 
+        </dt>
+        <dd>Get tag name of an element</dd>
+      </dl><dl><dt>
+          
+          <code><a href="html_size.html">html_size()</a></code> <code><a href="html_size.html">length(<i>&lt;html_elements&gt;</i>)</a></code> 
+        </dt>
+        <dd>Get the number of elements in a collection</dd>
+      </dl><dl><dt>
+          
+          <code><a href="html_text.html">html_text()</a></code> 
+        </dt>
+        <dd>Get element text</dd>
+      </dl><dl><dt>
+          
+          <code><a href="is_enabled.html">is_enabled()</a></code> <code><a href="is_enabled.html">is_disabled()</a></code> 
+        </dt>
+        <dd>Is an element enabled?</dd>
+      </dl><dl><dt>
+          
+          <code><a href="is_present.html">is_present()</a></code> <code><a href="is_present.html">is_in_dom()</a></code> <code><a href="is_present.html">is_missing()</a></code> <code><a href="is_present.html">is_absent()</a></code> 
+        </dt>
+        <dd>Does an element exist?</dd>
+      </dl><dl><dt>
+          
+          <code><a href="is_visible.html">is_visible()</a></code> <code><a href="is_visible.html">is_displayed()</a></code> <code><a href="is_visible.html">is_hidden()</a></code> <code><a href="is_visible.html">is_invisible()</a></code> 
+        </dt>
+        <dd>Is an element visible?</dd>
+      </dl><dl><dt>
+          
+          <code><a href="keys.html">keys</a></code> 
+        </dt>
+        <dd>Special keys</dd>
+      </dl><dl><dt>
+          
           <code><a href="mock_selenider_session.html">mock_selenider_session()</a></code> 
         </dt>
         <dd>Create a mock session</dd>
+      </dl><dl><dt>
+          
+          <code><a href="open_url.html">open_url()</a></code> 
+        </dt>
+        <dd>Open a URL</dd>
+      </dl><dl><dt>
+          
+          <code><a href="reload.html">reload()</a></code> <code><a href="reload.html">refresh()</a></code> 
+        </dt>
+        <dd>Reload the current page</dd>
       </dl><dl><dt>
           
           <code><a href="s.html">s()</a></code> <code><a href="s.html">ss()</a></code> 
@@ -128,9 +183,24 @@
         <dd>Quickly select HTML elements</dd>
       </dl><dl><dt>
           
+          <code><a href="scroll_to.html">scroll_to()</a></code> 
+        </dt>
+        <dd>Scroll to an element</dd>
+      </dl><dl><dt>
+          
           <code><a href="selenider_session.html">selenider_session()</a></code> 
         </dt>
         <dd>Start a session</dd>
+      </dl><dl><dt>
+          
+          <code><a href="set_input.html">set_input()</a></code> <code><a href="set_input.html">send_keys()</a></code> <code><a href="set_input.html">clear_input()</a></code> 
+        </dt>
+        <dd>Set the value of an input</dd>
+      </dl><dl><dt>
+          
+          <code><a href="take_screenshot.html">take_screenshot()</a></code> 
+        </dt>
+        <dd>Take a screenshot of the current page</dd>
       </dl></div>
   </main></div>
 

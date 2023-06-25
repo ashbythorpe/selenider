@@ -98,11 +98,11 @@ otherwise.</p>
     <h2 id="conditions">Conditions<a class="anchor" aria-label="anchor" href="#conditions"></a></h2>
     <p>Conditions can be supplied as functions or calls.</p>
 <p>Functions allow you to use unary conditions without formatting them as a
-call (e.g. <code>is_present</code> rather than <code><a href="html-conditions.html">is_present()</a></code>). It also allows you to make
+call (e.g. <code>is_present</code> rather than <code><a href="is_present.html">is_present()</a></code>). It also allows you to make
 use of R's <a href="https://rdrr.io/r/base/function.html" class="external-link">anonymous function syntax</a> to quickly create
 custom conditions. <code>x</code> will be used as the first argument of this function.</p>
 <p>Function calls allow you to use conditions that take multiple arguments (e.g.
-<code><a href="html-conditions.html">has_text()</a></code>) without the use of an intermediate function. The call will
+<code><a href="has_text.html">has_text()</a></code>) without the use of an intermediate function. The call will
 be modified so that <code>x</code> is the first argument to the function call. For
 example, <code>has_text("a")</code> will be modified to become: <code>has_text(x, "a")</code>.</p>
 <p>The and (<code>&amp;&amp;</code>), or (<code>||</code>) and not (<code>!</code>) functions can be used on both types
@@ -122,7 +122,7 @@ throwing an error.</p></li>
 default, set to 0, ignoring the local timeout. This is important, since
 <code>html_expect()</code> and <code>html_wait_until()</code> implement a retry mechanic
 manually. To override this default, manually specify a timeout.</p></li>
-</ul><p>These two features allow you to use functions like <code><a href="html-properties.html">html_text()</a></code> to access
+</ul><p>These two features allow you to use functions like <code><a href="html_text.html">html_text()</a></code> to access
 properties of an element, without needing to worry about the errors that
 they throw or the timeouts that they use. See Examples for an example of a
 custom condition.</p>
@@ -132,8 +132,8 @@ custom condition.</p>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index">
-<ul><li><p><code><a href="html-conditions.html">html-conditions</a></code> for predicates for a single HTML element.</p></li>
-<li><p><code><a href="html-conditions-multiple.html">html-conditions-multiple</a></code> for predicates for multiple HTML elements.</p></li>
+<ul><li><p><code><a href="is_present.html">is_present()</a></code> and other conditions for predicates for a single HTML element.</p></li>
+<li><p><code><a href="has_length.html">has_length()</a></code> and other conditions for predicates for multiple HTML elements.</p></li>
 </ul></div>
     </div>
 
@@ -144,17 +144,17 @@ custom condition.</p>
 <span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class1"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_expect</span><span class="op">(</span><span class="va">is_present</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A selenider element selecting:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The element with css <span style="color: #0000BB;">".class1"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The first element with css <span style="color: #0000BB;">".class1"</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class1"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_expect</span><span class="op">(</span><span class="va">is_visible</span>, <span class="va">is_enabled</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A selenider element selecting:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The element with css <span style="color: #0000BB;">".class1"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The first element with css <span style="color: #0000BB;">".class1"</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class1"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_expect</span><span class="op">(</span><span class="va">is_visible</span> <span class="op">||</span> <span class="va">is_enabled</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A selenider element selecting:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The element with css <span style="color: #0000BB;">".class1"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The first element with css <span style="color: #0000BB;">".class1"</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class2"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_expect</span><span class="op">(</span><span class="op">!</span><span class="va">is_present</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
@@ -168,55 +168,55 @@ custom condition.</p>
 <span class="r-in"><span><span class="co"># html_expect() returns the element, so can be used in chains</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".button1"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_expect</span><span class="op">(</span><span class="va">is_visible</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="html-actions.html">click</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="click.html">click</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># Note that click() will do this automatically</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".text1"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">html_expect</span><span class="op">(</span><span class="fu"><a href="html-conditions.html">has_exact_text</a></span><span class="op">(</span><span class="st">"Example text"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">html_expect</span><span class="op">(</span><span class="fu"><a href="has_text.html">has_exact_text</a></span><span class="op">(</span><span class="st">"Example text"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A selenider element selecting:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The element with css <span style="color: #0000BB;">".text1"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The first element with css <span style="color: #0000BB;">".text1"</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Or use an anonymous function</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".text1"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">html_expect</span><span class="op">(</span>\<span class="op">(</span><span class="va">elem</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="html-properties.html">html_text</a></span><span class="op">(</span><span class="va">elem</span><span class="op">)</span>, <span class="st">"Example text"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">html_expect</span><span class="op">(</span>\<span class="op">(</span><span class="va">elem</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="html_text.html">html_text</a></span><span class="op">(</span><span class="va">elem</span><span class="op">)</span>, <span class="st">"Example text"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A selenider element selecting:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The element with css <span style="color: #0000BB;">".text1"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The first element with css <span style="color: #0000BB;">".text1"</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># If your conditions are not specific to an element, you can omit the `x` argument</span></span></span>
 <span class="r-in"><span><span class="va">elem_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class1"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">elem_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class2"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">html_expect</span><span class="op">(</span><span class="fu"><a href="html-conditions.html">is_present</a></span><span class="op">(</span><span class="va">elem_1</span><span class="op">)</span> <span class="op">||</span> <span class="fu"><a href="html-conditions.html">is_present</a></span><span class="op">(</span><span class="va">elem_2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">html_expect</span><span class="op">(</span><span class="fu"><a href="is_present.html">is_present</a></span><span class="op">(</span><span class="va">elem_1</span><span class="op">)</span> <span class="op">||</span> <span class="fu"><a href="is_present.html">is_present</a></span><span class="op">(</span><span class="va">elem_2</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># We can now use the conditions on their own to figure out which element exists</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="html-conditions.html">is_present</a></span><span class="op">(</span><span class="va">elem_1</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="html-actions.html">click</a></span><span class="op">(</span><span class="va">elem_1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="is_present.html">is_present</a></span><span class="op">(</span><span class="va">elem_1</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="click.html">click</a></span><span class="op">(</span><span class="va">elem_1</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="html-actions.html">click</a></span><span class="op">(</span><span class="va">elem_2</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="click.html">click</a></span><span class="op">(</span><span class="va">elem_2</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Use html_wait_for() to handle failures manually</span></span></span>
 <span class="r-in"><span><span class="va">elem</span> <span class="op">&lt;-</span> <span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class2"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu">html_wait_until</span><span class="op">(</span><span class="va">elem</span>, <span class="va">is_present</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="html-actions.html">click</a></span><span class="op">(</span><span class="va">elem</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="click.html">click</a></span><span class="op">(</span><span class="va">elem</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="global-actions.html">reload</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="reload.html">reload</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Creating a custom condition is easiest with an anonymous function</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".text1"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_expect</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    \<span class="op">(</span><span class="va">elem</span><span class="op">)</span> <span class="va">elem</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>      <span class="fu"><a href="html-properties.html">html_text</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>      <span class="fu"><a href="html_text.html">html_text</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"Example .*"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A selenider element selecting:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The element with css <span style="color: #0000BB;">".text1"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The first element with css <span style="color: #0000BB;">".text1"</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Or create a function, to reuse the condition multiple times</span></span></span>
 <span class="r-in"><span><span class="va">text_contains</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">pattern</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="va">text</span> <span class="op">&lt;-</span> <span class="fu"><a href="html-properties.html">html_text</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">text</span> <span class="op">&lt;-</span> <span class="fu"><a href="html_text.html">html_text</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  </span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="va">pattern</span>, <span class="va">text</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
@@ -224,7 +224,7 @@ custom condition.</p>
 <span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".text1"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_expect</span><span class="op">(</span><span class="fu">text_contains</span><span class="op">(</span><span class="st">"Example *"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A selenider element selecting:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The element with css <span style="color: #0000BB;">".text1"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The first element with css <span style="color: #0000BB;">".text1"</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
