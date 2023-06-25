@@ -108,7 +108,7 @@ find_element <- function(x, using, value) {
         }
       }
     )
-  } else if (inherits(x, c("webDriver", "mock_client"))) {
+  } else if (inherits(x, c("remoteDriver", "mock_client"))) {
     rlang::try_fetch(
       suppressMessages(x$findElement(using = using, value = value)),
       error = function(cnd) {
@@ -241,14 +241,3 @@ is_mac <- function() Sys.info()[['sysname']] == 'Darwin'
 
 is_linux <- function() Sys.info()[['sysname']] == 'Linux'
 
-run_examples <- function(...) {
-  if (utils::packageVersion("withr") < "2.99.0.9000") {
-    cli::cli_abort(c(
-      "You must have the development version of withr installed to run examples."
-    ))
-  }
-
-  withr::with_options(list(withr.hook_source = TRUE), {
-    rlang::ns_env("devtools")$run_examples(...)
-  })
-}

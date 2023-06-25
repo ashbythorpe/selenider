@@ -97,7 +97,8 @@ mock_element <- function() {
     setElementAttribute = function(...) NULL,
     submitElement = function(...) NULL,
     getElementLocation = function(...) NULL,
-    getElementSize = function(...) NULL
+    getElementSize = function(...) NULL,
+    clearElement = function(...) NULL
   )
 
   class(res) <- "mock_element"

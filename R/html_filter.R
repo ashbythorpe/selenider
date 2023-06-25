@@ -5,16 +5,16 @@
 #' a selenider element collection.
 #'
 #' `html_filter()` and `html_find()` allow you to use conditions to filter HTML
-#' elements (see [html-conditions]). `html_find()` returns the *first* element that
-#' satisfies one or more conditions, while `html_filter()` returns every element that
-#' satisfies these conditions.
+#' elements (see [is_present()] and other conditions). `html_find()` returns the *first*
+#' element that satisfies one or more conditions, while `html_filter()` returns every
+#' element that satisfies these conditions.
 #'
 #' `[` and `[[` with a numeric subscript can be used on an element collection to filter
 #' the elements by position. `[` returns a single element at a specified location, while
 #' `[[` returns a collection of the elements at more than one position.
 #'
 #' @param x A `selenider_elements` object.
-#' @param ... <[`dynamic-dots`][rlang::dyn-dots] Conditions (functions or function
+#' @param ... <[`dynamic-dots`][rlang::dyn-dots]> Conditions (functions or function
 #'   calls) that are used to filter the elements of `x`.
 #' @param i A number (or for `[`, a vector of one or more numbers) used to select
 #'   elements by position.
@@ -32,7 +32,7 @@
 #'
 #' @seealso
 #' * [html_elements()] and [ss()] to get elements to filter.
-#' * [html-conditions] for conditions to filter by.
+#' * [is_present()] and other conditions for conditions to filter by.
 #'
 #' @examples
 #' session <- mock_selenider_session()

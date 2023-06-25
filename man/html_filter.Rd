@@ -18,7 +18,7 @@ html_find(x, ...)
 \arguments{
 \item{x}{A \code{selenider_elements} object.}
 
-\item{...}{<\code{\link[rlang:dyn-dots]{dynamic-dots}} Conditions (functions or function
+\item{...}{<\code{\link[rlang:dyn-dots]{dynamic-dots}}> Conditions (functions or function
 calls) that are used to filter the elements of \code{x}.}
 
 \item{i}{A number (or for \code{[}, a vector of one or more numbers) used to select
@@ -34,9 +34,9 @@ Operators to extract a subset of elements, or a single element, from
 a selenider element collection.
 
 \code{html_filter()} and \code{html_find()} allow you to use conditions to filter HTML
-elements (see \link{html-conditions}). \code{html_find()} returns the \emph{first} element that
-satisfies one or more conditions, while \code{html_filter()} returns every element that
-satisfies these conditions.
+elements (see \code{\link[=is_present]{is_present()}} and other conditions). \code{html_find()} returns the \emph{first}
+element that satisfies one or more conditions, while \code{html_filter()} returns every
+element that satisfies these conditions.
 
 \code{[} and \code{[[} with a numeric subscript can be used on an element collection to filter
 the elements by position. \code{[} returns a single element at a specified location, while
@@ -77,6 +77,6 @@ elems[[1]]
 \seealso{
 \itemize{
 \item \code{\link[=html_elements]{html_elements()}} and \code{\link[=ss]{ss()}} to get elements to filter.
-\item \link{html-conditions} for conditions to filter by.
+\item \code{\link[=is_present]{is_present()}} and other conditions for conditions to filter by.
 }
 }

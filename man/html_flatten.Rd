@@ -13,7 +13,7 @@ html_flatten(...)
 \method{c}{selenider_elements}(...)
 }
 \arguments{
-\item{<[`dynamic-dots`][rlang::dyn_dots]>}{\code{selenider_element} or
+\item{...}{<\code{\link[rlang:dyn-dots]{dynamic-dots}}> \code{selenider_element} or
 \code{selenider_elements} objects to be combined.}
 }
 \value{

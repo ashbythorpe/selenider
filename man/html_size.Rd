@@ -12,7 +12,7 @@ html_size(x, timeout = NULL)
 \arguments{
 \item{x}{A \code{selenider_elements} object.}
 
-\item{timeout}{}
+\item{timeout}{The time to wait for the parent of \code{x} (if any) to exist.}
 }
 \value{
 An integer representing the number of elements in the collection.

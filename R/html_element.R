@@ -209,7 +209,7 @@ format_ordinal_flattened <- function(x, condition = "") {
     element <- if (length(x) == 1) " element" else " elements"
     paste0("The ", subscript_ordinal(x), " of a combination of elements", condition)
   } else {
-    paste0("All", child, " elements of a combination of elements except the ", subscript_ordinal(x), condition)
+    paste0("All", " elements of a combination of elements except the ", subscript_ordinal(x), condition)
   }
 }
 

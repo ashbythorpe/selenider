@@ -151,7 +151,7 @@ s(".text1") |>
 }
 \seealso{
 \itemize{
-\item \code{\link{html-conditions}} for predicates for a single HTML element.
-\item \code{\link{html-conditions-multiple}} for predicates for multiple HTML elements.
+\item \code{\link[=is_present]{is_present()}} and other conditions for predicates for a single HTML element.
+\item \code{\link[=has_length]{has_length()}} and other conditions for predicates for multiple HTML elements.
 }
 }

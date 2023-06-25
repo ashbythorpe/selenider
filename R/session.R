@@ -253,7 +253,7 @@ new_selenider_session <- function(driver, timeout) {
 #' @export
 close_session <- function(x = NULL) {
   if (is.null(x)) {
-    x <- get_session(set = FALSE)
+    x <- get_session(create = FALSE)
   }
   
   rlang::try_fetch(

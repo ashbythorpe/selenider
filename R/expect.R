@@ -67,8 +67,8 @@
 #' otherwise.
 #' 
 #' @seealso 
-#' * [`html-conditions`] for predicates for a single HTML element.
-#' * [`html-conditions-multiple`] for predicates for multiple HTML elements.
+#' * [is_present()] and other conditions for predicates for a single HTML element.
+#' * [has_length()] and other conditions for predicates for multiple HTML elements.
 #' 
 #' @examples
 #' session <- mock_selenider_session()

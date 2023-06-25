@@ -89,15 +89,15 @@ reset_session <- function(old_session, close) {
 #' session_1 <- mock_selenider_session(local = FALSE)
 #' session_2 <- mock_selenider_session(local = FALSE)
 #' 
-#' get_session() # NULL
+#' get_session(create = FALSE) # NULL
 #' 
 #' local_session(session_1)
 #' 
-#' get_session()
+#' get_session(create = FALSE)
 #' 
 #' withr::deferred_run()
 #' 
-#' get_session() # NULL
+#' get_session(create = FALSE) # NULL
 #' 
 #' # By default, the local session is only set inside the function that it is
 #' # called.
@@ -112,10 +112,10 @@ reset_session <- function(old_session, close) {
 #' 
 #' with_session(
 #'   session_2,
-#'   {get_session()}
+#'   {get_session(create = FALSE)}
 #' ) # session_2
 #' 
-#' get_session() # session_1
+#' get_session(create = FALSE) # session_1
 #' 
 #' @export
 get_session <- function(create = TRUE, .env = rlang::caller_env()) {

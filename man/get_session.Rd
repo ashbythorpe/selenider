@@ -6,14 +6,18 @@
 \alias{with_session}
 \title{Get or set the local selenider session}
 \usage{
-get_session(...)
+get_session(create = TRUE, .env = rlang::caller_env())
 
 local_session(session, .local_envir = rlang::caller_env(), close = TRUE)
 
 with_session(session, code, close = TRUE)
 }
 \arguments{
-\item{...}{Not used}
+\item{create}{If a session is not found, should we create a new one? If this is
+\code{FALSE} and a session is not found, \code{NULL} is returned.}
+
+\item{.env}{If \code{get_session()} creates a session, the environment where this
+session is being used.}
 
 \item{session}{The \code{\link[=selenider_session]{selenider_session()}} object to use.}
 
@@ -29,8 +33,8 @@ local session. If you want to close the session manually, use
 \item{code}{The code to run with the local session set.}
 }
 \value{
-\code{get_session()} returns the local \code{\link[=selenider_session]{selenider_session()}} object, or \code{NULL} if
-none have been set.
+\code{get_session()} returns the local \code{\link[=selenider_session]{selenider_session()}} object (or a newly
+created session).
 
 \code{local_session()} returns the \emph{previous} local session object (or \code{NULL}).
 This is the same as running \code{get_session()} before this function.
@@ -41,8 +45,8 @@ This is the same as running \code{get_session()} before this function.
 Change the locally defined \code{\link[=selenider_session]{selenider_session()}} object, allowing it to be
 used in functions like \code{\link[=s]{s()}} without explicitly providing it.
 
-\code{get_session()} retrieves the current local session, or \code{NULL} if none have
-been created.
+\code{get_session()} retrieves the current local session. If none have been
+created, a session is created automatically.
 
 \code{local_session()} sets the local session. The function uses \code{\link[withr:defer]{withr::defer()}}
 to make sure the session is closed and the local session is set to its
@@ -61,15 +65,15 @@ Use \code{\link[withr:defer]{withr::deferred_run()}} to reset any local sessions
 session_1 <- mock_selenider_session(local = FALSE)
 session_2 <- mock_selenider_session(local = FALSE)
 
-get_session() # NULL
+get_session(create = FALSE) # NULL
 
 local_session(session_1)
 
-get_session()
+get_session(create = FALSE)
 
 withr::deferred_run()
 
-get_session() # NULL
+get_session(create = FALSE) # NULL
 
 # By default, the local session is only set inside the function that it is
 # called.
@@ -84,10 +88,10 @@ set_my_session()
 
 with_session(
   session_2,
-  {get_session()}
+  {get_session(create = FALSE)}
 ) # session_2
 
-get_session() # session_1
+get_session(create = FALSE) # session_1
 
 }
 \seealso{

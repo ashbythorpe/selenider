@@ -8,7 +8,7 @@
 #' difference being that `html_size()` allows you to specify a timeout.
 #' 
 #' @param x A `selenider_elements` object.
-#' @param timeout
+#' @param timeout The time to wait for the parent of `x` (if any) to exist.
 #' 
 #' @returns An integer representing the number of elements in the collection.
 #' 

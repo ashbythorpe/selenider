@@ -5,7 +5,7 @@
 #' perform actions on them at once. `c()` and `html_flatten()` can be
 #' used interchangeably.
 #'
-#' @param <[`dynamic-dots`][rlang::dyn_dots]> `selenider_element` or
+#' @param ... <[`dynamic-dots`][rlang::dyn-dots]> `selenider_element` or
 #'   `selenider_elements` objects to be combined.
 #' 
 #' @returns A `selenider_elements` object.

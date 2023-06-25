@@ -26,7 +26,7 @@
 #' @export
 has_length <- function(x, n) {
   elements <- get_elements(x)
-  n <- vctrs::vec_cast(x, integer())
+  n <- vctrs::vec_cast(n, integer())
 
   if (!is.null(x)) {
     length(elements) %in% n

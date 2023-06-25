@@ -9,6 +9,13 @@ print.selenider_key <- function(x, ...) {
   invisible(x)
 }
 
+#' Special keys
+#' 
+#' List of special keys, for use with [send_keys()].
+#'
+#' @examples
+#' keys$backspace
+#'
 #' @export
 keys <- list(
   backspace = key("BACKSPACE"),
