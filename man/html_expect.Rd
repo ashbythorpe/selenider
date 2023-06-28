@@ -153,5 +153,8 @@ s(".text1") |>
 \itemize{
 \item \code{\link[=is_present]{is_present()}} and other conditions for predicates for a single HTML element.
 \item \code{\link[=has_length]{has_length()}} and other conditions for predicates for multiple HTML elements.
+\item \code{\link[=html_expect_all]{html_expect_all()}} and \code{\link[=html_wait_until_all]{html_wait_until_all()}} for an easy way to test a single
+condition on multiple elements.
+\item \code{\link[=html_filter]{html_filter()}} and \code{\link[=html_find]{html_find()}} to use conditions to filter elements.
 }
 }

@@ -69,6 +69,9 @@
 #' @seealso 
 #' * [is_present()] and other conditions for predicates for a single HTML element.
 #' * [has_length()] and other conditions for predicates for multiple HTML elements.
+#' * [html_expect_all()] and [html_wait_until_all()] for an easy way to test a single
+#'   condition on multiple elements.
+#' * [html_filter()] and [html_find()] to use conditions to filter elements.
 #' 
 #' @examples
 #' session <- mock_selenider_session()
@@ -168,7 +171,17 @@ html_expect <- function(x, ..., timeout = NULL) {
   }
 }
 
-diagnose_condition <- function(x, n, call, original_expr, result, timeout, call_name = NULL, negated_call_name = NULL, call_env = rlang::caller_env(), original_env) {
+diagnose_condition <- function(x,
+                               n,
+                               call,
+                               original_expr,
+                               result,
+                               timeout,
+                               call_name = NULL,
+                               negated_call_name = NULL,
+                               call_env = rlang::caller_env(),
+                               original_env,
+                               x_name = "x") {
   if (is.null(call_name)) {
     call_name <- if (rlang::is_call_simple(call)) rlang::call_name(call) else ""
   }
@@ -246,7 +259,7 @@ diagnose_condition <- function(x, n, call, original_expr, result, timeout, call_
 
     condition <- c(
       condition,
-      "i" = "{.arg x} {negated_call_name}."
+      "i" = "{.arg {x_name}} {negated_call_name}."
     )
   } else if (call_name %in% condition_dependencies$text) {
     if (is.null(negated_call_name)) {
@@ -258,27 +271,106 @@ diagnose_condition <- function(x, n, call, original_expr, result, timeout, call_
     if (is.null(x)) {
       condition <- c(
         condition,
-        "i" = "{.arg x} {negated_call_name} {.val {target_text}}."
+        "i" = "{.arg {x_name}} {negated_call_name} {.val {target_text}}."
       )
     } else {
       actual_text <- tryCatch(html_text(x, timeout = 0), error = function(e) NULL)
 
       condition <- c(
         condition,
-        "i" = "{.arg x} {negated_call_name} {.val {target_text}}.",
+        "i" = "{.arg {x_name}} {negated_call_name} {.val {target_text}}.",
         "i" = "Actual text: {.val {actual_text}}."
+      )
+    }
+  } else if (call_name %in% condition_dependencies$attribute) {
+    if (is.null(negated_call_name)) {
+      negated_call_name <- negate_call_name(call_name)
+    }
+
+    negated_call_name <- switch(
+      negated_call_name,
+      "has attr" = "is",
+      "attr contains" = "contains",
+      "does not have attr" = "is not",
+      "attr does not contain" = "does not contain"
+    )
+
+    name <- rlang::eval_tidy(rlang::call_args(call)[[1]], env = original_env)
+    expected_value <- rlang::eval_tidy(rlang::call_args(call)[[2]], env = original_env)
+    
+    if (is.null(x)) {
+      condition <- c(
+        condition,
+        "i" = "{.arg {x_name}}'s {.val {name}} attribute {negated_call_name} {.val {expected_value}}."
+      )
+    } else {
+      actual_value <- tryCatch(html_attr(x, name, timeout = 0), error = function(e) NULL)
+
+      condition <- c(
+        condition,
+        "i" = "{.arg {x_name}}'s {.val {name}} attribute {negated_call_name} {.val {expected_value}}.",
+        "i" = "Actual value: {.val {actual_value}}."
+      )
+    }
+  } else if (call_name %in% condition_dependencies$attribute) {
+    if (is.null(negated_call_name)) {
+      negated_call_name <- negate_call_name(call_name)
+    }
+
+    value <- rlang::eval_tidy(rlang::call_args(call)[[1]], env = original_env)
+    
+    if (is.null(x)) {
+      condition <- c(
+        condition,
+        "i" = "{.arg {x_name}} {negated_call_name} {.val {expected_value}}."
+      )
+    } else {
+      actual_value <- tryCatch(html_value(x, timeout = 0), error = function(e) NULL)
+
+      condition <- c(
+        condition,
+        "i" = "{.arg {x_name}} {negated_call_name} {.val {expected_value}}.",
+        "i" = "Actual value: {.val {actual_value}}."
+      )
+    }
+  } else if (call_name %in% condition_dependencies$css) {
+    if (is.null(negated_call_name)) {
+      negated_call_name <- negate_call_name(call_name)
+    }
+
+    negated_call_name <- switch(
+      negated_call_name,
+      "has css property" = "is",
+      "does not have css property" = "is not"
+    )
+
+    name <- rlang::eval_tidy(rlang::call_args(call)[[1]], env = original_env)
+    expected_value <- rlang::eval_tidy(rlang::call_args(call)[[2]], env = original_env)
+    
+    if (is.null(x)) {
+      condition <- c(
+        condition,
+        "i" = "{.arg {x_name}}'s {.val {name}} CSS property {negated_call_name} {.val {expected_value}}."
+      )
+    } else {
+      actual_value <- tryCatch(html_attr(x, name, timeout = 0), error = function(e) NULL)
+
+      condition <- c(
+        condition,
+        "i" = "{.arg {x_name}}'s {.val {name}} CSS property {negated_call_name} {.val {expected_value}}.",
+        "i" = "Actual value: {.val {actual_value}}."
       )
     }
   } else if (!is.null(x)) {
     if (is_present(x)) {
       condition <- c(
         condition,
-        "i" = "{.arg x} exists, but the condition still failed."
+        "i" = "{.arg {x_name}} exists, but the condition still failed."
       )
     } else {
       condition <- c(
         condition,
-        "i" = "{.arg x} does not exist, which may have caused the condition to fail."
+        "i" = "{.arg {x_name}} does not exist, which may have caused the condition to fail."
       )
     }
   }
@@ -301,6 +393,10 @@ negate_call_name <- function(x) {
     "is disabled" = "is enabled",
     "has text" = "does not have text",
     "has exact text" = "does not have exact text",
+    "has attr" = "does not have attr",
+    "attr contains" = "attr does not contain",
+    "has value" = "does not have value",
+    "has css property" = "does not have css property",
     NULL
   )
 }

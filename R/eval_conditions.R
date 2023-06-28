@@ -49,6 +49,25 @@ eval_conditions <- function(x, dots, timeout) {
   )
 }
 
+eval_all_conditions <- function(x, dots, timeout) {
+  timeout <- get_timeout(timeout, x$timeout)
+
+  if (length(dots) == 0) {
+    stop_no_conditions()
+  } 
+
+  elem_name <- make_elem_name(dots)
+  calls <- lapply(dots, parse_condition, elem_name)
+  res <- retry_with_timeout_multiple(timeout, calls, x, elem_name)
+  
+  list(
+    timeout = timeout,
+    calls = calls,
+    exprs = dots,
+    res = res
+  )
+}
+
 parse_condition <- function(x, elem_name) {
   env <- rlang::quo_get_env(x)
   
