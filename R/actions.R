@@ -234,11 +234,11 @@ hover <- function(x, js = FALSE, timeout = NULL) {
 
 #' Set the value of an input
 #'
-#' `set_input()` sets the value of an HTML input element to a string.
+#' `set_value()` sets the value of an HTML input element to a string.
 #'
 #' `send_keys()` sends a set of inputs to an element.
 #'
-#' `clear_input()` sets the value of an HTML element to `""`, removing any
+#' `clear_value()` sets the value of an HTML element to `""`, removing any
 #' existing content.
 #'
 #' @param x A `selenider_element` object.
@@ -251,12 +251,12 @@ hover <- function(x, js = FALSE, timeout = NULL) {
 #' session <- mock_selenider_session()
 #'
 #' s(".class1") |>
-#'   set_input("my text")
+#'   set_value("my text")
 #'
 #' @family actions
 #'
 #' @export
-set_input <- function(x, text, timeout = NULL) {
+set_value <- function(x, text, timeout = NULL) {
   timeout <- get_timeout(timeout, x$timeout)
 
   element <- get_element_for_action(
@@ -277,7 +277,7 @@ set_input <- function(x, text, timeout = NULL) {
   element$sendKeysToElement(list(text))
 }
 
-#' @rdname set_input
+#' @rdname set_value
 #'
 #' @param ... A set of inputs to send to `x`.
 #' 
@@ -301,10 +301,10 @@ send_keys <- function(x, ..., timeout = NULL) {
   invisible(x)
 }
 
-#' @rdname set_input
+#' @rdname set_value
 #'
 #' @export
-clear_input <- function(x, timeout = NULL) {
+clear_value <- function(x, timeout = NULL) {
   timeout <- get_timeout(timeout, x$timeout)
 
   element <- get_element_for_action(
@@ -418,6 +418,77 @@ scroll_to <- function(x, js = FALSE, timeout = NULL) {
     x$driver$mouseMoveToLocation(
       webelement = element
     )
+  }
+
+  invisible(x)
+}
+
+#' Submit an element
+#'
+#' If an element is an ancestor of a form, submits the form.
+#' Works by walking up the DOM, checking each ancestor element until
+#' the element is a <form> element, which it then submits. If such
+#' an element does not exist, an error is thrown.
+#'
+#' @param x A `selenider_element` object.
+#' @param js Whether to submit the form using JavaScript.
+#' @param timeout How long to wait for the element to exist.
+#'
+#' @returns `x`, invisibly
+#'
+#' @family actions
+#'
+#' @examples
+#' session <- mock_selenider_session()
+#'
+#' s(".class1") |>
+#'   submit()
+#'
+#' @export
+submit <- function(x, js = FALSE, timeout = NULL) {
+  timeout <- get_timeout(timeout, x$timeout)
+
+  if (js) {
+    element <- get_element_for_action(
+      x,
+      action = "submit {.arg x} using JavaScript",
+      conditions = list(),
+      timeout = timeout,
+      failure_messages = c(),
+      conditions_text = c()
+    )
+
+    result <- x$driver$executeScript("
+      element = arguments[0];
+      while element != null {
+        if element.tagName == 'form' {
+          element.submit();
+          return true;
+        }
+
+        element = element.parentElement;
+      }
+      return false;
+    ", list(element))
+
+    if (!result) {
+      cli::cli_abort(c(
+        "To submit {.arg x}, it must be the child of a <form> element"
+      ))
+      # TODO: Add implicit waiting to check for a <form> parent.
+      # Remember: descendant/ancestor
+    }
+  } else {
+    element <- get_element_for_action(
+      x,
+      action = "submit {.arg x}",
+      conditions = list(),
+      timeout = timeout,
+      failure_messages = c(),
+      conditions_text = c()
+    )
+
+    element$submitElement()
   }
 
   invisible(x)

@@ -30,6 +30,7 @@ s(".class1") |>
 Other actions: 
 \code{\link{click}()},
 \code{\link{hover}()},
-\code{\link{set_input}()}
+\code{\link{set_value}()},
+\code{\link{submit}()}
 }
 \concept{actions}

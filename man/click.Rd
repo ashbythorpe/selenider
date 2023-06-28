@@ -41,6 +41,7 @@ s(".class1") |>
 Other actions: 
 \code{\link{hover}()},
 \code{\link{scroll_to}()},
-\code{\link{set_input}()}
+\code{\link{set_value}()},
+\code{\link{submit}()}
 }
 \concept{actions}
