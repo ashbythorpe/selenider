@@ -33,6 +33,8 @@ is_enabled(s(".class1"))
 }
 \seealso{
 Other conditions: 
+\code{\link{has_attr}()},
+\code{\link{has_css_property}()},
 \code{\link{has_text}()},
 \code{\link{is_present}()},
 \code{\link{is_visible}()}

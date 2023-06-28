@@ -2,9 +2,15 @@
 % Please edit documentation in R/properties.R
 \name{html_attr}
 \alias{html_attr}
+\alias{html_attrs}
+\alias{html_value}
 \title{Get element attribute}
 \usage{
 html_attr(x, name, default = NA_character_, timeout = NULL)
+
+html_attrs(x, timeout = NULL)
+
+html_value(x, ptype = character(), timeout = NULL)
 }
 \arguments{
 \item{x}{A \code{selenider_element} object.}
@@ -15,12 +21,23 @@ html_attr(x, name, default = NA_character_, timeout = NULL)
 the element.}
 
 \item{timeout}{The time to wait for \code{x} to exist.}
+
+\item{ptype}{The type to cast the value to. Useful when the value is an integer
+or decimal number. By default, the value is returned as a string.}
 }
 \value{
-A character vector.
+\code{html_attr()} returns a character vector of length 1. \code{html_attrs()}
+returns a named list of strings. The return value of \code{html_value()} has the
+same type as \code{ptype} and length 1.
 }
 \description{
 Get an attribute of a \code{selenider_element} object.
+
+\code{html_attr()} returns a \emph{single} attribute value as a string.
+
+\code{html_attrs()} returns a named list containing \emph{every} attribute.
+
+\code{html_value()} returns the 'value' attribute.
 }
 \examples{
 session <- mock_selenider_session()
@@ -31,6 +48,7 @@ s(".class1") |>
 }
 \seealso{
 Other properties: 
+\code{\link{html_css_property}()},
 \code{\link{html_name}()},
 \code{\link{html_text}()}
 }

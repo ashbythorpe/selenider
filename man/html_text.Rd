@@ -27,6 +27,7 @@ s(".class1") |>
 \seealso{
 Other properties: 
 \code{\link{html_attr}()},
+\code{\link{html_css_property}()},
 \code{\link{html_name}()}
 }
 \concept{properties}
