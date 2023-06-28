@@ -84,7 +84,7 @@ html_elements.selenider_element <- function(x,
   
   x$to_be_found <- x$to_be_found + 1
   
-  class(x) <- "selenider_elements"
+  class(x) <- c("selenider_elements", "list")
   
   x
 }
@@ -98,12 +98,12 @@ new_selenider_elements <- function(session, selector) {
     to_be_found = 1
   )
 
-  class(res) <- "selenider_elements"
+  class(res) <- c("selenider_elements", "list")
 
   res
 }
 
-update_elements <- function(x) {
+cache_elements <- function(x) {
   elements <- get_elements(x)
   
   if (is.null(elements)) {
@@ -115,105 +115,30 @@ update_elements <- function(x) {
   x$to_be_found <- 0.5
 }
 
-format_elements <- function(selector, first = FALSE) {
-  if (inherits(selector, "selenider_flattened_selector")) {
-    return(format_flattened_selector(selector, multiple = TRUE))
-  }
-
-  child <- if (first) "" else " child"
-  
-  filter <- selector$filter
-  
-  selector$filter <- NULL
-  
-  names <- names(selector)
-  
-  values <- unlist(selector, use.names = FALSE)
-  
-  names <- ifelse(
-    names == "css",
-    "css selector",
-    gsub("_", " ", names, fixed = TRUE)
-  )
-  
-  values <- paste0("{.val ", values, "}")
-  
-  to_pluralize <- paste(names, values)
-  
-  text <- cli::pluralize("{to_pluralize}")
-  
-  if (is.null(filter)) {
-    paste0("The", child, " elements with ", text)
-  } else if (length(filter) == 1) {
-    if (is.numeric(filter[[1]])) {
-      format_ordinal(filter[[1]], child, text)
-    } else {
-      body <- rlang::fn_body(filter[[1]])[-1]
-      if (length(body) == 1) {
-        paste0("The", child, " elements with ", text, " matching the following condition:\n, {.code ", escape_squirlies(body), "}")
-      } else {
-        paste0("The", child, " elements with ", text, " matching a custom condition")
-      }
-    }
-  } else {
-    last <- filter[[length(filter)]]
-
-    if (is.numeric(last)) {
-      if (length(filter) == 2) {
-        body <- as.character(rlang::fn_body(filter[[1]]))[-1]
-        if (length(body) == 1 && !grepl("\n", body, fixed = TRUE)) {
-          return(format_ordinal(last, child, text, paste0(" matching the following condition:\n {.code ", escape_squirlies(body), "}")))
-        }
-      }
-
-      format_ordinal(last, child, text,  " matching a custom condition")
-    } else {
-      paste0("The", child, " elements with ", text, " matching a custom condition")
-    }
-  }
-}
-
-format_ordinal <- function(x, child, text, condition = "") {
-  if (all(x) >= 0) {
-    element <- if (length(x) == 1) " element" else " elements"
-    paste0("The ", subscript_ordinal(x), child, element, " with ", text, condition)
-  } else {
-    paste0("All", child, " elements with ", text, " except the ", subscript_ordinal(x), condition)
-  }
-}
-
-subscript_ordinal <- function(x) {
-  if (length(x) == 1) {
-    ordinal(x)
-  } else {
-    cli::pluralize("{ordinal_numbers(x)}")
-  }
-}
-
 #' @export
 print.selenider_elements <- function(x, ...) {
   selectors <- x$selectors
   
   if (length(selectors) == 1) {
-    formatted <- format_elements(selectors[[1]], first = TRUE)
+    formatted <- format(selectors[[1]], first = TRUE, multiple = TRUE)
     
     cat("A collection of selenider elements selecting:\n")
     cli::cli_text(formatted)
   } else if (length(selectors) == 2) {
-    first <- format_element(selectors[[1]], first = TRUE)
+    first <- format(selectors[[1]], first = TRUE)
     
-    last <- format_elements(selectors[[2]])
+    last <- format(selectors[[2]], multiple = TRUE)
     
     cat("A collection of selenider elements selecting:\n")
     cli::cli_bullets(c("*" = first, "*" = last))
   } else {
-    first <- format_element(selectors[[1]], first = TRUE)
+    first <- format(selectors[[1]], first = TRUE)
     
-    last <- format_elements(selectors[[length(selectors)]])
+    last <- format(selectors[[length(selectors)]], multiple = TRUE)
     
     formatted <- vapply(
       selectors[c(-1, -length(selectors))], 
-      format_element, 
+      format, 
       FUN.VALUE = character(1)
     )
     
