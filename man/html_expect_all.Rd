@@ -5,7 +5,7 @@
 \alias{html_wait_until_all}
 \title{Test conditions on multiple elements}
 \usage{
-html_expect_all(x, ..., timeout = NULL)
+html_expect_all(x, ..., testthat = NULL, timeout = NULL)
 
 html_wait_until_all(x, ..., timeout = NULL)
 }

@@ -12,12 +12,15 @@
 #' @param ... <[`dynamic-dots`][rlang::dyn-dots]> Function calls or functions
 #'   that must return a logical value. If multiple conditions are given, they
 #'   must all be `TRUE` for the test to pass.
+#' @param testthat Whether to treat the expectation as a `testthat` test. You 
+#'   *do not* need to explicitly provide this most of the time, since by default,
+#'   we can use [testthat::is_testing()] to figure out whether `html_expect()` is
+#'   being called from within a `testthat` test.
 #' @param timeout The number of seconds to wait for a condition to pass. If not
 #'   specified, the timeout used for `x` will be used, or the timeout of the
 #'   local session if an element is not given.
 #' 
-#' @details 
-#'
+#' @details
 #' # Conditions
 #' Conditions can be supplied as functions or calls.
 #' 
@@ -143,9 +146,19 @@
 #'   html_expect(text_contains("Example *"))
 #' 
 #' @export
-html_expect <- function(x, ..., timeout = NULL) {
+html_expect <- function(x, ..., testthat = NULL, timeout = NULL) {
   x <- rlang::enquo(x)
   dots <- rlang::enquos(...)
+
+  # `testthat` can only be TRUE if it is installed.
+  if (is.null(testthat)) {
+    
+    testthat <- rlang::is_installed("testthat") && testthat::is_testing()
+  } else {
+    if (testthat) {
+      rlang::check_installed("testthat", reason = "for `html_expect(testthat = TRUE)`.")
+    }
+  }
   
   result <- eval_conditions(x, dots, timeout)
   timeout <- result$timeout
@@ -161,7 +174,21 @@ html_expect <- function(x, ..., timeout = NULL) {
     call <- calls[[n]]
     expr <- exprs[[n]]
 
-    diagnose_condition(x_res, n, call, expr, val, timeout, original_env = rlang::quo_get_env(x))
+    diagnose_condition(
+      x_res,
+      n = n,
+      call = call,
+      original_expr = expr,
+      result = val,
+      timeout = timeout,
+      original_env = rlang::quo_get_env(x),
+      testthat = testthat
+    )
+  }
+
+  if (testthat) {
+    # We have already checked that testthat is installed if `testthat` is `TRUE`.
+    testthat::succeed()
   }
 
   if (inherits(x_res, c("selenider_element", "selenider_elements"))) {
@@ -177,10 +204,11 @@ diagnose_condition <- function(x,
                                original_expr,
                                result,
                                timeout,
+                               original_env,
+                               testthat,
                                call_name = NULL,
                                negated_call_name = NULL,
                                call_env = rlang::caller_env(),
-                               original_env,
                                x_name = "x") {
   if (is.null(call_name)) {
     call_name <- if (rlang::is_call_simple(call)) rlang::call_name(call) else ""
@@ -197,6 +225,7 @@ diagnose_condition <- function(x,
   
   call_name <- switch(call_name,
       is_in_dom = "is in the DOM",
+      has_name = "has tag name",
       gsub("_", " ", call_name, fixed = TRUE)
   )
 
@@ -261,6 +290,27 @@ diagnose_condition <- function(x,
       condition,
       "i" = "{.arg {x_name}} {negated_call_name}."
     )
+  } else if (call_name %in% condition_dependencies$name) {
+    if (is.null(negated_call_name)) {
+      negated_call_name <- negate_call_name(call_name)
+    }
+
+    expected_name <- rlang::eval_tidy(rlang::call_args(call)[[1]], env = original_env)
+
+    if (is.null(x)) {
+      condition <- c(
+        condition,
+        "i" = "{.arg {x_name}} {negated_call_name} {.val {expected_name}}."
+      )
+    } else {
+      actual_text <- tryCatch(html_name(x, timeout = 0), error = function(e) NULL)
+
+      condition <- c(
+        condition,
+        "i" = "{.arg {x_name}} {negated_call_name} {.val {expected_name}}.",
+        "i" = "Actual text: {.val {expected_name}}."
+      )
+    }
   } else if (call_name %in% condition_dependencies$text) {
     if (is.null(negated_call_name)) {
       negated_call_name <- negate_call_name(call_name)
@@ -353,7 +403,7 @@ diagnose_condition <- function(x,
         "i" = "{.arg {x_name}}'s {.val {name}} CSS property {negated_call_name} {.val {expected_value}}."
       )
     } else {
-      actual_value <- tryCatch(html_attr(x, name, timeout = 0), error = function(e) NULL)
+      actual_value <- tryCatch(html_css_property(x, name, timeout = 0), error = function(e) NULL)
 
       condition <- c(
         condition,
@@ -374,8 +424,13 @@ diagnose_condition <- function(x,
       )
     }
   }
-
-  stop_expect_error(condition, parent = parent, call = call_env)
+  
+  if (testthat) {
+    # We have already checked that testthat is installed if `testthat` is `TRUE`.
+    html_expect_fail(condition, parent = parent, call = call_env, x = x, x_name = x_name)
+  } else {
+    stop_expect_error(condition, parent = parent, call = call_env)
+  }
 }
 
 negate_call_name <- function(x) {
@@ -391,6 +446,7 @@ negate_call_name <- function(x) {
     "is invisible" = "is visible",
     "is enabled" = "is not enabled",
     "is disabled" = "is enabled",
+    "has tag name" = "does not have tag name",
     "has text" = "does not have text",
     "has exact text" = "does not have exact text",
     "has attr" = "does not have attr",

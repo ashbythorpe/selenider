@@ -5,7 +5,7 @@
 \alias{html_wait_until}
 \title{Test one or more conditions on HTML elements}
 \usage{
-html_expect(x, ..., timeout = NULL)
+html_expect(x, ..., testthat = NULL, timeout = NULL)
 
 html_wait_until(x, ..., timeout = NULL)
 }
@@ -15,6 +15,11 @@ html_wait_until(x, ..., timeout = NULL)
 \item{...}{<\code{\link[rlang:dyn-dots]{dynamic-dots}}> Function calls or functions
 that must return a logical value. If multiple conditions are given, they
 must all be \code{TRUE} for the test to pass.}
+
+\item{testthat}{Whether to treat the expectation as a \code{testthat} test. You
+\emph{do not} need to explicitly provide this most of the time, since by default,
+we can use \code{\link[testthat:is_testing]{testthat::is_testing()}} to figure out whether \code{html_expect()} is
+being called from within a \code{testthat} test.}
 
 \item{timeout}{The number of seconds to wait for a condition to pass. If not
 specified, the timeout used for \code{x} will be used, or the timeout of the

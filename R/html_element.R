@@ -119,14 +119,14 @@ print.selenider_element <- function(x, ...) {
   if (length(selectors) == 1) {
     formatted <- format(selectors[[1]], first = TRUE)
 
-    cat("A selenider element selecting:\n")
+    cli::cli_text("A selenider element selecting:")
     cli::cli_text(formatted)
   } else {
     first <- format(selectors[[1]], first = TRUE)
 
     formatted <- vapply(selectors[-1], format, FUN.VALUE = character(1))
 
-    cat("A selenider element selecting:\n")
+    cli::cli_text("A selenider element selecting:")
     cli::cli_bullets(c(first, formatted))
   }
 }

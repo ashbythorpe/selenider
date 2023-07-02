@@ -122,14 +122,14 @@ print.selenider_elements <- function(x, ...) {
   if (length(selectors) == 1) {
     formatted <- format(selectors[[1]], first = TRUE, multiple = TRUE)
     
-    cat("A collection of selenider elements selecting:\n")
+    cli::cli_text("A collection of selenider elements selecting:")
     cli::cli_text(formatted)
   } else if (length(selectors) == 2) {
     first <- format(selectors[[1]], first = TRUE)
     
     last <- format(selectors[[2]], multiple = TRUE)
     
-    cat("A collection of selenider elements selecting:\n")
+    cli::cli_text("A collection of selenider elements selecting:")
     cli::cli_bullets(c("*" = first, "*" = last))
   } else {
     first <- format(selectors[[1]], first = TRUE)
@@ -146,7 +146,7 @@ print.selenider_elements <- function(x, ...) {
     names(last) <- "*"
     names(formatted) <- rep("*", length(formatted))
     
-    cat("A selenider element selecting:\n")
+    cli::cli_text("A selenider element selecting:")
     cli::cli_bullets(c(first, formatted, last))
   }
 }

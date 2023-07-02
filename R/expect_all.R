@@ -49,10 +49,19 @@
 #'   html_expect_all(is_present)
 #'
 #' @export
-html_expect_all <- function(x, ..., timeout = NULL) {
+html_expect_all <- function(x, ..., testthat = NULL, timeout = NULL) {
   dots <- rlang::enquos(...)
 
   result <- eval_all_conditions(x, dots, timeout)
+
+  # `testthat` can only be TRUE if it is installed.
+  if (is.null(testthat)) {
+    testthat <- rlang::is_installed("testthat") && testthat::is_testing()
+  } else {
+    if (testthat) {
+      rlang::check_installed("testthat", reason = "for `html_expect(testthat = TRUE)`.")
+    }
+  }
 
   timeout <- result$timeout
   calls <- result$calls
@@ -64,9 +73,19 @@ html_expect_all <- function(x, ..., timeout = NULL) {
     x_res <- x[[res$element_n]]
     call <- calls[[n]]
     expr <- exprs[[n]]
-    x_name = paste0("x[[", res$element_n, "]]")
+    x_name <- paste0("x[[", res$element_n, "]]")
 
-    diagnose_condition(x_res, n, call, expr, res$val, timeout, original_env = rlang::quo_get_env(x), x_name = x_name)
+    diagnose_condition(
+      x_res,
+      n = n,
+      call = call,
+      original_expr = expr,
+      result = res$val,
+      timeout = timeout,
+      original_env = rlang::quo_get_env(x),
+      x_name = x_name,
+      testthat = testthat
+    )
   }
 
   invisible(x)
