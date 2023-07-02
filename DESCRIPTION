@@ -13,7 +13,7 @@ Imports:
     cli,
     prettyunits,
     processx,
-    rlang,
+    rlang (>= 1.1.0),
     RSelenium,
     stats,
     utils,
