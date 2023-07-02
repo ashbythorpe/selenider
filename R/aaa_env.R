@@ -6,12 +6,12 @@ get_selenider_env <- function() {
 
 get_from_env <- function(items) {
   sel_env <- get_selenider_env()
-  rlang::env_get(sel_env, items, default = NULL)
+  env_get(sel_env, items, default = NULL)
 }
 
 set_in_env <- function(...) {
   sel_env <- get_selenider_env()
-  rlang::env_bind(sel_env, ...)
+  env_bind(sel_env, ...)
 }
 
 set_session <- function(session) {
@@ -24,11 +24,11 @@ set_session <- function(session) {
 
 reset_session <- function(old_session, close) {
   if (close) {
-    rlang::try_fetch(
+    try_fetch(
       close_session(get_session(create = FALSE)),
       error = function(e) {
         set_in_env(session = old_session)
-        rlang::zap() # Throw error but reset session object first
+        zap() # Throw error but reset session object first
       }
     )
   }

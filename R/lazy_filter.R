@@ -2,7 +2,7 @@ lazy_filter <- function(x, .f, ...) {
   res <- list(
     x = x,
     fun = .f,
-    args = rlang::list2(...)
+    args = list2(...)
   )
 
   class(res) <- c("lazy_filter")

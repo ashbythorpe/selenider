@@ -61,7 +61,7 @@
 #'
 #' @export
 html_filter <- function(x, ...) {
-  exprs <- rlang::enquos(x)
+  exprs <- enquos(x)
   elem_name <- make_elem_name(exprs)
   calls <- lapply(exprs, parse_condition, elem_name)
 
@@ -150,13 +150,13 @@ add_numeric_filter <- function(x, i, call = rlang::caller_env()) {
 }
 
 condition_to_function <- function(x, elem_name) {
-  args <- rlang::pairlist2(x = )
+  args <- pairlist2(x = )
   names(args) <- elem_name
 
-  rlang::new_function(
+  new_function(
     args,
-    rlang::call2(with_timeout, 0, rlang::quo_get_expr(x)),
-    rlang::quo_get_env(x)
+    call2(with_timeout, 0, quo_get_expr(x)),
+    quo_get_env(x)
   )
 }
 

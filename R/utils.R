@@ -18,24 +18,24 @@ get_with_timeout <- function(timeout, .f, ...) {
 
 find_element <- function(x, using, value) {
   if (inherits(x, c("webElement", "mock_element"))) {
-    rlang::try_fetch(
+    try_fetch(
       suppressMessages(x$findChildElement(using = using, value = value)),
       error = function(cnd) {
         if (grepl("NoSuchElement", cnd$message, fixed = TRUE)) {
           NULL
         } else {
-          rlang::zap()
+          zap()
         }
       }
     )
   } else if (inherits(x, c("remoteDriver", "mock_client"))) {
-    rlang::try_fetch(
+    try_fetch(
       suppressMessages(x$findElement(using = using, value = value)),
       error = function(cnd) {
         if (grepl("NoSuchElement", cnd$message, fixed = TRUE)) {
           return(NULL)
         } else {
-          return(rlang::zap())
+          return(zap())
         }
       }
     )
@@ -132,18 +132,18 @@ ordinal_numbers <- function(x) {
 
 call_insert <- function(call, elem_name, quo = TRUE) {
   if (quo) {
-    new_call <- rlang::call2(
-      as.list(rlang::quo_get_expr(call))[[1]], 
-      rlang::parse_expr(elem_name), 
-      !!!rlang::call_args(call)
+    new_call <- call2(
+      as.list(quo_get_expr(call))[[1]], 
+      parse_expr(elem_name), 
+      !!!call_args(call)
     )
 
-    rlang::new_quosure(new_call, rlang::quo_get_env(call))
+    new_quosure(new_call, quo_get_env(call))
   } else {
-    new_call <- rlang::call2(
+    new_call <- call2(
       as.list(call)[[1]], 
-      rlang::parse_expr(elem_name), 
-      !!!rlang::call_args(call)
+      parse_expr(elem_name), 
+      !!!call_args(call)
     )
 
     new_call

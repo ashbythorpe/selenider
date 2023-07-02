@@ -74,8 +74,8 @@ retry_with_timeout <- function(timeout, exprs, data_mask = NULL) {
 }
 
 eval_condition <- function(x, data_mask = NULL) {
-  rlang::try_fetch(
-    with_timeout(0, rlang::eval_tidy(x, data = data_mask)),
+  try_fetch(
+    with_timeout(0, eval_tidy(x, data = data_mask)),
     selenider_error_absent_element = function(x) x
   )
 }
@@ -165,8 +165,8 @@ eval_condition_multiple <- function(x, elements, name) {
     data_mask <- list(element)
     names(data_mask) <- name
 
-    res <- rlang::try_fetch(
-      with_timeout(0, rlang::eval_tidy(x, data = data_mask)),
+    res <- try_fetch(
+      with_timeout(0, eval_tidy(x, data = data_mask)),
       selenider_error_absent_element = function(x) x
     )
 

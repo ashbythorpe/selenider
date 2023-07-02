@@ -102,7 +102,7 @@ selenider_session <- function(browser = NULL,
     )
 
     # Allow e.g. 'Firefox'
-    browser <- rlang::arg_match0(browser, browser_opts)
+    browser <- arg_match0(browser, browser_opts)
     
     if (browser != "phantomjs") {
       version <- get_browser_version(browser)
@@ -131,7 +131,7 @@ create_server <- function(browser, version, quiet) {
   iedrver <- if (browser == "internet explorer") version else NULL
   phantomver <- if (browser == "phantomjs") "latest" else NULL
 
-  rlang::try_fetch(
+  try_fetch(
     wdman::selenium(
       browser = browser,
       chromever = chromever,
@@ -178,7 +178,7 @@ create_client <- function(browser) {
   count <- 1L
   res <- NULL
   repeat {
-    res <- rlang::try_fetch(
+    res <- try_fetch(
       driver$getStatus(),
       error = function(e) {
         print(e)
@@ -199,7 +199,7 @@ create_client <- function(browser) {
     }
   }
 
-  rlang::try_fetch(
+  try_fetch(
     driver$open(silent = TRUE),
     error = function(e) {
       cli::cli_abort(c(
@@ -256,7 +256,7 @@ close_session <- function(x = NULL) {
     x <- get_session(create = FALSE)
   }
   
-  rlang::try_fetch(
+  try_fetch(
     x$driver$client$close(),
     error = function(e) {
       x$driver$server$stop()

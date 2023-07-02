@@ -23,9 +23,9 @@
 #'
 #' @export
 html_flatten <- function(...) {
-  rlang::check_dots_unnamed()
+  check_dots_unnamed()
 
-  elements <- rlang::list2(...)
+  elements <- list2(...)
 
   if (length(elements) == 0) {
     cli::cli_abort(c(

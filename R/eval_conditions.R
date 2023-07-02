@@ -1,5 +1,5 @@
 eval_conditions <- function(x, dots, timeout) {
-  x_res <- rlang::eval_tidy(x)
+  x_res <- eval_tidy(x)
 
   if (inherits(x_res, c("selenider_element", "selenider_elements"))) {
     timeout <- get_timeout(timeout, x_res$timeout)
@@ -69,25 +69,25 @@ eval_all_conditions <- function(x, dots, timeout) {
 }
 
 parse_condition <- function(x, elem_name) {
-  env <- rlang::quo_get_env(x)
+  env <- quo_get_env(x)
   
-  if (rlang::quo_is_call(x)) {
-    if (rlang::is_call_simple(x)) {
-      name <- rlang::call_name(x)
+  if (quo_is_call(x)) {
+    if (is_call_simple(x)) {
+      name <- call_name(x)
 
       if (name == "exists") {
         stop_condition_exists()
       }
       
       if (name %in% c("(", "!", "negate", "Negate")) {
-        return(rlang::new_quosure(rlang::call2(
-          name, parse_condition_expr(rlang::call_args(x)[[1]], elem_name)
+        return(new_quosure(call2(
+          name, parse_condition_expr(call_args(x)[[1]], elem_name)
         )))
       } else if (name %in% c("|", "||", "&", "&&")) {
-        args <- rlang::call_args(x)
+        args <- call_args(x)
 
-        return(rlang::new_quosure(
-          rlang::call2(
+        return(new_quosure(
+          call2(
             name, 
             parse_condition_expr(args[[1]], elem_name),
             parse_condition_expr(args[[2]], elem_name)
@@ -100,7 +100,7 @@ parse_condition <- function(x, elem_name) {
     }
     
     if (!name %in% c("function", "new_function", "as_function", "as_closure")) {
-      if ("x" %in% rlang::call_args_names(x)) {
+      if ("x" %in% call_args_names(x)) {
         return(x)
       } else {
         return(call_insert(x, elem_name))
@@ -108,29 +108,29 @@ parse_condition <- function(x, elem_name) {
     }
   }
   
-  if (identical(deparse(rlang::quo_get_expr(x)), "exists")) {
+  if (identical(deparse(quo_get_expr(x)), "exists")) {
     stop_condition_exists()
   }
 
-  rlang::new_quosure(rlang::call2(
-    rlang::quo_get_expr(x),
-    rlang::parse_expr(elem_name)
+  new_quosure(call2(
+    quo_get_expr(x),
+    parse_expr(elem_name)
   ), env)
 }
 
 parse_condition_expr <- function(x, elem_name) {
-  if (rlang::is_call(x)) {
-    if (rlang::is_call_simple(x)) {
-      name <- rlang::call_name(x)
+  if (is_call(x)) {
+    if (is_call_simple(x)) {
+      name <- call_name(x)
       
       if (name %in% c("(", "!", "negate", "Negate")) {
-        return(rlang::call2(
-          name, parse_condition_expr(rlang::call_args(x)[[1]], elem_name)
+        return(call2(
+          name, parse_condition_expr(call_args(x)[[1]], elem_name)
         ))
       } else if (name %in% c("|", "||", "&", "&&")) {
-        args <- rlang::call_args(x)
+        args <- call_args(x)
 
-        return(rlang::call2(
+        return(call2(
           name, 
           parse_condition_expr(args[[1]], elem_name),
           parse_condition_expr(args[[2]], elem_name)
@@ -141,7 +141,7 @@ parse_condition_expr <- function(x, elem_name) {
     }
     
     if (!name %in% c("function", "new_function", "as_function", "as_closure")) {
-      if ("x" %in% rlang::call_args_names(x)) {
+      if ("x" %in% call_args_names(x)) {
         return(x)
       } else {
         return(call_insert(x, elem_name, quo = FALSE))
@@ -149,7 +149,7 @@ parse_condition_expr <- function(x, elem_name) {
     }
   }
   
-  rlang::call2(x, rlang::parse_expr(elem_name))
+  call2(x, parse_expr(elem_name))
 }
 
 make_elem_name <- function(x) {
@@ -171,5 +171,5 @@ make_elem_name <- function(x) {
 }
 
 get_expr_string <- function(x) {
-  paste0(deparse(rlang::quo_squash(x)), collapse = "")
+  paste0(deparse(quo_squash(x)), collapse = "")
 }

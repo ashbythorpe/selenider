@@ -147,16 +147,15 @@
 #' 
 #' @export
 html_expect <- function(x, ..., testthat = NULL, timeout = NULL) {
-  x <- rlang::enquo(x)
-  dots <- rlang::enquos(...)
+  x <- enquo(x)
+  dots <- enquos(...)
 
   # `testthat` can only be TRUE if it is installed.
   if (is.null(testthat)) {
-    
-    testthat <- rlang::is_installed("testthat") && testthat::is_testing()
+    testthat <- is_installed("testthat") && testthat::is_testing()
   } else {
     if (testthat) {
-      rlang::check_installed("testthat", reason = "for `html_expect(testthat = TRUE)`.")
+      check_installed("testthat", reason = "for `html_expect(testthat = TRUE)`.")
     }
   }
   
@@ -181,7 +180,7 @@ html_expect <- function(x, ..., testthat = NULL, timeout = NULL) {
       original_expr = expr,
       result = val,
       timeout = timeout,
-      original_env = rlang::quo_get_env(x),
+      original_env = quo_get_env(x),
       testthat = testthat
     )
   }
@@ -208,14 +207,14 @@ diagnose_condition <- function(x,
                                testthat,
                                call_name = NULL,
                                negated_call_name = NULL,
-                               call_env = rlang::caller_env(),
+                               call_env = caller_env(),
                                x_name = "x") {
   if (is.null(call_name)) {
-    call_name <- if (rlang::is_call_simple(call)) rlang::call_name(call) else ""
+    call_name <- if (is_call_simple(call)) call_name(call) else ""
   }
   
   expr_print <- paste0(
-    rlang::expr_deparse(rlang::quo_squash(original_expr)), collapse = "\n"
+    expr_deparse(quo_squash(original_expr)), collapse = "\n"
   )
 
   condition <- c(
@@ -254,8 +253,8 @@ diagnose_condition <- function(x,
     invert <- TRUE
     inner_call_name <- call_name
     while (inner_call_name == "!") {
-      new_call <- rlang::call_args(call)[[1]]
-      inner_call_name <- if (rlang::is_call_simple(new_call)) rlang::call_name(new_call) else ""
+      new_call <- call_args(call)[[1]]
+      inner_call_name <- if (is_call_simple(new_call)) call_name(new_call) else ""
       invert <- !invert
     }
     
@@ -295,7 +294,7 @@ diagnose_condition <- function(x,
       negated_call_name <- negate_call_name(call_name)
     }
 
-    expected_name <- rlang::eval_tidy(rlang::call_args(call)[[1]], env = original_env)
+    expected_name <- eval_tidy(call_args(call)[[1]], env = original_env)
 
     if (is.null(x)) {
       condition <- c(
@@ -316,7 +315,7 @@ diagnose_condition <- function(x,
       negated_call_name <- negate_call_name(call_name)
     }
 
-    target_text <- rlang::eval_tidy(rlang::call_args(call)[[1]], env = original_env)
+    target_text <- eval_tidy(call_args(call)[[1]], env = original_env)
 
     if (is.null(x)) {
       condition <- c(
@@ -345,8 +344,8 @@ diagnose_condition <- function(x,
       "attr does not contain" = "does not contain"
     )
 
-    name <- rlang::eval_tidy(rlang::call_args(call)[[1]], env = original_env)
-    expected_value <- rlang::eval_tidy(rlang::call_args(call)[[2]], env = original_env)
+    name <- eval_tidy(call_args(call)[[1]], env = original_env)
+    expected_value <- eval_tidy(call_args(call)[[2]], env = original_env)
     
     if (is.null(x)) {
       condition <- c(
@@ -367,7 +366,7 @@ diagnose_condition <- function(x,
       negated_call_name <- negate_call_name(call_name)
     }
 
-    value <- rlang::eval_tidy(rlang::call_args(call)[[1]], env = original_env)
+    value <- eval_tidy(call_args(call)[[1]], env = original_env)
     
     if (is.null(x)) {
       condition <- c(
@@ -394,8 +393,8 @@ diagnose_condition <- function(x,
       "does not have css property" = "is not"
     )
 
-    name <- rlang::eval_tidy(rlang::call_args(call)[[1]], env = original_env)
-    expected_value <- rlang::eval_tidy(rlang::call_args(call)[[2]], env = original_env)
+    name <- eval_tidy(call_args(call)[[1]], env = original_env)
+    expected_value <- eval_tidy(call_args(call)[[2]], env = original_env)
     
     if (is.null(x)) {
       condition <- c(

@@ -55,7 +55,7 @@ html_element.selenider_session <- function(x,
                                            name = NULL,
                                            link_text = NULL,
                                            ...) {
-  rlang::check_dots_used()
+  check_dots_used()
 
   selector <- new_selector(css, xpath, id, class_name, name, link_text)
   
@@ -73,7 +73,7 @@ html_element.selenider_element <- function(x,
                                            name = NULL,
                                            link_text = NULL,
                                            ...) {
-  rlang::check_dots_used()
+  check_dots_used()
 
   selector <- new_selector(css, xpath, id, class_name, name, link_text)
   

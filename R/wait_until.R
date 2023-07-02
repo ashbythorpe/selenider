@@ -2,8 +2,8 @@
 #'
 #' @rdname html_expect
 html_wait_until <- function(x, ..., timeout = NULL) {
-  x <- rlang::enquo(x)
-  dots <- rlang::enquos(...)
+  x <- enquo(x)
+  dots <- enquos(...)
 
   result <- eval_conditions(x, dots, timeout)
   res <- result$res

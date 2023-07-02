@@ -3,8 +3,8 @@ html_expect_fail <- function(condition, parent, call, x, x_name, env = rlang::ca
   condition_text <- cli::format_error(condition, .envir = env)
 
   if (!is.null(parent)) {
-    error_container <- rlang::try_fetch(rlang::abort("", parent = parent), error = identity)
-    parent_text <- rlang::cnd_message(error_container) # Contains a newline at the start
+    error_container <- try_fetch(abort("", parent = parent), error = identity)
+    parent_text <- cnd_message(error_container) # Contains a newline at the start
 
     condition_text <- paste0(condition_text, parent_text)
   }

@@ -50,16 +50,16 @@
 #'
 #' @export
 html_expect_all <- function(x, ..., testthat = NULL, timeout = NULL) {
-  dots <- rlang::enquos(...)
+  dots <- enquos(...)
 
   result <- eval_all_conditions(x, dots, timeout)
 
   # `testthat` can only be TRUE if it is installed.
   if (is.null(testthat)) {
-    testthat <- rlang::is_installed("testthat") && testthat::is_testing()
+    testthat <- is_installed("testthat") && testthat::is_testing()
   } else {
     if (testthat) {
-      rlang::check_installed("testthat", reason = "for `html_expect(testthat = TRUE)`.")
+      check_installed("testthat", reason = "for `html_expect(testthat = TRUE)`.")
     }
   }
 
@@ -82,7 +82,7 @@ html_expect_all <- function(x, ..., testthat = NULL, timeout = NULL) {
       original_expr = expr,
       result = res$val,
       timeout = timeout,
-      original_env = rlang::quo_get_env(x),
+      original_env = quo_get_env(x),
       x_name = x_name,
       testthat = testthat
     )
@@ -95,7 +95,7 @@ html_expect_all <- function(x, ..., testthat = NULL, timeout = NULL) {
 #'
 #' @export
 html_wait_until_all <- function(x, ..., timeout = NULL) {
-  dots <- rlang::enquos(...)
+  dots <- enquos(...)
 
   result <- eval_all_conditions(x, dots, timeout)
   

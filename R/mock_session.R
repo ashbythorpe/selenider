@@ -28,7 +28,7 @@ mock_selenider_session <- function(browser = c(
                                    local = TRUE,
                                    quiet = TRUE,
                                    .env = rlang::caller_env()) {
-  browser <- rlang::arg_match0(
+  browser <- arg_match0(
     browser[1],
     c(browser, tools::toTitleCase(browser), "PhantomJS")
   )

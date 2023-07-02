@@ -283,7 +283,7 @@ set_value <- function(x, text, timeout = NULL) {
 #' 
 #' @export
 send_keys <- function(x, ..., timeout = NULL) {
-  keys <- rlang::list2(...)
+  keys <- list2(...)
 
   timeout <- get_timeout(timeout, x$timeout)
 
@@ -329,7 +329,7 @@ get_element_for_action <- function(x,
                                    conditions_text,
                                    call = rlang::caller_env()) {
   meets_condition <- 
-    rlang::inject(html_wait_until(
+    inject(html_wait_until(
       x,
       is_present,
       !!!conditions,

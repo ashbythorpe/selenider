@@ -96,7 +96,7 @@ format_selector <- function(selector, first) {
     stopifnot(is.numeric(last))
 
     if (length(filter) == 2) {
-      body <- as.character(rlang::fn_body(filter[[1]]))[-1]
+      body <- as.character(fn_body(filter[[1]]))[-1]
       if (length(body) == 1 && !grepl("\n", body, fixed = TRUE)) {
         return(paste0("The ", ordinal(last), child, " element with ", text, " matching the following condition:\n {.code ", escape_squirlies(body), "}"))
       }
@@ -135,7 +135,7 @@ format_selector_multiple <- function(selector, first) {
     if (is.numeric(filter[[1]])) {
       format_ordinal(filter[[1]], child, text)
     } else {
-      body <- rlang::fn_body(filter[[1]])[-1]
+      body <- fn_body(filter[[1]])[-1]
       if (length(body) == 1) {
         paste0("The", child, " elements with ", text, " matching the following condition:\n, {.code ", escape_squirlies(body), "}")
       } else {
@@ -147,7 +147,7 @@ format_selector_multiple <- function(selector, first) {
 
     if (is.numeric(last)) {
       if (length(filter) == 2) {
-        body <- as.character(rlang::fn_body(filter[[1]]))[-1]
+        body <- as.character(fn_body(filter[[1]]))[-1]
         if (length(body) == 1 && !grepl("\n", body, fixed = TRUE)) {
           return(format_ordinal(last, child, text, paste0(" matching the following condition:\n {.code ", escape_squirlies(body), "}")))
         }
@@ -187,7 +187,7 @@ format_flattened_selector <- function(selector) {
     stopifnot(is.numeric(last))
 
     if (length(filter) == 2) {
-      body <- as.character(rlang::fn_body(filter[[1]]))[-1]
+      body <- as.character(fn_body(filter[[1]]))[-1]
       if (length(body) == 1 && !grepl("\n", body, fixed = TRUE)) {
         return(paste0("The ", ordinal(last), " of a combination of elements matching the following condition:\n {.code ", escape_squirlies(body), "}"))
       }
@@ -206,7 +206,7 @@ format_flattened_selector_multiple <- function(selector) {
     if (is.numeric(filter[[1]])) {
       format_ordinal_flattened(filter[[1]])
     } else {
-      body <- rlang::fn_body(filter[[1]])[-1]
+      body <- fn_body(filter[[1]])[-1]
       if (length(body) == 1) {
         paste0("The elements in a combination of elements that match the following condition:\n, {.code ", escape_squirlies(body), "}")
       } else {
@@ -218,7 +218,7 @@ format_flattened_selector_multiple <- function(selector) {
 
     if (is.numeric(last)) {
       if (length(filter) == 2) {
-        body <- as.character(rlang::fn_body(filter[[1]]))[-1]
+        body <- as.character(fn_body(filter[[1]]))[-1]
         if (length(body) == 1 && !grepl("\n", body, fixed = TRUE)) {
           return(format_ordinal(last, paste0(" matching the following condition:\n {.code ", escape_squirlies(body), "}")))
         }
@@ -250,7 +250,7 @@ format_relative_selector <- function(x, descriptor) {
     stopifnot(is.numeric(last))
 
     if (length(filter) == 2) {
-      body <- as.character(rlang::fn_body(filter[[1]]))[-1]
+      body <- as.character(fn_body(filter[[1]]))[-1]
       if (length(body) == 1 && !grepl("\n", body, fixed = TRUE)) {
         return(paste0("The ", ordinal(last), descriptor, " element matching the following condition:\n {.code ", escape_squirlies(body), "}"))
       }
@@ -269,7 +269,7 @@ format_relative_selector_multiple <- function(x, descriptor) {
     if (is.numeric(filter[[1]])) {
       format_ordinal(filter[[1]], descriptor)
     } else {
-      body <- rlang::fn_body(filter[[1]])[-1]
+      body <- fn_body(filter[[1]])[-1]
       if (length(body) == 1) {
         paste0("The", descriptor, " elements matching the following condition:\n, {.code ", escape_squirlies(body), "}")
       } else {
@@ -281,7 +281,7 @@ format_relative_selector_multiple <- function(x, descriptor) {
 
     if (is.numeric(last)) {
       if (length(filter) == 2) {
-        body <- as.character(rlang::fn_body(filter[[1]]))[-1]
+        body <- as.character(fn_body(filter[[1]]))[-1]
         if (length(body) == 1 && !grepl("\n", body, fixed = TRUE)) {
           return(format_ordinal(last, descriptor, paste0(" matching the following condition:\n {.code ", escape_squirlies(body), "}")))
         }
