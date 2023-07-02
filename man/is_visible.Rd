@@ -41,6 +41,7 @@ is_visible(s(".class1"))
 Other conditions: 
 \code{\link{has_attr}()},
 \code{\link{has_css_property}()},
+\code{\link{has_name}()},
 \code{\link{has_text}()},
 \code{\link{is_enabled}()},
 \code{\link{is_present}()}

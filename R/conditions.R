@@ -35,11 +35,6 @@ is_in_dom <- is_present
 #' @rdname is_present
 #' 
 #' @export
-is_missing <- function(x) !is_present(x)
-
-#' @rdname is_present
-#' 
-#' @export
 is_absent <- is_missing
 
 #' Is an element visible?
@@ -117,6 +112,34 @@ is_enabled <- function(x) {
 #' 
 #' @export
 is_disabled <- function(x) !is_enabled(x)
+
+#' Does an element have a tag name?
+#' 
+#' Check that an element has a specified tag name
+#'
+#' @param x A `selenider_element` object.
+#' @param name A string.
+#'
+#' @returns
+#' A boolean value.
+#'
+#' @family conditions
+#'
+#' @examples
+#' session <- mock_selenider_session()
+#'
+#' has_name(s(".class1"), "div")
+#'
+#' @export
+has_name <- function(x, name) {
+  element <- get_element(x)
+
+  if (!is.null(element)) {
+    element$getElementTagName() == name
+  } else {
+    stop_absent_element()
+  }
+}
 
 #' Does an element contain a pattern?
 #' 

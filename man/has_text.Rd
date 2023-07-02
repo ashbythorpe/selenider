@@ -37,6 +37,7 @@ has_text(s(".class1"), "Example")
 Other conditions: 
 \code{\link{has_attr}()},
 \code{\link{has_css_property}()},
+\code{\link{has_name}()},
 \code{\link{is_enabled}()},
 \code{\link{is_present}()},
 \code{\link{is_visible}()}

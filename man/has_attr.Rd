@@ -40,6 +40,7 @@ has_attr(s(".class1"), "class", "class1")
 \seealso{
 Other conditions: 
 \code{\link{has_css_property}()},
+\code{\link{has_name}()},
 \code{\link{has_text}()},
 \code{\link{is_enabled}()},
 \code{\link{is_present}()},
