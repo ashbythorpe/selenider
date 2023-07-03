@@ -36,7 +36,11 @@ html_flatten <- function(...) {
   }
 
   accepted_classes <- c("selenider_element", "selenider_elements")
+<<<<<<< refs/remotes/origin/main
   for (i in seq_len(elements)) {
+=======
+  for (i in seq_along(elements)) {
+>>>>>>> Fix R CMD CHECK issues
     element <- elements[[i]]
 
     if (!inherits(element, accepted_classes)) {

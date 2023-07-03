@@ -3,15 +3,12 @@
 \name{is_present}
 \alias{is_present}
 \alias{is_in_dom}
-\alias{is_missing}
 \alias{is_absent}
 \title{Does an element exist?}
 \usage{
 is_present(x)
 
 is_in_dom(x)
-
-is_missing(x)
 
 is_absent(x)
 }

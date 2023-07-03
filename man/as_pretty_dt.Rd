@@ -28,3 +28,4 @@ x <- as_pretty_dt(prettyunits::pretty_sec(10))
 cli::cli_text("{.val x}")
 
 }
+\keyword{internal}

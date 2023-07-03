@@ -9,6 +9,10 @@
 #'   that must return a logical value. If multiple conditions are given, they
 #'   must all be `TRUE` for the test to pass. See [html_expect()] for more
 #'   details.
+#' @param testthat Whether to treat the expectation as a `testthat` test. You 
+#'   *do not* need to explicitly provide this most of the time, since by default,
+#'   we can use [testthat::is_testing()] to figure out whether `html_expect()` is
+#'   being called from within a `testthat` test.
 #' @param timeout The number of seconds to wait for a condition to pass. If not
 #'   specified, the timeout used for `x` will be used, or the timeout of the
 #'   local session if an element is not given.

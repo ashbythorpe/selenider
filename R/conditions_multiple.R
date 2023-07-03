@@ -26,7 +26,11 @@
 #' @export
 has_length <- function(x, n) {
   check_class(x, "selenider_elements")
+<<<<<<< refs/remotes/origin/main
   check_number_whole(n, min = 0L)
+=======
+  check_number_whole(n, min = 0)
+>>>>>>> Fix R CMD CHECK issues
 
   elements <- get_elements(x)
   n <- vctrs::vec_cast(n, integer())
