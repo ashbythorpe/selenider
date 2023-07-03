@@ -54,7 +54,7 @@ multiple elements in an element collection.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">html_expect_all</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span>, timeout <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">html_expect_all</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span>, testthat <span class="op">=</span> <span class="cn">NULL</span>, timeout <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">html_wait_until_all</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span>, timeout <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -70,6 +70,13 @@ multiple elements in an element collection.</p>
 that must return a logical value. If multiple conditions are given, they
 must all be <code>TRUE</code> for the test to pass. See <code><a href="html_expect.html">html_expect()</a></code> for more
 details.</p></dd>
+
+
+<dt>testthat</dt>
+<dd><p>Whether to treat the expectation as a <code>testthat</code> test. You
+<em>do not</em> need to explicitly provide this most of the time, since by default,
+we can use <code><a href="https://testthat.r-lib.org/reference/is_testing.html" class="external-link">testthat::is_testing()</a></code> to figure out whether <code><a href="html_expect.html">html_expect()</a></code> is
+being called from within a <code>testthat</code> test.</p></dd>
 
 
 <dt>timeout</dt>
