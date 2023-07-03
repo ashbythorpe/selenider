@@ -63,11 +63,7 @@
 html_filter <- function(x, ...) {
   check_class(x, "selenider_elements")
 
-<<<<<<< refs/remotes/origin/main
-  exprs <- enquos(x)
-=======
   exprs <- enquos(...)
->>>>>>> Fix R CMD CHECK issues
   elem_name <- make_elem_name(exprs)
   calls <- lapply(exprs, parse_condition, elem_name)
 
