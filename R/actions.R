@@ -24,6 +24,10 @@
 #'
 #' @export
 click <- function(x, js = FALSE, timeout = NULL) {
+  check_class(x, "selenider_element")
+  check_bool(js)
+  check_number_decimal(timeout, allow_null = TRUE)
+
   timeout <- get_timeout(timeout, x$timeout)
   
   if (js) {
@@ -79,6 +83,10 @@ click <- function(x, js = FALSE, timeout = NULL) {
 #' 
 #' @export
 double_click <- function(x, js = FALSE, timeout = NULL) {
+  check_class(x, "selenider_element")
+  check_bool(js)
+  check_number_decimal(timeout, allow_null = TRUE)
+
   timeout <- get_timeout(timeout, x$timeout)
   
   if (js) {
@@ -127,6 +135,10 @@ double_click <- function(x, js = FALSE, timeout = NULL) {
 #' 
 #' @export
 right_click <- function(x, js = FALSE, timeout = NULL) {
+  check_class(x, "selenider_element")
+  check_bool(js)
+  check_number_decimal(timeout, allow_null = TRUE)
+
   timeout <- get_timeout(timeout, x$timeout)
   
   if (js) {
@@ -191,6 +203,10 @@ right_click <- function(x, js = FALSE, timeout = NULL) {
 #' 
 #' @export
 hover <- function(x, js = FALSE, timeout = NULL) {
+  check_class(x, "selenider_element")
+  check_bool(js)
+  check_number_decimal(timeout, allow_null = TRUE)
+
   timeout <- get_timeout(timeout, x$timeout)
 
   if (js) {
@@ -257,6 +273,10 @@ hover <- function(x, js = FALSE, timeout = NULL) {
 #'
 #' @export
 set_value <- function(x, text, timeout = NULL) {
+  check_class(x, "selenider_element")
+  check_string(text)
+  check_number_decimal(timeout, allow_null = TRUE)
+
   timeout <- get_timeout(timeout, x$timeout)
 
   element <- get_element_for_action(
@@ -283,7 +303,26 @@ set_value <- function(x, text, timeout = NULL) {
 #' 
 #' @export
 send_keys <- function(x, ..., timeout = NULL) {
+  check_class(x, "selenider_element")
+  check_number_decimal(timeout, allow_null = TRUE)
+  check_dots_unnamed()
+
+  exprs <- enexprs(...)
   keys <- list2(...)
+
+  for (i in seq_along(keys)) {
+    key <- keys[[i]]
+
+    if (!is_string(key) && !inherits(key, "selenider_key")) {
+      expr <- exprs[[i]]
+      cli::cli_abort(c(
+        "Every arguments in `...` must be a string or a {.cls selenider_key} object, not {.obj_type_friendly {key}}.",
+        "x" = "Problematic argument:",
+        "i" = "`{expr}`"
+      ))
+    }
+  }
+
 
   timeout <- get_timeout(timeout, x$timeout)
 
@@ -305,6 +344,9 @@ send_keys <- function(x, ..., timeout = NULL) {
 #'
 #' @export
 clear_value <- function(x, timeout = NULL) {
+  check_class(x, "selenider_element")
+  check_number_decimal(timeout, allow_null = TRUE)
+
   timeout <- get_timeout(timeout, x$timeout)
 
   element <- get_element_for_action(
@@ -387,6 +429,10 @@ get_element_for_action <- function(x,
 #'
 #' @export
 scroll_to <- function(x, js = FALSE, timeout = NULL) {
+  check_class(x, "selenider_element")
+  check_bool(js)
+  check_number_decimal(timeout, allow_null = TRUE)
+
   timeout <- get_timeout(timeout, x$timeout)
 
   if (js) {
@@ -446,6 +492,10 @@ scroll_to <- function(x, js = FALSE, timeout = NULL) {
 #'
 #' @export
 submit <- function(x, js = FALSE, timeout = NULL) {
+  check_class(x, "selenider_element")
+  check_bool(js)
+  check_number_decimal(timeout, allow_null = TRUE)
+
   timeout <- get_timeout(timeout, x$timeout)
 
   if (js) {
@@ -473,10 +523,9 @@ submit <- function(x, js = FALSE, timeout = NULL) {
 
     if (!result) {
       cli::cli_abort(c(
-        "To submit {.arg x}, it must be the child of a <form> element"
+        "To submit {.arg x}, it must be the descendant of a <form> element"
       ))
       # TODO: Add implicit waiting to check for a <form> parent.
-      # Remember: descendant/ancestor
     }
   } else {
     element <- get_element_for_action(

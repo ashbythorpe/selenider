@@ -119,6 +119,8 @@ reset_session <- function(old_session, close) {
 #' 
 #' @export
 get_session <- function(create = TRUE, .env = rlang::caller_env()) {
+  check_bool(create)
+  check_environment(.env)
   session <- get_from_env("session")
   
   if (is.null(session) && create) {
@@ -134,6 +136,8 @@ get_session <- function(create = TRUE, .env = rlang::caller_env()) {
 local_session <- function(session,
                           .local_envir = rlang::caller_env(),
                           close = TRUE) {
+  check_environment(.local_envir)
+  check_bool(close)
   old <- get_session(create = FALSE)
   withr::defer(reset_session(old, close), envir = .local_envir)
   set_session(session = session)
@@ -144,6 +148,8 @@ local_session <- function(session,
 #' 
 #' @export
 with_session <- function(session, code, close = TRUE) {
+  check_bool(close)
+
   old <- get_session(create = FALSE)
   on.exit(reset_session(old))
   set_session(session = session)

@@ -25,6 +25,9 @@
 #' 
 #' @export
 has_length <- function(x, n) {
+  check_class(x, "selenider_elements")
+  check_number_whole(n, min = 0L)
+
   elements <- get_elements(x)
   n <- vctrs::vec_cast(n, integer())
 
@@ -44,6 +47,11 @@ has_size <- has_length
 #'
 #' @export
 has_at_least <- function(x, n) {
+  check_class(x, "selenider_elements")
+  check_number_whole(n, min = 0L)
+
+  # TODO: make this more efficient.
+  # First make sure parent element exists, then get nth element.
   elements <- get_elements(x)
   
   if (!is.null(x)) {

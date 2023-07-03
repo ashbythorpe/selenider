@@ -40,6 +40,9 @@
 #'
 #' @export
 get_actual_webelement <- function(x, timeout = NULL) {
+  check_class(x, "selenider_element")
+  check_number_decimal(timeout, allow_null = TRUE)
+
   timeout <- get_timeout(timeout, x$timeout)
 
   res <- get_with_timeout(timeout, get_element, x)
@@ -49,6 +52,9 @@ get_actual_webelement <- function(x, timeout = NULL) {
 #'
 #' @export
 get_actual_webelements <- function(x, timeout = NULL) {
+  check_class(x, "selenider_elements")
+  check_number_decimal(timeout, allow_null = TRUE)
+
   timeout <- get_timeout(timeout, x$timeout)
 
   res <- get_with_timeout(timeout, get_elements, x)

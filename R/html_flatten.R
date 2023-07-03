@@ -25,6 +25,7 @@
 html_flatten <- function(...) {
   check_dots_unnamed()
 
+  exprs <- enexprs(...)
   elements <- list2(...)
 
   if (length(elements) == 0) {
@@ -32,6 +33,20 @@ html_flatten <- function(...) {
       "`...` is empty.",
       "i" = "Supply one or more arguments to combine into an element collection."
     ), class = "selenider_error_dots_empty")
+  }
+
+  accepted_classes <- c("selenider_element", "selenider_elements")
+  for (i in seq_len(elements)) {
+    element <- elements[[i]]
+
+    if (!inherits(element, accepted_classes)) {
+      expr <- exprs[[i]]
+      cli::cli_abort(c(
+        "Every arguments in `...` must be a {.cls {accepted_classes}} object, not {.obj_type_friendly {element}}.",
+        "x" = "Problematic argument:",
+        "i" = "`{expr}`"
+      ))
+    }
   }
   
   html_combine(elements)

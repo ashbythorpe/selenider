@@ -84,6 +84,12 @@ selenider_session <- function(browser = NULL,
                               local = TRUE,
                               quiet = TRUE,
                               .env = rlang::caller_env()) {
+  check_number_decimal(timeout, allow_null = TRUE)
+  check_class(driver, "remoteDriver", allow_null = TRUE)
+  check_bool(local)
+  check_bool(quiet)
+  check_environment(.env)
+
   if (is.null(browser)) {
     bv <- find_browser_and_version()
 
@@ -181,7 +187,6 @@ create_client <- function(browser) {
     res <- try_fetch(
       driver$getStatus(),
       error = function(e) {
-        print(e)
         if (count >= 5) {
           cli::cli_abort(c(
             "We could not determine whether the server was successfully started after {count} attempts."
@@ -252,6 +257,8 @@ new_selenider_session <- function(driver, timeout) {
 #'
 #' @export
 close_session <- function(x = NULL) {
+  check_class(x, "selenider_session", allow_null = TRUE)
+
   if (is.null(x)) {
     x <- get_session(create = FALSE)
   }
@@ -273,6 +280,7 @@ close_session <- function(x = NULL) {
 
 #' @export
 print.selenider_session <- function(x, ...) {
+  check_dots_empty()
   time <- as_pretty_dt(prettyunits::pretty_dt(Sys.time() - x$start_time))
   
   current_url <- if (is.null(x$current_url)) {

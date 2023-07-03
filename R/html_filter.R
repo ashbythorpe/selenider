@@ -61,6 +61,8 @@
 #'
 #' @export
 html_filter <- function(x, ...) {
+  check_class(x, "selenider_elements")
+
   exprs <- enquos(x)
   elem_name <- make_elem_name(exprs)
   calls <- lapply(exprs, parse_condition, elem_name)
@@ -79,6 +81,8 @@ html_filter <- function(x, ...) {
 #'
 #' @export
 html_find <- function(x, ...) {
+  check_class(x, "selenider_elements")
+
   res <- html_filter(x, ...)
   
   res <- add_numeric_filter(res, 1)

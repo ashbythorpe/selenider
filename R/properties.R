@@ -18,6 +18,9 @@
 #'
 #' @export
 html_name <- function(x, timeout = NULL) {
+  check_class(x, "selenider_element")
+  check_number_decimal(timeout, allow_null = TRUE)
+
   timeout <- get_timeout(timeout, x$timeout)
   
   element <- get_element_for_property(
@@ -47,6 +50,9 @@ html_name <- function(x, timeout = NULL) {
 #'
 #' @export
 html_text <- function(x, timeout = NULL) {
+  check_class(x, "selenider_element")
+  check_number_decimal(timeout, allow_null = TRUE)
+
   timeout <- get_timeout(timeout, x$timeout)
 
   element <- get_element_for_property(
@@ -91,6 +97,10 @@ html_text <- function(x, timeout = NULL) {
 #'
 #' @export
 html_attr <- function(x, name, default = NA_character_, timeout = NULL) {
+  check_class(x, "selenider_element")
+  check_string(name)
+  check_number_decimal(timeout, allow_null = TRUE)
+
   timeout <- get_timeout(timeout, x$timeout)
 
   element <- get_element_for_property(
@@ -112,6 +122,9 @@ html_attr <- function(x, name, default = NA_character_, timeout = NULL) {
 #'
 #' @export
 html_attrs <- function(x, timeout = NULL) {
+  check_class(x, "selenider_element")
+  check_number_decimal(timeout, allow_null = TRUE)
+
   timeout <- get_timeout(timeout, x$timeout)
 
   element <- get_element_for_property(
@@ -134,6 +147,9 @@ html_attrs <- function(x, timeout = NULL) {
 #'
 #' @export
 html_value <- function(x, ptype = character(), timeout = NULL) {
+  check_class(x, "selenider_element")
+  check_number_decimal(timeout, allow_null = TRUE)
+
   timeout <- get_timeout(timeout, x$timeout)
 
   element <- get_element_for_property(
@@ -172,6 +188,10 @@ html_value <- function(x, ptype = character(), timeout = NULL) {
 #'
 #' @export
 html_css_property <- function(x, name, timeout = NULL) {
+  check_class(x, "selenider_element")
+  check_string(name)
+  check_number_decimal(timeout, allow_null = TRUE)
+
   timeout <- get_timeout(timeout, x$timeout)
 
   element <- get_element_for_property(

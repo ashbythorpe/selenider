@@ -22,6 +22,8 @@
 #' 
 #' @export
 is_present <- function(x) {
+  check_class(x, "selenider_element")
+
   element <- get_element(x)
   
   !is.null(element)
@@ -56,6 +58,8 @@ is_absent <- is_missing
 #' 
 #' @export
 is_visible <- function(x) {
+  check_class(x, "selenider_element")
+
   element <- get_element(x)
   
   if (!is.null(element)) {
@@ -99,6 +103,8 @@ is_invisible <- is_hidden
 #' 
 #' @export
 is_enabled <- function(x) {
+  check_class(x, "selenider_element")
+
   element <- get_element(x)
   
   if (!is.null(element)) {
@@ -132,6 +138,9 @@ is_disabled <- function(x) !is_enabled(x)
 #'
 #' @export
 has_name <- function(x, name) {
+  check_class(x, "selenider_element")
+  check_string(name)
+
   element <- get_element(x)
 
   if (!is.null(element)) {
@@ -161,6 +170,9 @@ has_name <- function(x, name) {
 #' 
 #' @export
 has_text <- function(x, text) {
+  check_class(x, "selenider_element")
+  check_string(text)
+
   element <- get_element(x)
   
   if (!is.null(element)) {
@@ -174,6 +186,9 @@ has_text <- function(x, text) {
 #' 
 #' @export
 has_exact_text <- function(x, text) {
+  check_class(x, "selenider_element")
+  check_string(text)
+
   element <- get_element(x)
   
   if (!is.null(element)) {
@@ -209,6 +224,10 @@ has_exact_text <- function(x, text) {
 #'
 #' @export
 has_attr <- function(x, name, value) {
+  check_class(x, "selenider_element")
+  check_string(name)
+  vctrs::vec_check_size(value, 1)
+
   element <- get_element(x)
   
   if (is.null(element)) {
@@ -242,6 +261,10 @@ has_attr <- function(x, name, value) {
 #'
 #' @export
 attr_contains <- function(x, name, value) {
+  check_class(x, "selenider_element")
+  check_string(name)
+  check_string(value)
+
   element <- get_element(x)
   
   if (is.null(element)) {
@@ -261,6 +284,9 @@ attr_contains <- function(x, name, value) {
 #'
 #' @export
 has_value <- function(x, value) {
+  check_class(x, "selenider_element")
+  vctrs::vec_check_size(value, 1)
+
   element <- get_element(x)
   
   if (is.null(element)) {
@@ -311,6 +337,10 @@ has_value <- function(x, value) {
 #'
 #' @export
 has_css_property <- function(x, property, value) {
+  check_class(x, "selenider_element")
+  check_string(property)
+  check_string(value)
+
   element <- get_element(x)
   
   if (is.null(element)) {

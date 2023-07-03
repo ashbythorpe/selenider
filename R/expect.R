@@ -150,6 +150,8 @@ html_expect <- function(x, ..., testthat = NULL, timeout = NULL) {
   x <- enquo(x)
   dots <- enquos(...)
 
+  check_number_decimal(timeout, allow_null = TRUE)
+  check_bool(testthat, allow_null = TRUE)
   # `testthat` can only be TRUE if it is installed.
   if (is.null(testthat)) {
     testthat <- is_installed("testthat") && testthat::is_testing()

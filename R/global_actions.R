@@ -22,6 +22,9 @@
 #'
 #' @export
 open_url <- function(url, session = NULL) {
+  check_string(url)
+  check_class(session, "selenider_session", allow_null = TRUE)
+
   if (is.null(session)) {
     session <- get_session(.env = caller_env())
   }
@@ -61,6 +64,8 @@ open_url <- function(url, session = NULL) {
 #'
 #' @export
 back <- function(session = NULL) {
+  check_class(session, "selenider_session", allow_null = TRUE)
+
   if (is.null(session)) {
     session <- get_session(.env = caller_env())
   }
@@ -74,6 +79,8 @@ back <- function(session = NULL) {
 #'
 #' @export
 forward <- function(session = NULL) {
+  check_class(session, "selenider_session", allow_null = TRUE)
+
   if (is.null(session)) {
     session <- get_session(.env = caller_env())
   }
@@ -103,6 +110,8 @@ forward <- function(session = NULL) {
 #'
 #' @export
 reload <- function(session = NULL) {
+  check_class(session, "selenider_session", allow_null = TRUE)
+
   if (is.null(session)) {
     session <- get_session(.env = caller_env())
   }
@@ -140,6 +149,9 @@ refresh <- reload
 #'
 #' @export
 take_screenshot <- function(file = NULL, session = NULL) {
+  check_string(file)
+  check_class(session, "selenider_session", allow_null = TRUE)
+
   if (is.null(session)) {
     session <- get_session(.env = caller_env())
   }

@@ -14,6 +14,9 @@ read_html.selenider_session <- function(x, encoding = "", ..., options = c("RECO
 
 #' @exportS3Method xml2::read_html selenider_element
 read_html.selenider_element <- function(x, encoding = "", timeout = NULL, outer = TRUE, ..., options = c("RECOVER", "NOERROR", "NOBLANKS")) {
+  check_number_decimal(timeout, allow_null = TRUE
+  check_bool(outer)
+
   timout <- get_timeout(timeout, x$timeout)
   
   driver <- x$driver

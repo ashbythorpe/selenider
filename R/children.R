@@ -29,6 +29,8 @@
 #'
 #' @export
 html_ancestors <- function(x) {
+  check_class(x, "selenider_element")
+
   selector <- list(
     xpath = "./ancestor::*",
     filter = list()
@@ -49,6 +51,8 @@ html_ancestors <- function(x) {
 #'
 #' @export
 html_parent <- function(x) {
+  check_class(x, "selenider_element")
+
   selector <- list(
     xpath = "./..",
     filter = list()
@@ -67,6 +71,8 @@ html_parent <- function(x) {
 #'
 #' @export
 html_siblings <- function(x) {
+  check_class(x, "selenider_element")
+
   selector <- list(
     xpath = "./following-sibling::* | ./preceding-sibling::*",
     filter = list()
@@ -87,6 +93,8 @@ html_siblings <- function(x) {
 #'
 #' @export
 html_children <- function(x) {
+  check_class(x, "selenider_element")
+
   selector <- list(
     xpath = "*",
     filter = list()
@@ -107,6 +115,8 @@ html_children <- function(x) {
 #'
 #' @export
 html_descendants <- function(x) {
+  check_class(x, "selenider_element")
+
   selector <- list(
     xpath = ".//*",
     filter = list()

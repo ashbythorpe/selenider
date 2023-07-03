@@ -16,9 +16,16 @@ new_selector <- function(css,
   )
   
   args <- args[!vapply(args, is.null, logical(1))]
-  
-  if (length(args) == 0) {
+  args_without_filter <- args[names(args) != "filter"]
+
+  if (length(args_without_filter) == 0) {
     stop_bad_selector()
+  }
+
+  for (i in seq_along(args_without_filter[-1])) {
+    arg <- args_without_filter[[i]]
+    name <- names(args_without_filter)[i]
+    check_string(arg, allow_null = TRUE, arg = name, call = caller_env())
   }
   
   class(args) <- "selenider_selector"

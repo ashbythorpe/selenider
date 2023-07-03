@@ -1,5 +1,5 @@
 #' Test conditions on multiple elements
-#' 
+#'
 #' `html_expect_all()` and `html_wait_until_all()` are complements to
 #' [html_expect()] and [html_wait_until()] that test conditions on
 #' multiple elements in an element collection.
@@ -19,7 +19,7 @@
 #' at least one element exists with [has_at_least()].
 #'
 #' `html_expect_all()` and `html_wait_until_all()` can be thought of as alternatives
-#' to the use of `all(vapply(FUN.VALUE = logical(1)))` (or [purrr::every()]) 
+#' to the use of `all(vapply(FUN.VALUE = logical(1)))` (or [purrr::every()])
 #' within [html_expect()] and [html_wait_until()].
 #'
 #' For example, the following two expressions are equivalent (where `x` is an
@@ -34,11 +34,11 @@
 #' @returns
 #' `html_expect_all()` returns the elements `x`, or `NULL` if an element or
 #' collection of elements was not given in `x`.
-#' 
+#'
 #' `html_wait_until_all()` returns a boolean flag: TRUE if the test passes, FALSE
 #' otherwise.
 #'
-#' @seealso 
+#' @seealso
 #' * [html_expect()] and [html_wait_until()]
 #' * [is_present()] and other conditions for predicates for a single HTML element.
 #'
@@ -54,6 +54,8 @@ html_expect_all <- function(x, ..., testthat = NULL, timeout = NULL) {
 
   result <- eval_all_conditions(x, dots, timeout)
 
+  check_number_decimal(timeout, allow_null = TRUE)
+  check_bool(testthat, allow_null = TRUE)
   # `testthat` can only be TRUE if it is installed.
   if (is.null(testthat)) {
     testthat <- is_installed("testthat") && testthat::is_testing()
@@ -97,7 +99,8 @@ html_expect_all <- function(x, ..., testthat = NULL, timeout = NULL) {
 html_wait_until_all <- function(x, ..., timeout = NULL) {
   dots <- enquos(...)
 
+  check_number_decimal(timeout, allow_null = TRUE)
   result <- eval_all_conditions(x, dots, timeout)
-  
+
   isTRUE(result$res)
 }
