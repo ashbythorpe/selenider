@@ -1,7 +1,6 @@
 #' Open a URL
 #' 
 #' Navigate the browser to specified URL, waiting until the page is considered
-
 #' open before finishing.
 #' 
 #' @param url The URL to navigate to; a string.
@@ -29,7 +28,12 @@ open_url <- function(url, session = NULL) {
     session <- get_session(.env = caller_env())
   }
   
-  session$driver$client$navigate(url)
+  if (uses_selenium(session$driver)) {
+    session$driver$client$navigate(url)
+  } else {
+    session$driver$Page$navigate(url)
+    session$driver$Page$loadEventFired()
+  }
   
   invisible(session)
 }
@@ -70,7 +74,20 @@ back <- function(session = NULL) {
     session <- get_session(.env = caller_env())
   }
   
-  session$driver$client$goBack()
+  if (uses_selenium(session$driver)) {
+    session$driver$client$goBack()
+  } else {
+    navigation_history <- session$driver$Page$getNavigationHistory()
+    index <- navigation_history$index + 1
+    history <- navigation_history$entries
+    if (index > 1) {
+      new_id <- history[[index - 1]]$id
+      session$driver$Page$navigateToHistoryEntry(new_id)
+      session$driver$Page$loadEventFired()
+    } else {
+      # TODO: Throw an error if we cannot go back?
+    }
+  }
   
   invisible(session)
 }
@@ -85,8 +102,21 @@ forward <- function(session = NULL) {
     session <- get_session(.env = caller_env())
   }
   
-  session$driver$client$goForward()
-  
+  if (uses_selenium(session$driver)) {
+    session$driver$client$goForward()
+  } else {
+    navigation_history <- session$driver$Page$getNavigationHistory()
+    index <- navigation_history$index + 1
+    history <- navigation_history$entries
+    if (index < length(history)) {
+      new_id <- history[[index - 1]]$id
+      session$driver$Page$navigateToHistoryEntry(new_id)
+      session$driver$Page$loadEventFired()
+    } else {
+      # TODO: Throw an error if we cannot go back?
+    }
+  }
+
   invisible(session)
 }
 
@@ -116,7 +146,12 @@ reload <- function(session = NULL) {
     session <- get_session(.env = caller_env())
   }
   
-  session$driver$client$refresh()
+  if (uses_selenium(session$driver)) {
+    session$driver$client$refresh()
+  } else {
+    session$driver$Page$reload()
+    session$driver$Page$loadEventFired()
+  }
   
   invisible(session)
 }
@@ -156,7 +191,11 @@ take_screenshot <- function(file = NULL, session = NULL) {
     session <- get_session(.env = caller_env())
   }
   
-  session$driver$client$screenshot(file)
+  if (uses_selenium(session$driver)) {
+    session$driver$client$screenshot(file)
+  } else {
+    session$driver$screenshot(file)
+  }
   
   invisible(session)
 }

@@ -5,6 +5,7 @@
 \title{Start a session}
 \usage{
 selenider_session(
+  session = c("selenium", "chromote"),
   browser = NULL,
   timeout = 4,
   driver = NULL,
@@ -14,6 +15,8 @@ selenider_session(
 )
 }
 \arguments{
+\item{session}{The package to use as a backend.}
+
 \item{browser}{The name of the browser to run the session in; one of
 "chrome", "firefox", "phantomjs" or "internet explorer" (only on
 Windows). IF \code{NULL}, the function will try to work out which browser

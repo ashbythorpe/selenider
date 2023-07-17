@@ -16,40 +16,6 @@ get_with_timeout <- function(timeout, .f, ...) {
   }
 }
 
-find_element <- function(x, using, value) {
-  if (inherits(x, c("webElement", "mock_element"))) {
-    try_fetch(
-      suppressMessages(x$findChildElement(using = using, value = value)),
-      error = function(cnd) {
-        if (grepl("NoSuchElement", cnd$message, fixed = TRUE)) {
-          NULL
-        } else {
-          zap()
-        }
-      }
-    )
-  } else if (inherits(x, c("remoteDriver", "mock_client"))) {
-    try_fetch(
-      suppressMessages(x$findElement(using = using, value = value)),
-      error = function(cnd) {
-        if (grepl("NoSuchElement", cnd$message, fixed = TRUE)) {
-          return(NULL)
-        } else {
-          return(zap())
-        }
-      }
-    )
-  }
-}
-
-find_elements <- function(x, using, value) {
-  if (inherits(x, "webElement")) {
-    x$findChildElements(using = using, value = value)
-  } else {
-    x$findElements(using = using, value = value)
-  }
-}
-
 selenium_intersect <- function(x) {
   if (length(x) == 0) {
     return(NULL)
@@ -153,6 +119,10 @@ call_insert <- function(call, elem_name, quo = TRUE) {
 escape_squirlies <- function(x) {
   x <- gsub("{", "{{", x, fixed = TRUE)
   gsub("}", "}}", x, fixed = TRUE)
+}
+
+uses_selenium <- function(x) {
+  !is.null(x$client) && inherits_any(x$client, c("remoteDriver", "mock_client"))
 }
 
 is_windows <- function() .Platform$OS.type == "windows"

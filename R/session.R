@@ -3,6 +3,7 @@
 #' Begin a session in selenider, setting the session globally unless otherwise
 #' specified.
 #'
+#' @param session The package to use as a backend.
 #' @param browser The name of the browser to run the session in; one of
 #'   "chrome", "firefox", "phantomjs" or "internet explorer" (only on
 #'   Windows). IF `NULL`, the function will try to work out which browser
@@ -78,19 +79,31 @@
 #' }
 #'
 #' @export
-selenider_session <- function(browser = NULL,
+selenider_session <- function(session = c( "selenium", "chromote"),
+                              browser = NULL,
                               timeout = 4,
                               driver = NULL,
                               local = TRUE,
                               quiet = TRUE,
                               .env = rlang::caller_env()) {
+  session <- rlang::arg_match(session)
+
   check_number_decimal(timeout, allow_null = TRUE)
-  check_class(driver, "remoteDriver", allow_null = TRUE)
+  check_driver(driver, allow_null = TRUE)
   check_bool(local)
   check_bool(quiet)
   check_environment(.env)
+  
+  if (session == "chromote") {
+    if (!is.null(browser) && browser != "chrome") {
+      cli::cli_warn(c(
+        "{.pkg chromote} only supports {.val chrome}"
+      ))
+    }
 
-  if (is.null(browser)) {
+    browser <- "chrome"
+    version <- get_browser_version(browser)
+  } else if (is.null(browser)) {
     bv <- find_browser_and_version()
 
     if (is.null(bv)) {
@@ -116,10 +129,16 @@ selenider_session <- function(browser = NULL,
   }
 
   if (is.null(driver)) {
-    driver <- list(
-      server = create_server(browser, version, quiet),
-      client = create_client(browser)
-    )
+    if (session == "chromote") {
+      driver <- create_chromote_driver()
+    } else {
+      driver <- list(
+        server = create_server(browser, version, quiet),
+        client = create_client(browser)
+      )
+    }
+  } else if (inherits(driver, "AppDriver")) {
+    driver <- driver$get_chromote_session()
   }
   
   session <- new_selenider_session(driver, timeout)
@@ -176,6 +195,11 @@ create_server <- function(browser, version, quiet) {
       ), parent = e)
     }
   )
+}
+
+create_chromote_driver <- function() {
+  rlang::check_installed("chromote")
+  chromote::ChromoteSession$new()
 }
 
 create_client <- function(browser) {
@@ -263,19 +287,23 @@ close_session <- function(x = NULL) {
     x <- get_session(create = FALSE)
   }
   
-  try_fetch(
-    x$driver$client$close(),
-    error = function(e) {
-      x$driver$server$stop()
-      cli::cli_abort(
-        "Could not close session", 
-        class = "selenider_error_close_session", 
-        parent = e
-      )
-    }
-  )
-  
-  invisible(x$driver$server$stop())
+  if (uses_selenium(x$driver)) {
+    try_fetch(
+      x$driver$client$close(),
+      error = function(e) {
+        x$driver$server$stop()
+        cli::cli_abort(
+          "Could not close session", 
+          class = "selenider_error_close_session", 
+          parent = e
+        )
+      }
+    )
+    
+    invisible(x$driver$server$stop())
+  } else {
+    invisible(x$driver$close())
+  }
 }
 
 #' @export

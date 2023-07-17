@@ -52,7 +52,7 @@ use_selector <- function(selector, element, driver, multiple = FALSE) {
       names(selector)
     )
     
-    res <- find_element(element, using = using, value = selector[[1]])
+    res <- find_element(element, using = using, value = selector[[1]], driver = driver)
 
     list(res)
   } else {
@@ -65,7 +65,7 @@ use_selector <- function(selector, element, driver, multiple = FALSE) {
         name
       )
       
-      find_elements(element, using = using, value = value)
+      find_elements(element, using = using, value = value, driver = driver)
     }, list(names(selector), selector), NULL)
 
     selenium_intersect(element_list)
