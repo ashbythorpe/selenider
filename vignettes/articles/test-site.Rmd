@@ -1,0 +1,12 @@
+---
+title: "test-site"
+---
+
+````{=html}
+```{r, echo=FALSE, results='asis'}
+withr::with_options(
+  list(encoding = "native.enc"),
+  cat(readLines("test_site.html", encoding = "UTF-8"), sep = "\n")
+)
+```
+````
