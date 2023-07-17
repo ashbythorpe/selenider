@@ -1,0 +1,8 @@
+---
+title: "test-site"
+output:
+  html_document:
+    includes:
+      after_body: test-site.html
+---
+
