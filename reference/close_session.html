@@ -21,6 +21,12 @@
       <ul class="navbar-nav me-auto"><li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/test-site.html">test-site</a>
+  </div>
+</li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -76,7 +82,7 @@ will be closed.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># We don't have to specify the session if it is set locally.</span></span></span>
 <span class="r-in"><span><span class="fu">close_session</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in handlers[[1L]](cnd):</span> attempt to apply non-function</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in x$driver$close():</span> attempt to apply non-function</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Since we already closed `session`, we don't need the deferred events to</span></span></span>
 <span class="r-in"><span><span class="co"># run</span></span></span>
