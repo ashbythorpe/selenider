@@ -8,7 +8,7 @@
 \usage{
 set_value(x, text, timeout = NULL)
 
-send_keys(x, ..., timeout = NULL)
+send_keys(x, ..., modifiers = NULL, timeout = NULL)
 
 clear_value(x, timeout = NULL)
 }
@@ -20,6 +20,8 @@ clear_value(x, timeout = NULL)
 \item{timeout}{How long to wait for the element to exist.}
 
 \item{...}{A set of inputs to send to \code{x}.}
+
+\item{modifiers}{A character vector; one or more of "shift", "ctrl", "alt", and "command"/meta".}
 }
 \value{
 \code{x}, invisibly

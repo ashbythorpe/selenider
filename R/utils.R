@@ -16,6 +16,14 @@ get_with_timeout <- function(timeout, .f, ...) {
   }
 }
 
+elem_unique <- function(x, uses_selenium) {
+  if (uses_selenium) {
+    selenium_intersect(x)
+  } else {
+    unique(x)
+  }
+}
+
 selenium_intersect <- function(x) {
   if (length(x) == 0) {
     return(NULL)
@@ -122,7 +130,17 @@ escape_squirlies <- function(x) {
 }
 
 uses_selenium <- function(x) {
-  !is.null(x$client) && inherits_any(x$client, c("remoteDriver", "mock_client"))
+  inherits_any(x, c("remoteDriver", "mock_client")) || (!is.null(x$client) && inherits_any(x$client, c("remoteDriver", "mock_client")))
+}
+
+execute_js_fn <- function(fn, x, driver) {
+  if (uses_selenium(driver)) {
+    script <- paste0("let fn = ", fn, ";", "return fn(arguments[0]);")
+    driver$executeScript(script, list(x))
+  } else {
+    script <- paste0("function() { return (", fn, ")(this) }")
+    x$driver$Runtime$callFunctionOn(fn, chromote_object_id(x))$result$value
+  }
 }
 
 is_windows <- function() .Platform$OS.type == "windows"

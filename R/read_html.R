@@ -1,15 +1,22 @@
 #' @exportS3Method xml2::read_html selenider_session
 read_html.selenider_session <- function(x, encoding = "", ..., options = c("RECOVER", "NOERROR", "NOBLANKS")) {
-  driver <- x$driver$client
+  driver <- get_driver(x)
+  
+  if (uses_selenium(driver)) {
+    page_source <- driver$client$getPageSource()
 
-  page_source <- driver$getPageSource()
-
-  if (length(page_source) == 0) {
-    NULL
+    if (length(page_source) == 0) {
+      return(NULL)
+    } else {
+      x <- page_source[[1]]
+    }
   } else {
-    x <- page_source[[1]]
-    NextMethod()
+    document <- driver$DOM$getDocument()
+    root <- document$root$nodeId
+    x <- driver$DOM$getOuterHTML(root)$outerHTML
   }
+
+  NextMethod()
 }
 
 #' @exportS3Method xml2::read_html selenider_element
@@ -28,17 +35,17 @@ read_html.selenider_element <- function(x, encoding = "", timeout = NULL, outer 
   )
 
   if (outer) {
-    x <- driver$executeScript("
-      let element = arguments[0];
-      let html = element.outerHTML;
-      return html;
-    ", list(element))
+    if (uses_selenium(driver)) {
+      x <- driver$executeScript("
+        let element = arguments[0];
+        let html = element.outerHTML;
+        return html;
+      ", list(element))
+    } else {
+      x <- driver$DOM$getOuterHTML(element)$outerHTML
+    }
   } else {
-    x <- driver$executeScript("
-      let element = arguments[0];
-      let html = element.innerHTML;
-      return html;
-    ", list(element))
+    x <- execute_js_fn("x => x.innerHTML", element, driver)
   }
 
   NextMethod()

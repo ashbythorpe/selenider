@@ -40,8 +40,8 @@ click <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("be enabled")
     )
 
-    x$driver$executeScript("arguments[0].click();", list(element))
-  } else {
+    execute_js_fn("x => x.click()", element, x$driver)
+  } else  {
     element <- get_element_for_action(
       x,
       action = "click {.arg x}",
@@ -50,33 +50,67 @@ click <- function(x, js = FALSE, timeout = NULL) {
       failure_messages = c("was not visible", "was not enabled"),
       conditions_text = c("be visible and enabled")
     )
-    
-    if (identical(element$getElementTagName(), "checkbox")) {
-      try({
-        x$driver$executeScript(
-          "arguments[0].focus();",
-          list(element$findChildElement("tag", "input"))
-        )
 
-        element$findChildElement("tag", "input")$clickElement()
-        return(invisible(x))
-      }, silent = TRUE)
-    } 
-
-    if (x$driver$browserName == "internet explorer") {
-      size <- element$getElementSize()
-
-      x$driver$mouseMoveToLocation(
-        x = round(size$width / 3),
-        y = round(size$height / 3),
-        webElement = element
-      )
+    if (uses_selenium(x$driver)) {
+      left_click_selenium(element, x)
+    } else {
+      click_chromote(element, x$driver)
     }
-
-    element$clickElement()
   }
 
   invisible(x)
+}
+
+left_click_selenium <- function(element, x) {
+  if (x$driver$browserName == "internet explorer" && identical(element$getElementTagName(), "checkbox")) {
+    try({
+      x$driver$executeScript(
+        "arguments[0].focus();",
+        list(element$findChildElement("tag", "input"))
+      )
+
+      element$findChildElement("tag", "input")$clickElement()
+      return()
+    }, silent = TRUE)
+  } 
+
+  if (x$driver$browserName == "internet explorer") {
+    size <- element$getElementSize()
+
+    x$driver$mouseMoveToLocation(
+      x = round(size$width / 3),
+      y = round(size$height / 3),
+      webElement = element
+    )
+  }
+
+  element$clickElement()
+}
+
+click_chromote <- function(element, driver, type = "left", count = 1) {
+  chromote_scroll_into_view_if_needed(element, driver)
+
+  coords <- chromote_get_xy(element, driver)
+  x <- coords$x
+  y <- coords$y
+
+  capture_mouse_press_error(driver$Input$dispatchMouseEvent(type = "mousePressed", x = x, y = y, button = type, clickCount = count, timeout_ = 0.1))
+  capture_mouse_press_error(driver$Input$dispatchMouseEvent(type = "mouseReleased", x = x, y = y, button = type, clickCount = 0, timeout_ = 0.1))
+}
+
+# There is a chrome bug where the mouse event is left hanging when the viewer is enabled.
+# This forces the event to timeout prematurely, and catches the error.
+capture_mouse_press_error <- function(expr) {
+  rlang::try_fetch(
+    expr,
+    error = function(e) {
+      if (grepl("timed out waiting for response", e$message, fixed = TRUE)) {
+        NULL
+      } else {
+        rlang::zap()
+      }
+    }
+  )
 }
 
 #' @rdname click
@@ -99,14 +133,13 @@ double_click <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("be enabled")
     )
     
-    x$driver$executeScript("
-      element = arguments[0];
-      element.click(); 
-      element.click();
+    execute_js_fn("function(x) {
+      x.click(); 
+      x.click();
       let clickevent = document.createevent('mouseevents');
       clickevent.initevent('dblclick', true, true);
-      element.dispatchevent(clickevent);
-    ", list(element))
+      x.dispatchevent(clickevent);
+    }", element, x$driver)
   } else {
     element <- get_element_for_action(
       x,
@@ -117,15 +150,19 @@ double_click <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("be visible and enabled")
     )
     
-    size <- element$getElementSize()
+    if (uses_selenium(x$driver)) {
+      size <- element$getElementSize()
 
-    x$driver$mouseMoveToLocation(
-      x = round(size$width / 3),
-      y = round(size$height / 3),
-      webelement = element
-    )
-    
-    x$driver$doubleclick()
+      x$driver$mouseMoveToLocation(
+        x = round(size$width / 3),
+        y = round(size$height / 3),
+        webelement = element
+      )
+      
+      x$driver$doubleclick()
+    } else {
+      click_chromote()
+    }
   }
   
   invisible(x)
@@ -151,13 +188,12 @@ right_click <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("be enabled")
     )
     
-    x$driver$executeScript("
-      element = arguments[0];
+    execute_js_fn("function(element) {
       element.click(); 
       let clickevent = document.createevent('mouseevents');
       clickevent.initevent('contextmenu', true, true);
       element.dispatchevent(clickevent);
-    ", list(element))
+    }", list(element))
   } else {
     element <- get_element_for_action(
       x,
@@ -167,16 +203,20 @@ right_click <- function(x, js = FALSE, timeout = NULL) {
       failure_messages = c("was not visible", "was not enabled"),
       conditions_text = c("be visible and enabled")
     )
-    
-    size <- element$getElementSize()
 
-    x$driver$mouseMoveToLocation(
-      x = round(size$width / 3),
-      y = round(size$height / 3),
-      webelement = element
-    )
-    
-    x$driver$click(2)
+    if (uses_selenium(x$driver)) {
+      size <- element$getElementSize()
+
+      x$driver$mouseMoveToLocation(
+        x = round(size$width / 3),
+        y = round(size$height / 3),
+        webelement = element
+      )
+      
+      x$driver$click(2)
+    } else {
+      click_chromote(element, x$driver, type = "right")
+    }
   }
   
   invisible(x)
@@ -219,13 +259,12 @@ hover <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("be enabled")
     )
 
-    x$driver$executeScript("
-      element = arguments[0];
+    execute_js_fn("function(element) {
       element.moveToElement(element);
       let clickevent = document.createevent('mouseevents');
       clickevent.initevent('mouseover', true, true);
       element.dispatchevent(clickevent);
-    ", list(element))
+    }", list(element))
   } else {
     element <- get_element_for_action(
       x,
@@ -235,17 +274,31 @@ hover <- function(x, js = FALSE, timeout = NULL) {
       failure_messages = c("was not visible", "was not enabled"),
       conditions_text = c("be visible and enabled")
     )
+    
+    if (uses_selenium(x$driver)) {
+      size <- element$getElementSize()
 
-    size <- element$getElementSize()
-
-    x$driver$mouseMoveToLocation(
-      x = round(size$width / 3),
-      y = round(size$height / 3),
-      webelement = element
-    )
+      x$driver$mouseMoveToLocation(
+        x = round(size$width / 3),
+        y = round(size$height / 3),
+        webelement = element
+      )
+    } else {
+      hover_chromote(element, x$driver)
+    }
   }
 
   invisible(x)
+}
+
+hover_chromote <- function(element, driver) {
+  chromote_scroll_into_view_if_needed(element, driver)
+
+  coords <- chromote_get_xy(element, driver)
+  x <- coords$x
+  y <- coords$y
+
+  driver$Input$dispatchMouseEvent(type = "mouseMoved", x = x, y = y)
 }
 
 #' Set the value of an input
@@ -288,21 +341,42 @@ set_value <- function(x, text, timeout = NULL) {
     conditions_text = c("be enabled")
   )
 
-  x$driver$executeScript(
-    paste0("arguments[0].setAttribute('value','", text, "');"),
-    list(element)
+  execute_js_fn(
+    paste0("x => x.setAttribute('value','", text, "')"),
+    element, x$driver
   )
+  
+  if (uses_selenium(x$driver)) {
+    element$clearElement()
+    element$sendKeysToElement(list(text))
+  } else {
+    chromote_clear(element, x$driver)
+    chromote_send_chars(element, x$driver)
+  }
+}
 
-  element$clearElement()
-  element$sendKeysToElement(list(text))
+chromote_clear <- function(x, driver) {
+  click_chromote(x, driver)
+
+  chromote_press(modifiers = 2, text = "a", unmodifiedText = "a", key = "a", code = "KeyA", windowsVirtualKeyCode = 65)
+  chromote_press(type = "keyDown", windowsVirtualKeyCode = 8, code = "Backspace", key = "Backspace")
+}
+
+chromote_send_chars <- function(x, driver) {
+  chars <- strsplit(x, split = NULL)[[1]]
+
+  for (char in chars) {
+    driver$Input$dispatchKeyEvent(type = "char", text = char)
+  }
 }
 
 #' @rdname set_value
 #'
 #' @param ... A set of inputs to send to `x`.
+#' @param modifiers A character vector; one or more of "shift", "ctrl", "alt", and "command"/meta".
 #' 
 #' @export
-send_keys <- function(x, ..., timeout = NULL) {
+send_keys <- function(x, ..., modifiers = NULL, timeout = NULL) {
   check_class(x, "selenider_element")
   check_number_decimal(timeout, allow_null = TRUE)
   check_dots_unnamed()
@@ -317,12 +391,11 @@ send_keys <- function(x, ..., timeout = NULL) {
       expr <- exprs[[i]]
       cli::cli_abort(c(
         "Every arguments in `...` must be a string or a {.cls selenider_key} object, not {.obj_type_friendly {key}}.",
-        "x" = "Problematic argument:",
+        "x" = "Problematic argument ({.var {i}}):",
         "i" = "`{expr}`"
       ))
     }
   }
-
 
   timeout <- get_timeout(timeout, x$timeout)
 
@@ -335,9 +408,62 @@ send_keys <- function(x, ..., timeout = NULL) {
     conditions_text = c("be enabled")
   )
 
-  element$sendKeysToElement(keys)
+  if (uses_selenium(x$driver)) {
+    element$sendKeysToElement(keys)
+  } else {
+    chromote_send_keys(element, x$driver, keys, modifiers)
+  }
 
   invisible(x)
+}
+
+chromote_send_keys <- function(element, driver, keys, modifiers) {
+  keys <- format_keys(keys)
+  modifier_number <- get_numeric_modifier(modifiers)
+
+  for (key in keys) {
+    rlang::exec(chromote_press, !!!key, modifiers = modifiers)
+  }
+}
+
+format_keys <- function(keys, modifiers) {
+  # Don't use `text` param if we have a modifier that is not shift
+  no_text <- length(modifiers[[vapply(modifiers, function(x) identical(x, "shift"), FUN.VALUE = logical(1))]]) > 0
+
+  result <- list()
+  for (key in keys) {
+    if (inherits(key, "selenider_key")) {
+      key <- get_chromote_key(key)
+      result <- append(result, list(key))
+    } else {
+      chars <- strsplit(key, split = NULL)[[1]]
+
+      for (char in chars) {
+        key <- identify_chromote_key(char)
+        if (!no_text) {
+          key$text <- char
+        }
+
+        result <- append(result, list(key))
+      }
+    }
+  }
+
+  result
+}
+
+# CDP implements the modifier argument as a bitmask
+# So alt is 1, ctrl is 2, both is 3, etc.
+get_numeric_modifier <- function(modifiers) {
+  if (length(modifiers) == 0) {
+    return(0)
+  }
+  
+  modifiers <- vapply(modifiers, tolower, FUN.VALUE = character(1))
+
+  1 * ("alt" %in% modifiers) + 2 * ("ctrl" %in% modifiers) +
+    4 * ("meta" %in% modifiers || "command" %in% modifiers) +
+    8 * ("shift" %in% modifiers)
 }
 
 #' @rdname set_value
@@ -357,8 +483,12 @@ clear_value <- function(x, timeout = NULL) {
     failure_messages = c("was not enabled"),
     conditions_text = c("be enabled")
   )
-
-  element$clearElement()
+  
+  if (uses_selenium(x$driver)) {
+    element$clearElement()
+  } else {
+    chromote_clear(element, x$driver)
+  }
 
   invisible(x)
 }

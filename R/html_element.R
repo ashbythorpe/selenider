@@ -86,7 +86,7 @@ html_element.selenider_element <- function(x,
 
 new_selenider_element <- function(session, selector) {
   res <- list(
-    driver = session$driver$client,
+    driver = get_driver(session),
     element = NULL,
     timeout = session$timeout,
     selectors = list(selector),
@@ -96,6 +96,10 @@ new_selenider_element <- function(session, selector) {
   class(res) <- "selenider_element"
   
   res
+}
+
+get_driver <- function(session) {
+  if (inherits(session$driver, "ChromoteSession")) session$driver else session$driver$client
 }
 
 cache_element <- function(x) {

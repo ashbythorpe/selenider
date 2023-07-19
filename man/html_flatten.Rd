@@ -14,7 +14,7 @@ html_flatten(...)
 }
 \arguments{
 \item{...}{<\code{\link[rlang:dyn-dots]{dynamic-dots}}> \code{selenider_element} or
-\code{selenider_elements} objects to be combined.}
+\code{selenider_elements} objects to be combined, or lists of such objects.}
 }
 \value{
 A \code{selenider_elements} object.
@@ -22,8 +22,9 @@ A \code{selenider_elements} object.
 \description{
 Combine a set of \code{selenider_element}/\code{selenider_elements} objects
 into a single \code{selenider_elements} object, allowing you to
-perform actions on them at once. \code{c()} and \code{html_flatten()} can be
-used interchangeably.
+perform actions on them at once. \code{c()} and \code{html_flatten()} do the same
+thing, but \code{html_flatten()} works on lists of \code{selenider_element}/\code{selenider_elements}
+objects.
 }
 \examples{
 session <- mock_selenider_session()
@@ -35,5 +36,7 @@ collection <- ss(".class2")
 html_flatten(element, collection)
 
 c(collection, element)
+
+html_flatten(list(element, collection))
 
 }

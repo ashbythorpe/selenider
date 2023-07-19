@@ -2,11 +2,12 @@
 #' 
 #' Combine a set of `selenider_element`/`selenider_elements` objects
 #' into a single `selenider_elements` object, allowing you to
-#' perform actions on them at once. `c()` and `html_flatten()` can be
-#' used interchangeably.
+#' perform actions on them at once. `c()` and `html_flatten()` do the same
+#' thing, but `html_flatten()` works on lists of `selenider_element`/`selenider_elements`
+#' objects.
 #'
 #' @param ... <[`dynamic-dots`][rlang::dyn-dots]> `selenider_element` or
-#'   `selenider_elements` objects to be combined.
+#'   `selenider_elements` objects to be combined, or lists of such objects.
 #' 
 #' @returns A `selenider_elements` object.
 #'
@@ -21,6 +22,8 @@
 #'
 #' c(collection, element)
 #'
+#' html_flatten(list(element, collection))
+#'
 #' @export
 html_flatten <- function(...) {
   check_dots_unnamed()
@@ -34,22 +37,51 @@ html_flatten <- function(...) {
       "i" = "Supply one or more arguments to combine into an element collection."
     ), class = "selenider_error_dots_empty")
   }
+  
+  to_combine <- flatten_init(elements, exprs)
+  
+  html_combine(to_combine)
+}
 
+flatten_init <- function(x, exprs, is_nested = FALSE, index = NULL, call = rlang::caller_env()) {
   accepted_classes <- c("selenider_element", "selenider_elements")
-  for (i in seq_along(elements)) {
-    element <- elements[[i]]
 
-    if (!inherits(element, accepted_classes)) {
-      expr <- exprs[[i]]
-      cli::cli_abort(c(
-        "Every arguments in `...` must be a {.cls {accepted_classes}} object, not {.obj_type_friendly {element}}.",
-        "x" = "Problematic argument:",
-        "i" = "`{expr}`"
-      ))
+  result <- list()
+  for (i in seq_along(x)) {
+    element <- x[[i]]
+
+    if (!inherits_any(element, accepted_classes)) {
+      if (is.list(element) && !is_nested) {
+        result <- c(result, flatten_init(element, is_nested = TRUE, index = i, call = call))
+      } else {
+        stop_flatten_dots(x, exprs, i, index, is_nested, call)
+      }
+    } else {
+      result <- append(result, list(element))
     }
   }
-  
-  html_combine(elements)
+
+  result
+}
+
+stop_flatten_dots <- function(x, exprs, i, index, is_nested, call = rlang::caller_env()) {
+  accepted_classes <- c("selenider_element", "selenider_elements")
+
+  if (!is_nested) {
+    expr <- exprs[[i]]
+    cli::cli_abort(c(
+      "Every arguments in `...` must be a {.cls {accepted_classes}} object or a list of such objects, not {.obj_type_friendly {x}}.",
+      "x" = "Problematic argument ({.val {i}}):",
+      "i" = "`{expr}`"
+    ), class = "selenider_error_flatten_dots", call = call)
+  } else {
+    cli::cli_abort(c(
+      "Every arguments in `...` must be a {.cls {accepted_classes}} object or a list of such objects.",
+      "x" = "Argument {.val {index}} was a list, but contained {.obj_type_friendly {x}} as its {ordinal(i)} element.",
+      "x" = "Problematic argument:",
+      "i" = "`{expr}`"
+    ), class = "selenider_error_flatten_dots", call = call)
+  }
 }
 
 #' @rdname html_flatten

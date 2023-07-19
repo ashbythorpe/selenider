@@ -63,7 +63,15 @@ is_visible <- function(x) {
   element <- get_element(x)
   
   if (!is.null(element)) {
-    element$isElementDisplayed()
+    if (uses_selenium(x$driver)) {
+      element$isElementDisplayed()
+    } else {
+      driver <- x$driver
+      tryCatch({
+        driver$DOM$getBoxModel(element)
+        TRUE
+      }, error = function() FALSE)
+    }
   } else {
     stop_absent_element()
   }
@@ -108,7 +116,14 @@ is_enabled <- function(x) {
   element <- get_element(x)
   
   if (!is.null(element)) {
-    element$isElementEnabled()
+    if (uses_selenium(x$driver)) {
+      element$isElementEnabled()
+    } else {
+      driver <- x$driver
+      driver$Runtime$callFunctionOn("function() {
+        return !this.disabled
+      }", chromote_object_id(element, driver))$result$value
+    }
   } else {
     stop_absent_element()
   }
@@ -144,7 +159,12 @@ has_name <- function(x, name) {
   element <- get_element(x)
 
   if (!is.null(element)) {
-    element$getElementTagName() == name
+    if (uses_selenium(x$driver)) {
+      element$getElementTagName() == name
+    } else {
+      driver <- x$driver
+      tolower(driver$DOM$describeNode(element)$node$nodeName) == name
+    }
   } else {
     stop_absent_element()
   }
@@ -176,7 +196,13 @@ has_text <- function(x, text) {
   element <- get_element(x)
   
   if (!is.null(element)) {
-    grepl(text, element$getElementText(), fixed = TRUE)
+    if (uses_selenium(x$driver)) {
+      grepl(text, element$getElementText(), fixed = TRUE)
+    } else {
+      driver <- x$driver
+      actual <- chromote_get_text(element, driver)
+      grepl(text, actual, fixed = TRUE)
+    }
   } else {
     stop_absent_element()
   }
@@ -192,7 +218,13 @@ has_exact_text <- function(x, text) {
   element <- get_element(x)
   
   if (!is.null(element)) {
-    identical(element$getElementText(), text)
+    if (uses_selenium(x$driver)) {
+      identical(element$getElementText(), text)
+    } else {
+      driver <- x$driver
+      actual <- chromote_get_text(element, driver)
+      identical(actual, text)
+    }
   } else {
     stop_absent_element()
   }
@@ -233,8 +265,13 @@ has_attr <- function(x, name, value) {
   if (is.null(element)) {
     stop_absent_element()
   }
-
-  result <- element$getElementAttribute(name)
+  
+  result <- if (uses_selenium(x$driver)) {
+    element$getElementAttribute(name)
+  } else {
+    driver <- x$driver
+    chromote_get_attribute(element, name, list(), driver)
+  }
   
   if (length(result) == 0) {
     if (is.null(value)) {
@@ -271,7 +308,12 @@ attr_contains <- function(x, name, value) {
     stop_absent_element()
   }
 
-  result <- element$getElementAttribute(name)
+  result <- if (uses_selenium(x$driver)) {
+    element$getElementAttribute(name)
+  } else {
+    driver <- x$driver
+    chromote_get_attribute(element, name, list(), driver)
+  }
 
   if (length(result) == 0) {
     FALSE
@@ -293,7 +335,12 @@ has_value <- function(x, value) {
     stop_absent_element()
   }
 
-  result <- element$getElementAttribute("value")
+  result <- if (uses_selenium(x$driver)) {
+    element$getElementAttribute("value")
+  } else {
+    driver <- x$driver
+    chromote_get_attribute(element, "value", list(), driver)
+  }
   
   if (length(result) == 0) {
     if (is.null(value)) {
@@ -347,7 +394,12 @@ has_css_property <- function(x, property, value) {
     stop_absent_element()
   }
 
-  result <- element$getElementValueOfCssProperty(property)
+  result <- if (uses_selenium(x$driver)) {
+    element$getElementValueOfCssProperty(property)
+  } else {
+    driver <- x$driver
+    chromote_get_css_property(element, property, list(), driver)
+  }
   
   if (length(result) == 0) {
     if (is.null(value)) {
