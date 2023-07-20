@@ -28,6 +28,14 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
 
+    services:
+      selenium:
+        image: selenium/standalone-chrome:latest
+        ports:
+          - 4444:4444
+        volumes:
+          - /dev/shm:/dev/shm
+
     steps:
       - uses: actions/checkout@v3
 
