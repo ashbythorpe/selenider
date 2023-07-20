@@ -129,7 +129,7 @@ format_selector_multiple <- function(selector, first) {
   
   text <- cli::pluralize("{to_pluralize}")
   
-  if (is.null(filter)) {
+  if (length(filter) == 0) {
     paste0("The", child, " elements with ", text)
   } else if (length(filter) == 1) {
     if (is.numeric(filter[[1]])) {
@@ -200,7 +200,7 @@ format_flattened_selector <- function(selector) {
 format_flattened_selector_multiple <- function(selector) {
   filter <- selector$filter
 
-  if (is.null(filter)) {
+  if (length(filter) == 0) {
     "A combination of elements"
   } else if (length(filter) == 1) {
     if (is.numeric(filter[[1]])) {
@@ -263,7 +263,7 @@ format_relative_selector <- function(x, descriptor) {
 format_relative_selector_multiple <- function(x, descriptor) {
   filter <- x$filter
 
-  if (is.null(filter)) {
+  if (length(filter) == 0) {
     paste0("The", descriptor, " elements")
   } else if (length(filter) == 1) {
     if (is.numeric(filter[[1]])) {

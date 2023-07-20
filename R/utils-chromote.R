@@ -2,6 +2,11 @@ chromote_object_id <- function(x, driver) {
   driver$DOM$resolveNode(x)$object$objectId
 }
 
+chromote_root_id <- function(x) {
+  document <- x$DOM$getDocument()
+  document$root$nodeId
+}
+
 chromote_node_id <- function(x, driver) {
   driver$DOM$requestNode(x)$nodeId
 }

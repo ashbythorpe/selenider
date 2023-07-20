@@ -100,8 +100,8 @@ use_xpath_chromote <- function(xpath, element, driver, multiple = FALSE) {
     } else {
       element_object_id <- driver$DOM$resolveNode(element)$object$objectId
 
-      array_object_id <- driver$Runtime$callFunctionOn(paste0("element => {
-        let xpath = document.evaluate('", xpath, "', element, null, 5, null);
+      array_object_id <- driver$Runtime$callFunctionOn(paste0("function() {
+        let xpath = document.evaluate('", xpath, "', this, null, 5, null);
 
         let nodes = [];
         for (let node = xpath.iterateNext(); node; node = xpath.iterateNext()) {
@@ -109,7 +109,7 @@ use_xpath_chromote <- function(xpath, element, driver, multiple = FALSE) {
         }
 
         return nodes;
-      }", element_object_id))$result$objectId
+      }"), element_object_id)$result$objectId
     }
 
     length <- driver$Runtime$callFunctionOn("function() { return this.length; }", array_object_id)$result$value
@@ -133,13 +133,13 @@ use_xpath_chromote <- function(xpath, element, driver, multiple = FALSE) {
     } else {
       element_object_id <- driver$DOM$resolveNode(element)$object$objectId
 
-      result <- driver$Runtime$callFunctionOn(paste0("element => {
-        let xpath = document.evaluate('", xpath, "', element, null, 5, null);
+      result <- driver$Runtime$callFunctionOn(paste0("function() {
+        let xpath = document.evaluate('", xpath, "', this, null, 5, null);
 
         let node = xpath.iterateNext();
 
         return node;
-      }", element_object_id))$result
+      }"), element_object_id)$result
     }
 
     if (identical(result$subclass, "null")) {

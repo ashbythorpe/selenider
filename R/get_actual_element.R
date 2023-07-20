@@ -68,7 +68,7 @@ get_element <- function(x) {
     element <- x$driver
   }
   
-  if (!inherits(element, c("webElement", "remoteDriver", "mock_element", "mock_client"))) {
+  if (is_multiple_elements(element)) {
     filter <- x$selectors[[length(x$selectors) - x$to_be_found + 1]]$filter
     
     element <- filter_elements(element, filter)
@@ -106,7 +106,7 @@ get_elements <- function(x) {
     return(element)
   }
   
-  if (!inherits(element, c("webelement", "remotedriver", "mock_element", "mock_client"))) {
+  if (is_multiple_elements(element)) {
     filter <- x$selectors[[length(x$selectors) - x$to_be_found]]$filter
 
     element <- filter_elements(element, filter)
@@ -133,7 +133,7 @@ get_elements <- function(x) {
 }
 
 filter_elements <- function(elements, filter, multiple = FALSE) {
-  if (is.null(filter)) {
+  if (length(filter) == 0) {
     stopifnot(multiple) # we need a filter to get a single element
     elements
   } else if (length(filter) == 1 && is.numeric(filter[[1]])) {

@@ -64,13 +64,13 @@ is_visible <- function(x) {
   
   if (!is.null(element)) {
     if (uses_selenium(x$driver)) {
-      element$isElementDisplayed()
+      element$isElementDisplayed()[[1]]
     } else {
       driver <- x$driver
       tryCatch({
         driver$DOM$getBoxModel(element)
         TRUE
-      }, error = function() FALSE)
+      }, error = function(e) FALSE)
     }
   } else {
     stop_absent_element()
@@ -117,7 +117,7 @@ is_enabled <- function(x) {
   
   if (!is.null(element)) {
     if (uses_selenium(x$driver)) {
-      element$isElementEnabled()
+      element$isElementEnabled()[[1]]
     } else {
       driver <- x$driver
       driver$Runtime$callFunctionOn("function() {

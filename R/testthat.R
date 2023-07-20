@@ -10,12 +10,13 @@ html_expect_fail <- function(condition, parent, call, x, x_name, env = rlang::ca
   }
 
   if (!is.null(x)) {
-    object_text <- cli::cli_fmt({
-      cli::cli_text("Where {.arg {x_name}} is:")
-      print(x)
-    })
-
-    condition_text <- paste0(condition_text, "\n\n", object_text)
+    object_text <- paste0(
+      "Where `", x_name, "` is:\n",
+      paste(format(x), collapse = "\n"),
+      "\n"
+    )
+    
+    condition_text <- paste0(condition_text, "\n\n", object_text, "\n")
   }
 
   testthat::fail(condition_text, trace_env = call)

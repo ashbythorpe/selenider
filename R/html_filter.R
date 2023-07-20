@@ -140,9 +140,8 @@ add_numeric_filter <- function(x, i, call = rlang::caller_env()) {
     ), class = "selenider_warning_subscript_max_length", call = call)
   }
 
-  last_filter <- filters[[length(filters)]]
-  if (is.numeric(last_filter)) {
-    new_filter <- last_filter[i]
+  if (length(filters) != 0 && is.numeric(filters[[length(filters)]])) {
+    new_filter <- filters[[length(filters)]][i]
 
     x$selectors[[length(selectors)]]$filter[[length(filters)]] <- new_filter
   } else {

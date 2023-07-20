@@ -20,7 +20,7 @@ elem_unique <- function(x, uses_selenium) {
   if (uses_selenium) {
     selenium_intersect(x)
   } else {
-    unique(x)
+    Reduce(intersect, x)
   }
 }
 
@@ -127,6 +127,10 @@ call_insert <- function(call, elem_name, quo = TRUE) {
 escape_squirlies <- function(x) {
   x <- gsub("{", "{{", x, fixed = TRUE)
   gsub("}", "}}", x, fixed = TRUE)
+}
+
+is_multiple_elements <- function(x) {
+  !(inherits_any(x, c("webElement", "remoteDriver", "mock_element", "mock_client", "ChromoteSession")) || (is.numeric(x) && length(x) == 1))
 }
 
 uses_selenium <- function(x) {
