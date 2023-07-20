@@ -21,6 +21,13 @@ selenider_test_session <- function(x, .env = rlang::caller_env()) {
     )
 
     result <- selenider_session(session, browser = browser, .env = .env, extra_args = extra_args)
+    mock_server <- list(
+      stop = function() NULL
+    )
+
+    client <- create_client("firefox", extra_args = extra_args)
+
+    result <- selenider_session(session, browser = "firefox", driver = list(client = client, server = mock_server), .env = .env)
   } else {
     result <- selenider_session(session, browser = browser, .env = .env)
   }
