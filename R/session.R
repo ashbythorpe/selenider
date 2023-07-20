@@ -211,6 +211,10 @@ create_server <- function(browser, version, quiet, extra_args) {
             " " = "{.file {license}}"
           ), parent = e)
         }
+      } else if (browser == "chrome" && grepl("version requested doesnt match versions available", e$message)) {
+        tryCatch({
+          return(create_server(browser, "latest", quiet, extra_args))
+        }, error = function(e) NULL)
       }
 
       cli::cli_abort(c(
