@@ -15,19 +15,6 @@ selenider_test_session <- function(x, .env = rlang::caller_env()) {
       # Delete the Crashpad folder if it exists
       unlink(file.path(tempdir(), "Crashpad"), recursive = TRUE)
     }, envir = .env)
-  } else if (isTRUE(as.logical(Sys.getenv("CI", "FALSE")))) {
-    extra_args <- list(
-      port = 4444L
-    )
-
-    result <- selenider_session(session, browser = browser, .env = .env, extra_args = extra_args)
-    mock_server <- list(
-      stop = function() NULL
-    )
-
-    client <- create_client("firefox", extra_args = extra_args)
-
-    result <- selenider_session(session, browser = "firefox", driver = list(client = client, server = mock_server), .env = .env)
   } else {
     result <- selenider_session(session, browser = browser, .env = .env)
   }
