@@ -64,7 +64,8 @@ specified.</p>
 <span>  driver <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  local <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  quiet <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  .env <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/stack.html" class="external-link">caller_env</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  .env <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/stack.html" class="external-link">caller_env</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  extra_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -104,6 +105,12 @@ default, this output is suppressed, as it is not usually useful.</p></dd>
 environment in which the session is used. Change this if you want to
 create the session inside a function and then use it outside the
 function.</p></dd>
+
+
+<dt>extra_args</dt>
+<dd><p>A list of arguments to pass into <code><a href="https://docs.ropensci.org/RSelenium/reference/remoteDriver-class.html" class="external-link">RSelenium::remoteDriver()</a></code>
+and <code><a href="https://docs.ropensci.org/wdman/reference/selenium.html" class="external-link">wdman::selenium()</a></code> if Selenium is used, or
+<code><a href="https://rdrr.io/pkg/chromote/man/ChromoteSession.html" class="external-link">chromote::ChromoteSession$new()</a></code> if chromote is used.</p></dd>
 
 </dl></div>
     <div class="section level2">
