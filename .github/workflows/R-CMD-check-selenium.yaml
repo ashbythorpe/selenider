@@ -30,7 +30,7 @@ jobs:
 
     services:
       selenium:
-        image: selenium/standalone-chrome:latest
+        image: selenium/standalone-firefox:latest
         ports:
           - 4444:4444
         volumes:
@@ -57,4 +57,4 @@ jobs:
           upload-snapshots: true
         env:
           SELENIDER_SESSION: "selenium"
-          SELENIDER_BROWSER: "chrome"
+          SELENIDER_BROWSER: "firefox"
