@@ -114,18 +114,20 @@ do with them.</p></li>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">elem</span> <span class="op">&lt;-</span> <span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class1"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">get_actual_webelement</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in create_server(browser, version, quiet, server_args):</span> The server of the session could not be started.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `chrome_ver()`:</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> version requested doesnt match versions available = 113.0.5672.63,114.0.5735.16,114.0.5735.90</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in create_client(browser, client_args):</span> We could not determine whether the server was successfully started after</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> 5 attempts.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `checkError()`:</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Undefined error in httr call. httr output: Failed to connect to localhost port 4567 after 0 ms: Connection refused</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">elem</span><span class="op">$</span><span class="fu">getElementLocation</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'elem' not found</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">elems</span> <span class="op">&lt;-</span> <span class="fu"><a href="s.html">ss</a></span><span class="op">(</span><span class="st">".class2"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">get_actual_webelements</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in create_server(browser, version, quiet, server_args):</span> The server of the session could not be started.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `chrome_ver()`:</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> version requested doesnt match versions available = 113.0.5672.63,114.0.5735.16,114.0.5735.90</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in create_client(browser, client_args):</span> We could not determine whether the server was successfully started after</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> 5 attempts.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `checkError()`:</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Undefined error in httr call. httr output: Failed to connect to localhost port 4567 after 0 ms: Connection refused</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">elems</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">getElementSize</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'elems' not found</span>
