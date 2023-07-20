@@ -1,6 +1,6 @@
 selenider_test_session <- function(x, .env = rlang::caller_env()) {
   session <- Sys.getenv("SELENIDER_SESSION", "selenium")
-  browser <- Sys.getenv("SELENIDER_BROWSER", "chrome")
+  browser <- Sys.getenv("SELENIDER_BROWSER", "firefox")
 
   if (session == "chromote") {
     chromote::set_chrome_args(c(
@@ -8,15 +8,22 @@ selenider_test_session <- function(x, .env = rlang::caller_env()) {
       "--disable-crash-reporter",
       chromote::default_chrome_args()
     ))
-  }
 
-  result <- selenider_session(session, browser = browser, .env = .env)
+    result <- selenider_session(session, browser = browser, .env = .env)
 
-  if (session == "chromote") {
     withr::defer({
       # Delete the Crashpad folder if it exists
       unlink(file.path(tempdir(), "Crashpad"), recursive = TRUE)
     }, envir = .env)
+  } else if (isTRUE(as.logical(Sys.getenv("CI", "FALSE")))) {
+    extra_args <- list(
+      remoteServerAddr = "host.docker.internal",
+      port = 4445L
+    )
+
+    result <- selenider_session(session, browser = browser, .env = .env, extra_args = extra_args)
+  } else {
+    result <- selenider_session(session, browser = browser, .env = .env)
   }
 
   result

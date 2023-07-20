@@ -11,7 +11,8 @@ selenider_session(
   driver = NULL,
   local = TRUE,
   quiet = TRUE,
-  .env = rlang::caller_env()
+  .env = rlang::caller_env(),
+  extra_args = list()
 )
 }
 \arguments{
@@ -36,6 +37,10 @@ default, this output is suppressed, as it is not usually useful.}
 environment in which the session is used. Change this if you want to
 create the session inside a function and then use it outside the
 function.}
+
+\item{extra_args}{A list of arguments to pass into \code{\link[RSelenium:remoteDriver-class]{RSelenium::remoteDriver()}}
+and \code{\link[wdman:selenium]{wdman::selenium()}} if Selenium is used, or
+\code{\link[chromote:ChromoteSession]{chromote::ChromoteSession$new()}} if chromote is used.}
 }
 \value{
 A \code{selenider_session} object.

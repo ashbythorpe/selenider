@@ -18,6 +18,9 @@
 #'   environment in which the session is used. Change this if you want to
 #'   create the session inside a function and then use it outside the
 #'   function.
+#' @param extra_args A list of arguments to pass into [RSelenium::remoteDriver()]
+#'   and [wdman::selenium()] if Selenium is used, or 
+#'   [`chromote::ChromoteSession$new()`][chromote::ChromoteSession] if chromote is used.
 #'
 #' @details
 #' `selenider_session()` uses [RSelenium::rsDriver()] to create a browser
@@ -85,7 +88,8 @@ selenider_session <- function(session = c( "selenium", "chromote"),
                               driver = NULL,
                               local = TRUE,
                               quiet = TRUE,
-                              .env = rlang::caller_env()) {
+                              .env = rlang::caller_env(),
+                              extra_args = list()) {
   session <- rlang::arg_match(session)
 
   check_number_decimal(timeout, allow_null = TRUE)
@@ -130,11 +134,26 @@ selenider_session <- function(session = c( "selenium", "chromote"),
 
   if (is.null(driver)) {
     if (session == "chromote") {
-      driver <- create_chromote_driver()
+      driver <- create_chromote_driver(extra_args)
     } else {
+      client_args <- c(
+        "remoteServerAddr",
+        "port",
+        "browserName",
+        "path",
+        "version",
+        "platform",
+        "javascript",
+        "nativeEvents",
+        "extraCapabilities"
+      )
+      both_args <- c("port", "browserName", "path", "version", "platform", "javascript", "nativeEvents")
+      only_client_args <- setdiff(client_args, both_args)
+      server_args <- extra_args[setdiff(names(extra_args), only_client_args)]
+      client_args <- extra_args[intersect(names(extra_args), client_args)]
       driver <- list(
-        server = create_server(browser, version, quiet),
-        client = create_client(browser)
+        server = create_server(browser, version, quiet, server_args),
+        client = create_client(browser, client_args)
       )
     }
   } else if (inherits(driver, "AppDriver")) {
@@ -150,22 +169,26 @@ selenider_session <- function(session = c( "selenium", "chromote"),
   session
 }
 
-create_server <- function(browser, version, quiet) {
+create_server <- function(browser, version, quiet, extra_args) {
   chromever <- if (browser == "chrome") version else NULL
   geckover <- if (browser == "firefox") version else NULL
   iedrver <- if (browser == "internet explorer") version else NULL
   phantomver <- if (browser == "phantomjs") "latest" else NULL
 
-  try_fetch(
-    wdman::selenium(
+  try_fetch({
+    default_args <- list(
       browser = browser,
       chromever = chromever,
       geckover = geckover,
       iedrver = iedrver,
       phantomver = phantomver,
       verbose = !quiet
-    ),
-    error = function(e) {
+    )
+
+    args_used <- default_args[setdiff(names(default_args), names(extra_args))]
+    args <- c(args_used, extra_args)
+    rlang::exec(wdman::selenium, !!!args)
+  }, error = function(e) {
       if (grepl("Selenium server  couldn't be started", e$message)) {
         output <- wdman::selenium(
           browser = browser,
@@ -197,13 +220,16 @@ create_server <- function(browser, version, quiet) {
   )
 }
 
-create_chromote_driver <- function() {
+create_chromote_driver <- function(extra_args) {
   rlang::check_installed("chromote")
-  chromote::ChromoteSession$new()
+  rlang::inject(chromote::ChromoteSession$new(!!!extra_args))
 }
 
-create_client <- function(browser) {
-  driver <- RSelenium::remoteDriver(browserName = browser, port = 4567L)
+create_client <- function(browser, extra_args) {
+  default_args <- list(browserName = browser, port = 4567L)
+  args_used <- default_args[setdiff(names(default_args), names(extra_args))]
+  args <- c(args_used, extra_args)
+  driver <- rlang::inject(RSelenium::remoteDriver(!!!args))
   
   count <- 1L
   res <- NULL
