@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [main, master]
 
-name: R-CMD-check
+name: R-CMD-check-selenium
 
 jobs:
   R-CMD-check:
@@ -56,5 +56,5 @@ jobs:
         with:
           upload-snapshots: true
         env:
-          SELENIDER_SESSION: "chromote"
+          SELENIDER_SESSION: "selenium"
           SELENIDER_BROWSER: "chrome"

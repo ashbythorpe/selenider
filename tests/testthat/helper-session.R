@@ -17,7 +17,6 @@ selenider_test_session <- function(x, .env = rlang::caller_env()) {
     }, envir = .env)
   } else if (isTRUE(as.logical(Sys.getenv("CI", "FALSE")))) {
     extra_args <- list(
-      remoteServerAddr = "host.docker.internal",
       port = 4444L
     )
 
