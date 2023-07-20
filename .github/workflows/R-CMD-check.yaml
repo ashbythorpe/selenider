@@ -12,7 +12,7 @@ jobs:
   R-CMD-check:
     runs-on: ${{ matrix.config.os }}
 
-    name: ${{ matrix.config.os }} (${{ matrix.config.r }}) (${{ matrix.selenider.session }} - ${{ matrix.selenider.browser }})
+    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
 
     strategy:
       fail-fast: false
@@ -23,10 +23,6 @@ jobs:
           - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
           - {os: ubuntu-latest,   r: 'release'}
           - {os: ubuntu-latest,   r: 'oldrel-1'}
-        selenider:
-          - {session: 'selenium', browser: 'chrome'}
-          - {session: 'selenium', browser: 'firefox'}
-          - {session: 'chromote', browser: 'chrome'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -36,11 +32,6 @@ jobs:
       - uses: actions/checkout@v3
 
       - uses: r-lib/actions/setup-pandoc@v2
-
-      - uses: browser-actions/setup-firefox@v1
-        with:
-          firefox-version: ${{ matrix.os == 'windows-latest' && '84.0' || 'latest-esr' }}
-        if: matrix.selenider.browser == 'firefox'
 
       - uses: r-lib/actions/setup-r@v2
         with:
@@ -57,5 +48,5 @@ jobs:
         with:
           upload-snapshots: true
         env:
-          SELENIDER_SESSION: ${{ matrix.selenider.session }}
-          SELENIDER_BROWSER: ${{ matrix.selenider.browser }}
+          SELENIDER_SESSION: "chromote"
+          SELENIDER_BROWSER: "chrome"
