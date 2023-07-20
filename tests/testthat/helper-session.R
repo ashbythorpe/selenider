@@ -6,6 +6,7 @@ selenider_test_session <- function(x, .env = rlang::caller_env()) {
     chromote::set_chrome_args(c(
       # https://peter.sh/experiments/chromium-command-line-switches/#disable-crash-reporter
       "--disable-crash-reporter",
+      "--no-sandbox",
       chromote::default_chrome_args()
     ))
 

@@ -1,4 +1,5 @@
-# Runs tests using a variety of backends
+# Runs tests using a variety of backends:
+# Requires RSelenium, chromote, Chrome and Firefox to be installed
 test_selenider <- function(x) {
   # Avoid explicit dependency on devtools
   cli::cli_alert_info("Running tests using Selenium and Chrome")
