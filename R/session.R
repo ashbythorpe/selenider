@@ -226,7 +226,7 @@ create_server <- function(browser, version, quiet, extra_args) {
 
 create_chromote_driver <- function(extra_args) {
   rlang::check_installed("chromote")
-  rlang::inject(chromote::ChromoteSession$new(!!!extra_args))
+  rlang::inject(chromote::default_chromote_object()$new_session(!!!extra_args))
 }
 
 create_client <- function(browser, extra_args) {
