@@ -1,5 +1,5 @@
 selenider_test_session <- function(x, .env = rlang::caller_env()) {
-  session <- Sys.getenv("SELENIDER_SESSION", "selenium")
+  session <- Sys.getenv("SELENIDER_SESSION", "chromote")
   browser <- Sys.getenv("SELENIDER_BROWSER", "chrome")
 
   if (session == "chromote") {

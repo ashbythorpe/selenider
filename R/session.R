@@ -82,7 +82,7 @@
 #' }
 #'
 #' @export
-selenider_session <- function(session = c( "selenium", "chromote"),
+selenider_session <- function(session = c("chromote", "selenium"),
                               browser = NULL,
                               timeout = 4,
                               driver = NULL,
@@ -106,7 +106,6 @@ selenider_session <- function(session = c( "selenium", "chromote"),
     }
 
     browser <- "chrome"
-    version <- get_browser_version(browser)
   } else if (is.null(browser)) {
     bv <- find_browser_and_version()
 
