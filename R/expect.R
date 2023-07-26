@@ -89,7 +89,7 @@
 #'   html_expect(is_visible || is_enabled)
 #' 
 #' s(".class2") |>
-#'   html_expect(!is_present) |>
+#'   html_expect(!is_present, timeout = 0.5) |>
 #'   try() # Since this condition will fail
 #' # Or is_absent, etc.
 #'
@@ -182,8 +182,8 @@ html_expect <- function(x, ..., testthat = NULL, timeout = NULL) {
       original_expr = expr,
       result = val,
       timeout = timeout,
+      testthat = testthat,
       original_env = quo_get_env(x),
-      testthat = testthat
     )
   }
 

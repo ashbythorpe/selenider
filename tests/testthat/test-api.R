@@ -1,16 +1,10 @@
-#
-# session <- selenider_session("chrome")
-# session
-#
-# open_url("https://google.com")
-#
-# s(".class1") |>
-#   html_expect(is_present)
-#
-# local_session(session)
-#
-# s("#g") |>
-#   html_element("#h") |>
-#   html_elements("#i") 
-#
-# close_session()
+test_that("s() and ss() work", {
+  session <- selenider_test_session()
+
+  open_url("https://ashbythorpe.github.io/selenider/articles/test-site.html")
+
+  testthat::expect_equal(s(".toggleable"), html_element(session, ".toggleable"))
+  expect_equal(ss(".toggleable"), html_elements(session, ".toggleable"))
+
+  expect_true(s(".toggleable") == html_element(session, ".toggleable"))
+})
