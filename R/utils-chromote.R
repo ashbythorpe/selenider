@@ -1,5 +1,17 @@
-chromote_object_id <- function(x, driver) {
-  driver$DOM$resolveNode(x)$object$objectId
+chromote_object_id <- function(node_id = NULL, backend_id = NULL, driver) {
+  if (!is.null(node_id)) {
+    driver$DOM$resolveNode(node_id)$object$objectId
+  } else {
+    driver$DOM$resolveNode(backendNodeId = backend_id)$object$objectId
+  }
+}
+
+chromote_backend_id <- function(node_id = NULL, object_id = NULL, driver) {
+  if (!is.null(node_id)) {
+    driver$DOM$describeNode(node_id)$node$backendNodeId
+  } else {
+    driver$DOM$describeNode(objectId = object_id)$node$backendNodeId
+  }
 }
 
 chromote_root_id <- function(x) {
@@ -7,22 +19,31 @@ chromote_root_id <- function(x) {
   document$root$nodeId
 }
 
-chromote_node_id <- function(x, driver) {
-  driver$DOM$requestNode(x)$nodeId
+chromote_node_id <- function(object_id = NULL, backend_id = NULL, driver) {
+  if (!is.null(object_id)) {
+    driver$DOM$requestNode(object_id)$nodeId
+  } else {
+    driver$DOM$describeNode(backendNodeId = backend_id)$node$nodeId
+  }
 }
 
-chromote_get_xy <- function(x, driver) {
-  coords <- driver$DOM$getBoxModel(x)$model$content
+chromote_get_xy <- function(node_id = NULL, backend_id = NULL, driver) {
+  coords <- if (!is.null(node_id)) {
+    driver$DOM$getBoxModel(node_id)$model$content
+  } else {
+    driver$DOM$getBoxModel(backendNodeId = backend_id)$model$content
+  }
+
   x <- (coords[[1]] + coords[[3]]) / 2
   y <- (coords[[2]] + coords[[6]]) / 2
   list(x = x, y = y)
 }
 
-chromote_is_in_view <- function(x, driver) {
+chromote_is_in_view <- function(node_id = NULL, backend_id = NULL, driver) {
   layout <- driver$Page$getLayoutMetrics()$cssLayoutViewport
   width <- layout$clientWidth
   height <- layout$clientHeight
-  coords <- chromote_get_xy(x, driver)
+  coords <- chromote_get_xy(node_id, backend_id, driver)
   x <- coords$x
   y <- coords$y
 
@@ -46,7 +67,7 @@ chromote_is_in_view <- function(x, driver) {
   }
 }
 
-chromote_scroll_into_view <- function(x, driver) {
+chromote_scroll_into_view <- function(node_id = NULL, backend_id = NULL, driver) {
   driver$Runtime$callFunctionOn("function() { 
     this.scrollIntoView({
       block: 'center',
@@ -56,9 +77,10 @@ chromote_scroll_into_view <- function(x, driver) {
   }", chromote_object_id(x))
 }
 
-chromote_scroll_into_view_if_needed <- function(x, driver) {
-  if (!isTRUE(chromote_is_in_view(x, driver))) {
-    chromote_scroll_into_view(x, driver)
+chromote_scroll_into_view_if_needed <- function(node_id = NULL, backend_id = NULL, driver) {
+  # TODO: Consider using DOM.scrollIntoViewIfNeeded?
+  if (!isTRUE(chromote_is_in_view(node_id, backend_id, driver))) {
+    chromote_scroll_into_view(node_id, backend_id, driver)
   }
 }
 

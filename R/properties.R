@@ -33,7 +33,7 @@ html_name <- function(x, timeout = NULL) {
     element$getElementTagName()
   } else {
     driver <- x$driver
-    tolower(driver$DOM$describeNode(element)$node$nodeName)
+    tolower(driver$DOM$describeNode(backendNodeId = element)$node$nodeName)
   }
 }
 
@@ -77,7 +77,7 @@ html_text <- function(x, timeout = NULL) {
 chromote_get_text <- function(x, driver) {
   actual <- driver$Runtime$callFunctionOn("function() { 
     return this.textContent; 
-  }", chromote_object_id(x, driver))$result$value
+  }", chromote_object_id(backend_id = x, driver))$result$value
 }
 
 #' Get element attribute
@@ -140,7 +140,7 @@ html_attr <- function(x, name, default = NA_character_, timeout = NULL) {
 }
 
 chromote_get_attribute <- function(x, name, default, driver) {
-  response <- driver$DOM$getAttributes(x)$attributes
+  response <- driver$DOM$getAttributes(chromote_node_id(backend_id = x))$attributes
   
   # CDP returns a list of interleaved names and values
   # So the names are the 1st, 3rd, etc. elements.
@@ -155,7 +155,7 @@ chromote_get_attribute <- function(x, name, default, driver) {
 }
 
 chromote_get_attributes <- function(x, driver) {
-  response <- driver$DOM$getAttributes(x)$attributes
+  response <- driver$DOM$getAttributes(chromote_node_id(backend_id = x))$attributes
 
   # CDP returns a list of interleaved names and values
   # We convert this to a named list
@@ -277,7 +277,7 @@ html_css_property <- function(x, name, timeout = NULL) {
 }
 
 chromote_get_css_property <- function(x, name, default, driver) {
-  response <- unlist(driver$CSS$getComputedStyleForNode(x)$computedStyle)
+  response <- unlist(driver$CSS$getComputedStyleForNode(chromote_node_id(backend_id = x))$computedStyle)
 
   # Same as chromote_get_attribute()
   final_length <- length(response) / 2

@@ -42,7 +42,7 @@ read_html.selenider_element <- function(x, encoding = "", timeout = NULL, outer 
         return html;
       ", list(element))
     } else {
-      x <- driver$DOM$getOuterHTML(element)$outerHTML
+      x <- driver$DOM$getOuterHTML(backendNodeId = element)$outerHTML
     }
   } else {
     x <- execute_js_fn("x => x.innerHTML", element, driver)

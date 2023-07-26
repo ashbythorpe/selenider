@@ -240,7 +240,7 @@ diagnose_condition <- function(x,
         "i" = "The condition returned {.obj_type_friendly {result}} instead of {.val {TRUE}}."
       )
 
-      if (is.function(result) && n == 1) {
+      if (is_function(result) && n == 1) {
         condition <- c(
           condition,
           "i" = "Did you forget to supply {.arg x}?",

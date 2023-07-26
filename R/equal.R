@@ -30,10 +30,9 @@ html_equal <- function(x, y, timeout = NULL) {
   element_y <- get_element(y)
 
   if (uses_selenium(x$driver)) {
-    selenium_equal(get_element(x), get_element(y), x$driver)
+    selenium_equal(element_x, element_y, x$driver)
   } else {
-    # Use lazy evaluation
-    chromote_equal(get_element(x), get_element(y), x$driver)
+    element_x == element_y
   }
 }
 
@@ -46,8 +45,4 @@ html_equal <- function(x, y, timeout = NULL) {
 
 selenium_equal <- function(x, y, driver) {
   driver$executeScript("return arguments[0].isSameNode(arguments[1])", list(x, y))[[1]]
-}
-
-chromote_equal <- function(x, y, driver) {
-  driver$DOM$describeNode(x)$node$backendNodeId == driver$DOM$describeNode(y)$node$backendNodeId
 }

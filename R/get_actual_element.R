@@ -149,10 +149,10 @@ filter_elements <- function(elements, filter, multiple = FALSE) {
       stopifnot(multiple)
       elements[filter[[1]]]
     }
-  } else if (length(filter) == 1 && is.function(filter[[1]])) {
+  } else if (length(filter) == 1 && is_function(filter[[1]])) {
     lazy_filter(elements, filter)[[1]]
   } else if (!multiple) {
-    if (is.function(filter[[length(filter)]])) {
+    if (is_function(filter[[length(filter)]])) {
       last <- 1
     } else {
       last <- filter[[length(filter)]]
@@ -160,7 +160,7 @@ filter_elements <- function(elements, filter, multiple = FALSE) {
     }
 
     for (f in filter) {
-      if (is.function(f)) {
+      if (is_function(f)) {
         elements <- lazy_filter(elements, f)
       } else {
         elements <- elements[f]
@@ -170,7 +170,7 @@ filter_elements <- function(elements, filter, multiple = FALSE) {
     get_item(elements, last)
   } else {
     for (f in filter) {
-      if (is.function(f)) {
+      if (is_function(f)) {
         elements <- lazy_filter(elements, f)
       } else {
         elements <- elements[f]

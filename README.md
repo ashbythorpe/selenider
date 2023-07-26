@@ -8,9 +8,12 @@
 [![R-CMD-check](https://github.com/ashbythorpe/selenider/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ashbythorpe/selenider/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-selenider aims to make web testing and scraping using Selenium much
-simpler. It is inspired by Java’s [Selenide](https://selenide.org/) and
-Python’s [Selene](https://yashaka.github.io/selene/).
+# Overview
+
+selenider aims to make web testing and scraping much simpler. It is
+inspired by Java’s [Selenide](https://selenide.org/) and Python’s 
+[Selene](https://yashaka.github.io/selene/). It provides a simple
+and consistent interface to both [chromote] and [RSelenium].
 
 It provides the following features:
 
@@ -21,7 +24,8 @@ It provides the following features:
   performing some action on it.
 - An API that is designed for use with the pipe operator (`|>` or
   `%>%`).
-- A quick and concise way to specify test expectations.
+- A quick and concise way to specify test expectations, including
+  automatic [testthat] integration.
 
 ## Installation
 

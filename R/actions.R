@@ -88,9 +88,9 @@ left_click_selenium <- function(element, x) {
 }
 
 click_chromote <- function(element, driver, type = "left", count = 1) {
-  chromote_scroll_into_view_if_needed(element, driver)
+  chromote_scroll_into_view_if_needed(backend_id = element, driver)
 
-  coords <- chromote_get_xy(element, driver)
+  coords <- chromote_get_xy(backend_id = element, driver)
   x <- coords$x
   y <- coords$y
 
@@ -292,9 +292,9 @@ hover <- function(x, js = FALSE, timeout = NULL) {
 }
 
 hover_chromote <- function(element, driver) {
-  chromote_scroll_into_view_if_needed(element, driver)
+  chromote_scroll_into_view_if_needed(backend_id = element, driver)
 
-  coords <- chromote_get_xy(element, driver)
+  coords <- chromote_get_xy(backend_id = element, driver)
   x <- coords$x
   y <- coords$y
 
@@ -422,7 +422,7 @@ chromote_send_keys <- function(element, driver, keys, modifiers) {
   modifier_number <- get_numeric_modifier(modifiers)
 
   for (key in keys) {
-    rlang::exec(chromote_press, !!!key, modifiers = modifiers)
+    rlang::inject(chromote_press(!!!key, modifiers = modifiers))
   }
 }
 
@@ -575,10 +575,7 @@ scroll_to <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("be enabled")
     )
 
-    x$driver$executeScript("
-      element = arguments[0];
-      element.scrollIntoView();
-    ", list(element))
+    execute_js_fn("x => element.scrollIntoView()", element, x$driver)
   } else {
     element <- get_element_for_action(
       x,
@@ -588,12 +585,16 @@ scroll_to <- function(x, js = FALSE, timeout = NULL) {
       failure_messages = c("was not visible", "was not enabled"),
       conditions_text = c("be visible and enabled")
     )
+    
+    if (uses_selenium(x$driver)) {
+      size <- element$getElementSize()
 
-    size <- element$getElementSize()
-
-    x$driver$mouseMoveToLocation(
-      webelement = element
-    )
+      x$driver$mouseMoveToLocation(
+        webelement = element
+      )
+    } else {
+      chromote_scroll_into_view(backend_id = element, x$driver)
+    }
   }
 
   invisible(x)
@@ -632,7 +633,7 @@ submit <- function(x, js = FALSE, timeout = NULL) {
     is_present(html_element(html_ancestors(x), "form"))
   }
 
-  if (js) {
+  if (js || x$session == "chromote") {
     element <- get_element_for_action(
       x,
       action = "submit {.arg x} using JavaScript",

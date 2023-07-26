@@ -68,7 +68,7 @@ is_visible <- function(x) {
     } else {
       driver <- x$driver
       tryCatch({
-        driver$DOM$getBoxModel(element)
+        driver$DOM$getBoxModel(backendNodeId = element)
         TRUE
       }, error = function(e) FALSE)
     }
@@ -122,7 +122,7 @@ is_enabled <- function(x) {
       driver <- x$driver
       driver$Runtime$callFunctionOn("function() {
         return !this.disabled
-      }", chromote_object_id(element, driver))$result$value
+      }", chromote_object_id(backend_id = element, driver))$result$value
     }
   } else {
     stop_absent_element()
@@ -163,7 +163,7 @@ has_name <- function(x, name) {
       element$getElementTagName() == name
     } else {
       driver <- x$driver
-      tolower(driver$DOM$describeNode(element)$node$nodeName) == name
+      tolower(driver$DOM$describeNode(backendNodeId = element)$node$nodeName) == name
     }
   } else {
     stop_absent_element()
