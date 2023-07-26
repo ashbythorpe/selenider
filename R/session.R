@@ -82,7 +82,7 @@
 #' }
 #'
 #' @export
-selenider_session <- function(session = c("chromote", "selenium"),
+selenider_session <- function(session = NULL,
                               browser = NULL,
                               timeout = 4,
                               driver = NULL,
@@ -90,7 +90,24 @@ selenider_session <- function(session = c("chromote", "selenium"),
                               quiet = TRUE,
                               .env = rlang::caller_env(),
                               extra_args = list()) {
-  session <- rlang::arg_match(session)
+  if (is.null(session)) {
+    chromote_installed <- rlang::is_installed("chromote")
+    if (!chromote_installed && !rlang::is_installed("selenium")) {
+      cli::cli_abort(c(
+        "One of {.pkg chromote} or {.pkg selenium} must be installed to use {.pkg selenider}."
+      ))
+    }
+
+    session <- if (chromote_installed) "chromote" else "selenium"
+  } else {
+    session <- rlang::arg_match(session, values = c("chromote", "selenium"))
+
+    if (session == "chromote") {
+      rlang::check_installed("chromote")
+    } else {
+      rlang::check_installed("selenium")
+    }
+  }
 
   check_number_decimal(timeout, allow_null = TRUE)
   check_driver(driver, allow_null = TRUE)
@@ -159,7 +176,7 @@ selenider_session <- function(session = c("chromote", "selenium"),
     driver <- driver$get_chromote_session()
   }
   
-  session <- new_selenider_session(driver, timeout)
+  session <- new_selenider_session(session, driver, timeout)
   
   if (local) {
     local_session(session, .local_envir = .env)
@@ -269,8 +286,10 @@ create_client <- function(browser, extra_args) {
   driver
 }
 
-new_selenider_session <- function(driver, timeout) {
+new_selenider_session <- function(session, driver, timeout) {
   res <- list(
+    id = round(stats::runif(1, min = 0, max = 1000000)),
+    session = session,
     driver = driver,
     timeout = timeout,
     start_time = Sys.time(),

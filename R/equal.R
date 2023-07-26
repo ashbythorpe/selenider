@@ -5,7 +5,7 @@
 #' using `==`, but allows you to specify a timeout value if
 #' needed.
 #'
-#' @param x,y `selenider_element` objects to compare.
+#' @param x,y,e1,e2 `selenider_element` objects to compare.
 #' @param timeout How long to wait for the elements to be present.
 #'
 #' @returns
@@ -20,6 +20,10 @@ html_equal <- function(x, y, timeout = NULL) {
       "To compare {.arg x} and {.arg y}, both must be present in the DOM.",
       "After {timeout} seconds, {.arg {missing_arg}} was not found."
     ))
+  }
+
+  if (x$driver$id != y$driver$id) {
+    return(FALSE)
   }
 
   element_x <- get_element(x)

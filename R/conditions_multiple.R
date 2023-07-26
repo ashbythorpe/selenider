@@ -50,13 +50,16 @@ has_at_least <- function(x, n) {
   check_class(x, "selenider_elements")
   check_number_whole(n, min = 0L)
 
-  # TODO: make this more efficient.
-  # First make sure parent element exists, then get nth element.
+  # TODO: make this more efficient by using cache_elements()
+
   elements <- get_elements(x)
-  
-  if (!is.null(x)) {
-    length(elements) >= n
-  } else {
+
+  if (is.null(elements)) {
     stop_absent_parent_element()
   }
+
+  tryCatch({
+    exists(elements[[n]])
+    TRUE
+  }, selenider_error_absent_element = function(e) FALSE)
 }

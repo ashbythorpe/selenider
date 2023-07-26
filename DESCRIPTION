@@ -12,6 +12,7 @@ RoxygenNote: 7.2.3
 Imports: 
     cli,
     coro,
+    curl,
     prettyunits,
     processx,
     rlang (>= 1.1.0),

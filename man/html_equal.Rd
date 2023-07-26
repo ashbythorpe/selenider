@@ -10,7 +10,7 @@ html_equal(x, y, timeout = NULL)
 \method{==}{selenider_element}(e1, e2)
 }
 \arguments{
-\item{x, y}{\code{selenider_element} objects to compare.}
+\item{x, y, e1, e2}{\code{selenider_element} objects to compare.}
 
 \item{timeout}{How long to wait for the elements to be present.}
 }

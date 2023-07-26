@@ -99,8 +99,14 @@ c.selenider_elements <- function(...) {
 }
 
 html_combine <- function(elements) {
-  # TODO: check driver is the same for all elements
-  driver <- elements[[1]]$timeout
+  ids <- lapply(elements, function(x) x$driver_id)
+  if (length(unique(ids)) > 1) {
+    cli::cli_abort(c(
+      "Cannot combine elements with different drivers."
+    ))
+  }
+
+  driver <- elements[[1]]$driver
 
   timeout <- elements[[1]]$timeout
 

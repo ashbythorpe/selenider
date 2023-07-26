@@ -628,14 +628,18 @@ submit <- function(x, js = FALSE, timeout = NULL) {
 
   timeout <- get_timeout(timeout, x$timeout)
 
+  has_form_parent <- function(x) {
+    is_present(html_element(html_ancestors(x), "form"))
+  }
+
   if (js) {
     element <- get_element_for_action(
       x,
       action = "submit {.arg x} using JavaScript",
-      conditions = list(),
+      conditions = list(has_form_parent),
       timeout = timeout,
-      failure_messages = c(),
-      conditions_text = c()
+      failure_messages = c("did not have a form ancestor"),
+      conditions_text = c("have a form element as its ancestor")
     )
 
     result <- x$driver$executeScript("
@@ -655,16 +659,15 @@ submit <- function(x, js = FALSE, timeout = NULL) {
       cli::cli_abort(c(
         "To submit {.arg x}, it must be the descendant of a <form> element"
       ))
-      # TODO: Add implicit waiting to check for a <form> parent.
     }
   } else {
     element <- get_element_for_action(
       x,
       action = "submit {.arg x}",
-      conditions = list(),
+      conditions = list(has_form_parent),
       timeout = timeout,
-      failure_messages = c(),
-      conditions_text = c()
+      failure_messages = c("did not have a form ancestor"),
+      conditions_text = c("have a form element as its ancestor")
     )
 
     element$submitElement()

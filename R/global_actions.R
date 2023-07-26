@@ -85,7 +85,7 @@ back <- function(session = NULL) {
       session$driver$Page$navigateToHistoryEntry(new_id)
       session$driver$Page$loadEventFired()
     } else {
-      # TODO: Throw an error if we cannot go back?
+      cli::cli_warn("Previous page in history not found")
     }
   }
   
@@ -113,7 +113,7 @@ forward <- function(session = NULL) {
       session$driver$Page$navigateToHistoryEntry(new_id)
       session$driver$Page$loadEventFired()
     } else {
-      # TODO: Throw an error if we cannot go back?
+      cli::cli_warn("Next page in history not found")
     }
   }
 

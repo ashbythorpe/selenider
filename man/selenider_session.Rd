@@ -5,7 +5,7 @@
 \title{Start a session}
 \usage{
 selenider_session(
-  session = c("selenium", "chromote"),
+  session = NULL,
   browser = NULL,
   timeout = 4,
   driver = NULL,
