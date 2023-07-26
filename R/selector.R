@@ -36,7 +36,7 @@ new_selector <- function(css,
 use_selector <- function(selector, element, driver, multiple = FALSE) {
   if (inherits(selector, "selenider_flattened_selector")) {
     elements <- lapply(selector$selectors, function(selector) get_elements(list(selectors = selector, driver = driver)))
-    return(elem_unique(unlist(elements, recursive = FALSE), uses_selenium(driver)))
+    return(elem_unique(elements, driver))
   }
 
   filter <- selector$filter
@@ -68,7 +68,7 @@ use_selector <- function(selector, element, driver, multiple = FALSE) {
       find_elements(element, using = using, value = value, driver = driver)
     }, list(names(selector), selector), NULL)
     
-    elem_unique(element_list, uses_selenium(driver))
+    elem_unique(element_list, driver)
   }
 }
 

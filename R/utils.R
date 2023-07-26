@@ -20,11 +20,82 @@ elem_unique <- function(x, uses_selenium) {
   if (uses_selenium) {
     selenium_intersect(x)
   } else {
-    Reduce(intersect, x)
-  }
+    rlang::is_installed("selenium") &&
+elem_unique <- function(x, driver) {
+  compare_selenium <- function(x, y) selenium_equal(x, y, driver)
+  compare_chromote <- function(x, y) chromote_equal(x, y, driver)
+  comparison_function <- if (uses_selenium(driver)) compare_selenium else compare_chromote
+
+  lazy_intersect_by(x, comparison_function)
 }
 
-selenium_intersect <- function(x) {
+lazy_intersect_by <- function(x, .f) {
+  if (length(x) == 0) {
+    return(NULL)
+  } else if (length(x) == 1) {
+    return(x[[1]])
+  }
+
+  force(.f)
+  x <- lapply(x, check_lazylist)
+
+  generator <- coro::generator(function() {
+
+    first <- x[[1]]
+    rest <- x[-1]
+    
+    index <- 1
+    value <- get_item(first, index)
+    while(!is.null(value)) {
+      element_in <- FALSE
+
+      for (l in rest) {
+        if (element_in(value, l)) {
+          element_in <- TRUE
+          break
+        }
+      }
+
+      if (element_in) {
+        coro::yield(value)
+      }
+    }
+
+    index <- index + 1
+    value <- get_item(first, index)
+    coro::exhausted()
+  })
+  
+  lazy_list(generator)
+}
+
+element_in <- function(x, l, .f) {
+  index <- 1
+  value <- get_item(l, index)
+
+  while (!is.null(value)) {
+    if (.f(x, value)) {
+      return(TRUE)
+    }
+
+    index <- index + 1
+    value <- get_item(l, index)
+  }
+
+  FALSE
+}
+
+intersect_by_key <- function(x, .f) {
+  if (length(x) == 0) {
+    return(NULL)
+  } else if (length(x) == 1) {
+    return(x[[1]])
+  }
+
+  Reduce(intersect, lapply(x, function(y) lapply(y, .f)))
+}
+
+intersect_by <- function(x, .f) {
   if (length(x) == 0) {
     return(NULL)
   } else if (length(x) == 1) {
@@ -55,7 +126,7 @@ selenium_intersect <- function(x) {
       for (j in seq_along(current_list)) {
         to_compare <- current_list[[j]]
 
-        if (tryCatch(current$compareElement(to_compare), error = function(e) FALSE)) {
+        if (tryCatch(.f(current, to_compare), error = function(e) FALSE)) {
           x[[i]] <- x[[i]][-j]
           found <- TRUE
           break
@@ -140,7 +211,7 @@ uses_selenium <- function(x) {
 execute_js_fn <- function(fn, x, driver) {
   if (uses_selenium(driver)) {
     script <- paste0("let fn = ", fn, ";", "return fn(arguments[0]);")
-    driver$executeScript(script, list(x))
+    driver$executeScript(script, list(x))[[1]]
   } else {
     script <- paste0("function() { return (", fn, ")(this) }")
     x$driver$Runtime$callFunctionOn(fn, chromote_object_id(x))$result$value

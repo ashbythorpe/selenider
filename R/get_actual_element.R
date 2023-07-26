@@ -45,7 +45,7 @@ get_actual_webelement <- function(x, timeout = NULL) {
 
   timeout <- get_timeout(timeout, x$timeout)
 
-  res <- get_with_timeout(timeout, get_element, x)
+  get_with_timeout(timeout, get_element, x)
 }
 
 #' @rdname get_actual_webelement
@@ -57,11 +57,11 @@ get_actual_webelements <- function(x, timeout = NULL) {
 
   timeout <- get_timeout(timeout, x$timeout)
 
-  res <- get_with_timeout(timeout, get_elements, x)
+  # as.list in case the result is a lazy list
+  as.list(get_with_timeout(timeout, get_elements, x))
 }
 
 get_element <- function(x) {
-  if (!is.list(x)) stop(as.character(x))
   element <- x$element
 
   if (is.null(element)) {
@@ -69,7 +69,7 @@ get_element <- function(x) {
   }
   
   if (is_multiple_elements(element)) {
-    filter <- x$selectors[[length(x$selectors) - x$to_be_found + 1]]$filter
+    filter <- x$selectors[[length(x$selectors) - x$to_be_found]]$filter
     
     element <- filter_elements(element, filter)
     
@@ -137,12 +137,8 @@ filter_elements <- function(elements, filter, multiple = FALSE) {
     stopifnot(multiple) # we need a filter to get a single element
     elements
   } else if (length(filter) == 1 && is.numeric(filter[[1]])) {
-    if (length(filter[[1]]) == 1) {
-      if (length(elements) < filter[[1]]) {
-        return(NULL)
-      }
-
-      res <- elements[[filter[[1]]]]
+    if (length(filter) == 1) {
+      res <- get_item(elements, filter[[1]])
 
       if (multiple) {
         list(res)
@@ -151,33 +147,10 @@ filter_elements <- function(elements, filter, multiple = FALSE) {
       }
     } else {
       stopifnot(multiple)
-      if (length(elements) < min(filter[[1]])) {
-        return(NULL)
-      }
-
       elements[filter[[1]]]
     }
-  } else if (is.function(filter[[1]])) {
-    res <- NULL
-    .f <- filter[[1]]
-    
-    if (multiple) {
-      Filter(.f, elements)
-    } else {
-      nth_found <- 1
-      for (element in elements) {
-        if (.f(element)) {
-          res <- element
-          break
-        }
-      }
-      
-      if (is.null(res)) {
-        return(NULL)
-      }
-      
-      res
-    }
+  } else if (length(filter) == 1 && is.function(filter[[1]])) {
+    lazy_filter(elements, filter)[[1]]
   } else if (!multiple) {
     if (is.function(filter[[length(filter)]])) {
       last <- 1
@@ -190,20 +163,20 @@ filter_elements <- function(elements, filter, multiple = FALSE) {
       if (is.function(f)) {
         elements <- lazy_filter(elements, f)
       } else {
-        elements <- item_slice(elements, f)
+        elements <- elements[f]
       }
     }
 
-    item_extract(elements, last)
+    get_item(elements, last)
   } else {
     for (f in filter) {
       if (is.function(f)) {
         elements <- lazy_filter(elements, f)
       } else {
-        elements <- item_slice(elements, f)
+        elements <- elements[f]
       }
     }
 
-    all_items(elements)
+    elements
   }
 }

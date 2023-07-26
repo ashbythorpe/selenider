@@ -3,6 +3,7 @@
 S3method("==",selenider_element)
 S3method("[",selenider_elements)
 S3method("[[",selenider_elements)
+S3method(as.list,lazy_list)
 S3method(c,selenider_element)
 S3method(c,selenider_elements)
 S3method(format,selenider_ancestor_selector)

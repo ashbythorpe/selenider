@@ -11,11 +11,11 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Imports: 
     cli,
+    coro,
     prettyunits,
     processx,
     rlang (>= 1.1.0),
     RSelenium,
-    stats,
     utils,
     vctrs,
     wdman,
