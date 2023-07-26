@@ -12,8 +12,6 @@
 #' 
 #' @returns An integer representing the number of elements in the collection.
 #' 
-#' @family collection properties
-#' 
 #' @examples
 #' session <- mock_selenider_session()
 #' 
@@ -22,7 +20,18 @@
 #' 
 #' @export
 html_size <- function(x, timeout = NULL) {
-  length(get_actual_webelements(x, timeout))
+  timeout <- get_timeout(timeout, x$timeout)
+
+  elements <- get_with_timeout(timeout, get_elements, x)
+
+  if (is.null(elements)) {
+    cli::cli_abort(c(
+      "To get the number of elements in {.arg x}, its parent must exist.",
+      "After {.val timeout} seconds, {.arg x}'s parent did not exist."
+    ))
+  } else {
+    length(elements)
+  }
 }
 
 #' @rdname html_size

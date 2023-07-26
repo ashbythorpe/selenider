@@ -74,6 +74,8 @@ html_filter <- function(x, ...) {
   x$selectors[[length(selectors)]]$filter <-
     c(x$selectors[[length(selectors)]]$filter, functions)
 
+  x$to_be_filtered <- x$to_be_filtered + 1
+
   x
 }
 
@@ -148,6 +150,8 @@ add_numeric_filter <- function(x, i, call = rlang::caller_env()) {
     x$selectors[[length(selectors)]]$filter <- 
       append(x$selectors[[length(selectors)]]$filter, list(i))
   }
+
+  x$to_be_filtered <- x$to_be_filtered + 1
 
   x
 }

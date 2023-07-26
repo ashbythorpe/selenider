@@ -109,7 +109,7 @@ get_elements <- function(x) {
   if (is_multiple_elements(element)) {
     filter <- x$selectors[[length(x$selectors) - x$to_be_found]]$filter
 
-    element <- filter_elements(element, filter)
+    element <- filter_elements(element, filter, multiple = (x$to_be_found == 0))
 
     if (is.null(element)) {
       return(NULL)

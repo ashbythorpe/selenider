@@ -92,27 +92,17 @@ html_elements.selenider_element <- function(x,
 new_selenider_elements <- function(session, selector) {
   res <- list(
     driver = get_driver(session),
+    driver_id <- session$id,
     element = NULL,
     timeout = session$timeout,
     selectors = list(selector),
-    to_be_found = 1
+    to_be_found = 1,
+    to_be_filtered = 0
   )
 
   class(res) <- c("selenider_elements", "list")
 
   res
-}
-
-cache_elements <- function(x) {
-  elements <- get_elements(x)
-  
-  if (is.null(elements)) {
-    return(NULL)
-  }
-  
-  x$element <- elements
-
-  x$to_be_found <- 0.5
 }
 
 #' @export

@@ -31,4 +31,3 @@ ss(".class1") |>
   length()
 
 }
-\concept{collection properties}
