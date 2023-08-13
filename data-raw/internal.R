@@ -11,7 +11,8 @@ condition_dependencies <- list(
   text = c("has text", "has exact text", "does not have text", "does not have exact text"),
   attribute = c("has attr", "attr contains", "does not have attr", "does not have exact attr"),
   value = c("has value", "does not have value"),
-  css = c("has css property", "does not have css property")
+  css = c("has css property", "does not have css property"),
+  length = c("has length", "does not have length", "has at least", "does not have at least")
 )
 
 # Adapted from:

@@ -5,7 +5,7 @@ cli::test_that_cli("key printing works", {
   })
 })
 
-test_that("Keys matched to Selenium keys", {
+testthat::test_that("Keys matched to Selenium keys", {
   expect_equal(
     get_selenider_key(keys$backspace),
     RSelenium::selKeys$backspace

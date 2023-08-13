@@ -43,7 +43,7 @@ chromote_is_in_view <- function(node_id = NULL, backend_id = NULL, driver) {
   layout <- driver$Page$getLayoutMetrics()$cssLayoutViewport
   width <- layout$clientWidth
   height <- layout$clientHeight
-  coords <- chromote_get_xy(node_id, backend_id, driver)
+  coords <- chromote_get_xy(node_id, backend_id, driver = driver)
   x <- coords$x
   y <- coords$y
 
@@ -68,19 +68,25 @@ chromote_is_in_view <- function(node_id = NULL, backend_id = NULL, driver) {
 }
 
 chromote_scroll_into_view <- function(node_id = NULL, backend_id = NULL, driver) {
-  driver$Runtime$callFunctionOn("function() { 
+  driver$Runtime$callFunctionOn("function() {
     this.scrollIntoView({
       block: 'center',
       inline: 'center',
       behaviour: 'instant',
-    }) 
-  }", chromote_object_id(x))
+    })
+  }", chromote_object_id(node_id, backend_id, driver = driver))
 }
 
 chromote_scroll_into_view_if_needed <- function(node_id = NULL, backend_id = NULL, driver) {
-  # TODO: Consider using DOM.scrollIntoViewIfNeeded?
-  if (!isTRUE(chromote_is_in_view(node_id, backend_id, driver))) {
-    chromote_scroll_into_view(node_id, backend_id, driver)
+  if (!is.null(driver$DOM$scrollIntoViewIfNeeded)) {
+    if (!is.null(node_id)) {
+      driver$DOM$scrollIntoViewIfNeeded(node_id)
+    } else {
+      driver$DOM$scrollIntoViewIfNeeded(backendNodeId = backend_id)
+    }
+  }
+  if (!isTRUE(chromote_is_in_view(node_id, backend_id, driver = driver))) {
+    chromote_scroll_into_view(node_id, backend_id, driver = driver)
   }
 }
 

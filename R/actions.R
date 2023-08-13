@@ -40,8 +40,8 @@ click <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("be enabled")
     )
 
-    execute_js_fn("x => x.click()", element, x$driver)
-  } else  {
+    execute_js_fn("x => x.click()", element, driver = x$driver)
+  } else {
     element <- get_element_for_action(
       x,
       action = "click {.arg x}",
@@ -54,7 +54,7 @@ click <- function(x, js = FALSE, timeout = NULL) {
     if (uses_selenium(x$driver)) {
       left_click_selenium(element, x)
     } else {
-      click_chromote(element, x$driver)
+      click_chromote(element, driver = x$driver)
     }
   }
 
@@ -88,9 +88,9 @@ left_click_selenium <- function(element, x) {
 }
 
 click_chromote <- function(element, driver, type = "left", count = 1) {
-  chromote_scroll_into_view_if_needed(backend_id = element, driver)
+  chromote_scroll_into_view_if_needed(backend_id = element, driver = driver)
 
-  coords <- chromote_get_xy(backend_id = element, driver)
+  coords <- chromote_get_xy(backend_id = element, driver = driver)
   x <- coords$x
   y <- coords$y
 
@@ -139,7 +139,7 @@ double_click <- function(x, js = FALSE, timeout = NULL) {
       let clickevent = document.createevent('mouseevents');
       clickevent.initevent('dblclick', true, true);
       x.dispatchevent(clickevent);
-    }", element, x$driver)
+    }", element, driver = x$driver)
   } else {
     element <- get_element_for_action(
       x,
@@ -161,7 +161,7 @@ double_click <- function(x, js = FALSE, timeout = NULL) {
       
       x$driver$doubleclick()
     } else {
-      click_chromote()
+      click_chromote(element, x$driver, type = "left", count = 2)
     }
   }
   
@@ -284,7 +284,7 @@ hover <- function(x, js = FALSE, timeout = NULL) {
         webelement = element
       )
     } else {
-      hover_chromote(element, x$driver)
+      hover_chromote(element, driver = x$driver)
     }
   }
 
@@ -292,9 +292,9 @@ hover <- function(x, js = FALSE, timeout = NULL) {
 }
 
 hover_chromote <- function(element, driver) {
-  chromote_scroll_into_view_if_needed(backend_id = element, driver)
+  chromote_scroll_into_view_if_needed(backend_id = element, driver = driver)
 
-  coords <- chromote_get_xy(backend_id = element, driver)
+  coords <- chromote_get_xy(backend_id = element, driver = driver)
   x <- coords$x
   y <- coords$y
 
@@ -350,16 +350,16 @@ set_value <- function(x, text, timeout = NULL) {
     element$clearElement()
     element$sendKeysToElement(list(text))
   } else {
-    chromote_clear(element, x$driver)
-    chromote_send_chars(element, x$driver)
+    chromote_clear(element, driver = x$driver)
+    chromote_send_chars(element, driver = x$driver)
   }
 }
 
 chromote_clear <- function(x, driver) {
-  click_chromote(x, driver)
+  click_chromote(x, driver = driver)
 
-  chromote_press(modifiers = 2, text = "a", unmodifiedText = "a", key = "a", code = "KeyA", windowsVirtualKeyCode = 65)
-  chromote_press(type = "keyDown", windowsVirtualKeyCode = 8, code = "Backspace", key = "Backspace")
+  chromote_press(driver, modifiers = 2, text = "a", unmodifiedText = "a", key = "a", code = "KeyA", windowsVirtualKeyCode = 65)
+  chromote_press(driver, type = "keyDown", windowsVirtualKeyCode = 8, code = "Backspace", key = "Backspace")
 }
 
 chromote_send_chars <- function(x, driver) {
@@ -373,13 +373,17 @@ chromote_send_chars <- function(x, driver) {
 #' @rdname set_value
 #'
 #' @param ... A set of inputs to send to `x`.
-#' @param modifiers A character vector; one or more of "shift", "ctrl", "alt", and "command"/meta".
+#' @param modifiers A character vector; one or more of "shift", "ctrl"/"control", "alt", and "command"/meta".
 #' 
 #' @export
 send_keys <- function(x, ..., modifiers = NULL, timeout = NULL) {
-  check_class(x, "selenider_element")
+  check_class(x, c("selenider_element", "selenider_session"), allow_null = TRUE)
   check_number_decimal(timeout, allow_null = TRUE)
   check_dots_unnamed()
+
+  if (is.null(x)) {
+    x <- get_session()
+  }
 
   exprs <- enexprs(...)
   keys <- list2(...)
@@ -399,17 +403,33 @@ send_keys <- function(x, ..., modifiers = NULL, timeout = NULL) {
 
   timeout <- get_timeout(timeout, x$timeout)
 
-  element <- get_element_for_action(
-    x,
-    action = "send keys to {.arg x}",
-    conditions = list(is_enabled),
-    timeout = timeout,
-    failure_messages = c("was not enabled"),
-    conditions_text = c("be enabled")
-  )
+  element <- if (inherits(x, "selenider_element")) {
+    get_element_for_action(
+      x,
+      action = "send keys to {.arg x}",
+      conditions = list(is_enabled),
+      timeout = timeout,
+      failure_messages = c("was not enabled"),
+      conditions_text = c("be enabled")
+    )
+  } else {
+    NULL
+  }
 
   if (uses_selenium(x$driver)) {
-    element$sendKeysToElement(keys)
+    keys <- c(
+      RSelenium::selKeys$shift["shift" %in% modifiers],
+      RSelenium::selKeys$control[any(c("control", "ctrl") %in% modifiers)],
+      RSelenium::selKeys$alt["alt" %in% modifiers],
+      RSelenium::selKeys$command_meta[any(c("command", "meta") %in% modifiers)],
+      keys
+    )
+
+    if (inherits(element, "selenider_session")) {
+      element$driver$client$sendKeysToActiveElement(keys)
+    } else {
+      element$sendKeysToElement(keys)
+    }
   } else {
     chromote_send_keys(element, x$driver, keys, modifiers)
   }
@@ -418,11 +438,15 @@ send_keys <- function(x, ..., modifiers = NULL, timeout = NULL) {
 }
 
 chromote_send_keys <- function(element, driver, keys, modifiers) {
+  if (!is.null(element)) {
+    click_chromote(element, driver = driver)
+  }
+
   keys <- format_keys(keys)
   modifier_number <- get_numeric_modifier(modifiers)
 
   for (key in keys) {
-    rlang::inject(chromote_press(!!!key, modifiers = modifiers))
+    rlang::inject(chromote_press(driver, !!!key, modifiers = modifiers))
   }
 }
 
@@ -461,8 +485,8 @@ get_numeric_modifier <- function(modifiers) {
   
   modifiers <- vapply(modifiers, tolower, FUN.VALUE = character(1))
 
-  1 * ("alt" %in% modifiers) + 2 * ("ctrl" %in% modifiers) +
-    4 * ("meta" %in% modifiers || "command" %in% modifiers) +
+  1 * ("alt" %in% modifiers) + 2 * any(c("ctrl", "control") %in% modifiers) +
+    4 * any(c("meta", "command") %in% modifiers) +
     8 * ("shift" %in% modifiers)
 }
 
@@ -575,7 +599,7 @@ scroll_to <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("be enabled")
     )
 
-    execute_js_fn("x => element.scrollIntoView()", element, x$driver)
+    execute_js_fn("x => element.scrollIntoView()", element, driver = x$driver)
   } else {
     element <- get_element_for_action(
       x,
@@ -593,7 +617,7 @@ scroll_to <- function(x, js = FALSE, timeout = NULL) {
         webelement = element
       )
     } else {
-      chromote_scroll_into_view(backend_id = element, x$driver)
+      chromote_scroll_into_view(backend_id = element, driver = x$driver)
     }
   }
 
@@ -617,9 +641,10 @@ scroll_to <- function(x, js = FALSE, timeout = NULL) {
 #'
 #' @examples
 #' session <- mock_selenider_session()
-#'
-#' s(".class1") |>
-#'   submit()
+#' 
+#' # Won't work since doesn't have a form ancestor
+#' # s(".class1") |>
+#' #   submit()
 #'
 #' @export
 submit <- function(x, js = FALSE, timeout = NULL) {
@@ -630,10 +655,10 @@ submit <- function(x, js = FALSE, timeout = NULL) {
   timeout <- get_timeout(timeout, x$timeout)
 
   has_form_parent <- function(x) {
-    is_present(html_element(html_ancestors(x), "form"))
+    has_at_least(html_flatten(lapply(html_ancestors(x), html_element, "form")), 1)
   }
 
-  if (js || x$session == "chromote") {
+  if (js || !uses_selenium(x$driver)) {
     element <- get_element_for_action(
       x,
       action = "submit {.arg x} using JavaScript",
@@ -643,8 +668,7 @@ submit <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("have a form element as its ancestor")
     )
 
-    result <- x$driver$executeScript("
-      element = arguments[0];
+    result <- execute_js_fn("function(element) {
       while element != null {
         if element.tagName == 'form' {
           element.submit();
@@ -654,7 +678,7 @@ submit <- function(x, js = FALSE, timeout = NULL) {
         element = element.parentElement;
       }
       return false;
-    ", list(element))
+    ", element, driver = x$driver)
 
     if (!result) {
       cli::cli_abort(c(

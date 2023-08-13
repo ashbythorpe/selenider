@@ -7,7 +7,7 @@
 \usage{
 as_pretty_dt(x)
 
-cli_format.pretty_dt(x, style = NULL, ...)
+\method{cli_format}{pretty_dt}(x, style = NULL, ...)
 }
 \arguments{
 \item{x}{A string representing a difftime.}

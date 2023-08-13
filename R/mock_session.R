@@ -37,7 +37,7 @@ mock_selenider_session <- function(browser = c(
     driver <- mock_driver(browser)
   }
 
-  session <- new_selenider_session(driver = driver, timeout)
+  session <- new_selenider_session("selenium", driver = driver, timeout)
   
   if (local) {
     local_session(session, .local_envir = .env)

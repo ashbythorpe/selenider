@@ -70,7 +70,11 @@ next_value <- function(x) {
 }
 
 `[[.eager_list` <- function(x, i) {
-  x$data[[i]]
+  if (i > length(x$data)) {
+    NULL
+  } else {
+    x$data[[i]]
+  }
 }
 
 check_lazylist <- function(x) {

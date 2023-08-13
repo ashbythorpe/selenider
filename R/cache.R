@@ -10,7 +10,7 @@ cache_element <- function(x, timeout = NULL) {
     timeout = timeout,
   )
   
-  x$element <- actual_element
+  x$element <- element
 
   x$to_be_found <- 0
   x$to_be_filtered <- 0

@@ -1,28 +1,28 @@
 #' Does a collection have a certain number of elements?
-#' 
+#'
 #' `has_length()` and `has_size()` checks that a collection of HTML elements
 #' contains a certain number of elements.
-#' 
+#'
 #' `has_at_least()` checks that a collection contains *at least* `n` elements.
-#' 
+#'
 #' @param x A `selenider_elements` object.
-#' @param n A numeric vector of possible lengths of `x`. For `has_at_least()`, 
+#' @param n A numeric vector of possible lengths of `x`. For `has_at_least()`,
 #'   this must be a single number to compare to the length of `x`.
-#'   
-#' @details 
+#'
+#' @details
 #' These functions do not implement a retry mechanism, and only test a condition
 #' once. Use [html_expect()] or [html_wait_until()] to use these conditions in
 #' tests.
 #'
 #' @returns A boolean value: `TRUE` or `FALSE`
-#' 
+#'
 #' @family collection conditions
 #'
-#' @examples 
+#' @examples
 #' session <- mock_selenider_session()
-#' 
+#'
 #' has_length(ss(".class1"), 2)
-#' 
+#'
 #' @export
 has_length <- function(x, n) {
   check_class(x, "selenider_elements")
@@ -48,18 +48,12 @@ has_size <- has_length
 #' @export
 has_at_least <- function(x, n) {
   check_class(x, "selenider_elements")
-  check_number_whole(n, min = 0L)
+  check_number_whole(n, min = 0)
 
-  # TODO: make this more efficient by using cache_elements()
+  x <- tryCatch(
+    cache_elements(x),
+    error = function(e) stop_absent_parent_element()
+  )
 
-  elements <- get_elements(x)
-
-  if (is.null(elements)) {
-    stop_absent_parent_element()
-  }
-
-  tryCatch({
-    exists(elements[[n]])
-    TRUE
-  }, selenider_error_absent_element = function(e) FALSE)
+  is_present(x[[n]])
 }

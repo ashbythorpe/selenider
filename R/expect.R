@@ -368,7 +368,7 @@ diagnose_condition <- function(x,
       negated_call_name <- negate_call_name(call_name)
     }
 
-    value <- eval_tidy(call_args(call)[[1]], env = original_env)
+    value <- eval_tidy(call_args(call)[[2]], env = original_env)
     
     if (is.null(x)) {
       condition <- c(
@@ -395,8 +395,8 @@ diagnose_condition <- function(x,
       "does not have css property" = "is not"
     )
 
-    name <- eval_tidy(call_args(call)[[1]], env = original_env)
-    expected_value <- eval_tidy(call_args(call)[[2]], env = original_env)
+    name <- eval_tidy(call_args(call)[[2]], env = original_env)
+    expected_value <- eval_tidy(call_args(call)[[3]], env = original_env)
     
     if (is.null(x)) {
       condition <- c(
@@ -412,7 +412,36 @@ diagnose_condition <- function(x,
         "i" = "Actual value: {.val {actual_value}}."
       )
     }
-  } else if (!is.null(x)) {
+  } else if (call_name %in% condition_dependencies$length) {
+    if (is.null(negated_call_name)) {
+      negated_call_name <- negate_call_name(call_name)
+    }
+
+    value <- eval_tidy(call_args(call)[[2]], env = original_env)
+    elements <- if(value == 1) "element" else "elements"
+
+    cond <- switch(
+      negated_call_name,
+      "has length" = paste("contains", value, elements),
+      "does not have length" = paste("does not contain", value, elements),
+      "has at least" = paste("contains at least", value, elements),
+      "does not have at least" = paste("contains less than", value, elements),
+    )
+
+    if (is.null(x)) {
+      condition <- c(
+        condition,
+        "i" = "{.arg {x_name}} {cond}."
+      )
+    } else {
+      actual_length <- length(x)
+      condition <- c(
+        condition,
+        "i" = "{.arg {x_name}} {cond}.",
+        "i" = "Actual number of elements: {.val {actual_length}}."
+      )
+    }
+  } else if (inherits(x, "selenider_element")) {
     if (is_present(x)) {
       condition <- c(
         condition,
@@ -422,6 +451,20 @@ diagnose_condition <- function(x,
       condition <- c(
         condition,
         "i" = "{.arg {x_name}} does not exist, which may have caused the condition to fail."
+      )
+    }
+  } else {
+    l <- length(x)
+
+    if (l == 0L) {
+      condition <- c(
+        condition,
+        "i" = "{.arg x} contains no elements, which may have caused the condition to fail."
+      )
+    } else {
+      condition <- c(
+        condition,
+        "i" = "{.arg x} contains {.val {l}} elements, but the condition still failed."
       )
     }
   }
@@ -454,6 +497,8 @@ negate_call_name <- function(x) {
     "attr contains" = "attr does not contain",
     "has value" = "does not have value",
     "has css property" = "does not have css property",
+    "has length" = "does not have length",
+    "has at least" = "does not have at least",
     NULL
   )
 }

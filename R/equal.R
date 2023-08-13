@@ -22,7 +22,7 @@ html_equal <- function(x, y, timeout = NULL) {
     ))
   }
 
-  if (x$driver$id != y$driver$id) {
+  if (x$driver_id != y$driver_id) {
     return(FALSE)
   }
 
@@ -30,7 +30,7 @@ html_equal <- function(x, y, timeout = NULL) {
   element_y <- get_element(y)
 
   if (uses_selenium(x$driver)) {
-    selenium_equal(element_x, element_y, x$driver)
+    selenium_equal(element_x, element_y, driver = x$driver)
   } else {
     element_x == element_y
   }

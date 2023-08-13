@@ -21,7 +21,7 @@ clear_value(x, timeout = NULL)
 
 \item{...}{A set of inputs to send to \code{x}.}
 
-\item{modifiers}{A character vector; one or more of "shift", "ctrl", "alt", and "command"/meta".}
+\item{modifiers}{A character vector; one or more of "shift", "ctrl"/"control", "alt", and "command"/meta".}
 }
 \value{
 \code{x}, invisibly

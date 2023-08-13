@@ -70,14 +70,14 @@ html_text <- function(x, timeout = NULL) {
     element$getElementText()
   } else {
     driver <- x$driver
-    chromote_get_text(element, driver)
+    chromote_get_text(element, driver = driver)
   }
 }
 
 chromote_get_text <- function(x, driver) {
   actual <- driver$Runtime$callFunctionOn("function() { 
     return this.textContent; 
-  }", chromote_object_id(backend_id = x, driver))$result$value
+  }", chromote_object_id(backend_id = x, driver = driver))$result$value
 }
 
 #' Get element attribute
@@ -135,12 +135,12 @@ html_attr <- function(x, name, default = NA_character_, timeout = NULL) {
     }
   } else {
     driver <- x$driver
-    chromote_get_attribute(element, name, default, driver)
+    chromote_get_attribute(element, name, default, driver = driver)
   }
 }
 
 chromote_get_attribute <- function(x, name, default, driver) {
-  response <- driver$DOM$getAttributes(chromote_node_id(backend_id = x))$attributes
+  response <- driver$DOM$getAttributes(chromote_node_id(backend_id = x, driver = driver))$attributes
   
   # CDP returns a list of interleaved names and values
   # So the names are the 1st, 3rd, etc. elements.
@@ -155,7 +155,7 @@ chromote_get_attribute <- function(x, name, default, driver) {
 }
 
 chromote_get_attributes <- function(x, driver) {
-  response <- driver$DOM$getAttributes(chromote_node_id(backend_id = x))$attributes
+  response <- driver$DOM$getAttributes(chromote_node_id(backend_id = x, driver = driver))$attributes
 
   # CDP returns a list of interleaved names and values
   # We convert this to a named list
@@ -196,7 +196,7 @@ html_attrs <- function(x, timeout = NULL) {
     ", list(element))
   } else {
     driver <- x$driver
-    chromote_get_attributes(element, driver)
+    chromote_get_attributes(element, driver = driver)
   }
 }
 
@@ -225,7 +225,7 @@ html_value <- function(x, ptype = character(), timeout = NULL) {
     }
   } else {
     driver <- x$driver
-    vctrs::vec_cast(chromote_get_attribute(element, "value", NA, driver), ptype)
+    vctrs::vec_cast(chromote_get_attribute(element, "value", NA, driver = driver), ptype)
   }
 }
 
@@ -272,23 +272,34 @@ html_css_property <- function(x, name, timeout = NULL) {
     }
   } else {
     driver <- x$driver
-    chromote_get_css_property(element, name, NA_character_, driver)
+    chromote_get_css_property(element, name, NA_character_, driver = driver)
   }
 }
 
 chromote_get_css_property <- function(x, name, default, driver) {
-  response <- unlist(driver$CSS$getComputedStyleForNode(chromote_node_id(backend_id = x))$computedStyle)
+  if (is.null(driver$CSS$getComputedStyleForNode)) {
+    result <- driver$Runtime$callFunctionOn("function() {
+      return getComputedStyle(this).getPropertyValue('aa')
+    }", chromote_object_id(backend_id = x, driver = driver))$result$value
 
-  # Same as chromote_get_attribute()
-  final_length <- length(response) / 2
-  result <- vector("list", final_length)
-  for (i in seq_len(final_length) * 2) {
-    name <- response[[i - 1]]
-    value <- response[[i]]
-    result[[name]] <- value
+    if (result == "") {
+      default
+    } else {
+      result
+    }
+  } else {
+    response <- unlist(driver$CSS$getComputedStyleForNode(chromote_node_id(backend_id = x, driver = driver))$computedStyle)
+
+    # Same as chromote_get_attribute()
+    names <- response[seq_len(length(response) / 2) * 2 - 1]
+    index <- match(name, names)
+
+    if (is.na(index)) {
+      default
+    } else {
+      response[[index * 2]]
+    }
   }
-
-  result
 }
 
 get_element_for_property <- function(x, action, timeout, call = rlang::caller_env()) {

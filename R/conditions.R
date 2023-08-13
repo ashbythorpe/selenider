@@ -122,7 +122,7 @@ is_enabled <- function(x) {
       driver <- x$driver
       driver$Runtime$callFunctionOn("function() {
         return !this.disabled
-      }", chromote_object_id(backend_id = element, driver))$result$value
+      }", chromote_object_id(backend_id = element, driver = driver))$result$value
     }
   } else {
     stop_absent_element()
@@ -200,7 +200,7 @@ has_text <- function(x, text) {
       grepl(text, element$getElementText(), fixed = TRUE)
     } else {
       driver <- x$driver
-      actual <- chromote_get_text(element, driver)
+      actual <- chromote_get_text(element, driver = driver)
       grepl(text, actual, fixed = TRUE)
     }
   } else {
@@ -222,7 +222,7 @@ has_exact_text <- function(x, text) {
       identical(element$getElementText(), text)
     } else {
       driver <- x$driver
-      actual <- chromote_get_text(element, driver)
+      actual <- chromote_get_text(element, driver = driver)
       identical(actual, text)
     }
   } else {
@@ -270,7 +270,7 @@ has_attr <- function(x, name, value) {
     element$getElementAttribute(name)
   } else {
     driver <- x$driver
-    chromote_get_attribute(element, name, list(), driver)
+    chromote_get_attribute(element, name, list(), driver = driver)
   }
   
   if (length(result) == 0) {
@@ -312,7 +312,7 @@ attr_contains <- function(x, name, value) {
     element$getElementAttribute(name)
   } else {
     driver <- x$driver
-    chromote_get_attribute(element, name, list(), driver)
+    chromote_get_attribute(element, name, list(), driver = driver)
   }
 
   if (length(result) == 0) {
@@ -339,7 +339,7 @@ has_value <- function(x, value) {
     element$getElementAttribute("value")
   } else {
     driver <- x$driver
-    chromote_get_attribute(element, "value", list(), driver)
+    chromote_get_attribute(element, "value", list(), driver = driver)
   }
   
   if (length(result) == 0) {
@@ -398,7 +398,7 @@ has_css_property <- function(x, property, value) {
     element$getElementValueOfCssProperty(property)
   } else {
     driver <- x$driver
-    chromote_get_css_property(element, property, list(), driver)
+    chromote_get_css_property(element, property, list(), driver = driver)
   }
   
   if (length(result) == 0) {

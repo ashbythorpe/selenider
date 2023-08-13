@@ -37,6 +37,6 @@ html_size <- function(x, timeout = NULL) {
 #' @rdname html_size
 #' 
 #' @export
-length.html_elements <- function(x) {
+length.selenider_elements <- function(x) {
   html_size(x)
 }

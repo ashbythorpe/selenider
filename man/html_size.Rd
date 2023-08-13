@@ -2,12 +2,12 @@
 % Please edit documentation in R/properties-multiple.R
 \name{html_size}
 \alias{html_size}
-\alias{length.html_elements}
+\alias{length.selenider_elements}
 \title{Get the number of elements in a collection}
 \usage{
 html_size(x, timeout = NULL)
 
-\method{length}{html_elements}(x)
+\method{length}{selenider_elements}(x)
 }
 \arguments{
 \item{x}{A \code{selenider_elements} object.}

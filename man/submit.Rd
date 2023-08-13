@@ -25,8 +25,9 @@ an element does not exist, an error is thrown.
 \examples{
 session <- mock_selenider_session()
 
-s(".class1") |>
-  submit()
+# Won't work since doesn't have a form ancestor
+# s(".class1") |>
+#   submit()
 
 }
 \seealso{

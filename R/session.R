@@ -92,9 +92,9 @@ selenider_session <- function(session = NULL,
                               extra_args = list()) {
   if (is.null(session)) {
     chromote_installed <- rlang::is_installed("chromote")
-    if (!chromote_installed && !rlang::is_installed("selenium")) {
+    if (!chromote_installed && !rlang::is_installed("RSelenium")) {
       cli::cli_abort(c(
-        "One of {.pkg chromote} or {.pkg selenium} must be installed to use {.pkg selenider}."
+        "One of {.pkg chromote} or {.pkg RSelenium} must be installed to use {.pkg selenider}."
       ))
     }
 
@@ -105,7 +105,7 @@ selenider_session <- function(session = NULL,
     if (session == "chromote") {
       rlang::check_installed("chromote")
     } else {
-      rlang::check_installed("selenium")
+      rlang::check_installed("RSelenium")
     }
   }
 

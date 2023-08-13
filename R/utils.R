@@ -16,7 +16,6 @@ get_with_timeout <- function(timeout, .f, ...) {
   }
 }
 
-#' @export
 selenider_available <- function(session = c("chromote", "selenium")) {
   session <- arg_match(session)
 
@@ -83,10 +82,11 @@ lazy_intersect_by <- function(x, .f) {
       if (element_in) {
         coro::yield(value)
       }
+
+      index <- index + 1
+      value <- get_item(first, index)
     }
 
-    index <- index + 1
-    value <- get_item(first, index)
     coro::exhausted()
   })
   
@@ -176,7 +176,7 @@ execute_js_fn <- function(fn, x, driver) {
     driver$executeScript(script, list(x))[[1]]
   } else {
     script <- paste0("function() { return (", fn, ")(this) }")
-    x$driver$Runtime$callFunctionOn(fn, chromote_object_id(backend_id = x))$result$value
+    x$driver$Runtime$callFunctionOn(fn, chromote_object_id(backend_id = x, driver = driver))$result$value
   }
 }
 

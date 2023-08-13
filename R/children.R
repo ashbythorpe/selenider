@@ -96,7 +96,7 @@ html_children <- function(x) {
   check_class(x, "selenider_element")
 
   selector <- list(
-    xpath = "*",
+    xpath = "./*",
     filter = list()
   )
 

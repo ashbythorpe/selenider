@@ -87,7 +87,7 @@ html_element.selenider_element <- function(x,
 new_selenider_element <- function(session, selector) {
   res <- list(
     driver = get_driver(session),
-    driver_id <- session$id,
+    driver_id = session$id,
     element = NULL,
     timeout = session$timeout,
     selectors = list(selector),

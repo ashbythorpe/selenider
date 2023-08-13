@@ -25,6 +25,7 @@ as_pretty_dt <- function(x) {
 
 #' @rdname as_pretty_dt
 #'
+#' @importFrom cli cli_format
 #' @export
 cli_format.pretty_dt <- function(x, style = NULL, ...) {
   x
