@@ -68,13 +68,17 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>selenider aims to make web testing and scraping using Selenium much simpler. It is inspired by Java’s <a href="https://selenide.org/" class="external-link">Selenide</a> and Python’s <a href="https://yashaka.github.io/selene/" class="external-link">Selene</a>.</p>
+</div>
+<div class="section level1">
+<h1 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h1>
+<p>selenider aims to make web testing and scraping much simpler. It is inspired by Java’s <a href="https://selenide.org/" class="external-link">Selenide</a> and Python’s <a href="https://yashaka.github.io/selene/" class="external-link">Selene</a>. It provides a simple and consistent interface to both [chromote] and [RSelenium].</p>
 <p>It provides the following features:</p>
 <ul>
 <li>All elements are lazy, meaning that they will only actually collect an element when absolutely necessary.</li>
 <li>Automatic implicit waiting, meaning that functions will automatically wait a certain amount of time (by default, 4 seconds) before performing some action on it.</li>
 <li>An API that is designed for use with the pipe operator (<code>|&gt;</code> or <code>%&gt;%</code>).</li>
-<li>A quick and concise way to specify test expectations.</li>
+<li>A quick and concise way to specify test expectations, including automatic [testthat] integration.</li>
 </ul>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -185,6 +189,7 @@
 <p>(Todo: Link to documentation of conditions)</p>
 </div>
 </div>
+
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
