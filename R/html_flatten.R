@@ -116,13 +116,14 @@ html_combine <- function(elements) {
 
   res <- list(
     driver = driver,
+    driver_id = elements[[1]]$driver_id,
     element = NULL,
     timeout = timeout,
     selectors = list(new_flattened_selector(elements)),
     to_be_found = 1
   )
 
-  class(res) <- "selenider_elements"
+  class(res) <- c("selenider_elements", "list")
 
   res
 }

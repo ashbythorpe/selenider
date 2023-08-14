@@ -67,7 +67,7 @@ html_filter <- function(x, ...) {
   elem_name <- make_elem_name(exprs)
   calls <- lapply(exprs, parse_condition, elem_name)
 
-  functions <- lapply(calls, condition_to_function, elem_name = elem_name)
+  functions <- mapply(condition_to_function, calls, exprs, MoreArgs = list(elem_name = elem_name), SIMPLIFY = FALSE)
   
   selectors <- x$selectors
 
@@ -156,15 +156,19 @@ add_numeric_filter <- function(x, i, call = rlang::caller_env()) {
   x
 }
 
-condition_to_function <- function(x, elem_name) {
+condition_to_function <- function(x, original_call, elem_name) {
   args <- pairlist2(x = )
   names(args) <- elem_name
 
-  new_function(
+  res <- new_function(
     args,
     call2(with_timeout, 0, quo_get_expr(x)),
     quo_get_env(x)
   )
+
+  attr(res, "original_call") <- quo_get_expr(original_call)
+
+  res
 }
 
 

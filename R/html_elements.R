@@ -108,39 +108,41 @@ new_selenider_elements <- function(session, selector) {
 #' @export
 format.selenider_elements <- function(x, ...) {
   cli::cli_format_method({
-    selectors <- x$selectors
-    
-    if (length(selectors) == 1) {
-      formatted <- format(selectors[[1]], first = TRUE, multiple = TRUE)
-      
-      cli::cli_text("A collection of selenider elements selecting:")
-      cli::cli_text(formatted)
-    } else if (length(selectors) == 2) {
-      first <- format(selectors[[1]], first = TRUE)
-      
-      last <- format(selectors[[2]], multiple = TRUE)
-      
-      cli::cli_text("A collection of selenider elements selecting:")
-      cli::cli_bullets(c("*" = first, "*" = last))
+    bullets <- format_elements(x)
+    cli::cli_text("A collection of selenider elements selecting:")
+
+    if (length(bullets) == 1) {
+      cli::cli_text(bullets)
     } else {
-      first <- format(selectors[[1]], first = TRUE)
-      
-      last <- format(selectors[[length(selectors)]], multiple = TRUE)
-      
-      formatted <- vapply(
-        selectors[c(-1, -length(selectors))], 
-        format, 
-        FUN.VALUE = character(1)
-      )
-      
-      names(first) <- "*"
-      names(last) <- "*"
-      names(formatted) <- rep("*", length(formatted))
-      
-      cli::cli_text("A selenider element selecting:")
-      cli::cli_bullets(c(first, formatted, last))
+      cli::cli_bullets(bullets)
     }
   })
+}
+
+format_elements <- function(x, ...) {
+  selectors <- x$selectors
+  
+  if (length(selectors) == 1) {
+    res <- format(selectors[[1]], first = TRUE, multiple = TRUE, ...)
+    replace_names_bullets(res)
+  } else if (length(selectors) == 2) {
+    first <- format(selectors[[1]], first = TRUE, ...)
+    
+    last <- format(selectors[[2]], multiple = TRUE, ...)
+
+    c(replace_names_bullets(first), replace_names_bullets(last))
+  } else {
+    first <- format(selectors[[1]], first = TRUE, ...)
+    
+    last <- format(selectors[[length(selectors)]], multiple = TRUE, ...)
+    
+    formatted <- unlist(lapply(
+      selectors[c(-1, -length(selectors))], 
+      format, ...
+    ))
+    
+    c(replace_names_bullets(first), replace_names_bullets(formatted), replace_names_bullets(last))
+  }
 }
 
 #' @export

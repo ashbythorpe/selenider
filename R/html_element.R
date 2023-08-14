@@ -107,25 +107,31 @@ get_driver <- function(session) {
 #' @export
 format.selenider_element <- function(x, ...) {
   cli::cli_format_method({
-    selectors <- x$selectors
+    bullets <- format_element(x)
+    cli::cli_text("A selenider element selecting:")
 
-    if (length(selectors) == 1) {
-      formatted <- format(selectors[[1]], first = TRUE)
-
-      cli::cli_text("A selenider element selecting:")
-      cli::cli_text(formatted)
+    if (length(bullets) == 1) {
+      cli::cli_text(bullets)
     } else {
-      first <- format(selectors[[1]], first = TRUE)
-
-      formatted <- vapply(selectors[-1], format, FUN.VALUE = character(1))
-
-      names(first) <- "*"
-      names(formatted) <- rep("*", length(formatted))
-
-      cli::cli_text("A selenider element selecting:")
-      cli::cli_bullets(c(first, formatted))
+      cli::cli_bullets(bullets)
     }
   })
+}
+
+format_element <- function(x, ...) {
+  selectors <- x$selectors
+
+  if (length(selectors) == 1) {
+    res <- format(selectors[[1]], first = TRUE, ...)
+    replace_names_bullets(res)
+  } else {
+    first <- format(selectors[[1]], first = TRUE, ...)
+
+    # Unlist since format can return a character vector of length >1
+    formatted <- unlist(lapply(selectors[-1], format, ...))
+
+    c(replace_names_bullets(first), replace_names_bullets(formatted))
+  }
 }
 
 #' @export
