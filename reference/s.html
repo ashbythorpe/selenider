@@ -138,12 +138,12 @@ more concise. Both use <code><a href="get_session.html">get_session()</a></code>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">s</span><span class="op">(</span><span class="st">".class1"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A selenider element selecting:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> The first element with css <span style="color: #0000BB;">".class1"</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> The first element with css selector <span style="color: #0000BB;">".class1"</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># This is the equivalent of:</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="html_element.html">html_element</a></span><span class="op">(</span><span class="va">session</span>, <span class="st">".class1"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A selenider element selecting:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> The first element with css <span style="color: #0000BB;">".class1"</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> The first element with css selector <span style="color: #0000BB;">".class1"</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">ss</span><span class="op">(</span><span class="st">".class2"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A collection of selenider elements selecting:</span>
@@ -152,16 +152,16 @@ more concise. Both use <code><a href="get_session.html">get_session()</a></code>
 <span class="r-in"><span><span class="co"># This is the equivalent of:</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="html_element.html">html_element</a></span><span class="op">(</span><span class="va">session</span>, <span class="st">".class2"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A selenider element selecting:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> The first element with css <span style="color: #0000BB;">".class2"</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> The first element with css selector <span style="color: #0000BB;">".class2"</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># This provides a more concise way to begin a chain of selectors</span></span></span>
 <span class="r-in"><span><span class="fu">s</span><span class="op">(</span><span class="st">".class1"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="html_element.html">html_element</a></span><span class="op">(</span><span class="st">".innerclass"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="html_element.html">html_element</a></span><span class="op">(</span><span class="st">"#item1"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A selenider element selecting:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> The first element with css <span style="color: #0000BB;">".class1"</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> The first child element with css <span style="color: #0000BB;">".innerclass"</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> The first child element with css <span style="color: #0000BB;">"#item1"</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> The first element with css selector <span style="color: #0000BB;">".class1"</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> The first child element with css selector <span style="color: #0000BB;">".innerclass"</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> The first child element with css selector <span style="color: #0000BB;">"#item1"</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

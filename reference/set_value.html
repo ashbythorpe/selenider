@@ -64,11 +64,13 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>x</dt>
-<dd><p>A <code>selenider_element</code> object.</p></dd>
+<dd><p>A <code>selenider_element</code> object. For <code>send_keys()</code>, this can be <code>NULL</code>,
+meaning that the keys will be sent to the current page instead of a specific
+element.</p></dd>
 
 
 <dt>text</dt>
-<dd><p>A string to set the input</p></dd>
+<dd><p>A string to set the value of the input element to.</p></dd>
 
 
 <dt>timeout</dt>
