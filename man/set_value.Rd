@@ -13,9 +13,11 @@ send_keys(x, ..., modifiers = NULL, timeout = NULL)
 clear_value(x, timeout = NULL)
 }
 \arguments{
-\item{x}{A \code{selenider_element} object.}
+\item{x}{A \code{selenider_element} object. For \code{\link[=send_keys]{send_keys()}}, this can be \code{NULL},
+meaning that the keys will be sent to the current page instead of a specific
+element.}
 
-\item{text}{A string to set the input}
+\item{text}{A string to set the value of the input element to.}
 
 \item{timeout}{How long to wait for the element to exist.}
 

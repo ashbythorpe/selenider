@@ -411,3 +411,46 @@ has_css_property <- function(x, property, value) {
     result[[1]] == value
   }
 }
+
+is_covered <- function(x) {
+  check_class(x, "selenider_element")
+
+  element <- get_element(x)
+  
+  if (is.null(element)) {
+    stop_absent_element()
+  } else {
+    visible <- if (uses_selenium(x$driver)) {
+      element$isElementDisplayed()[[1]]
+    } else {
+      driver <- x$driver
+      tryCatch({
+        driver$DOM$getBoxModel(backendNodeId = element)
+        TRUE
+      }, error = function(e) FALSE)
+    }
+
+    if (!visible) {
+      cli::cli_abort(c(
+        "{.arg x} must be visible to check if it is covered by another element.",
+        "Use {.code is_visible} to check if the element is visible."
+      ))
+    } else if (uses_selenium(x$driver)) {
+      x$driver$executeScript("
+        let element = arguments[0];
+
+        let rect = element.getBoundingClientRect();
+        let x = rect.left + rect.width/2;
+        let y = rect.top + rect.height/2;
+
+        let cover = document.elementFromPoint(x, y);
+        return cover == null || element.isSameNode(cover);
+      ", list(element))
+    } else {
+      driver <- x$driver
+      coords <- chromote_get_xy(backend_id = element, driver = driver)
+      node_at_location <- driver$DOM$getNodeForLocation(x = coords$x, y = coords$y)
+      node_at_location$backendNodeId == element
+    }
+  }
+}

@@ -310,8 +310,10 @@ hover_chromote <- function(element, driver) {
 #' `clear_value()` sets the value of an HTML element to `""`, removing any
 #' existing content.
 #'
-#' @param x A `selenider_element` object.
-#' @param text A string to set the input 
+#' @param x A `selenider_element` object. For [send_keys()], this can be `NULL`,
+#'   meaning that the keys will be sent to the current page instead of a specific
+#'   element.
+#' @param text A string to set the value of the input element to.
 #' @param timeout How long to wait for the element to exist.
 #' 
 #' @returns `x`, invisibly
@@ -371,7 +373,7 @@ chromote_send_chars <- function(x, driver) {
 }
 
 #' @rdname set_value
-#'
+#' 
 #' @param ... A set of inputs to send to `x`.
 #' @param modifiers A character vector; one or more of "shift", "ctrl"/"control", "alt", and "command"/meta".
 #' 
