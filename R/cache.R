@@ -24,7 +24,7 @@ cache_elements <- function(x, timeout = NULL) {
   
   timeout <- get_timeout(timeout, x$timeout)
 
-  elements <- get_with_timeout(timeout, get_elements, x)
+  elements <- as.list(get_with_timeout(timeout, get_elements, x))
 
   if (is.null(elements)) {
     cli::cli_abort(c(
@@ -34,7 +34,6 @@ cache_elements <- function(x, timeout = NULL) {
   }
 
   x$element <- elements
-
 
   x$to_be_found <- 0
   x$to_be_filtered <- 0

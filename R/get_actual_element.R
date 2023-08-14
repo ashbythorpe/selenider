@@ -137,7 +137,7 @@ filter_elements <- function(elements, filter, multiple = FALSE) {
     stopifnot(multiple) # we need a filter to get a single element
     elements
   } else if (length(filter) == 1 && is.numeric(filter[[1]])) {
-    if (length(filter) == 1) {
+    if (length(filter[[1]]) == 1) {
       res <- get_item(elements, filter[[1]])
 
       if (multiple) {

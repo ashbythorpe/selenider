@@ -1,3 +1,4 @@
+
 counter <- function() {
   x <- 0
   list(
@@ -169,6 +170,24 @@ lazy_filter <- function(x, .f) {
     coro::exhausted()
   })
   
+  lazy_list(generator)
+}
+
+lazy_map <- function(x, .f) {
+  x <- check_lazylist(x)
+  force(.f)
+
+  generator <- coro::generator(function() {
+    value <- next_value(x)
+
+    while (!coro::is_exhausted(value)) {
+      coro::yield(.f(value))
+      value <- next_value(x)
+    }
+
+    coro::exhausted()
+  })
+
   lazy_list(generator)
 }
 
