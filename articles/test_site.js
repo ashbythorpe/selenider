@@ -23,6 +23,7 @@ $(function() {
   })
 
   $(".actions-form").on("submit", function(e) {
+    e.preventDefault();
     $("#form-output").text("Form submitted!");
   })
 })
