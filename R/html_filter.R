@@ -51,7 +51,7 @@
 #' # The above is equivalent to:
 #' elems <- ss(".class1") |>
 #'   html_filter(is_visible)
-#' 
+#'
 #' elems[[1]]
 #'
 #' # In R >= 4.3.0, we can instead do:
@@ -64,11 +64,19 @@ html_filter <- function(x, ...) {
   check_class(x, "selenider_elements")
 
   exprs <- enquos(...)
-  elem_name <- make_elem_name(exprs)
-  calls <- lapply(exprs, parse_condition, elem_name)
+  arg_names <- lapply(c("a1", "a2", "a3"), function(x) make_elem_name(exprs, x))
+  elem_name <- make_elem_name(exprs) 
+  elem_expr <- filter_elem_name(elem_name, arg_names)
+  calls <- lapply(exprs, parse_condition, elem_expr)
 
-  functions <- mapply(condition_to_function, calls, exprs, MoreArgs = list(elem_name = elem_name), SIMPLIFY = FALSE)
-  
+  functions <- mapply(
+    condition_to_function,
+    calls,
+    exprs,
+    MoreArgs = list(elem_name = elem_name, arg_names = arg_names, driver = x$driver, driver_id = x$driver_id, timeout = x$timeout),
+    SIMPLIFY = FALSE
+  )
+
   selectors <- x$selectors
 
   x$selectors[[length(selectors)]]$filter <-
@@ -85,13 +93,32 @@ html_filter <- function(x, ...) {
 html_find <- function(x, ...) {
   check_class(x, "selenider_elements")
 
-  res <- html_filter(x, ...)
-  
-  res <- add_numeric_filter(res, 1)
+  exprs <- enquos(...)
+  arg_names <- lapply(c("a1", "a2", "a3"), function(x) make_elem_name(exprs, x))
+  elem_name <- make_elem_name(exprs) 
+  elem_expr <- find_elem_name(elem_name, arg_names)
+  calls <- lapply(exprs, parse_condition, elem_expr)
 
-  class(res) <- "selenider_element"
+  functions <- mapply(
+    condition_to_function,
+    calls,
+    exprs,
+    MoreArgs = list(elem_name = elem_name, arg_names = arg_names, driver = x$driver, driver_id = x$driver_id, timeout = x$timeout),
+    SIMPLIFY = FALSE
+  )
 
-  res
+  selectors <- x$selectors
+
+  x$selectors[[length(selectors)]]$filter <-
+    c(x$selectors[[length(selectors)]]$filter, functions)
+
+  x$to_be_filtered <- x$to_be_filtered + 1
+
+  x <- add_numeric_filter(x, 1)
+
+  class(x) <- "selenider_element"
+
+  x
 }
 
 #' @rdname html_filter
@@ -104,7 +131,7 @@ html_find <- function(x, ...) {
 
   add_numeric_filter(x, i)
 }
- 
+
 #' @rdname html_filter
 #'
 #' @export
@@ -128,7 +155,7 @@ add_numeric_filter <- function(x, i, call = rlang::caller_env()) {
   selectors <- x$selectors
 
   filters <- selectors[[length(selectors)]]$filter
-  
+
   numeric_filters <- Filter(is.numeric, filters)
 
   min_length <- if (length(numeric_filters) != 0) min(lengths(numeric_filters)) else Inf
@@ -147,7 +174,7 @@ add_numeric_filter <- function(x, i, call = rlang::caller_env()) {
 
     x$selectors[[length(selectors)]]$filter[[length(filters)]] <- new_filter
   } else {
-    x$selectors[[length(selectors)]]$filter <- 
+    x$selectors[[length(selectors)]]$filter <-
       append(x$selectors[[length(selectors)]]$filter, list(i))
   }
 
@@ -156,14 +183,17 @@ add_numeric_filter <- function(x, i, call = rlang::caller_env()) {
   x
 }
 
-condition_to_function <- function(x, original_call, elem_name) {
+condition_to_function <- function(x, original_call, elem_name, arg_names, driver, driver_id, timeout) {
+  extra_data <- list(driver, driver_id, timeout, webelement_to_element = webelement_to_element, webelements_to_elements = webelements_to_elements)
+  names(extra_data)[1:3] <- arg_names
+
   args <- pairlist2(x = )
   names(args) <- elem_name
 
   res <- new_function(
     args,
     call2(with_timeout, 0, quo_get_expr(x)),
-    quo_get_env(x)
+    new_environment(extra_data, parent = quo_get_env(x))
   )
 
   attr(res, "original_call") <- quo_get_expr(original_call)
@@ -171,4 +201,44 @@ condition_to_function <- function(x, original_call, elem_name) {
   res
 }
 
+filter_elem_name <- function(elem_name, arg_names) {
+  args <- paste(elem_name, arg_names[[1]], arg_names[[2]], arg_names[[3]], sep = ", ")
+  paste0("webelements_to_elements(", args, ")")
+}
 
+find_elem_name <- function(elem_name, arg_names) {
+  args <- paste(elem_name, arg_names[[1]], arg_names[[2]], arg_names[[3]], sep = ", ")
+  paste0("webelement_to_element(", args, ")")
+}
+
+webelement_to_element <- function(x, driver, driver_id, timeout) {
+  res <- list(
+    driver = driver,
+    driver_id = driver_id,
+    element = x,
+    timeout = timeout,
+    selectors = list(),
+    to_be_found = 0,
+    to_be_filtered = 0
+  )
+
+  class(res) <- "selenider_element"
+
+  res
+}
+
+webelements_to_elements <- function(x, driver, driver_id, timeout) {
+  res <- list(
+    driver = driver,
+    driver_id = driver_id,
+    element = x,
+    timeout = timeout,
+    selectors = list(),
+    to_be_found = 0,
+    to_be_filtered = 0
+  )
+
+  class(res) <- c("selenider_elements", "list")
+
+  res
+}

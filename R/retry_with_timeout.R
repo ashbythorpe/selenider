@@ -76,6 +76,7 @@ retry_with_timeout <- function(timeout, exprs, data_mask = NULL) {
 eval_condition <- function(x, data_mask = NULL) {
   try_fetch(
     with_timeout(0, eval_tidy(x, data = data_mask)),
+    # TODO: Use extensible/general error class
     selenider_error_absent_element = function(x) x
   )
 }

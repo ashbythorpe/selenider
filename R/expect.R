@@ -296,7 +296,7 @@ diagnose_condition <- function(x,
       negated_call_name <- negate_call_name(call_name)
     }
 
-    expected_name <- eval_tidy(call_args(call)[[1]], env = original_env)
+    expected_name <- eval_tidy(call_args(call)[[2]], env = original_env)
 
     if (is.null(x)) {
       condition <- c(
@@ -317,7 +317,7 @@ diagnose_condition <- function(x,
       negated_call_name <- negate_call_name(call_name)
     }
 
-    target_text <- eval_tidy(call_args(call)[[1]], env = original_env)
+    target_text <- eval_tidy(call_args(call)[[2]], env = original_env)
 
     if (is.null(x)) {
       condition <- c(
@@ -346,8 +346,8 @@ diagnose_condition <- function(x,
       "attr does not contain" = "does not contain"
     )
 
-    name <- eval_tidy(call_args(call)[[1]], env = original_env)
-    expected_value <- eval_tidy(call_args(call)[[2]], env = original_env)
+    name <- eval_tidy(call_args(call)[[2]], env = original_env)
+    expected_value <- eval_tidy(call_args(call)[[3]], env = original_env)
     
     if (is.null(x)) {
       condition <- c(

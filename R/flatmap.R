@@ -61,3 +61,17 @@ new_flatmap_selector <- function(x, selectors, class) {
 
   res
 }
+
+element_list <- function(x, timeout = NULL) {
+  check_class(x, "selenider_elements")
+
+  timeout <- get_timeout(timeout, x$timeout)
+
+  size <- html_size(x, timeout = timeout)
+
+  lapply(seq_len(size), function(i) x[[i]])
+}
+
+as.list.selenider_elements <- function(x, timeout = NULL, ...) {
+  element_list(x, timeout)
+}

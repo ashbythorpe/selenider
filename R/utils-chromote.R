@@ -23,7 +23,7 @@ chromote_node_id <- function(object_id = NULL, backend_id = NULL, driver) {
   if (!is.null(object_id)) {
     driver$DOM$requestNode(object_id)$nodeId
   } else {
-    driver$DOM$describeNode(backendNodeId = backend_id)$node$nodeId
+    driver$DOM$requestNode(driver$DOM$resolveNode(backendNodeId = backend_id)$object$objectId)$nodeId
   }
 }
 

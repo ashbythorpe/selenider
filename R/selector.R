@@ -38,7 +38,7 @@ use_selector <- function(selector, element, driver, multiple = FALSE) {
     elements <- lapply(selector$selectors, function(selector) get_elements(list(selectors = selector, driver = driver, to_be_found = length(selector))))
     return(elem_unique(elements, driver = driver))
   } else if (inherits(selector, "selenider_flatmap_selector")) {
-    elements <- selector$elements
+    elements <- selector$element
     elements$driver <- driver
     actual_elements <- get_elements(elements)
     return(lazy_map(actual_elements, function(x) {

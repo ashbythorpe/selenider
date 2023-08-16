@@ -22,6 +22,11 @@ Works by walking up the DOM, checking each ancestor element until
 the element is a \if{html}{\out{<form>}} element, which it then submits. If such
 an element does not exist, an error is thrown.
 }
+\details{
+This method is similar to clicking a submit button within the form, but
+there are a few differences: see
+\url{https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/submit}
+}
 \examples{
 session <- mock_selenider_session()
 

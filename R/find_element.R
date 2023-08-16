@@ -29,7 +29,17 @@ find_element <- function(x, using, value, driver) {
     
     selector <- selector_to_css(using, value)
     document <- x$DOM$getDocument()
-    nodeId <- x$DOM$querySelector(document$root$nodeId, value)$nodeId
+
+    nodeId <- tryCatch(
+      x$DOM$querySelector(document$root$nodeId, value)$nodeId,
+      error = function(e) {
+        if (grepl("Could not find node with given id", e$message, fixed = TRUE)) {
+          0
+        } else {
+          rlang::zap()
+        }
+      }
+    )
     if (nodeId == 0) {
       return(NULL)
     }
@@ -41,7 +51,16 @@ find_element <- function(x, using, value, driver) {
     }
 
     selector <- selector_to_css(using, value)
-    nodeId <- driver$DOM$querySelector(chromote_backend_id(x, driver = driver), value)$nodeId
+    nodeId <- tryCatch(
+      driver$DOM$querySelector(chromote_node_id(backend_id = x, driver = driver), value)$nodeId,
+      error = function(e) {
+        if (grepl("Could not find node with given id", e$message, fixed = TRUE)) {
+          0
+        } else {
+          rlang::zap()
+        }
+      }
+    )
     if (nodeId == 0) {
       return(NULL)
     }
@@ -70,7 +89,7 @@ find_elements <- function(x, using, value, driver) {
     }
 
     selector <- selector_to_css(using, value)
-    node_ids <- driver$DOM$querySelectorAll(x, value)$nodeIds
+    node_ids <- driver$DOM$querySelectorAll(chromote_node_id(backend_id = x, driver = driver), value)$nodeIds
     lapply(node_ids, chromote_backend_id, driver = driver)
   }
 }
@@ -151,3 +170,4 @@ use_xpath_chromote <- function(xpath, element, driver, multiple = FALSE) {
     }
   }
 }
+

@@ -68,10 +68,11 @@ get_element <- function(x) {
     element <- x$driver
   }
   
-  if (is_multiple_elements(element)) {
+  if (is_multiple_elements(element) && x$to_be_filtered != 0) {
     filter <- x$selectors[[length(x$selectors) - x$to_be_found]]$filter
+    relevant_filters <- utils::tail(filter, x$to_be_filtered)
     
-    element <- filter_elements(element, filter)
+    element <- filter_elements(element, relevant_filters)
     
     if (is.null(element)) {
       return(NULL)
@@ -106,10 +107,11 @@ get_elements <- function(x) {
     return(element)
   }
   
-  if (is_multiple_elements(element)) {
+  if (is_multiple_elements(element) && x$to_be_filtered != 0) {
     filter <- x$selectors[[length(x$selectors) - x$to_be_found]]$filter
-
-    element <- filter_elements(element, filter, multiple = (x$to_be_found == 0))
+    relevant_filters <- utils::tail(filter, x$to_be_filtered)
+    
+    element <- filter_elements(element, relevant_filters, multiple = (x$to_be_found == 0))
 
     if (is.null(element)) {
       return(NULL)

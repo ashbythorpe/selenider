@@ -385,6 +385,10 @@ format_condition <- function(c) {
 }
 
 replace_names_bullets <- function(x) {
-  names(x)[names(x) != " "] <- rep("*", sum(names(x) != " "))
+  if (is.null(names(x))) {
+    names(x) <- rep("*", length(x))
+  } else {
+    names(x)[names(x) != " "] <- rep("*", sum(names(x) != " "))
+  }
   x
 }

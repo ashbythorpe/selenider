@@ -15,6 +15,8 @@ cache_element <- function(x, timeout = NULL) {
   x$to_be_found <- 0
   x$to_be_filtered <- 0
 
+  attr(x, "dim")
+
   x
 }
 

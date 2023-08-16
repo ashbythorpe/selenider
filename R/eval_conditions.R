@@ -152,13 +152,13 @@ parse_condition_expr <- function(x, elem_name) {
   call2(x, parse_expr(elem_name))
 }
 
-make_elem_name <- function(x) {
+make_elem_name <- function(x, name = "element") {
   expr <- paste0(lapply(x, get_expr_string), collapse = "")
 
-  collisions <- regmatches(expr, gregexpr("element(?:_*)", expr))[[1]]
+  collisions <- regmatches(expr, gregexpr(paste0(name, "(?:_*)"), expr))[[1]]
 
   if (length(collisions) == 0) {
-    return("element")
+    return(name)
   }
 
   underscores <- nchar(collisions) - 7
@@ -167,7 +167,7 @@ make_elem_name <- function(x) {
 
   underscores_needed <- setdiff(potential, underscores)[1]
 
-  paste0(c("element", rep("_", underscores_needed)), collapse = "")
+  paste0(c(name, rep("_", underscores_needed)), collapse = "")
 }
 
 get_expr_string <- function(x) {

@@ -22,7 +22,7 @@ set_session <- function(session) {
   old_session
 }
 
-reset_session <- function(old_session, close) {
+reset_session <- function(session, old_session, close) {
   if (close) {
     try_fetch(
       close_session(get_session(create = FALSE)),
@@ -136,10 +136,12 @@ get_session <- function(create = TRUE, .env = rlang::caller_env()) {
 local_session <- function(session,
                           .local_envir = rlang::caller_env(),
                           close = TRUE) {
+  check_class(session, "selenider_session")
   check_environment(.local_envir)
   check_bool(close)
+
   old <- get_session(create = FALSE)
-  withr::defer(reset_session(old, close), envir = .local_envir)
+  withr::defer(reset_session(session, old, close), envir = .local_envir)
   set_session(session = session)
   invisible(old)
 }
@@ -148,15 +150,12 @@ local_session <- function(session,
 #' 
 #' @export
 with_session <- function(session, code, close = TRUE) {
+  check_class(session, "selenider_session")
   check_bool(close)
 
   old <- get_session(create = FALSE)
-  on.exit(reset_session(old))
   set_session(session = session)
-  
-  if (close) {
-    on.exit(close_session(session))
-  }
+  on.exit(reset_session(session, old, close))
   
   force(code)
 }

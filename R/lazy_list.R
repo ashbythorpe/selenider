@@ -1,4 +1,3 @@
-
 counter <- function() {
   x <- 0
   list(
@@ -52,15 +51,19 @@ next_value <- function(x) {
 
 `[[.lazy_list` <- function(x, i, ...) {
   current_value <- x$current_value$get()
-  result <- if (i >= current_value) {
+  result <- if (i > current_value) {
     for (a in seq_len(i - current_value)) {
-      next_value(x)
+      val <- next_value(x)
     }
+
+    val
   } else {
     reset_iterator(x)
     for (a in seq_len(i)) {
-      next_value(x)
+      val <- next_value(x)
     }
+
+    val
   }
 
   if (coro::is_exhausted(result)) {
@@ -105,8 +108,8 @@ eager_list <- function(x) {
     current_value <- x$current_value$get()
 
     if (all(i >= 0)) {
-      before <- i[i < current_value]
-      after <- i[i >= current_value]
+      before <- i[i <= current_value]
+      after <- i[i > current_value]
 
       for (a in after) {
         res <- get_item(x, a)

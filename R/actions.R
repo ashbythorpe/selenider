@@ -329,6 +329,9 @@ hover_chromote <- function(element, driver) {
 #' @export
 set_value <- function(x, text, timeout = NULL) {
   check_class(x, "selenider_element")
+  if (is.numeric(text) && length(text) == 1) {
+    text <- as.character(text)
+  }
   check_string(text)
   check_number_decimal(timeout, allow_null = TRUE)
 
@@ -345,7 +348,7 @@ set_value <- function(x, text, timeout = NULL) {
 
   execute_js_fn(
     paste0("x => x.setAttribute('value','", text, "')"),
-    element, x$driver
+    element, driver = x$driver
   )
   
   if (uses_selenium(x$driver)) {
@@ -353,7 +356,7 @@ set_value <- function(x, text, timeout = NULL) {
     element$sendKeysToElement(list(text))
   } else {
     chromote_clear(element, driver = x$driver)
-    chromote_send_chars(element, driver = x$driver)
+    chromote_send_chars(text, driver = x$driver)
   }
 }
 
@@ -361,7 +364,7 @@ chromote_clear <- function(x, driver) {
   click_chromote(x, driver = driver)
 
   chromote_press(driver, modifiers = 2, text = "a", unmodifiedText = "a", key = "a", code = "KeyA", windowsVirtualKeyCode = 65)
-  chromote_press(driver, type = "keyDown", windowsVirtualKeyCode = 8, code = "Backspace", key = "Backspace")
+  chromote_press(driver, windowsVirtualKeyCode = 8, code = "Backspace", key = "Backspace")
 }
 
 chromote_send_chars <- function(x, driver) {
@@ -444,17 +447,17 @@ chromote_send_keys <- function(element, driver, keys, modifiers) {
     click_chromote(element, driver = driver)
   }
 
-  keys <- format_keys(keys)
+  keys <- format_keys(keys, modifiers)
   modifier_number <- get_numeric_modifier(modifiers)
 
   for (key in keys) {
-    rlang::inject(chromote_press(driver, !!!key, modifiers = modifiers))
+    rlang::inject(chromote_press(driver, !!!key, modifiers = modifier_number))
   }
 }
 
 format_keys <- function(keys, modifiers) {
   # Don't use `text` param if we have a modifier that is not shift
-  no_text <- length(modifiers[[vapply(modifiers, function(x) identical(x, "shift"), FUN.VALUE = logical(1))]]) > 0
+  no_text <- any(vapply(modifiers, function(x) identical(x, "shift"), FUN.VALUE = logical(1)))
 
   result <- list()
   for (key in keys) {
@@ -482,14 +485,14 @@ format_keys <- function(keys, modifiers) {
 # So alt is 1, ctrl is 2, both is 3, etc.
 get_numeric_modifier <- function(modifiers) {
   if (length(modifiers) == 0) {
-    return(0)
+    return(0L)
   }
   
   modifiers <- vapply(modifiers, tolower, FUN.VALUE = character(1))
 
-  1 * ("alt" %in% modifiers) + 2 * any(c("ctrl", "control") %in% modifiers) +
-    4 * any(c("meta", "command") %in% modifiers) +
-    8 * ("shift" %in% modifiers)
+  1L * ("alt" %in% modifiers) + 2L * any(c("ctrl", "control") %in% modifiers) +
+    4L * any(c("meta", "command") %in% modifiers) +
+    8L * ("shift" %in% modifiers)
 }
 
 #' @rdname set_value
@@ -637,6 +640,11 @@ scroll_to <- function(x, js = FALSE, timeout = NULL) {
 #' @param js Whether to submit the form using JavaScript.
 #' @param timeout How long to wait for the element to exist.
 #'
+#' @details
+#' This method is similar to clicking a submit button within the form, but
+#' there are a few differences: see
+#' <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/submit>
+#'
 #' @returns `x`, invisibly
 #'
 #' @family actions
@@ -657,7 +665,7 @@ submit <- function(x, js = FALSE, timeout = NULL) {
   timeout <- get_timeout(timeout, x$timeout)
 
   has_form_parent <- function(x) {
-    has_at_least(html_flatten(lapply(html_ancestors(x), html_element, "form")), 1)
+    has_at_least(html_flatmap(html_ancestors(x), html_element, "form"), 1)
   }
 
   if (js || !uses_selenium(x$driver)) {
@@ -671,8 +679,8 @@ submit <- function(x, js = FALSE, timeout = NULL) {
     )
 
     result <- execute_js_fn("function(element) {
-      while element != null {
-        if element.tagName == 'form' {
+      while (element != null) {
+        if (element.tagName == 'FORM') {
           element.submit();
           return true;
         }
@@ -680,7 +688,7 @@ submit <- function(x, js = FALSE, timeout = NULL) {
         element = element.parentElement;
       }
       return false;
-    ", element, driver = x$driver)
+    }", element, driver = x$driver)
 
     if (!result) {
       cli::cli_abort(c(

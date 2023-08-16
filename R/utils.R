@@ -16,11 +16,48 @@ get_with_timeout <- function(timeout, .f, ...) {
   }
 }
 
+#' Check if selenider can be used
+#'
+#' @description
+#' Checks if selenider's dependencies are available, and that we are in an
+#' environment where it makes sense to open a selenider session.
+#'
+#' `skip_if_selenider_unavailable()` skips a testthat test if `selenider_available()`
+#' returns `FALSE`.
+#'
+#' @param session Which session we should check. `"chromote"` is used by default.
+#' 
+#' @details
+#' Specifically, the following is checked:
+#'
+#' * The `SELENIDER_AVAILABLE` environment variable. Set this to `"TRUE" `or `"FALSE"`
+#'   to override this function.
+#' * Whether we are on CRAN (using the `NOT_CRAN` environment variable). If we are,
+#'   the function returns `FALSE`.
+#' * Whether an internet connection is available (using [curl::nslookup()]).
+#' 
+#' If `session` is `"chromote"`, we also check:
+#'
+#' * Whether `chromote` is installed.
+#' * Whether [chromote::find_chrome()] does not error.
+#'
+#' If `session` is `"selenium"`, we check:
+#'
+#' * Whether `RSelenium` is installed.
+#' * Whether we can find a valid browser that is supported by `RSelenium`.
+#'
+#' @returns
+#' A boolean flag: `TRUE` or `FALSE`.
+#'
+#' @export
 selenider_available <- function(session = c("chromote", "selenium")) {
   session <- arg_match(session)
 
-  if (isTRUE(as.logical(Sys.getenv("SELENIDER_AVAILABLE", "false")))) {
+  env_variable <- as.logical(Sys.getenv("SELENIDER_AVAILABLE"))
+  if (isTRUE(env_variable)) {
     return(TRUE)
+  } else if (identical(env_variable, FALSE)) {
+    return(FALSE)
   }
 
   internet_available <- is_installed("curl") &&
@@ -37,9 +74,13 @@ selenider_available <- function(session = c("chromote", "selenium")) {
       TRUE
     }, error = function(e) FALSE)
   } else {
-    rlang::is_installed("selenium") &&
+    rlang::is_installed("RSelenium") &&
       !is.null(find_browser_and_version()$browser)
   }
+}
+
+skip_if_selenider_unavailable <- function(session = c("chromote", "selenium")) {
+  testthat::skip_if_not(selenider_available(session), "Selenider dependencies unavailable")
 }
 
 on_cran <- function() {
@@ -176,7 +217,7 @@ execute_js_fn <- function(fn, x, driver) {
     driver$executeScript(script, list(x))[[1]]
   } else {
     script <- paste0("function() { return (", fn, ")(this) }")
-    x$driver$Runtime$callFunctionOn(fn, chromote_object_id(backend_id = x, driver = driver))$result$value
+    driver$Runtime$callFunctionOn(script, chromote_object_id(backend_id = x, driver = driver))$result$value
   }
 }
 

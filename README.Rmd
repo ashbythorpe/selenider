@@ -39,25 +39,7 @@ remotes::install_github("ashbythorpe/selenider")
 
 ## Usage
 
-To use selenider, you first have to create a session.
-
-``` {r, eval = FALSE}
-library(selenider)
-
-session <- selenider_session("firefox")
-
-session
-#> A selenider session object
-#> • Open for 0s
-#> • Browser: "firefox"
-#> • Port: 4567
-#> • Currently opened: Nothing
-#> • Timeout: 4s
-```
-
-This session object is stored globally, so we don't need to pass it into any subsequent functions.
-
-To navigate to a website, use `open_url()`
+To navigate to a website, use `open_url()`.
 
 ``` {r, eval = FALSE}
 open_url("https://www.google.com/")

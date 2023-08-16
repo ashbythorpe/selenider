@@ -55,7 +55,7 @@ html_parent <- function(x) {
 
   selector <- list(
     xpath = "./..",
-    filter = list()
+    filter = list(1)
   )
 
   class(selector) <- c("selenider_parent_selector", "selenider_selector")
