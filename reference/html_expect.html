@@ -159,49 +159,67 @@ condition on multiple elements.</p></li>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class1"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_expect</span><span class="op">(</span><span class="va">is_present</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> A selenider element selecting:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> The first element with css selector <span style="color: #0000BB;">".class1"</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in html_expect(s(".class1"), is_present):</span> Condition failed after waiting for 4 seconds:</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> `is_present`</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `x` is not present.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class1"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_expect</span><span class="op">(</span><span class="va">is_visible</span>, <span class="va">is_enabled</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> A selenider element selecting:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> The first element with css selector <span style="color: #0000BB;">".class1"</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in html_expect(s(".class1"), is_visible, is_enabled):</span> Condition failed after waiting for 4 seconds:</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> `is_visible`</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `x` is not visible.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `is_visible()`:</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> `x` does not exist in the DOM.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class1"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_expect</span><span class="op">(</span><span class="va">is_visible</span> <span class="op">||</span> <span class="va">is_enabled</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> A selenider element selecting:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> The first element with css selector <span style="color: #0000BB;">".class1"</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in html_expect(s(".class1"), is_visible || is_enabled):</span> Condition failed after waiting for 4 seconds:</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> `is_visible || is_enabled`</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `x` does not exist, which may have caused the condition to fail.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `is_visible()`:</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> `x` does not exist in the DOM.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class2"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_expect</span><span class="op">(</span><span class="op">!</span><span class="va">is_present</span>, timeout <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Since this condition will fail</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in diagnose_condition(x, n, new_call, original_expr, result, timeout,  : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   argument "testthat" is missing, with no default</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> A selenider element selecting:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> The first element with css selector <span style="color: #0000BB;">".class2"</span></span>
 <span class="r-in"><span><span class="co"># Or is_absent, etc.</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># html_expect() returns the element, so can be used in chains</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".button1"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_expect</span><span class="op">(</span><span class="va">is_visible</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="click.html">click</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in html_expect(s(".button1"), is_visible):</span> Condition failed after waiting for 4 seconds:</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> `is_visible`</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `x` is not visible.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `is_visible()`:</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> `x` does not exist in the DOM.</span>
 <span class="r-in"><span><span class="co"># Note that click() will do this automatically</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".text1"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_expect</span><span class="op">(</span><span class="fu"><a href="has_text.html">has_exact_text</a></span><span class="op">(</span><span class="st">"Example text"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> A selenider element selecting:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> The first element with css selector <span style="color: #0000BB;">".text1"</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in html_expect(s(".text1"), has_exact_text("Example text")):</span> Condition failed after waiting for 4 seconds:</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> `has_exact_text("Example text")`</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `x` does not have exact text <span style="color: #0000BB;">"Example text"</span>.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Actual text: .</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `has_exact_text()`:</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> `x` does not exist in the DOM.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Or use an anonymous function</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".text1"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_expect</span><span class="op">(</span>\<span class="op">(</span><span class="va">elem</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="html_text.html">html_text</a></span><span class="op">(</span><span class="va">elem</span><span class="op">)</span>, <span class="st">"Example text"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> A selenider element selecting:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> The first element with css selector <span style="color: #0000BB;">".text1"</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in get_element_for_action(x, action = action, conditions = list(),     timeout = timeout, failure_messages = c(), conditions_text = c(),     call = call):</span> To get the text inside `x`, it must exist</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> After 0 seconds, `x` was not present</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># If your conditions are not specific to an element, you can omit the `x` argument</span></span></span>
 <span class="r-in"><span><span class="va">elem_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class1"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">elem_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class2"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">html_expect</span><span class="op">(</span><span class="fu"><a href="is_present.html">is_present</a></span><span class="op">(</span><span class="va">elem_1</span><span class="op">)</span> <span class="op">||</span> <span class="fu"><a href="is_present.html">is_present</a></span><span class="op">(</span><span class="va">elem_2</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in html_expect(is_present(elem_1) || is_present(elem_2)):</span> Condition failed after waiting for 4 seconds:</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> `is_present(elem_1) || is_present(elem_2)`</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `x` contains no elements, which may have caused the condition to fail.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># We can now use the conditions on their own to figure out which element exists</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="is_present.html">is_present</a></span><span class="op">(</span><span class="va">elem_1</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
@@ -209,6 +227,8 @@ condition on multiple elements.</p></li>
 <span class="r-in"><span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="click.html">click</a></span><span class="op">(</span><span class="va">elem_2</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in click(elem_2):</span> To click `x`, it must exist</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> After 4 seconds, `x` was not present</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Use html_wait_for() to handle failures manually</span></span></span>
 <span class="r-in"><span><span class="va">elem</span> <span class="op">&lt;-</span> <span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class2"</span><span class="op">)</span></span></span>
@@ -217,6 +237,7 @@ condition on multiple elements.</p></li>
 <span class="r-in"><span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="reload.html">reload</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> Chromote: timed out waiting for event Page.loadEventFired</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Creating a custom condition is easiest with an anonymous function</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".text1"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
@@ -225,8 +246,8 @@ condition on multiple elements.</p></li>
 <span class="r-in"><span>      <span class="fu"><a href="html_text.html">html_text</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"Example .*"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> A selenider element selecting:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> The first element with css selector <span style="color: #0000BB;">".text1"</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in get_element_for_action(x, action = action, conditions = list(),     timeout = timeout, failure_messages = c(), conditions_text = c(),     call = call):</span> To get the text inside `x`, it must exist</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> After 0 seconds, `x` was not present</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Or create a function, to reuse the condition multiple times</span></span></span>
 <span class="r-in"><span><span class="va">text_contains</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">pattern</span><span class="op">)</span> <span class="op">{</span></span></span>
@@ -237,8 +258,8 @@ condition on multiple elements.</p></li>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".text1"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_expect</span><span class="op">(</span><span class="fu">text_contains</span><span class="op">(</span><span class="st">"Example *"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> A selenider element selecting:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> The first element with css selector <span style="color: #0000BB;">".text1"</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in get_element_for_action(x, action = action, conditions = list(),     timeout = timeout, failure_messages = c(), conditions_text = c(),     call = call):</span> To get the text inside `x`, it must exist</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> After 0 seconds, `x` was not present</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
