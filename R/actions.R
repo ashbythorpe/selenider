@@ -370,7 +370,9 @@ chromote_clear <- function(x, driver) {
     chromote_press(driver, modifiers = 2, text = "a", unmodifiedText = "a", key = "a", code = "KeyA", windowsVirtualKeyCode = 65)
   }
 
-  chromote_press(driver, windowsVirtualKeyCode = 8, code = "Backspace", key = "Backspace")
+  # Use command instead of ctrl on mac
+  modifiers <- if (is_mac()) 4 else 2
+  chromote_press(driver, modifiers = modifiers, text = "a", unmodifiedText = "a", key = "a", code = "KeyA", windowsVirtualKeyCode = 65)
 }
 
 chromote_send_chars <- function(x, driver) {
@@ -517,6 +519,11 @@ clear_value <- function(x, timeout = NULL) {
     timeout = timeout,
     failure_messages = c("was not enabled"),
     conditions_text = c("be enabled")
+  )
+
+  execute_js_fn(
+    paste0("x => x.setAttribute('value', '')"),
+    element, driver = x$driver
   )
   
   if (uses_selenium(x$driver)) {
