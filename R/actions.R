@@ -361,11 +361,13 @@ set_value <- function(x, text, timeout = NULL) {
 }
 
 chromote_clear <- function(x, driver) {
-  click_chromote(x, driver = driver)
+  if (is_mac()) {
+    click_chromote(x, driver = driver, count = 3)
+  } else {
+    click_chromote(x, driver = driver)
 
-  modifiers <- if (is_mac()) 4 else 2
-  chromote_press(driver, modifiers = modifiers, key = "a", code = "KeyA", windowsVirtualKeyCode = 65)
-
+    chromote_press(driver, modifiers = 2, key = "a", code = "KeyA", windowsVirtualKeyCode = 65)
+  }
   chromote_press(driver, windowsVirtualKeyCode = 8, code = "Backspace", key = "Backspace") 
 }
 
