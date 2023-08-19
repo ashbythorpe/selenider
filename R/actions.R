@@ -361,14 +361,9 @@ set_value <- function(x, text, timeout = NULL) {
 }
 
 chromote_clear <- function(x, driver) {
-  if (is_mac()) {
-    # Double click on Mac since ctrl a doesn't seem to work
-    click_chromote(x, driver = driver, type = "left", count = 2)
-  } else {
-    click_chromote(x, driver = driver)
+  click_chromote(x, driver = driver)
 
-    chromote_press(driver, modifiers = 2, text = "a", unmodifiedText = "a", key = "a", code = "KeyA", windowsVirtualKeyCode = 65)
-  }
+  chromote_press(driver, modifiers = 2, key = "a", code = "KeyA", windowsVirtualKeyCode = 65)
 
   chromote_press(driver, windowsVirtualKeyCode = 8, code = "Backspace", key = "Backspace") 
 }
