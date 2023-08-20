@@ -17,8 +17,15 @@
 #' @family properties
 #'
 #' @export
-html_name <- function(x, timeout = NULL) {
-  check_class(x, "selenider_element")
+html_name <- function(x, ...) {
+  UseMethod("html_name")
+}
+
+#' @rdname html_name
+#'
+#' @export
+html_name.selenider_element <- function(x, timeout = NULL, ...) {
+  check_dots_used()
   check_number_decimal(timeout, allow_null = TRUE)
 
   timeout <- get_timeout(timeout, x$timeout)
@@ -35,6 +42,34 @@ html_name <- function(x, timeout = NULL) {
     driver <- x$driver
     tolower(driver$DOM$describeNode(backendNodeId = element)$node$nodeName)
   }
+}
+
+#' @export
+html_name.xml_missing <- function(x, ...) {
+  check_dots_used()
+  rlang::check_installed("rvest")
+  rvest::html_name(x)
+}
+
+#' @export
+html_name.xml_node <- function(x, ...) {
+  check_dots_used()
+  rlang::check_installed("rvest")
+  rvest::html_name(x)
+}
+
+#' @export
+html_name.xml_nodeset <- function(x, ...) {
+  check_dots_used()
+  rlang::check_installed("rvest")
+  rvest::html_name(x)
+}
+
+#' @export
+html_name.rvest_session <- function(x, ...) {
+  check_dots_used()
+  rlang::check_installed("rvest")
+  rvest::html_name(x)
 }
 
 #' Get element text
@@ -54,8 +89,15 @@ html_name <- function(x, timeout = NULL) {
 #'   html_text()
 #'
 #' @export
-html_text <- function(x, timeout = NULL) {
-  check_class(x, "selenider_element")
+html_text <- function(x, ...) {
+  UseMethod("html_text")
+}
+
+#' @rdname html_text
+#'
+#' @export
+html_text.selenider_element <- function(x, timeout = NULL, ...) {
+  check_dots_used()
   check_number_decimal(timeout, allow_null = TRUE)
 
   timeout <- get_timeout(timeout, x$timeout)
@@ -72,6 +114,34 @@ html_text <- function(x, timeout = NULL) {
     driver <- x$driver
     chromote_get_text(element, driver = driver)
   }
+}
+
+#' @export
+html_text.xml_missing <- function(x, ...) {
+  check_dots_used()
+  rlang::check_installed("rvest")
+  rvest::html_text(x)
+}
+
+#' @export
+html_text.xml_node <- function(x, ...) {
+  check_dots_used()
+  rlang::check_installed("rvest")
+  rvest::html_text(x)
+}
+
+#' @export
+html_text.xml_nodeset <- function(x, ...) {
+  check_dots_used()
+  rlang::check_installed("rvest")
+  rvest::html_text(x)
+}
+
+#' @export
+html_text.rvest_session <- function(x, ...) {
+  check_dots_used()
+  rlang::check_installed("rvest")
+  rvest::html_text(x)
 }
 
 chromote_get_text <- function(x, driver) {
@@ -112,8 +182,15 @@ chromote_get_text <- function(x, driver) {
 #'   html_attr("href")
 #'
 #' @export
-html_attr <- function(x, name, default = NA_character_, timeout = NULL) {
-  check_class(x, "selenider_element")
+html_attr <- function(x, name, default = NA_character_, ...) {
+  UseMethod("html_attr")
+}
+
+#' @rdname html_attr
+#'
+#' @export
+html_attr.selenider_element <- function(x, name, default = NA_character_, timeout = NULL, ...) {
+  check_dots_used()
   check_string(name)
   check_number_decimal(timeout, allow_null = TRUE)
 
@@ -137,6 +214,34 @@ html_attr <- function(x, name, default = NA_character_, timeout = NULL) {
     driver <- x$driver
     chromote_get_attribute(element, name, default, driver = driver)
   }
+}
+
+#' @export
+html_attr.xml_missing <- function(x, name, default = NA_character_, ...) {
+  check_dots_used()
+  rlang::check_installed("rvest")
+  rvest::html_attr(x, name, default)
+}
+
+#' @export
+html_attr.xml_node <- function(x, name, default = NA_character_, ...) {
+  check_dots_used()
+  rlang::check_installed("rvest")
+  rvest::html_attr(x, name, default)
+}
+
+#' @export
+html_attr.xml_nodeset <- function(x, name, default = NA_character_, ...) {
+  check_dots_used()
+  rlang::check_installed("rvest")
+  rvest::html_attr(x, name, default)
+}
+
+#' @export
+html_attr.rvest_session <- function(x, name, default = NA_character_, ...) {
+  check_dots_used()
+  rlang::check_installed("rvest")
+  rvest::html_attr(x, name, default)
 }
 
 chromote_get_attribute <- function(x, name, default, driver) {
@@ -173,8 +278,15 @@ chromote_get_attributes <- function(x, driver) {
 #' @rdname html_attr
 #'
 #' @export
-html_attrs <- function(x, timeout = NULL) {
-  check_class(x, "selenider_element")
+html_attrs <- function(x, ...) {
+  UseMethod("html_attrs")
+}
+
+#' @rdname html_attr
+#'
+#' @export
+html_attrs <- function(x, timeout = NULL, ...) {
+  check_dots_used()
   check_number_decimal(timeout, allow_null = TRUE)
 
   timeout <- get_timeout(timeout, x$timeout)
@@ -198,6 +310,34 @@ html_attrs <- function(x, timeout = NULL) {
     driver <- x$driver
     chromote_get_attributes(element, driver = driver)
   }
+}
+
+#' @export
+html_attrs.xml_missing <- function(x, ...) {
+  check_dots_used()
+  rlang::check_installed("rvest")
+  rvest::html_attrs(x)
+}
+
+#' @export
+html_attrs.xml_node <- function(x, ...) {
+  check_dots_used()
+  rlang::check_installed("rvest")
+  rvest::html_attrs(x)
+}
+
+#' @export
+html_attrs.xml_nodeset <- function(x, ...) {
+  check_dots_used()
+  rlang::check_installed("rvest")
+  rvest::html_attrs(x)
+}
+
+#' @export
+html_attrs.rvest_session <- function(x, ...) {
+  check_dots_used()
+  rlang::check_installed("rvest")
+  rvest::html_attrs(x)
 }
 
 #' @rdname html_attr

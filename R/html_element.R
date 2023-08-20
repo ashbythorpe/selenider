@@ -1,8 +1,8 @@
 #' Get a single HTML element
-#' 
+#'
 #' Find the first HTML element using a CSS selector, an XPath, or a variety
 #' of other methods.
-#' 
+#'
 #' @param x A selenider session or element.
 #' @param css A css selector.
 #' @param xpath An XPath.
@@ -13,39 +13,39 @@
 #'   select.
 #' @inheritParams rlang::args_dots_used
 #'
-#' @details 
-#' If more than one method is used to select an element (e.g. `css` and 
+#' @details
+#' If more than one method is used to select an element (e.g. `css` and
 #' `xpath`), the first element which satisfies all conditions will be found.
-#' 
-#' @returns 
+#'
+#' @returns
 #' A `selenider_element` object.
-#' 
-#' @seealso 
+#'
+#' @seealso
 #' * [s()] to quickly select an element without specifying the session.
 #' * [html_elements()] to select multiple elements.
 #' * [selenider_session()] to begin a session.
-#' 
-#' @examples 
+#'
+#' @examples
 #' session <- mock_selenider_session()
-#' 
+#'
 #' session |>
 #'   html_element(".class1")
 #'
 #' session |>
 #'   html_element(".class1") |>
 #'   html_element(".class2")
-#'   
+#'
 #' # The above can be shortened to:
 #' s(".class1") |>
 #'   html_element(".class2")
-#' 
+#'
 #' @export
 html_element <- function(x, ...) {
   UseMethod("html_element")
 }
 
 #' @export
-#' 
+#'
 #' @rdname html_element
 html_element.selenider_session <- function(x,
                                            css = NULL,
@@ -58,12 +58,12 @@ html_element.selenider_session <- function(x,
   check_dots_used()
 
   selector <- new_selector(css, xpath, id, class_name, name, link_text)
-  
+
   new_selenider_element(x, selector)
 }
 
 #' @export
-#' 
+#'
 #' @rdname html_element
 html_element.selenider_element <- function(x,
                                            css = NULL,
@@ -76,12 +76,40 @@ html_element.selenider_element <- function(x,
   check_dots_used()
 
   selector <- new_selector(css, xpath, id, class_name, name, link_text)
-  
+
   x$selectors <- append(x$selectors, list(selector))
-  
+
   x$to_be_found <- x$to_be_found + 1
-  
+
   x
+}
+
+#' @export
+html_element.xml_missing <- function(x, ...) {
+  check_dots_used()
+  rlang::check_installed("rvest")
+  rvest::html_element(x, ...)
+}
+
+#' @export
+html_element.xml_node <- function(x, ...) {
+  check_dots_used()
+  rlang::check_installed("rvest")
+  rvest::html_element(x, ...)
+}
+
+#' @export
+html_element.xml_nodeset <- function(x, ...) {
+  check_dots_used()
+  rlang::check_installed("rvest")
+  rvest::html_element(x, ...)
+}
+
+#' @export
+html_element.rvest_session <- function(x, ...) {
+  check_dots_used()
+  rlang::check_installed("rvest")
+  rvest::html_element(x, ...)
 }
 
 new_selenider_element <- function(session, selector) {
@@ -94,9 +122,9 @@ new_selenider_element <- function(session, selector) {
     to_be_found = 1,
     to_be_filtered = 1
   )
-  
+
   class(res) <- "selenider_element"
-  
+
   res
 }
 
@@ -138,5 +166,3 @@ format_element <- function(x, ...) {
 print.selenider_element <- function(x, ...) {
   cat(format(x, ...), sep = "\n")
 }
-
-
