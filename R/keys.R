@@ -50,6 +50,7 @@ keys <- list(
 )
 
 get_selenider_key <- function(x) {
+  rlang::check_installed("RSelenium")
   switch(
     x,
     BACKSPACE = RSelenium::selKeys$backspace,

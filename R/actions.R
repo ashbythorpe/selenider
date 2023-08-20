@@ -426,6 +426,7 @@ send_keys <- function(x, ..., modifiers = NULL, timeout = NULL) {
   }
 
   if (uses_selenium(x$driver)) {
+    rlang::check_installed("RSelenium")
     keys <- c(
       RSelenium::selKeys$shift["shift" %in% modifiers],
       RSelenium::selKeys$control[any(c("control", "ctrl") %in% modifiers)],

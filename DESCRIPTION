@@ -17,10 +17,8 @@ Imports:
     prettyunits,
     processx,
     rlang (>= 1.1.0),
-    RSelenium,
     utils,
     vctrs,
-    wdman,
     withr
 URL: https://github.com/ashbythorpe/selenider,
     https://ashbythorpe.github.io/selenider/
@@ -28,9 +26,11 @@ BugReports: https://github.com/ashbythorpe/selenider/issues
 Suggests: 
     chromote,
     purrr,
+    RSelenium,
     rvest,
     showimage,
     testthat (>= 3.0.0),
+    wdman,
     xml2
 Config/testthat/edition: 3
 Depends: 

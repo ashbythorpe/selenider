@@ -106,6 +106,7 @@ selenider_session <- function(session = NULL,
       rlang::check_installed("chromote")
     } else {
       rlang::check_installed("RSelenium")
+      rlang::check_installed("wdman")
     }
   }
 
