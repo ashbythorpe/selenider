@@ -4,10 +4,13 @@
 \alias{take_screenshot}
 \title{Take a screenshot of the current page}
 \usage{
-take_screenshot(file = NULL, session = NULL)
+take_screenshot(file = NULL, view = FALSE, session = NULL)
 }
 \arguments{
 \item{file}{The file path to save the screenshot to.}
+
+\item{view}{Whether to open the interactively view the screenshot. If this is
+\code{TRUE} and \code{file} is \code{NULL}, the screenshot will be deleted after viewing.}
 
 \item{session}{A `selenider_session object. If not specified, the global
 session object (the result of \code{\link[=get_session]{get_session()}}) is used.}
@@ -23,7 +26,7 @@ session <- mock_selenider_session()
 
 open_url("https://www.google.com")
 
-file_path <- tempfile(fileext = "jpeg")
+file_path <- withr::local_tempfile(fileext = "png")
 
 take_screenshot(file_path)
 

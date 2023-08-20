@@ -178,6 +178,8 @@ refresh <- reload
 #' Take a screenshot of the current session state, saving this image to a file.
 #' 
 #' @param file The file path to save the screenshot to.
+#' @param view Whether to open the interactively view the screenshot. If this is
+#'   `TRUE` and `file` is `NULL`, the screenshot will be deleted after viewing.
 #' @inheritParams back
 #'
 #' @returns
@@ -190,23 +192,43 @@ refresh <- reload
 #'
 #' open_url("https://www.google.com")
 #' 
-#' file_path <- tempfile(fileext = "jpeg")
+#' file_path <- withr::local_tempfile(fileext = "png")
 #'
 #' take_screenshot(file_path)
 #'
 #' @export
-take_screenshot <- function(file = NULL, session = NULL) {
-  check_string(file)
+take_screenshot <- function(file = NULL, view = FALSE, session = NULL) {
+  check_string(file, allow_null = TRUE)
+  check_bool(view)
   check_class(session, "selenider_session", allow_null = TRUE)
+
+  if (view) {
+    rlang::check_installed("showimage", reason = "to view the screenshot")
+  }
+
+  if (is.null(file) && !view) {
+    cli::cli_abort(c(
+      "{.arg file} can only be {.val {NULL}} if {.arg view} is {.val {TRUE}}.",
+      "i" = "If you want to view a screenshot without saving it, use {.code take_screenshot(view = TRUE)}."
+    ))
+  }
 
   if (is.null(session)) {
     session <- get_session(.env = caller_env())
   }
+
+  if (is.null(file)) {
+    file <- withr::local_tempfile(fileext = "png")
+  }
   
   if (uses_selenium(session$driver)) {
     session$driver$client$screenshot(file)
+
+    if (view) {
+      showimage::show_image(file)
+    }
   } else {
-    session$driver$screenshot(file)
+    session$driver$screenshot(file, view = view)
   }
   
   invisible(session)
