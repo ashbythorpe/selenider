@@ -28,11 +28,14 @@ open_url <- function(url, session = NULL) {
     session <- get_session(.env = caller_env())
   }
   
+  driver <- session$driver
+
   if (uses_selenium(session$driver)) {
-    session$driver$client$navigate(url)
+    driver$client$navigate(url)
   } else {
-    session$driver$Page$navigate(url)
-    session$driver$Page$loadEventFired()
+    promise <- driver$Page$loadEventFired(wait_ = FALSE)
+    driver$Page$navigate(url, wait_ = FALSE)
+    driver$wait_for(promise)
   }
   
   invisible(session)
@@ -73,17 +76,20 @@ back <- function(session = NULL) {
   if (is.null(session)) {
     session <- get_session(.env = caller_env())
   }
+
+  driver <- session$driver
   
   if (uses_selenium(session$driver)) {
-    session$driver$client$goBack()
+    driver$client$goBack()
   } else {
-    navigation_history <- session$driver$Page$getNavigationHistory()
+    navigation_history <- driver$Page$getNavigationHistory()
     index <- navigation_history$index + 1
     history <- navigation_history$entries
     if (index > 1) {
       new_id <- history[[index - 1]]$id
-      session$driver$Page$navigateToHistoryEntry(new_id)
-      session$driver$Page$loadEventFired()
+      promise <- driver$Page$loadEventFired(wait_ = FALSE)
+      driver$Page$navigateToHistoryEntry(new_id, wait_ = FALSE)
+      driver$wait_for(promise)
     } else {
       cli::cli_warn("Previous page in history not found")
     }
@@ -101,17 +107,20 @@ forward <- function(session = NULL) {
   if (is.null(session)) {
     session <- get_session(.env = caller_env())
   }
+
+  driver <- session$driver
   
   if (uses_selenium(session$driver)) {
-    session$driver$client$goForward()
+    driver$client$goForward()
   } else {
-    navigation_history <- session$driver$Page$getNavigationHistory()
+    navigation_history <- driver$Page$getNavigationHistory()
     index <- navigation_history$index + 1
     history <- navigation_history$entries
     if (index < length(history)) {
       new_id <- history[[index - 1]]$id
-      session$driver$Page$navigateToHistoryEntry(new_id)
-      session$driver$Page$loadEventFired()
+      promise <- driver$Page$loadEventFired(wait_ = FALSE)
+      driver$Page$navigateToHistoryEntry(new_id, wait_ = FALSE)
+      driver$wait_for(promise)
     } else {
       cli::cli_warn("Next page in history not found")
     }
@@ -146,11 +155,14 @@ reload <- function(session = NULL) {
     session <- get_session(.env = caller_env())
   }
   
+  driver <- session$driver
+
   if (uses_selenium(session$driver)) {
-    session$driver$client$refresh()
+    driver$client$refresh()
   } else {
-    session$driver$Page$reload()
-    session$driver$Page$loadEventFired()
+    promise <- driver$Page$loadEventFired(wait_ = FALSE)
+    session$driver$Page$reload(wait_ = FALSE)
+    driver$wait_for(promise)
   }
   
   invisible(session)
