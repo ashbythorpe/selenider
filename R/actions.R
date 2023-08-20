@@ -361,10 +361,14 @@ set_value <- function(x, text, timeout = NULL) {
 }
 
 chromote_clear <- function(x, driver) {
-  click_chromote(x, driver = driver)
+  if (is_mac()) {
+    click_chromote(x, driver = driver, count = 3)
+  } else {
+    click_chromote(x, driver = driver)
 
-  chromote_press(driver, modifiers = 2, text = "a", unmodifiedText = "a", key = "a", code = "KeyA", windowsVirtualKeyCode = 65)
-  chromote_press(driver, windowsVirtualKeyCode = 8, code = "Backspace", key = "Backspace")
+    chromote_press(driver, modifiers = 2, key = "a", code = "KeyA", windowsVirtualKeyCode = 65)
+  }
+  chromote_press(driver, windowsVirtualKeyCode = 8, code = "Backspace", key = "Backspace") 
 }
 
 chromote_send_chars <- function(x, driver) {
@@ -511,6 +515,11 @@ clear_value <- function(x, timeout = NULL) {
     timeout = timeout,
     failure_messages = c("was not enabled"),
     conditions_text = c("be enabled")
+  )
+
+  execute_js_fn(
+    paste0("x => x.setAttribute('value', '')"),
+    element, driver = x$driver
   )
   
   if (uses_selenium(x$driver)) {
