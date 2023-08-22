@@ -120,7 +120,8 @@ html_combine <- function(elements) {
     element = NULL,
     timeout = timeout,
     selectors = list(new_flattened_selector(elements)),
-    to_be_found = 1
+    to_be_found = 1,
+    to_be_filtered = 0,
   )
 
   class(res) <- c("selenider_elements", "list")
@@ -138,7 +139,7 @@ new_flattened_selector <- function(elements) {
   
   res <- list(
     selectors = selectors,
-    filter = NULL
+    filter = list()
   )
 
   class(res) <- c("selenider_flattened_selector", "selenider_selector")
