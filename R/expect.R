@@ -27,7 +27,7 @@
 #' Functions allow you to use unary conditions without formatting them as a
 #' call (e.g. `is_present` rather than `is_present()`). It also allows you to make
 #' use of R's [anonymous function syntax][base::function] to quickly create
-#' custom conditions. `x` will be used as the first argument of this function.
+#' custom conditions. `x` will be supplied as the first argument of this function.
 #' 
 #' Function calls allow you to use conditions that take multiple arguments (e.g.
 #' `has_text()`) without the use of an intermediate function. The call will
@@ -45,7 +45,7 @@
 #' Additionally, these functions provide a few features that make creating
 #' custom conditions easy:
 #'
-#' * Errors with class `selenider_element_absent_element` are handled, and
+#' * Errors with class `expect_error_continue` are handled, and
 #'   the function is prevented from terminating early. This means that if
 #'   an element is not found, the function will retry instead of immediately
 #'   throwing an error.
@@ -56,7 +56,7 @@
 #'
 #' These two features allow you to use functions like [html_text()] to access
 #' properties of an element, without needing to worry about the errors that
-#' they throw or the timeouts that they use. See Examples for an example of a
+#' they throw or the timeouts that they use. See Examples for a few examples of a
 #' custom condition.
 #'
 #' These custom conditions can also be used with [html_filter()] and
@@ -144,6 +144,26 @@
 #'
 #' s(".text1") |>
 #'   html_expect(text_contains("Example *"))
+#'
+#' # If we want to continue on error, we need to use the "expect_error_continue" class
+#' # This involves making a custom error object
+#' error_condition <- function() {
+#'   my_condition <- list(message = "Custom error!")
+#'   class(my_condition) <- c("expect_error_continue", "error", "condition")
+#'   stop(my_condition)
+#' }
+#'
+#' # This is much easier with rlang::abort() / cli::cli_abort():
+#' error_condition_2 <- function() {
+#'   rlang::abort("Custom error!", class = "expect_error_continue")
+#' }
+#'
+#' # This error will not be caught
+#' try(html_expect(stop()))
+#'
+#' # These will eventually throw an error, but will wait 0.5 seconds to do so.
+#' try(html_expect(error_condition(), timeout = 0.5))
+#' try(html_expect(error_condition_2(), timeout = 0.5))
 #' 
 #' @export
 html_expect <- function(x, ..., testthat = NULL, timeout = NULL) {

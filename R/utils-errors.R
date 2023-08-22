@@ -1,7 +1,12 @@
 stop_absent_element <- function(call = rlang::caller_env()) {
-  cli::cli_abort(c(
-    "{.arg x} does not exist in the DOM."
-  ), class = "selenider_error_absent_element", call = call)
+  cli::cli_abort(
+    c("{.arg x} does not exist in the DOM."),
+    class = c(
+      "selenider_error_absent_element",
+      "expect_error_continue"
+    ),
+    call = call
+  )
 }
 
 stop_absent_parent_element <- function(call = rlang::caller_env()) {
@@ -9,7 +14,8 @@ stop_absent_parent_element <- function(call = rlang::caller_env()) {
     c("{.arg x}'s parent element does not exist in the DOM."), 
     class = c(
       "selenider_error_absent_parent_element",
-      "selenider_error_absent_element"
+      "selenider_error_absent_element",
+      "expect_error_continue"
     ),
     call = call
   )
@@ -18,7 +24,7 @@ stop_absent_parent_element <- function(call = rlang::caller_env()) {
 stop_expect_error <- function(condition, parent, call, env = rlang::caller_env()) {
   cli::cli_abort(
     condition, 
-    class = "selenider_expect_error", 
+    class = c("selenider_expect_error", "expect_error_continue"), 
     parent = parent, 
     call = call,
     .envir = env
@@ -33,11 +39,7 @@ stop_bad_selector <- function() {
 }
 
 stop_not_actionable <- function(x, call, exists = FALSE, env = rlang::caller_env()) {
-  class <- "selenider_error_not_actionable"
-
-  if (exists) {
-    class <- c(class, "selenider_error_absent_element")
-  }
+  class <- c("selenider_error_not_actionable", "expect_error_continue")
 
   cli::cli_abort(
     x,
