@@ -79,6 +79,9 @@ selenider_available <- function(session = c("chromote", "selenium")) {
   }
 }
 
+#' @rdname selenider_available
+#'
+#' @export
 skip_if_selenider_unavailable <- function(session = c("chromote", "selenium")) {
   testthat::skip_if_not(selenider_available(session), "Selenider dependencies unavailable")
 }

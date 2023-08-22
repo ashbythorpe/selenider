@@ -33,7 +33,16 @@ new_selector <- function(css,
   args
 }
 
-use_selector <- function(selector, element, driver, multiple = FALSE) {
+#' Use a selector to collect one or more elements from the DOM.
+#'
+#' Applies a single `selenider_selector`, without applying the filters.
+#'
+#' @param selector The selector to apply.
+#' @param element The parent element, if any.
+#' @param driver The chromote::ChromoteSession or remoteDriver object.
+#'
+#' @noRd
+use_selector <- function(selector, element, driver) {
   if (inherits(selector, "selenider_flattened_selector")) {
     elements <- lapply(selector$selectors, function(selector) get_elements(list(selectors = selector, driver = driver, to_be_found = length(selector))))
     return(elem_unique(elements, driver = driver))
@@ -51,6 +60,7 @@ use_selector <- function(selector, element, driver, multiple = FALSE) {
   selector$filter <- NULL
 
   if (length(filter) == 1 && identical(filter[[1]], 1) && length(selector) == 1) {
+    # If we are getting the first element, both CDP and Selenium have a shortcut for this
     using <- switch(
       names(selector),
       css = "css selector",

@@ -1,3 +1,30 @@
+#' Format selenider selectors
+#'
+#' Turn a selenider selector into a character vector, meant to be used with
+#' [cli::cli_bullets()].
+#'
+#' @param x A `selenider_selector` object.
+#' @param first Is this selector the first selector of the element? This
+#'   changes the formatting since if this is `TRUE`, the selector will
+#'   not have a parent.
+#' @param multiple Does this selector select multiple elements?
+#' @param element_name Overrides the description of the element, not
+#'   including any filters applied to it. For example, the string
+#'   "element" would be a valid name.
+#' @param One of "each", "any" or `NULL`. Used to modify the element name to
+#'   create complex bullets such as "The children of each element", and
+#'   "The first child of any element with ...". This option is used
+#'   when formatting a `selenider_flatmap_selector`.
+#' @param ... Not used.
+#' 
+#' @returns 
+#' A character vector of statements (e.g. "The first child element"), to
+#' be used with [cli::cli_bullets()]. Most of the time, a single string will
+#' be returned, but some functions (e.g. `format_flatmap_selector()`) return
+#' multiple bullets. These bullets may be named, and unnamed bullets are renamed
+#' with `replace_names_bullets()`.
+#'
+#' @noRd
 #' @export
 format.selenider_selector <- function(x, first = FALSE, multiple = FALSE, element_name = NULL, of = NULL, ...) {
   if (multiple) {
@@ -71,6 +98,19 @@ format.selenider_flatmap_selector <- function(x, multiple = FALSE, inside_flatma
     format_flatmap_selector_simple(x, multiple, ...)
   } else {
     format_flatmap_selector(x, multiple)
+  }
+}
+
+#' @export
+format.selenider_js_selector <- function(x, multiple = FALSE, ...) {
+  if (multiple) {
+    format_selector_multiple(x, element_name = " results of a JavaScript expression", with = "")
+  } else {
+    if (length(x$filter) == 0) {
+      "The result of a JavaScript expression"
+    } else {
+      format_selector(x, element_name = " result of a JavaScript expression", with = "")
+    }
   }
 }
 
@@ -384,6 +424,7 @@ format_condition <- function(c) {
   }
 }
 
+# Replace names with "*", keeping names if they are " "
 replace_names_bullets <- function(x) {
   if (is.null(names(x))) {
     names(x) <- rep("*", length(x))

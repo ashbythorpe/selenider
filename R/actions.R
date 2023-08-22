@@ -383,6 +383,7 @@ chromote_send_chars <- function(x, driver) {
 #' 
 #' @param ... A set of inputs to send to `x`.
 #' @param modifiers A character vector; one or more of "shift", "ctrl"/"control", "alt", and "command"/meta".
+#'   Note that when using chromote as a backend, these do not work on Mac.
 #' 
 #' @export
 send_keys <- function(x, ..., modifiers = NULL, timeout = NULL) {

@@ -29,7 +29,7 @@
 #' For example, the following two expressions are equivalent (where `x` is an
 #' element collection).
 #' ```
-#' html_expect(x, \(element) all(vapply(element, is_present, logical(1))))
+#' html_expect(x, \(element) all(vapply(element_list(element), is_present, logical(1))))
 #' html_expect_all(x, is_present)
 #' ```
 #'

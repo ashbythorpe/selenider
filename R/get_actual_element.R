@@ -130,7 +130,7 @@ get_elements <- function(x) {
   }
   
   selector <- selectors[[length(selectors)]]
-  elements <- use_selector(selector, element, driver = x$driver, multiple = TRUE)
+  elements <- use_selector(selector, element, driver = x$driver)
   filter_elements(elements, selector$filter, multiple = TRUE)
 }
 

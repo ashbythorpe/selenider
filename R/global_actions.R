@@ -3,7 +3,7 @@
 #' Navigate the browser to specified URL, waiting until the page is considered
 #' open before finishing.
 #' 
-#' @param url The URL to navigate to; a string.
+#' @param url The URL to navigate to: a string.
 #' @inheritParams back
 #'
 #' @returns
@@ -232,4 +232,24 @@ take_screenshot <- function(file = NULL, view = FALSE, session = NULL) {
   }
   
   invisible(session)
+}
+
+#' Read the HTML of a session
+#'
+#' A shortcut for `xml2::read_html(get_session())`.
+#'
+#' @param session Optionally, a `selenider_session` object.
+#' @param ... Passed into [read_html.selenider_session()]
+#'
+#' @returns An XML document, which can be operated on using `rvest`.
+#'
+#' @export
+get_page_source <- function(session = NULL, ...) {
+  rlang::check_installed("xml2")
+
+  if (is.null(session)) {
+    session <- get_session()
+  }
+
+  xml2::read_html(session, ...)
 }

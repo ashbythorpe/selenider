@@ -1,3 +1,21 @@
+#' Do a set of conditions all return TRUE within a given time frame?
+#'
+#' Repeatedly execute a list of conditions, until all return `TRUE`,
+#' or a certain number of seconds has passed.
+#'
+#' @param timeout The time to wait for the conditions to succeed.
+#' @param exprs The conditions to evaluate: a list of quosures.
+#' @param data_mask The data mask to use when evaluating the quosures.
+#'
+#' @details
+#' The function takes care to make sure `timeout = 0` works as expected.
+#'
+#' @returns
+#' Either `TRUE` or a list of two items:
+#' * `n` - The number/index of the condition that failed.
+#' * `val` - The value returned by the condition instead of `TRUE`.
+#'
+#' @noRd
 retry_with_timeout <- function(timeout, exprs, data_mask = NULL) {
   end <- Sys.time() + timeout
 
@@ -76,11 +94,19 @@ retry_with_timeout <- function(timeout, exprs, data_mask = NULL) {
 eval_condition <- function(x, data_mask = NULL) {
   try_fetch(
     with_timeout(0, eval_tidy(x, data = data_mask)),
-    # TODO: Use extensible/general error class
-    selenider_error_absent_element = function(x) x
+    expect_error_continue = function(x) x
   )
 }
 
+#' Evaluate conditions on multiple elements until a timeout is reached
+#'
+#' A varient of [retry_with_timeout()] for [html_expect_all()].
+#'
+#' @param timeout,exprs Same as [retry_with_timeout()]
+#' @param elements The element collection.
+#' @param name The element name, used to create the data mask.
+#'
+#' @noRd
 retry_with_timeout_multiple <- function(timeout, exprs, elements, name) {
   end <- Sys.time() + timeout
 
@@ -168,7 +194,7 @@ eval_condition_multiple <- function(x, elements, name) {
 
     res <- try_fetch(
       with_timeout(0, eval_tidy(x, data = data_mask)),
-      selenider_error_absent_element = function(x) x
+      expect_error_continue = function(x) x
     )
 
     if (!isTRUE(res)) {

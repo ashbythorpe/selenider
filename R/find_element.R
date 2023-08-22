@@ -1,4 +1,14 @@
-
+#' Find the first instance of an element using a selector
+#'
+#' @param x The parent element.
+#' @param using The type of the selector (e.g. "css selector", "xpath").
+#' @param value The value of the selector as a string.
+#' @param driver The chromote::ChromoteSession or remoteDriver.
+#'
+#' @returns
+#' A backendNodeId (chromote) or a webElement (RSelenium)
+#'
+#' @noRd
 find_element <- function(x, using, value, driver) {
   if (inherits_any(x, c("webElement", "mock_element"))) {
     try_fetch(
@@ -69,6 +79,11 @@ find_element <- function(x, using, value, driver) {
   }
 }
 
+#' Find every occurance of an element using a selector
+#'
+#' Same as `find_element()`, but returns every element instead of just the first one.
+#'
+#' @noRd
 find_elements <- function(x, using, value, driver) {
   if (inherits_any(x, c("webElement", "mock_element"))) {
     x$findChildElements(using = using, value = value)
@@ -104,6 +119,11 @@ selector_to_css <- function(using, value) {
   )
 }
 
+#' Evaluate an XPath on a chromote node
+#'
+#' Uses JavaScript since chromote doesn't support xpaths directly.
+#'
+#' @noRd
 use_xpath_chromote <- function(xpath, element, driver, multiple = FALSE) {
   if(multiple) {
     if (is.null(driver)) {

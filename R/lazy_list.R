@@ -15,6 +15,22 @@ state <- function(init) {
   )
 }
 
+#' Create a lazy list
+#'
+#' A lazy list is an object that uses a [coro::generator()] under the
+#' hood, but mimics the random access properties of a normal list. Every
+#' element of a lazy list can be accessed at any time, although the list
+#' performs most efficiently when accessing elements in ascending order.
+#'
+#' @param x A [coro::generator()]: the factory, not an instance.
+#'
+#' @returns
+#' A lazy list contains three parts:
+#' * `factory` - Stores `x`.
+#' * `instance` - Stores the current instance of the generator
+#' * `current_value` - Stores the index of the last value that the generator has given.
+#'
+#' @noRd
 lazy_list <- function(x) {
   res <- list(
     factory = x,
@@ -172,7 +188,7 @@ lazy_filter <- function(x, .f) {
 
     coro::exhausted()
   })
-  
+
   lazy_list(generator)
 }
 

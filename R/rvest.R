@@ -1,3 +1,45 @@
+#' Compatibility with rvest
+#'
+#' @description
+#' These functions ensure compatibility with `rvest` and `xml2`.
+#'
+#' `selenider_prefer()` ensures that all functions common to `selenider` and
+#' `rvest` (e.g. `html_attr()`) work on both selenider elements and rvest node
+#' objects. `conflicted` is used to resolve function conflicts.
+#'
+#' selenider allows [xml2::read_html()] and [rvest::html_table()] to work
+#' on `selenider_element` and `selenider_session` objects.
+#'
+#' @param quiet If `TRUE`, output from [conflicted::conflict_prefer()] will
+#'   be suppressed.
+#' @param x A `selenider_session`/`selenider_element` object.
+#' @param timeout How long to wait for `x` to exist in the DOM before throwing
+#'   an error.
+#' @param outer Whether to read the inner (all children of the current element) or
+#'   outer (including the element itself) HTML of `x`.
+#' @param encoding,...,options Passed into [xml2::read_html()].
+#' @param header,trim,fill,dec,na.strings,convert Passed into [rvest::html_table()].
+#'
+#' @returns
+#' `read_html()` returns an XML document.
+#' `html_table()` returns a tibble or list of tibbles (when applied to a page).
+#'
+#' @examples
+#' selenider_prefer(quiet = FALSE)
+#'
+#' @export
+selenider_prefer <- function(quiet = TRUE) {
+  conflicted::conflict_prefer("html_attr", winner = "selenider", quiet = quiet)
+  conflicted::conflict_prefer("html_attrs", winner = "selenider", quiet = quiet)
+  conflicted::conflict_prefer("html_element", winner = "selenider", quiet = quiet)
+  conflicted::conflict_prefer("html_elements", winner = "selenider", quiet = quiet)
+  conflicted::conflict_prefer("html_name", winner = "selenider", quiet = quiet)
+  conflicted::conflict_prefer("html_text", winner = "selenider", quiet = quiet)
+  invisible(NULL)
+}
+
+#' @rdname selenider_prefer
+#'
 #' @exportS3Method xml2::read_html selenider_session
 read_html.selenider_session <- function(x, encoding = "", ..., options = c("RECOVER", "NOERROR", "NOBLANKS")) {
   driver <- get_driver(x)
@@ -19,6 +61,8 @@ read_html.selenider_session <- function(x, encoding = "", ..., options = c("RECO
   NextMethod()
 }
 
+#' @rdname selenider_prefer
+#'
 #' @exportS3Method xml2::read_html selenider_element
 read_html.selenider_element <- function(x, encoding = "", timeout = NULL, outer = TRUE, ..., options = c("RECOVER", "NOERROR", "NOBLANKS")) {
   check_number_decimal(timeout, allow_null = TRUE)
@@ -51,6 +95,8 @@ read_html.selenider_element <- function(x, encoding = "", timeout = NULL, outer 
   NextMethod()
 }
 
+#' @rdname selenider_prefer
+#'
 #' @exportS3Method rvest::html_table selenider_session
 html_table.selenider_session <- function(x,
                                          header = NA,
@@ -63,6 +109,8 @@ html_table.selenider_session <- function(x,
   NextMethod()
 }
 
+#' @rdname selenider_prefer
+#'
 #' @exportS3Method rvest::html_table selenider_element
 html_table.selenider_element <- function(x,
                                          header = NA,
@@ -73,13 +121,4 @@ html_table.selenider_element <- function(x,
                                          convert = TRUE) {
   x <- read_html(x)
   NextMethod()
-}
-
-selenider_prefer <- function(quiet = TRUE) {
-  conflicted::conflict_prefer("html_attr", winner = "selenider", quiet = quiet)
-  conflicted::conflict_prefer("html_attrs", winner = "selenider", quiet = quiet)
-  conflicted::conflict_prefer("html_element", winner = "selenider", quiet = quiet)
-  conflicted::conflict_prefer("html_elements", winner = "selenider", quiet = quiet)
-  conflicted::conflict_prefer("html_name", winner = "selenider", quiet = quiet)
-  conflicted::conflict_prefer("html_text", winner = "selenider", quiet = quiet)
 }

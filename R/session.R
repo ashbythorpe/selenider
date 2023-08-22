@@ -206,7 +206,7 @@ create_server <- function(browser, version, quiet, extra_args) {
     args <- c(args_used, extra_args)
     rlang::exec(wdman::selenium, !!!args)
   }, error = function(e) {
-      if (grepl("Selenium server  couldn't be started", e$message)) {
+      if (grepl("couldn't be started", e$message)) {
         output <- wdman::selenium(
           browser = browser,
           chromever = chromever,
@@ -229,9 +229,8 @@ create_server <- function(browser, version, quiet, extra_args) {
           ), parent = e)
         }
       } else if (browser == "chrome" && grepl("version requested doesnt match versions available", e$message)) {
-        tryCatch({
-          return(create_server(browser, "latest", quiet, extra_args))
-        }, error = function(e) NULL)
+        # If the version of chrome we found is not available as a webdriver, use the latest one instead.
+        return(create_server(browser, "latest", quiet, extra_args))
       }
 
       cli::cli_abort(c(

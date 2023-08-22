@@ -5,7 +5,7 @@
 #' session object.
 #' 
 #' `s()` selects a single element, being a shorthand for [html_element()]
-#' without a first argument
+#' on the current session.
 #' 
 #' `ss()` selects multiple elements, being a shorthand for [html_elements()].
 #' 

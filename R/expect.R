@@ -199,6 +199,28 @@ html_expect <- function(x, ..., testthat = NULL, timeout = NULL) {
   }
 }
 
+#' If a condition fails, throw an informative error
+#'
+#' Throw an informative error (or test failure) for a [html_expect()]
+#' failure.
+#'
+#' @param x The element that conditions are evaluated on.
+#' @param n The condition number that failed.
+#' @param call The formatted call that failed when executed.
+#' @param original_expr The non-formatted original expression of the condition
+#'   that failed.
+#' @param result The result returned by the condition (since the condition fails
+#'   if this is not `TRUE`).
+#' @param timeout The number of seconds of timeout that was used.
+#' @param original_env The environment in which the conditions wer evaluated.
+#' @param testthat Whether to create a testthat test failure instead of an error.
+#' @param call_name The name of the condition.
+#' @param negated_call_name The negated name of the condition.
+#' @param call_env The environment of the [html_expect()] call, to throw the error in.
+#' @param x_name Used by [html_expect_all()] to specify that a specific argument failed
+#'   (e.g. "x[[1]]").
+#'
+#' @noRd
 diagnose_condition <- function(x,
                                n,
                                call,
@@ -225,9 +247,9 @@ diagnose_condition <- function(x,
   )
   
   call_name <- switch(call_name,
-      is_in_dom = "is in the DOM",
-      has_name = "has tag name",
-      gsub("_", " ", call_name, fixed = TRUE)
+    is_in_dom = "is in the DOM",
+    has_name = "has tag name",
+    gsub("_", " ", call_name, fixed = TRUE)
   )
 
   parent <- NULL
@@ -296,7 +318,7 @@ diagnose_condition <- function(x,
       negated_call_name <- negate_call_name(call_name)
     }
 
-    expected_name <- eval_tidy(call_args(call)[[2]], env = original_env)
+    expected_name <- eval_tidy(get_call_arg(call, "name"), env = original_env)
 
     if (is.null(x)) {
       condition <- c(
@@ -317,7 +339,7 @@ diagnose_condition <- function(x,
       negated_call_name <- negate_call_name(call_name)
     }
 
-    target_text <- eval_tidy(call_args(call)[[2]], env = original_env)
+    target_text <- eval_tidy(get_call_arg(call, "text"), env = original_env)
 
     if (is.null(x)) {
       condition <- c(
@@ -346,8 +368,8 @@ diagnose_condition <- function(x,
       "attr does not contain" = "does not contain"
     )
 
-    name <- eval_tidy(call_args(call)[[2]], env = original_env)
-    expected_value <- eval_tidy(call_args(call)[[3]], env = original_env)
+    name <- eval_tidy(get_call_arg(call, "name"), env = original_env)
+    expected_value <- eval_tidy(get_call_arg(call, "value"), env = original_env)
     
     if (is.null(x)) {
       condition <- c(
@@ -363,12 +385,12 @@ diagnose_condition <- function(x,
         "i" = "Actual value: {.val {actual_value}}."
       )
     }
-  } else if (call_name %in% condition_dependencies$attribute) {
+  } else if (call_name %in% condition_dependencies$value) {
     if (is.null(negated_call_name)) {
       negated_call_name <- negate_call_name(call_name)
     }
 
-    value <- eval_tidy(call_args(call)[[2]], env = original_env)
+    value <- eval_tidy(get_call_arg(call, "value"), env = original_env)
     
     if (is.null(x)) {
       condition <- c(
@@ -395,8 +417,8 @@ diagnose_condition <- function(x,
       "does not have css property" = "is not"
     )
 
-    name <- eval_tidy(call_args(call)[[2]], env = original_env)
-    expected_value <- eval_tidy(call_args(call)[[3]], env = original_env)
+    name <- eval_tidy(get_call_arg(call, "property"), env = original_env)
+    expected_value <- eval_tidy(get_call_arg(call, "value"), env = original_env)
     
     if (is.null(x)) {
       condition <- c(
@@ -417,7 +439,7 @@ diagnose_condition <- function(x,
       negated_call_name <- negate_call_name(call_name)
     }
 
-    value <- eval_tidy(call_args(call)[[2]], env = original_env)
+    value <- eval_tidy(get_call_arg(call, "n"), env = original_env)
     elements <- if(value == 1) "element" else "elements"
 
     cond <- switch(
@@ -475,6 +497,12 @@ diagnose_condition <- function(x,
   } else {
     stop_expect_error(condition, parent = parent, call = call_env)
   }
+}
+
+get_call_arg <- function(call, name) {
+  fn <- eval_tidy(call_name(call), ns_env("selenider"))
+  args <- call_args(call_match(call, fn))
+  args[[name]]
 }
 
 negate_call_name <- function(x) {

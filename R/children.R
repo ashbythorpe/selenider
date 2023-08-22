@@ -1,4 +1,4 @@
-#' Get the family elements of an element
+#' Get the DOM family of an element
 #'
 #' @description
 #' Find all elements with a certain relative position to an HTML element.
