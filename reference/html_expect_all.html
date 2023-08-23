@@ -112,7 +112,7 @@ to the use of <code>all(vapply(FUN.VALUE = logical(1)))</code> (or <code><a href
 within <code><a href="html_expect.html">html_expect()</a></code> and <code><a href="html_expect.html">html_wait_until()</a></code>.</p>
 <p>For example, the following two expressions are equivalent (where <code>x</code> is an
 element collection).</p>
-<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">html_expect</span>(x, \(element) <span class="fu">all</span>(<span class="fu">vapply</span>(element, is_present, <span class="fu">logical</span>(<span class="dv">1</span>))))</span>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">html_expect</span>(x, \(element) <span class="fu">all</span>(<span class="fu">vapply</span>(<span class="fu">element_list</span>(element), is_present, <span class="fu">logical</span>(<span class="dv">1</span>))))</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">html_expect_all</span>(x, is_present)</span></code></pre><p></p></div>
 <p>However, the second example will give a more detailed error message on failure.</p>
     </div>
@@ -126,10 +126,25 @@ element collection).</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="mock_selenider_session.html">mock_selenider_session</a></span><span class="op">(</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">html</span> <span class="op">&lt;-</span> <span class="st">"</span></span></span>
+<span class="r-in"><span><span class="st">&lt;div id='div1'&gt;Content 1&lt;/div&gt;</span></span></span>
+<span class="r-in"><span><span class="st">&lt;div id='div2'&gt;Content 2&lt;/div&gt;</span></span></span>
+<span class="r-in"><span><span class="st">&lt;div id='div3' style='display:none;'&gt;Content 3&lt;/div&gt;</span></span></span>
+<span class="r-in"><span><span class="st">&lt;div id='div4'&gt;Content 4&lt;/div&gt;</span></span></span>
+<span class="r-in"><span><span class="st">"</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="s.html">ss</a></span><span class="op">(</span><span class="st">".class1"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">html_expect_all</span><span class="op">(</span><span class="va">is_present</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="minimal_selenider_session.html">minimal_selenider_session</a></span><span class="op">(</span><span class="va">html</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpsDbC9p/file16f847594693.html"</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="s.html">ss</a></span><span class="op">(</span><span class="st">"div"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">html_expect_all</span><span class="op">(</span><span class="va">is_visible</span>, timeout <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error in self$send_command(msg, callback = callback_, error = error_,  : </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Session B29543B603CDCF0C728F13738786D40F is closed.</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="s.html">ss</a></span><span class="op">(</span><span class="st">"div"</span><span class="op">)</span><span class="op">[</span><span class="op">-</span><span class="fl">3</span><span class="op">]</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">html_expect_all</span><span class="op">(</span><span class="va">is_visible</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session B29543B603CDCF0C728F13738786D40F is closed.</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

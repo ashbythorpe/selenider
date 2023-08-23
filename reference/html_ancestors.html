@@ -9,7 +9,7 @@ html_children() selects every element which is connected to and directly below
 the current element.
 html_descendants() selects every element that is contained by the current element.
 The current element does not have to be a direct parent, but must be some type of
-ancestor."><title>Get the family elements of an element — html_ancestors • selenider</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Get the family elements of an element — html_ancestors"><meta property="og:description" content="Find all elements with a certain relative position to an HTML element.
+ancestor."><title>Get the DOM family of an element — html_ancestors • selenider</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Get the DOM family of an element — html_ancestors"><meta property="og:description" content="Find all elements with a certain relative position to an HTML element.
 html_ancestors() selects every element which contains the current element
 (children, grand-children, etc.).
 html_parent() selects the element that contains the current element.
@@ -63,7 +63,7 @@ ancestor."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/m
 </nav><div class="container template-reference-topic">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="" class="logo" alt=""><h1>Get the family elements of an element</h1>
+      <img src="" class="logo" alt=""><h1>Get the DOM family of an element</h1>
       <small class="dont-index">Source: <a href="https://github.com/ashbythorpe/selenider/blob/HEAD/R/children.R" class="external-link"><code>R/children.R</code></a></small>
       <div class="d-none name"><code>html_ancestors.Rd</code></div>
     </div>
@@ -109,6 +109,11 @@ ancestor.</p>
 which returns a <code>selenider_element</code> object (since an element can only have one parent).</p>
     </div>
     <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>All functions except <code>html_children()</code> and <code>html_descendants()</code> use XPath selectors,
+so may be slow, especially when using <code>chromote</code> as a backend.</p>
+    </div>
+    <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index">
 <ul><li><p><a href="http://web.simmons.edu/~grovesd/comm244/notes/week4/document-tree" class="external-link">http://web.simmons.edu/~grovesd/comm244/notes/week4/document-tree</a> for a simple
@@ -116,6 +121,69 @@ and visual explanation of the document tree.</p></li>
 </ul></div>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">html</span> <span class="op">&lt;-</span> <span class="st">"</span></span></span>
+<span class="r-in"><span><span class="st">&lt;html&gt;</span></span></span>
+<span class="r-in"><span><span class="st">&lt;body&gt;</span></span></span>
+<span class="r-in"><span><span class="st">  &lt;div&gt;</span></span></span>
+<span class="r-in"><span><span class="st">    &lt;div id='current'&gt;</span></span></span>
+<span class="r-in"><span><span class="st">      &lt;p&gt;&lt;/p&gt;</span></span></span>
+<span class="r-in"><span><span class="st">      &lt;div&gt;</span></span></span>
+<span class="r-in"><span><span class="st">        &lt;p&gt;&lt;/p&gt;</span></span></span>
+<span class="r-in"><span><span class="st">        &lt;br&gt;</span></span></span>
+<span class="r-in"><span><span class="st">      &lt;/div&gt;</span></span></span>
+<span class="r-in"><span><span class="st">    &lt;/div&gt;</span></span></span>
+<span class="r-in"><span><span class="st">    &lt;div&gt;&lt;/div&gt;</span></span></span>
+<span class="r-in"><span><span class="st">    &lt;p&gt;&lt;/p&gt;</span></span></span>
+<span class="r-in"><span><span class="st">  &lt;/div&gt;</span></span></span>
+<span class="r-in"><span><span class="st">&lt;/body&gt;</span></span></span>
+<span class="r-in"><span><span class="st">&lt;/html&gt;</span></span></span>
+<span class="r-in"><span><span class="st">"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="minimal_selenider_session.html">minimal_selenider_session</a></span><span class="op">(</span><span class="va">html</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpsDbC9p/file16f894cffcc.html"</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">current</span> <span class="op">&lt;-</span> <span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"#current"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Get all the names of an element collection</span></span></span>
+<span class="r-in"><span><span class="va">html_names</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">x</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="html_flatmap.html">element_list</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">vapply</a></span><span class="op">(</span><span class="va">html_name</span>, FUN.VALUE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">current</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">html_ancestors</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="html_expect.html">html_expect</a></span><span class="op">(</span><span class="fu"><a href="has_length.html">has_length</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">html_names</span><span class="op">(</span><span class="op">)</span> <span class="co"># html, div, body</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session B29543B603CDCF0C728F13738786D40F is closed.</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">current</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">html_parent</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="html_name.html">html_name</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># div</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session B29543B603CDCF0C728F13738786D40F is closed.</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">current</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">html_siblings</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="html_expect.html">html_expect</a></span><span class="op">(</span><span class="fu"><a href="has_length.html">has_length</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">html_names</span><span class="op">(</span><span class="op">)</span> <span class="co"># div, p</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session B29543B603CDCF0C728F13738786D40F is closed.</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">current</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">html_children</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="html_expect.html">html_expect</a></span><span class="op">(</span><span class="fu"><a href="has_length.html">has_length</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">html_names</span><span class="op">(</span><span class="op">)</span> <span class="co"># p, div</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session B29543B603CDCF0C728F13738786D40F is closed.</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">current</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">html_descendants</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="html_expect.html">html_expect</a></span><span class="op">(</span><span class="fu"><a href="has_length.html">has_length</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">html_names</span><span class="op">(</span><span class="op">)</span> <span class="co"># p, div, p, br</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session B29543B603CDCF0C728F13738786D40F is closed.</span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 

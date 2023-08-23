@@ -91,12 +91,29 @@ clicking or interacting with it.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="mock_selenider_session.html">mock_selenider_session</a></span><span class="op">(</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">html</span> <span class="op">&lt;-</span> <span class="st">"</span></span></span>
+<span class="r-in"><span><span class="st">&lt;button onmouseover = settext()&gt; &lt;/button&gt;</span></span></span>
+<span class="r-in"><span><span class="st">&lt;p class = 'text'&gt;&lt;/p&gt;</span></span></span>
+<span class="r-in"><span><span class="st">"</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class1"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span><span class="va">js</span> <span class="op">&lt;-</span> <span class="st">"</span></span></span>
+<span class="r-in"><span><span class="st">function settext() {</span></span></span>
+<span class="r-in"><span><span class="st">  document.getElementsByClassName('text').item(0).innerHTML = 'Button hovered!'</span></span></span>
+<span class="r-in"><span><span class="st">}</span></span></span>
+<span class="r-in"><span><span class="st">"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="minimal_selenider_session.html">minimal_selenider_session</a></span><span class="op">(</span><span class="va">html</span>, js <span class="op">=</span> <span class="va">js</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpsDbC9p/file16f822878c54.html"</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="html_expect.html">html_expect</a></span><span class="op">(</span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".text"</span><span class="op">)</span>, <span class="fu"><a href="has_text.html">has_exact_text</a></span><span class="op">(</span><span class="st">""</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session B29543B603CDCF0C728F13738786D40F is closed.</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"button"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">hover</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in hover(s(".class1")):</span> To hover over `x`, it must exist</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> After 4 seconds, `x` was not present</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session B29543B603CDCF0C728F13738786D40F is closed.</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="html_expect.html">html_expect</a></span><span class="op">(</span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".text"</span><span class="op">)</span>, <span class="fu"><a href="has_text.html">has_text</a></span><span class="op">(</span><span class="st">"Button hovered!"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session B29543B603CDCF0C728F13738786D40F is closed.</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

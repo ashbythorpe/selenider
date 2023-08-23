@@ -104,12 +104,54 @@ clicks on an element, opening its context menu.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="mock_selenider_session.html">mock_selenider_session</a></span><span class="op">(</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">html</span> <span class="op">&lt;-</span> <span class="st">"</span></span></span>
+<span class="r-in"><span><span class="st">&lt;button onclick = hidetext() oncontextmenu = showtext()&gt;&lt;/button&gt;</span></span></span>
+<span class="r-in"><span><span class="st">&lt;p id = 'texttohide'&gt;Hello!&lt;/p&gt;</span></span></span>
+<span class="r-in"><span><span class="st">"</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class1"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span><span class="va">js</span> <span class="op">&lt;-</span> <span class="st">"</span></span></span>
+<span class="r-in"><span><span class="st">function hidetext() {</span></span></span>
+<span class="r-in"><span><span class="st">  document.getElementById('texttohide').style.display = 'none'</span></span></span>
+<span class="r-in"><span><span class="st">}</span></span></span>
+<span class="r-in"><span><span class="st"></span></span></span>
+<span class="r-in"><span><span class="st">function showtext() {</span></span></span>
+<span class="r-in"><span><span class="st">  document.getElementById('texttohide').style.display = 'block'</span></span></span>
+<span class="r-in"><span><span class="st">}</span></span></span>
+<span class="r-in"><span><span class="st">"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="minimal_selenider_session.html">minimal_selenider_session</a></span><span class="op">(</span><span class="va">html</span>, js <span class="op">=</span> <span class="va">js</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpsDbC9p/file16f85abf5dce.html"</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="html_expect.html">html_expect</a></span><span class="op">(</span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"p"</span><span class="op">)</span>, <span class="va">is_visible</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in html_expect(s("p"), is_visible):</span> Condition failed after waiting for 4 seconds:</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> `is_visible`</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `x` is not visible.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `is_visible()`:</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> `x` does not exist in the DOM.</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"button"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">click</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in click(s(".class1")):</span> To click `x`, it must exist</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> After 4 seconds, `x` was not present</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in click(s("button")):</span> To click `x`, it must exist.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> After 4 seconds, `x` was not present.</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="html_expect.html">html_expect</a></span><span class="op">(</span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"p"</span><span class="op">)</span>, <span class="va">is_invisible</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in html_expect(s("p"), is_invisible):</span> Condition failed after waiting for 4 seconds:</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> `is_invisible`</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `x` is visible.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `is_visible()`:</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> `x` does not exist in the DOM.</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"button"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">right_click</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in right_click(s("button")):</span> To right click `x`, it must exist.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> After 4 seconds, `x` was not present.</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="html_expect.html">html_expect</a></span><span class="op">(</span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"p"</span><span class="op">)</span>, <span class="va">is_visible</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in html_expect(s("p"), is_visible):</span> Condition failed after waiting for 4 seconds:</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> `is_visible`</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `x` is not visible.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `is_visible()`:</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> `x` does not exist in the DOM.</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
