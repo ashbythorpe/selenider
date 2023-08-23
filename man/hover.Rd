@@ -21,10 +21,25 @@ Move the mouse over to an HTML element and hover over it, without actually
 clicking or interacting with it.
 }
 \examples{
-session <- mock_selenider_session()
+html <- "
+<button onmouseover = settext()> </button>
+<p class = 'text'></p>
+"
 
-s(".class1") |>
+js <- "
+function settext() {
+  document.getElementsByClassName('text').item(0).innerHTML = 'Button hovered!'
+}
+"
+
+session <- minimal_selenider_session(html, js = js)
+
+html_expect(s(".text"), has_exact_text(""))
+
+s("button") |>
   hover()
+
+html_expect(s(".text"), has_text("Button hovered!"))
 
 }
 \seealso{

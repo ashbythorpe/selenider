@@ -65,7 +65,7 @@ html_filter <- function(x, ...) {
 
   exprs <- enquos(...)
   arg_names <- lapply(c("a1", "a2", "a3"), function(x) make_elem_name(exprs, x))
-  elem_name <- make_elem_name(exprs) 
+  elem_name <- make_elem_name(exprs)
   elem_expr <- filter_elem_name(elem_name, arg_names)
   calls <- lapply(exprs, parse_condition, elem_expr)
 
@@ -82,7 +82,7 @@ html_filter <- function(x, ...) {
   x$selectors[[length(selectors)]]$filter <-
     c(x$selectors[[length(selectors)]]$filter, functions)
 
-  x$to_be_filtered <- x$to_be_filtered + 1
+  x$selectors[[length(x$selectors)]]$to_be_filtered <- x$selectors[[length(x$selectors)]]$to_be_filtered + 1
 
   x
 }
@@ -91,28 +91,7 @@ html_filter <- function(x, ...) {
 #'
 #' @export
 html_find <- function(x, ...) {
-  check_class(x, "selenider_elements")
-
-  exprs <- enquos(...)
-  arg_names <- lapply(c("a1", "a2", "a3"), function(x) make_elem_name(exprs, x))
-  elem_name <- make_elem_name(exprs) 
-  elem_expr <- find_elem_name(elem_name, arg_names)
-  calls <- lapply(exprs, parse_condition, elem_expr)
-
-  functions <- mapply(
-    condition_to_function,
-    calls,
-    exprs,
-    MoreArgs = list(elem_name = elem_name, arg_names = arg_names, driver = x$driver, driver_id = x$driver_id, timeout = x$timeout),
-    SIMPLIFY = FALSE
-  )
-
-  selectors <- x$selectors
-
-  x$selectors[[length(selectors)]]$filter <-
-    c(x$selectors[[length(selectors)]]$filter, functions)
-
-  x$to_be_filtered <- x$to_be_filtered + 1
+  x <- html_filter(x, ...)
 
   x <- add_numeric_filter(x, 1)
 
@@ -125,7 +104,7 @@ html_find <- function(x, ...) {
 #'
 #' @export
 `[.selenider_elements` <- function(x, i) {
-  example_vec <- rep(1, length(i))
+  example_vec <- rep(1, max(abs(i), na.rm = TRUE))
   # Check that i is a valid subscript
   vctrs::vec_slice(example_vec, i)
 
@@ -157,6 +136,7 @@ add_numeric_filter <- function(x, i, call = rlang::caller_env()) {
   filters <- selectors[[length(selectors)]]$filter
 
   numeric_filters <- Filter(is.numeric, filters)
+  numeric_filters <- numeric_filters[numeric_filters > 0]
 
   min_length <- if (length(numeric_filters) != 0) min(lengths(numeric_filters)) else Inf
   max_sub <- max(i, na.rm = TRUE)
@@ -165,12 +145,19 @@ add_numeric_filter <- function(x, i, call = rlang::caller_env()) {
     cli::cli_warn(c(
       "Invalid subscript {.arg i}.",
       "Attempt to select the {ordinal(max_sub)} element of {.arg x}.",
-      "{.arg x} has a known maximum length of {.arg min_length}."
+      "{.arg x} has a known maximum length of {.arg {min_length}}."
     ), class = "selenider_warning_subscript_max_length", call = call)
   }
 
   if (length(filters) != 0 && is.numeric(filters[[length(filters)]])) {
-    new_filter <- filters[[length(filters)]][i]
+    filter <- filters[[length(filters)]]
+    if (filter > 0) {
+      new_filter <- filter[i]
+    } else if (i > 0) {
+      new_filter <- seq_len(i + length(filter))[filter][i]
+    } else {
+      new_filter <- unique(c(filter, i))
+    }
 
     x$selectors[[length(selectors)]]$filter[[length(filters)]] <- new_filter
   } else {
@@ -178,7 +165,7 @@ add_numeric_filter <- function(x, i, call = rlang::caller_env()) {
       append(x$selectors[[length(selectors)]]$filter, list(i))
   }
 
-  x$to_be_filtered <- x$to_be_filtered + 1
+  x$selectors[[length(x$selectors)]]$to_be_filtered <- x$selectors[[length(x$selectors)]]$to_be_filtered + 1
 
   x
 }
@@ -203,11 +190,6 @@ condition_to_function <- function(x, original_call, elem_name, arg_names, driver
 
 filter_elem_name <- function(elem_name, arg_names) {
   args <- paste(elem_name, arg_names[[1]], arg_names[[2]], arg_names[[3]], sep = ", ")
-  paste0("webelements_to_elements(", args, ")")
-}
-
-find_elem_name <- function(elem_name, arg_names) {
-  args <- paste(elem_name, arg_names[[1]], arg_names[[2]], arg_names[[3]], sep = ", ")
   paste0("webelement_to_element(", args, ")")
 }
 
@@ -218,8 +200,7 @@ webelement_to_element <- function(x, driver, driver_id, timeout) {
     element = x,
     timeout = timeout,
     selectors = list(),
-    to_be_found = 0,
-    to_be_filtered = 0
+    to_be_found = 0
   )
 
   class(res) <- "selenider_element"
@@ -234,8 +215,7 @@ webelements_to_elements <- function(x, driver, driver_id, timeout) {
     element = x,
     timeout = timeout,
     selectors = list(),
-    to_be_found = 0,
-    to_be_filtered = 0
+    to_be_found = 0
   )
 
   class(res) <- c("selenider_elements", "list")

@@ -39,6 +39,42 @@
 #' `html_flatmap()` returns a `selenider_element` object.
 #' `element_list()` returns a list of `selenider_element` objects.
 #'
+#' @examples
+#' html <- "
+#' <div id='div1'>
+#'   <p>Text 1</p>
+#' </div>
+#' <div id='div2'>
+#'   <p>Text 2</p>
+#' </div>
+#' <div id='div3'>
+#'   <p>Text 3</p>
+#' </div>
+#' <div id='div4'>
+#'   <p>Text 4</p>
+#' </div>
+#' "
+#'
+#' session <- minimal_selenider_session(html)
+#'
+#' divs <- ss("div")
+#'
+#' # Get the <p> tag inside each div.
+#' divs |>
+#'   html_flatmap(\(x) x |> html_element("p"))
+#'
+#' # Or:
+#' p_tags <- divs |>
+#'   html_flatmap(html_element, "p")
+#'
+#' # To get the text in each tag, we can't use html_flatmap()
+#' for (elem in element_list(p_tags)) {
+#'   print(html_text(elem))
+#' }
+#'
+#' # Or:
+#' lapply(element_list(p_tags), html_text)
+#'
 #' @export
 html_flatmap <- function(x, .f, ...) {
   check_class(x, "selenider_elements")
@@ -96,7 +132,8 @@ new_flatmap_selector <- function(x, selectors, class) {
     element = remove_driver(x),
     selectors = selectors,
     resulting_class = class,
-    filter = NULL
+    filter = NULL,
+    to_be_filtered = 0
   )
 
   class(res) <- c("selenider_flatmap_selector", "selenider_selector")

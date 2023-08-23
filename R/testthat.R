@@ -9,6 +9,8 @@
 #' @param x The element on which the conditions failed.
 #' @param x_name The name describing `x`.
 #' @param env The environment in which to evaluate the `condition` bullets using glue.
+#'
+#' @noRd
 html_expect_fail <- function(condition, parent, call, x, x_name, env = rlang::caller_env()) {
   condition_text <- cli::format_error(condition, .envir = env)
 
@@ -26,9 +28,9 @@ html_expect_fail <- function(condition, parent, call, x, x_name, env = rlang::ca
       paste(format(x), collapse = "\n"),
       "\n"
     )
-    
+
     condition_text <- paste0(condition_text, "\n\n", object_text, "\n")
   }
 
-  testthat::fail(condition_text, trace_env = call, trace_env = call)
+  testthat::fail(condition_text, trace_env = call)
 }

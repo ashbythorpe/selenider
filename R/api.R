@@ -30,22 +30,31 @@
 #' * [selenider_session()] to begin a session.
 #' 
 #' @examples 
-#' session <- mock_selenider_session()
+#' html <- "
+#' <div>
+#' <p id="id1" class="inner"></p>
+#' <div class="child">
+#' <p class="inner"></p>
+#' </div>
+#' </div>
+#' "
+#'
+#' session <- minimal_selenider_session(html)
 #' 
-#' s(".class1")
+#' s("#id1")
 #' 
 #' # This is the equivalent of:
-#' html_element(session, ".class1")
+#' html_element(session, "id1")
 #' 
-#' ss(".class2")
+#' ss(".inner")
 #' 
 #' # This is the equivalent of:
-#' html_element(session, ".class2")
+#' html_element(session, ".inner")
 #' 
 #' # This provides a more concise way to begin a chain of selectors
-#' s(".class1") |>
-#'   html_element(".innerclass") |>
-#'   html_element("#item1")
+#' s("div") |>
+#'   html_element(".child") |>
+#'   html_element(".inner")
 #' 
 #' @export
 s <- function(css = NULL,

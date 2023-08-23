@@ -61,9 +61,10 @@ Use \code{\link[withr:defer]{withr::deferred_run()}} to reset any local sessions
 \code{local_session()}.
 }
 \examples{
+\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # Don't set the local session, since we want to do it manually.
-session_1 <- mock_selenider_session(local = FALSE)
-session_2 <- mock_selenider_session(local = FALSE)
+session_1 <- selenider_session(local = FALSE)
+session_2 <- selenider_session(local = FALSE)
 
 get_session(create = FALSE) # NULL
 
@@ -92,7 +93,7 @@ with_session(
 ) # session_2
 
 get_session(create = FALSE) # session_1
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{local_session()} is called by \code{\link[=selenider_session]{selenider_session()}} unless otherwise

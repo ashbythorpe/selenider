@@ -12,7 +12,8 @@ new_selector <- function(css,
     class_name = class_name,
     name = name,
     link_text = link_text,
-    filter = filter
+    filter = filter,
+    to_be_filtered = length(filter)
   )
   
   args <- args[!vapply(args, is.null, logical(1))]
@@ -50,14 +51,16 @@ use_selector <- function(selector, element, driver) {
     elements <- selector$element
     elements$driver <- driver
     actual_elements <- get_elements(elements)
-    return(lazy_map(actual_elements, function(x) {
-      get_elements(list(selectors = selector$selectors, driver = driver, to_be_found = length(selector$selectors)))
-    }))
+    print(as.list(actual_elements))
+    return(lazy_flatten(lazy_map(actual_elements, function(x) {
+      get_elements(list(selectors = selector$selectors, element = x, driver = driver, to_be_found = length(selector$selectors)))
+    })))
   }
 
   filter <- selector$filter
 
   selector$filter <- NULL
+  selector$to_be_filtered <- NULL
 
   if (length(filter) == 1 && identical(filter[[1]], 1) && length(selector) == 1) {
     # If we are getting the first element, both CDP and Selenium have a shortcut for this

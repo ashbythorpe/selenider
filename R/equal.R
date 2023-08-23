@@ -11,8 +11,34 @@
 #' @returns
 #' `TRUE` or `FALSE`.
 #'
+#' @examples
+#' html <- "
+#' <div></div>
+#' <div class='second'>
+#'   <p></p>
+#' </div>
+#' "
+#'
+#' session <- minimal_selenider_session(html)
+#'
+#' s("div") == ss("div")[[1]]
+#'
+#' has_p_child <- function(x) {
+#'   x |>
+#'     html_children() |> # Direct children
+#'     html_filter(has_name("p")) |>
+#'     has_at_least(1)
+#' }
+#'
+#' ss("div") |>
+#'   html_find(has_p_child) |>
+#'   html_equal(s(".second")) # TRUE
+#'
 #' @export
 html_equal <- function(x, y, timeout = NULL) {
+  check_class(x, "selenider_element")
+  check_class(y, "selenider_element")
+
   timeout <- get_timeout(timeout, x$timeout)
   if (!html_wait_until(is_present(x), is_present(y), timeout = timeout)) {
     missing_arg <- if (is_present(x)) "y" else "x"

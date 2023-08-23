@@ -25,7 +25,7 @@
 #' ``` r
 #' s(".class1") |>
 #'   html_parent() |>
-#'   cache_elements() |>
+#'   cache_element() |>
 #'   html_element(".class2")
 #' ```
 #'
@@ -35,6 +35,41 @@
 #' @returns
 #' The same type as `x`. The result of `cache_element()`/`cache_elements()` can be used
 #' as a normal `selenider_element`/`selenider_elements` object.
+#'
+#' @examples
+#' html <- "
+#' <div>
+#' <p id='specifictext'></p>
+#' <button></button>
+#' </div>
+#' "
+#'
+#' session <- minimal_selenider_session(html)
+#'
+#' # Selecting this button may be slow, since we are using relative XPath selectors.
+#' button <- s("#specifictext") |>
+#'   html_siblings() |>
+#'   html_find(has_name("button"))
+#'
+#' # But we need to click the button 10 times!
+#' # Normally, this would involve fetching the button from the DOM 10 times
+#' click_button_10_times <- function(x) {
+#'   lapply(1:10, \(unnused) click(x))
+#'   invisible(NULL)
+#' }
+#'
+#' # But with cache_element(), the button will only be fetched once
+#' cached_button <- cache_element(button)
+#'
+#' click_button_10_times(cached_button)
+#'
+#' # But the cached button is less reliable if the DOM is changing
+#' execute_js_fn("x => { x.outerHTML = '<button></button>'; }", button)
+#'
+#' try(click(cached_button, timeout = 0.1))
+#'
+#' # But the non-cached version works
+#' click(button)
 #'
 #' @export
 cache_element <- function(x, timeout = NULL) {
@@ -52,7 +87,7 @@ cache_element <- function(x, timeout = NULL) {
   x$element <- element
 
   x$to_be_found <- 0
-  x$to_be_filtered <- 0
+  x$selectors[[length(x$selectors)]]$to_be_filtered <- 0
 
   x
 }
@@ -75,7 +110,7 @@ cache_elements <- function(x, timeout = NULL) {
   x$element <- elements
 
   x$to_be_found <- 0
-  x$to_be_filtered <- 0
+  x$selectors[[length(x$selectors)]]$to_be_filtered <- 0
 
   x
 }

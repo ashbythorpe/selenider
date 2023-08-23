@@ -18,9 +18,14 @@ A boolean value.
 Check that an element has a specified tag name
 }
 \examples{
-session <- mock_selenider_session()
+html <- "
+<div id='mydiv'></div>
+"
+session <- minimal_selenider_session(html)
 
-has_name(s(".class1"), "div")
+has_name(s("#mydiv"), "p")
+
+has_name(s("#mydiv"), "div")
 
 }
 \seealso{

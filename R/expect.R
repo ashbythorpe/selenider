@@ -77,33 +77,51 @@
 #' * [html_filter()] and [html_find()] to use conditions to filter elements.
 #' 
 #' @examples
-#' session <- mock_selenider_session()
+#' html <- "
+#' <div class='class1'>
+#' <button id='disabled-button' disabled>Disabled</button>
+#' <p style='visibility:hidden;'>Example text</p>
+#' <button id='enabled-button'>Enabled</button>
+#' </div>
+#'
+#' <div class='class3'>
+#' </div>
+#' "
+#' session <- minimal_selenider_session(html)
 #'
 #' s(".class1") |>
 #'   html_expect(is_present)
 #'
-#' s(".class1") |>
+#' s("#enabled-button") |>
 #'   html_expect(is_visible, is_enabled)
 #' 
-#' s(".class1") |>
-#'   html_expect(is_visible || is_enabled)
+#' s("#disabled-button") |>
+#'   html_expect(is_disabled)
 #' 
-#' s(".class2") |>
-#'   html_expect(!is_present, timeout = 0.5) |>
+#' # Error: element is visible but not enabled
+#' s("#disabled-button") |>
+#'   html_expect(is_visible, is_enabled, timeout = 0.5) |>
 #'   try() # Since this condition will fail
-#' # Or is_absent, etc.
+#'
+#' s(".class2") |>
+#'   html_expect(!is_present, !is_in_dom, is_absent) # All 3 are equivalent
+#'
+#' # All other conditions will error if the element does not exist
+#' s(".class2") |>
+#'   html_expect(is_invisible, timeout = 0.1) |>
+#'   try()
 #'
 #' # html_expect() returns the element, so can be used in chains
-#' s(".button1") |>
-#'   html_expect(is_visible) |>
+#' s("#enabled-button") |>
+#'   html_expect(is_visible && is_enabled) |>
 #'   click()
 #' # Note that click() will do this automatically
 #'
-#' s(".text1") |>
-#'   html_expect(has_exact_text("Example text"))
+#' s("p") |>
+#'   html_expect(is_hidden, has_exact_text("Example text"))
 #'
 #' # Or use an anonymous function
-#' s(".text1") |>
+#' s("p") |>
 #'   html_expect(\(elem) identical(html_text(elem), "Example text"))
 #'
 #' # If your conditions are not specific to an element, you can omit the `x` argument
@@ -114,12 +132,12 @@
 #' 
 #' # We can now use the conditions on their own to figure out which element exists
 #' if (is_present(elem_1)) {
-#'   click(elem_1)
+#'   print("Element 1 is visible")
 #' } else {
-#'   click(elem_2)
+#'   print("Element 2 is visible")
 #' }
 #'
-#' # Use html_wait_for() to handle failures manually
+#' # Use html_wait_until() to handle failures manually
 #' elem <- s(".class2")
 #' if (html_wait_until(elem, is_present)) {
 #'   click(elem)
@@ -128,7 +146,7 @@
 #' }
 #'
 #' # Creating a custom condition is easiest with an anonymous function
-#' s(".text1") |>
+#' s("p") |>
 #'   html_expect(
 #'     \(elem) elem |>
 #'       html_text() |>
@@ -142,7 +160,7 @@
 #'   grepl(pattern, text)
 #' }
 #'
-#' s(".text1") |>
+#' s("p") |>
 #'   html_expect(text_contains("Example *"))
 #'
 #' # If we want to continue on error, we need to use the "expect_error_continue" class
@@ -159,7 +177,7 @@
 #' }
 #'
 #' # This error will not be caught
-#' try(html_expect(stop()))
+#' try(html_expect(stop("Uncaught error!")))
 #'
 #' # These will eventually throw an error, but will wait 0.5 seconds to do so.
 #' try(html_expect(error_condition(), timeout = 0.5))
@@ -213,9 +231,9 @@ html_expect <- function(x, ..., testthat = NULL, timeout = NULL) {
   }
 
   if (inherits(x_res, c("selenider_element", "selenider_elements"))) {
-    x_res
+    invisible(x_res)
   } else {
-    NULL
+    invisible(NULL)
   }
 }
 
@@ -495,7 +513,7 @@ diagnose_condition <- function(x,
         "i" = "{.arg {x_name}} does not exist, which may have caused the condition to fail."
       )
     }
-  } else {
+  } else if (inherits(x, "selenider_elements")) {
     l <- length(x)
 
     if (l == 0L) {
@@ -520,8 +538,8 @@ diagnose_condition <- function(x,
 }
 
 get_call_arg <- function(call, name) {
-  fn <- eval_tidy(call_name(call), ns_env("selenider"))
-  args <- call_args(call_match(call, fn))
+  fn <- eval_tidy(parse_expr(call_name(call)), env = ns_env("selenider"))
+  args <- call_args(call_match(quo_get_expr(call), fn))
   args[[name]]
 }
 

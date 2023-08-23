@@ -20,10 +20,32 @@ scroll_to(x, js = FALSE, timeout = NULL)
 Scrolls to an HTML element.
 }
 \examples{
-session <- mock_selenider_session()
+html <- "
+<div style = 'height:100\%; min-height:100vh'></div>
+<button onclick='checkScrolled()'></button>
+<p>Scroll down to find me!</p>
+"
 
-s(".class1") |>
+js <- "
+function checkScrolled() {
+  let element = document.getElementsByTagName('p').item(0);
+  let rect = element.getBoundingClientRect();
+  // If paragraph is in view
+  if (rect.bottom <= (window.innerHeight || document.documentElement.clientHeight)) {
+    element.innerText = 'You found me!';
+  }
+}
+"
+
+session <- minimal_selenider_session(html, js = js)
+
+s("p") |>
   scroll_to()
+
+s("button") |>
+  click()
+
+html_expect(s("p"), has_text("You found me!"))
 
 }
 \seealso{

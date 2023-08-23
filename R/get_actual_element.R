@@ -1,7 +1,7 @@
 #' Get the webElement associated with a selenider element
 #'
 #' @description
-#' Turn a lazy selenium element or element collection into a 
+#' Turn a lazy selenium element or element collection into a
 #' [RSelenium::webElement]. Use this to perform certain actions on the element
 #' that are not implemented in selenider (e.g. getElementLocation())
 #'
@@ -14,7 +14,7 @@
 #'
 #' @param x A `selenider_element` or `selenider_elements` object, produced by
 #'   [html_element()] / [html_elements()]
-#' @param timeout The timeout to use while asserting that the item exists. If 
+#' @param timeout The timeout to use while asserting that the item exists. If
 #'   NULL, the timeout of the `selenider_element` will be used.
 #'
 #' @returns A [RSelenium::webElement] object, or a list of such objects.
@@ -30,7 +30,7 @@
 #'
 #' elem <- s(".class1") |>
 #'   get_actual_webelement()
-#' 
+#'
 #' elem$getElementLocation()
 #'
 #' elems <- ss(".class2") |>
@@ -67,13 +67,20 @@ get_element <- function(x) {
   if (is.null(element)) {
     element <- x$driver
   }
-  
-  if (is_multiple_elements(element) && x$to_be_filtered != 0) {
-    filter <- x$selectors[[length(x$selectors) - x$to_be_found]]$filter
-    relevant_filters <- utils::tail(filter, x$to_be_filtered)
-    
+
+  to_be_filtered <- if (x$to_be_found < length(x$selectors)) {
+    selector_to_filter <- x$selectors[[length(x$selectors) - x$to_be_found]]
+    selector_to_filter$to_be_filtered
+  } else {
+    0
+  }
+
+  if (is_multiple_elements(element) && to_be_filtered != 0) {
+    filter <- selector_to_filter$filter
+    relevant_filters <- utils::tail(filter, to_be_filtered)
+
     element <- filter_elements(element, relevant_filters)
-    
+
     if (is.null(element)) {
       return(NULL)
     }
@@ -103,19 +110,27 @@ get_elements <- function(x) {
     element <- x$driver
   }
 
-  if (x$to_be_found == 0) {
-    return(element)
+
+  to_be_filtered <- if (x$to_be_found < length(x$selectors)) {
+    selector_to_filter <- x$selectors[[length(x$selectors) - x$to_be_found]]
+    selector_to_filter$to_be_filtered
+  } else {
+    0
   }
-  
-  if (is_multiple_elements(element) && x$to_be_filtered != 0) {
-    filter <- x$selectors[[length(x$selectors) - x$to_be_found]]$filter
-    relevant_filters <- utils::tail(filter, x$to_be_filtered)
-    
+
+  if (is_multiple_elements(element) && to_be_filtered != 0) {
+    filter <- selector_to_filter$filter
+    relevant_filters <- utils::tail(filter, to_be_filtered)
+
     element <- filter_elements(element, relevant_filters, multiple = (x$to_be_found == 0))
 
     if (is.null(element)) {
       return(NULL)
     }
+  }
+
+  if (x$to_be_found == 0) {
+    return(element)
   }
 
   selectors <- utils::tail(x$selectors, x$to_be_found)
@@ -128,7 +143,7 @@ get_elements <- function(x) {
       return(NULL)
     }
   }
-  
+
   selector <- selectors[[length(selectors)]]
   elements <- use_selector(selector, element, driver = x$driver)
   filter_elements(elements, selector$filter, multiple = TRUE)
@@ -139,7 +154,7 @@ filter_elements <- function(elements, filter, multiple = FALSE) {
     stopifnot(multiple) # we need a filter to get a single element
     elements
   } else if (length(filter) == 1 && is.numeric(filter[[1]])) {
-    if (length(filter[[1]]) == 1) {
+    if (length(filter[[1]]) == 1 && filter[[1]] > 0) {
       res <- get_item(elements, filter[[1]])
 
       if (multiple) {
@@ -152,7 +167,8 @@ filter_elements <- function(elements, filter, multiple = FALSE) {
       elements[filter[[1]]]
     }
   } else if (length(filter) == 1 && is_function(filter[[1]])) {
-    lazy_filter(elements, filter)[[1]]
+    stopifnot(multiple)
+    lazy_filter(elements, filter[[1]])
   } else if (!multiple) {
     if (is_function(filter[[length(filter)]])) {
       last <- 1

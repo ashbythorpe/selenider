@@ -26,6 +26,7 @@ get_with_timeout <- function(timeout, .f, ...) {
 #' returns `FALSE`.
 #'
 #' @param session Which session we should check. `"chromote"` is used by default.
+#' @param Whether we need to check for an internet connection.
 #' 
 #' @details
 #' Specifically, the following is checked:
@@ -50,7 +51,8 @@ get_with_timeout <- function(timeout, .f, ...) {
 #' A boolean flag: `TRUE` or `FALSE`.
 #'
 #' @export
-selenider_available <- function(session = c("chromote", "selenium")) {
+selenider_available <- function(session = c("chromote", "selenium"), online = TRUE) {
+  check_bool(online)
   session <- arg_match(session)
 
   env_variable <- as.logical(Sys.getenv("SELENIDER_AVAILABLE"))
@@ -60,12 +62,14 @@ selenider_available <- function(session = c("chromote", "selenium")) {
     return(FALSE)
   }
 
-  internet_available <- is_installed("curl") &&
-    !on_cran() &&
-    !is.null(curl::nslookup("r-project.org", error = FALSE))
+  if (online) {
+    internet_available <- is_installed("curl") &&
+      !on_cran() &&
+      !is.null(curl::nslookup("r-project.org", error = FALSE))
 
-  if (!internet_available) {
-    return(FALSE)
+    if (!internet_available) {
+      return(FALSE)
+    }
   }
 
   if (session == "chromote") {
@@ -207,21 +211,25 @@ escape_squirlies <- function(x) {
 }
 
 is_multiple_elements <- function(x) {
-  !(inherits_any(x, c("webElement", "remoteDriver", "mock_element", "mock_client", "ChromoteSession")) || (is.numeric(x) && length(x) != 1))
+  !(inherits_any(x, c("webElement", "remoteDriver", "mock_element", "mock_client", "ChromoteSession")) || (is.numeric(x) && length(x) == 1))
 }
 
 uses_selenium <- function(x) {
   inherits_any(x, c("remoteDriver", "mock_client")) || (!is.null(x$client) && inherits_any(x$client, c("remoteDriver", "mock_client")))
 }
 
-execute_js_fn <- function(fn, x, driver) {
+execute_js_fn_on <- function(fn, x, driver) {
   if (uses_selenium(driver)) {
     script <- paste0("let fn = ", fn, ";", "return fn(arguments[0]);")
-    driver$executeScript(script, list(x))[[1]]
+    unpack_list(driver$executeScript(script, list(x)))
   } else {
     script <- paste0("function() { return (", fn, ")(this) }")
     driver$Runtime$callFunctionOn(script, chromote_object_id(backend_id = x, driver = driver))$result$value
   }
+}
+
+unpack_list <- function(x) {
+  if (length(x) == 0) NULL else x[[1]]
 }
 
 is_windows <- function() .Platform$OS.type == "windows"

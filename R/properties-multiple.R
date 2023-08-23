@@ -13,9 +13,15 @@
 #' @returns An integer representing the number of elements in the collection.
 #' 
 #' @examples
-#' session <- mock_selenider_session()
+#' html <- "
+#' <div></div>
+#' <div></div>
+#' <div></div>
+#' <div></div>
+#' "
+#' session <- minimal_selenider_session(html)
 #' 
-#' ss(".class1") |>
+#' ss("div") |>
 #'   length()
 #' 
 #' @export

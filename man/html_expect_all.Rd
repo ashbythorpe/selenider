@@ -50,17 +50,28 @@ within \code{\link[=html_expect]{html_expect()}} and \code{\link[=html_wait_unti
 For example, the following two expressions are equivalent (where \code{x} is an
 element collection).
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{html_expect(x, \\(element) all(vapply(element, is_present, logical(1))))
+\if{html}{\out{<div class="sourceCode">}}\preformatted{html_expect(x, \\(element) all(vapply(element_list(element), is_present, logical(1))))
 html_expect_all(x, is_present)
 }\if{html}{\out{</div>}}
 
 However, the second example will give a more detailed error message on failure.
 }
 \examples{
-session <- mock_selenider_session()
+html <- "
+<div id='div1'>Content 1</div>
+<div id='div2'>Content 2</div>
+<div id='div3' style='display:none;'>Content 3</div>
+<div id='div4'>Content 4</div>
+"
 
-ss(".class1") |>
-  html_expect_all(is_present)
+session <- minimal_selenider_session(html)
+
+ss("div") |>
+  html_expect_all(is_visible, timeout = 0.1) |>
+  try()
+
+ss("div")[-3] |>
+  html_expect_all(is_visible)
 
 }
 \seealso{

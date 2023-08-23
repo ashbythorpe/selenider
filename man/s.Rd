@@ -46,7 +46,7 @@ Both \code{s()} and \code{ss()} allow you to select elements without specifying 
 session object.
 
 \code{s()} selects a single element, being a shorthand for \code{\link[=html_element]{html_element()}}
-without a first argument
+on the current session.
 
 \code{ss()} selects multiple elements, being a shorthand for \code{\link[=html_elements]{html_elements()}}.
 }
@@ -55,22 +55,31 @@ Both functions allow the starting point for chains of selectors to be made
 more concise. Both use \code{\link[=get_session]{get_session()}} to get the global session object.
 }
 \examples{
-session <- mock_selenider_session()
+html <- "
+<div>
+<p id="id1" class="inner"></p>
+<div class="child">
+<p class="inner"></p>
+</div>
+</div>
+"
 
-s(".class1")
+session <- minimal_selenider_session(html)
+
+s("#id1")
 
 # This is the equivalent of:
-html_element(session, ".class1")
+html_element(session, "id1")
 
-ss(".class2")
+ss(".inner")
 
 # This is the equivalent of:
-html_element(session, ".class2")
+html_element(session, ".inner")
 
 # This provides a more concise way to begin a chain of selectors
-s(".class1") |>
-  html_element(".innerclass") |>
-  html_element("#item1")
+s("div") |>
+  html_element(".child") |>
+  html_element(".inner")
 
 }
 \seealso{

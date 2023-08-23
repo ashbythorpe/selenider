@@ -23,3 +23,27 @@ same element on the page. \code{html_equal()} is equivalent to
 using \code{==}, but allows you to specify a timeout value if
 needed.
 }
+\examples{
+html <- "
+<div></div>
+<div class='second'>
+  <p></p>
+</div>
+"
+
+session <- minimal_selenider_session(html)
+
+s("div") == ss("div")[[1]]
+
+has_p_child <- function(x) {
+  x |>
+    html_children() |> # Direct children
+    html_filter(has_name("p")) |>
+    has_at_least(1)
+}
+
+ss("div") |>
+  html_find(has_p_child) |>
+  html_equal(s(".second")) # TRUE
+
+}

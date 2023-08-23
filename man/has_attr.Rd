@@ -32,9 +32,18 @@ A boolean value: TRUE or FALSE.
 element's value matches a string or number.
 }
 \examples{
-session <- mock_selenider_session()
+html <- "
+<input class='myclass' value='1.0' data-customattr='Custom attribute text'></p>
+"
 
-has_attr(s(".class1"), "class", "class1")
+session <- minimal_selenider_session(html)
+
+has_attr(s("input"), "class", "myclass")
+
+has_attr(s("input"), "value", 1)
+has_value(s("input"), 1)
+
+attr_contains(s("input"), "data-customattr", "Custom attribute")
 
 }
 \seealso{

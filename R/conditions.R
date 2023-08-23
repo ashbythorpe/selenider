@@ -16,9 +16,17 @@
 #' @family conditions
 #' 
 #' @examples 
-#' session <- mock_selenider_session()
+#' html <- "
+#' <p class='class1'></p>
+#' "
+#'
+#' session <- minimal_selenider_session(html)
 #' 
-#' is_present(s(".class1"))
+#' is_present(s(".class1")) # TRUE
+#'
+#' is_in_dom(s(".class2")) # FALSE
+#'
+#' is_absent(s(".class2")) # TRUE
 #' 
 #' @export
 is_present <- function(x) {
@@ -37,7 +45,7 @@ is_in_dom <- is_present
 #' @rdname is_present
 #' 
 #' @export
-is_absent <- is_missing
+is_absent <- function(x) !is_present(x)
 
 #' Is an element visible?
 #'
@@ -52,9 +60,19 @@ is_absent <- is_missing
 #' @family conditions
 #' 
 #' @examples 
-#' session <- mock_selenider_session()
+#' html <- "
+#' <div style='visibility:hidden;'>Content 1</div>
+#' <div style='display:none'>Content 2</div>
+#' <div>Content 3</div>
+#' "
+#'
+#' session <- minimal_selenider_session(html)
 #' 
-#' is_visible(s(".class1"))
+#' is_visible(s("div")) # FALSE
+#'
+#' is_invisible(ss("div")[[2]]) # TRUE
+#'
+#' is_visible(ss("div")[[3]]) # TRUE
 #' 
 #' @export
 is_visible <- function(x) {
@@ -64,12 +82,13 @@ is_visible <- function(x) {
   
   if (!is.null(element)) {
     if (uses_selenium(x$driver)) {
-      element$isElementDisplayed()[[1]]
+      unpack_list(element$isElementDisplayed())
     } else {
       driver <- x$driver
       tryCatch({
-        driver$DOM$getBoxModel(backendNodeId = element)
-        TRUE
+        coords <- driver$DOM$getBoxModel(backendNodeId = element)$model$content
+        !(coords[[1]] == coords[[3]] || coords[[2]] == coords[[6]] ||
+          chromote_get_css_property(element, "visibility", default = NULL, driver = driver) %in% c("hidden", "collapse"))
       }, error = function(e) FALSE)
     }
   } else {
@@ -105,9 +124,16 @@ is_invisible <- is_hidden
 #' @family conditions
 #' 
 #' @examples 
-#' session <- mock_selenider_session()
+#' html <- "
+#' <button></button>
+#' <button disabled></button>
+#' "
+#'
+#' session <- minimal_selenider_session(html)
 #' 
-#' is_enabled(s(".class1"))
+#' is_enabled(s("button")) # TRUE
+#'
+#' is_disabled(ss("button")[[2]]) # TRUE
 #' 
 #' @export
 is_enabled <- function(x) {
@@ -117,7 +143,7 @@ is_enabled <- function(x) {
   
   if (!is.null(element)) {
     if (uses_selenium(x$driver)) {
-      element$isElementEnabled()[[1]]
+      unpack_list(element$isElementEnabled())
     } else {
       driver <- x$driver
       driver$Runtime$callFunctionOn("function() {
@@ -147,9 +173,14 @@ is_disabled <- function(x) !is_enabled(x)
 #' @family conditions
 #'
 #' @examples
-#' session <- mock_selenider_session()
+#' html <- "
+#' <div id='mydiv'></div>
+#' "
+#' session <- minimal_selenider_session(html)
 #'
-#' has_name(s(".class1"), "div")
+#' has_name(s("#mydiv"), "p")
+#'
+#' has_name(s("#mydiv"), "div")
 #'
 #' @export
 has_name <- function(x, name) {
@@ -160,7 +191,7 @@ has_name <- function(x, name) {
 
   if (!is.null(element)) {
     if (uses_selenium(x$driver)) {
-      element$getElementTagName() == name
+      unpack_list(element$getElementTagName()) == name
     } else {
       driver <- x$driver
       tolower(driver$DOM$describeNode(backendNodeId = element)$node$nodeName) == name
@@ -184,9 +215,22 @@ has_name <- function(x, name) {
 #' @family conditions
 #' 
 #' @examples 
-#' session <- mock_selenider_session()
+#' html <- "
+#' <p>Example text</p>
+#' <p class='empty'></p>
+#' "
+#'
+#' session <- minimal_selenider_session(html)
 #' 
-#' has_text(s(".class1"), "Example")
+#' has_text(s("p"), "Example") # TRUE
+#'
+#' has_exact_text(s("p"), "Example") # FALSE
+#'
+#' has_exact_text(s("p"), "Example text") # TRUE
+#'
+#' # has_exact_text() is useful for checking when there is no text,
+#' # since has_text("") will always be TRUE.
+#' has_exact_text(s(".empty"), "")
 #' 
 #' @export
 has_text <- function(x, text) {
@@ -197,7 +241,7 @@ has_text <- function(x, text) {
   
   if (!is.null(element)) {
     if (uses_selenium(x$driver)) {
-      grepl(text, element$getElementText(), fixed = TRUE)
+      grepl(text, unpack_list(element$getElementText()), fixed = TRUE)
     } else {
       driver <- x$driver
       actual <- chromote_get_text(element, driver = driver)
@@ -219,7 +263,7 @@ has_exact_text <- function(x, text) {
   
   if (!is.null(element)) {
     if (uses_selenium(x$driver)) {
-      identical(element$getElementText(), text)
+      identical(unpack_list(element$getElementText()), text)
     } else {
       driver <- x$driver
       actual <- chromote_get_text(element, driver = driver)
@@ -250,9 +294,18 @@ has_exact_text <- function(x, text) {
 #' @returns A boolean value: TRUE or FALSE.
 #'
 #' @examples
-#' session <- mock_selenider_session()
+#' html <- "
+#' <input class='myclass' value='1.0' data-customattr='Custom attribute text'></p>
+#' "
 #'
-#' has_attr(s(".class1"), "class", "class1")
+#' session <- minimal_selenider_session(html)
+#'
+#' has_attr(s("input"), "class", "myclass")
+#'
+#' has_attr(s("input"), "value", 1)
+#' has_value(s("input"), 1)
+#'
+#' attr_contains(s("input"), "data-customattr", "Custom attribute")
 #'
 #' @export
 has_attr <- function(x, name, value) {
@@ -378,9 +431,12 @@ has_value <- function(x, value) {
 #' @returns A boolean value: TRUE or FALSE.
 #'
 #' @examples
-#' session <- mock_selenider_session()
+#' html <- "
+#' <div style='display:none;'></div>
+#' "
+#' session <- minimal_selenider_session(html)
 #'
-#' has_css_property(s(".class1"), "background-color", "red")
+#' has_css_property(s("div"), "display", "none")
 #'
 #' @export
 has_css_property <- function(x, property, value) {
@@ -421,7 +477,7 @@ is_covered <- function(x) {
     stop_absent_element()
   } else {
     visible <- if (uses_selenium(x$driver)) {
-      element$isElementDisplayed()[[1]]
+      unpack_list(element$isElementDisplayed())
     } else {
       driver <- x$driver
       tryCatch({

@@ -15,10 +15,34 @@
 #' @returns `x`, invisibly
 #'
 #' @examples
-#' session <- mock_selenider_session()
+#' html <- "
+#' <button onclick = hidetext() oncontextmenu = showtext()></button>
+#' <p id = 'texttohide'>Hello!</p>
+#' "
 #'
-#' s(".class1") |>
+#' js <- "
+#' function hidetext() {
+#'   document.getElementById('texttohide').style.display = 'none'
+#' }
+#'
+#' function showtext() {
+#'   document.getElementById('texttohide').style.display = 'block'
+#' }
+#' "
+#'
+#' session <- minimal_selenider_session(html, js = js)
+#' 
+#' html_expect(s("p"), is_visible)
+#'
+#' s("button") |>
 #'   click()
+#'
+#' html_expect(s("p"), is_invisible)
+#'
+#' s("button") |>
+#'   right_click()
+#'
+#' html_expect(s("p"), is_visible)
 #'
 #' @family actions
 #'
@@ -40,7 +64,7 @@ click <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("be enabled")
     )
 
-    execute_js_fn("x => x.click()", element, driver = x$driver)
+    execute_js_fn_on("x => x.click()", element, driver = x$driver)
   } else {
     element <- get_element_for_action(
       x,
@@ -133,7 +157,7 @@ double_click <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("be enabled")
     )
     
-    execute_js_fn("function(x) {
+    execute_js_fn_on("function(x) {
       x.click(); 
       x.click();
       let clickevent = document.createevent('mouseevents');
@@ -188,7 +212,7 @@ right_click <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("be enabled")
     )
     
-    execute_js_fn("function(element) {
+    execute_js_fn_on("function(element) {
       element.click(); 
       let clickevent = document.createevent('mouseevents');
       clickevent.initevent('contextmenu', true, true);
@@ -236,10 +260,25 @@ right_click <- function(x, js = FALSE, timeout = NULL) {
 #' @family actions
 #'
 #' @examples
-#' session <- mock_selenider_session()
+#' html <- "
+#' <button onmouseover = settext()> </button>
+#' <p class = 'text'></p>
+#' "
 #'
-#' s(".class1") |>
+#' js <- "
+#' function settext() {
+#'   document.getElementsByClassName('text').item(0).innerHTML = 'Button hovered!'
+#' }
+#' "
+#'
+#' session <- minimal_selenider_session(html, js = js)
+#'
+#' html_expect(s(".text"), has_exact_text(""))
+#'
+#' s("button") |>
 #'   hover()
+#'
+#' html_expect(s(".text"), has_text("Button hovered!"))
 #' 
 #' @export
 hover <- function(x, js = FALSE, timeout = NULL) {
@@ -259,7 +298,7 @@ hover <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("be enabled")
     )
 
-    execute_js_fn("function(element) {
+    execute_js_fn_on("function(element) {
       element.moveToElement(element);
       let clickevent = document.createevent('mouseevents');
       clickevent.initevent('mouseover', true, true);
@@ -319,10 +358,43 @@ hover_chromote <- function(element, driver) {
 #' @returns `x`, invisibly
 #'
 #' @examples
-#' session <- mock_selenider_session()
+#' html <- "
+#' <input type='text' oninput='recordChange(event)' onkeypress='return checkEnter(event);'>
+#' <p></p>
+#' "
 #'
-#' s(".class1") |>
-#'   set_value("my text")
+#' js <- "
+#' function recordChange(e) {
+#'   document.getElementsByTagName('p').item(0).innerText = e.target.value;
+#' }
+#'
+#' function checkEnter(e) {
+#'   // If the key pressed was Enter
+#'   if (e.keyCode == 13) {
+#'     document.getElementsByTagName('p').item(0).innerText = 'Enter pressed!';
+#'     return false;
+#'   }
+#'   return true;
+#' }
+#' "
+#'
+#' session <- minimal_selenider_session(html, js = js)
+#'
+#' html_expect(s("p"), has_exact_text(""))
+#'
+#' input <- s("input")
+#'
+#' set_value(input, "my text")
+#'
+#' html_expect(s("p"), has_text("my text"))
+#'
+#' clear_value(input)
+#'
+#' html_expect(s("p"), has_exact_text(""))
+#' 
+#' send_keys(input, keys$enter)
+#'
+#' html_expect(s("p"), has_text("Enter pressed!"))
 #'
 #' @family actions
 #'
@@ -346,7 +418,7 @@ set_value <- function(x, text, timeout = NULL) {
     conditions_text = c("be enabled")
   )
 
-  execute_js_fn(
+  execute_js_fn_on(
     paste0("x => x.setAttribute('value','", text, "')"),
     element, driver = x$driver
   )
@@ -519,7 +591,7 @@ clear_value <- function(x, timeout = NULL) {
     conditions_text = c("be enabled")
   )
 
-  execute_js_fn(
+  execute_js_fn_on(
     paste0("x => x.setAttribute('value', '')"),
     element, driver = x$driver
   )
@@ -550,8 +622,8 @@ get_element_for_action <- function(x,
   if (length(conditions) != 0 && !meets_condition) {
     if (length(conditions) == 0 || !is_present(x)) {
       stop_not_actionable(c(
-        paste0("To ", action, ", it must exist"),
-        "i" = "After {timeout} seconds, {.arg x} was not present"
+        paste0("To ", action, ", it must exist."),
+        "i" = "After {timeout} seconds, {.arg x} was not present."
       ), call = call, exists = TRUE)
     }
 
@@ -560,8 +632,8 @@ get_element_for_action <- function(x,
       
       if (!condition(x)) {
         stop_not_actionable(c(
-          paste0("To ", action, ", it must ", conditions_text),
-          "i" = "After {timeout} seconds, {.arg x} {failure_messages[[n]]}"
+          paste0("To ", action, ", it must ", conditions_text, "."),
+          "i" = "After {timeout} seconds, {.arg x} {failure_messages[[n]]}."
         ), call = call)
       }
     }
@@ -571,8 +643,8 @@ get_element_for_action <- function(x,
 
   if (is.null(element)) {
     stop_not_actionable(c(
-      paste0("To ", action, ", it must exist"),
-      "i" = "After {timeout} seconds, {.arg x} was not present"
+      paste0("To ", action, ", it must exist."),
+      "i" = "After {timeout} seconds, {.arg x} was not present."
     ))
   }
 
@@ -592,10 +664,32 @@ get_element_for_action <- function(x,
 #' @family actions
 #'
 #' @examples
-#' session <- mock_selenider_session()
+#' html <- "
+#' <div style = 'height:100%; min-height:100vh'></div>
+#' <button onclick='checkScrolled()'></button>
+#' <p>Scroll down to find me!</p>
+#' "
 #'
-#' s(".class1") |>
+#' js <- "
+#' function checkScrolled() {
+#'   let element = document.getElementsByTagName('p').item(0);
+#'   let rect = element.getBoundingClientRect();
+#'   // If paragraph is in view
+#'   if (rect.bottom <= (window.innerHeight || document.documentElement.clientHeight)) {
+#'     element.innerText = 'You found me!';
+#'   }
+#' }
+#' "
+#'
+#' session <- minimal_selenider_session(html, js = js)
+#'
+#' s("p") |>
 #'   scroll_to()
+#'
+#' s("button") |>
+#'   click()
+#'
+#' html_expect(s("p"), has_text("You found me!"))
 #'
 #' @export
 scroll_to <- function(x, js = FALSE, timeout = NULL) {
@@ -615,7 +709,7 @@ scroll_to <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("be enabled")
     )
 
-    execute_js_fn("x => element.scrollIntoView()", element, driver = x$driver)
+    execute_js_fn_on("x => element.scrollIntoView()", element, driver = x$driver)
   } else {
     element <- get_element_for_action(
       x,
@@ -661,11 +755,21 @@ scroll_to <- function(x, js = FALSE, timeout = NULL) {
 #' @family actions
 #'
 #' @examples
-#' session <- mock_selenider_session()
+#' html <- "
+#' <form>
+#' <input type='submit'>
+#' <p>Random text</p>
+#' </form>
+#' <a>Random link</a>
+#' "
+#'
+#' session <- minimal_selenider_session(html)
 #' 
+#' submit(s("input"))
+#' submit(s("p"))
+#'
 #' # Won't work since doesn't have a form ancestor
-#' # s(".class1") |>
-#' #   submit()
+#' try(submit(s("a"), timeout = 0.5))
 #'
 #' @export
 submit <- function(x, js = FALSE, timeout = NULL) {
@@ -676,7 +780,7 @@ submit <- function(x, js = FALSE, timeout = NULL) {
   timeout <- get_timeout(timeout, x$timeout)
 
   has_form_parent <- function(x) {
-    has_at_least(html_flatmap(html_ancestors(x), html_element, "form"), 1)
+    has_at_least(html_filter(html_ancestors(x), has_name("form")), 1)
   }
 
   if (js || !uses_selenium(x$driver)) {
@@ -689,7 +793,7 @@ submit <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("have a form element as its ancestor")
     )
 
-    result <- execute_js_fn("function(element) {
+    result <- execute_js_fn_on("function(element) {
       while (element != null) {
         if (element.tagName == 'FORM') {
           element.submit();

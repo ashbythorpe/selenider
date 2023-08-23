@@ -12,7 +12,7 @@ test_that("selenider_element properties work", {
   expect_equal(html_attr(html_find(html_elements(s(".actions-test"), "input"), has_value("Submit")), "type"), "submit")
   expect_equal(html_attr(html_children(s(".actions-form"))[[1]], "class"), "actions-test")
 
-  expect_equal(html_attrs(html_element(s(".actions-test"), "input")), list(type = "text", class = "actions-input"))
+  expect_mapequal(html_attrs(html_element(s(".actions-test"), "input")), list(type = "text", class = "actions-input"))
 
   expect_equal(html_value(s(".actions-input")), NA_character_)
 

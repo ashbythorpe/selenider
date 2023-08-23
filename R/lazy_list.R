@@ -67,19 +67,15 @@ next_value <- function(x) {
 
 `[[.lazy_list` <- function(x, i, ...) {
   current_value <- x$current_value$get()
-  result <- if (i > current_value) {
+  if (i > current_value) {
     for (a in seq_len(i - current_value)) {
-      val <- next_value(x)
+      result <- next_value(x)
     }
-
-    val
   } else {
     reset_iterator(x)
     for (a in seq_len(i)) {
-      val <- next_value(x)
+      result <- next_value(x)
     }
-
-    val
   }
 
   if (coro::is_exhausted(result)) {
@@ -200,11 +196,34 @@ lazy_map <- function(x, .f) {
     value <- next_value(x)
 
     while (!coro::is_exhausted(value)) {
-      coro::yield(.f(value))
+      result <- .f(value)
+      coro::yield(result)
       value <- next_value(x)
     }
 
     coro::exhausted()
+  })
+
+  lazy_list(generator)
+}
+
+lazy_flatten <- function(x) {
+  x <- check_lazylist(x)
+
+  generator <- coro::generator(function() {
+    value <- next_value(x)
+
+    while(!coro::is_exhausted(value)) {
+      value <- check_lazylist(value)
+      inner_value <- next_value(value)
+
+      while (!coro::is_exhausted(inner_value)) {
+        coro::yield(inner_value)
+        inner_value <- next_value(value)
+      }
+
+      value <- next_value(x)
+    }
   })
 
   lazy_list(generator)

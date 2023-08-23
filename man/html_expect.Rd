@@ -46,7 +46,7 @@ Conditions can be supplied as functions or calls.
 Functions allow you to use unary conditions without formatting them as a
 call (e.g. \code{is_present} rather than \code{is_present()}). It also allows you to make
 use of R's \link[base:function]{anonymous function syntax} to quickly create
-custom conditions. \code{x} will be used as the first argument of this function.
+custom conditions. \code{x} will be supplied as the first argument of this function.
 
 Function calls allow you to use conditions that take multiple arguments (e.g.
 \code{has_text()}) without the use of an intermediate function. The call will
@@ -65,7 +65,7 @@ first argument, and returns a logical value, can be used as a condition.
 Additionally, these functions provide a few features that make creating
 custom conditions easy:
 \itemize{
-\item Errors with class \code{selenider_element_absent_element} are handled, and
+\item Errors with class \code{expect_error_continue} are handled, and
 the function is prevented from terminating early. This means that if
 an element is not found, the function will retry instead of immediately
 throwing an error.
@@ -77,7 +77,7 @@ manually. To override this default, manually specify a timeout.
 
 These two features allow you to use functions like \code{\link[=html_text]{html_text()}} to access
 properties of an element, without needing to worry about the errors that
-they throw or the timeouts that they use. See Examples for an example of a
+they throw or the timeouts that they use. See Examples for a few examples of a
 custom condition.
 
 These custom conditions can also be used with \code{\link[=html_filter]{html_filter()}} and
@@ -85,33 +85,51 @@ These custom conditions can also be used with \code{\link[=html_filter]{html_fil
 }
 
 \examples{
-session <- mock_selenider_session()
+html <- "
+<div class='class1'>
+<button id='disabled-button' disabled>Disabled</button>
+<p style='visibility:hidden;'>Example text</p>
+<button id='enabled-button'>Enabled</button>
+</div>
+
+<div class='class3'>
+</div>
+"
+session <- minimal_selenider_session(html)
 
 s(".class1") |>
   html_expect(is_present)
 
-s(".class1") |>
+s("#enabled-button") |>
   html_expect(is_visible, is_enabled)
 
-s(".class1") |>
-  html_expect(is_visible || is_enabled)
+s("#disabled-button") |>
+  html_expect(is_disabled)
+
+# Error: element is visible but not enabled
+s("#disabled-button") |>
+  html_expect(is_visible, is_enabled, timeout = 0.5) |>
+  try() # Since this condition will fail
 
 s(".class2") |>
-  html_expect(!is_present, timeout = 0.5) |>
-  try() # Since this condition will fail
-# Or is_absent, etc.
+  html_expect(!is_present, !is_in_dom, is_absent) # All 3 are equivalent
+
+# All other conditions will error if the element does not exist
+s(".class2") |>
+  html_expect(is_invisible, timeout = 0.1) |>
+  try()
 
 # html_expect() returns the element, so can be used in chains
-s(".button1") |>
-  html_expect(is_visible) |>
+s("#enabled-button") |>
+  html_expect(is_visible && is_enabled) |>
   click()
 # Note that click() will do this automatically
 
-s(".text1") |>
-  html_expect(has_exact_text("Example text"))
+s("p") |>
+  html_expect(is_hidden, has_exact_text("Example text"))
 
 # Or use an anonymous function
-s(".text1") |>
+s("p") |>
   html_expect(\(elem) identical(html_text(elem), "Example text"))
 
 # If your conditions are not specific to an element, you can omit the `x` argument
@@ -122,12 +140,12 @@ html_expect(is_present(elem_1) || is_present(elem_2))
 
 # We can now use the conditions on their own to figure out which element exists
 if (is_present(elem_1)) {
-  click(elem_1)
+  print("Element 1 is visible")
 } else {
-  click(elem_2)
+  print("Element 2 is visible")
 }
 
-# Use html_wait_for() to handle failures manually
+# Use html_wait_until() to handle failures manually
 elem <- s(".class2")
 if (html_wait_until(elem, is_present)) {
   click(elem)
@@ -136,7 +154,7 @@ if (html_wait_until(elem, is_present)) {
 }
 
 # Creating a custom condition is easiest with an anonymous function
-s(".text1") |>
+s("p") |>
   html_expect(
     \(elem) elem |>
       html_text() |>
@@ -150,8 +168,28 @@ text_contains <- function(x, pattern) {
   grepl(pattern, text)
 }
 
-s(".text1") |>
+s("p") |>
   html_expect(text_contains("Example *"))
+
+# If we want to continue on error, we need to use the "expect_error_continue" class
+# This involves making a custom error object
+error_condition <- function() {
+  my_condition <- list(message = "Custom error!")
+  class(my_condition) <- c("expect_error_continue", "error", "condition")
+  stop(my_condition)
+}
+
+# This is much easier with rlang::abort() / cli::cli_abort():
+error_condition_2 <- function() {
+  rlang::abort("Custom error!", class = "expect_error_continue")
+}
+
+# This error will not be caught
+try(html_expect(stop("Uncaught error!")))
+
+# These will eventually throw an error, but will wait 0.5 seconds to do so.
+try(html_expect(error_condition(), timeout = 0.5))
+try(html_expect(error_condition_2(), timeout = 0.5))
 
 }
 \seealso{

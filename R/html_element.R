@@ -119,8 +119,7 @@ new_selenider_element <- function(session, selector) {
     element = NULL,
     timeout = session$timeout,
     selectors = list(selector),
-    to_be_found = 1,
-    to_be_filtered = 1
+    to_be_found = 1
   )
 
   class(res) <- "selenider_element"

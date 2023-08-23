@@ -68,7 +68,7 @@ session |>
 session |>
   html_element(".class1") |>
   html_element(".class2")
-  
+
 # The above can be shortened to:
 s(".class1") |>
   html_element(".class2")

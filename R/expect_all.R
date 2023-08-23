@@ -47,10 +47,21 @@
 #' * [is_present()] and other conditions for predicates for a single HTML element.
 #'
 #' @examples
-#' session <- mock_selenider_session()
+#' html <- "
+#' <div id='div1'>Content 1</div>
+#' <div id='div2'>Content 2</div>
+#' <div id='div3' style='display:none;'>Content 3</div>
+#' <div id='div4'>Content 4</div>
+#' "
 #'
-#' ss(".class1") |>
-#'   html_expect_all(is_present)
+#' session <- minimal_selenider_session(html)
+#'
+#' ss("div") |>
+#'   html_expect_all(is_visible, timeout = 0.1) |>
+#'   try()
+#'
+#' ss("div")[-3] |>
+#'   html_expect_all(is_visible)
 #'
 #' @export
 html_expect_all <- function(x, ..., testthat = NULL, timeout = NULL) {

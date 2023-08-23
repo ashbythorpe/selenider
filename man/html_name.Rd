@@ -2,9 +2,12 @@
 % Please edit documentation in R/properties.R
 \name{html_name}
 \alias{html_name}
+\alias{html_name.selenider_element}
 \title{Get tag name of an element}
 \usage{
-html_name(x, timeout = NULL)
+html_name(x, ...)
+
+\method{html_name}{selenider_element}(x, timeout = NULL, ...)
 }
 \arguments{
 \item{x}{A \code{selenider_element} object.}
@@ -18,9 +21,12 @@ A string
 Get the tag name (e.g. \code{"p"} for a \verb{<p>} tag) of a \code{selenider_element} object.
 }
 \examples{
-session <- mock_selenider_session()
+html <- "
+<div class='mydiv'></div>
+"
+session <- minimal_selenider_session(html)
 
-s(".class1") |>
+s(".mydiv") |>
   html_name()
 
 }

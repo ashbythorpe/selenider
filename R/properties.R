@@ -9,11 +9,14 @@
 #' A string
 #'
 #' @examples
-#' session <- mock_selenider_session()
+#' html <- "
+#' <div class='mydiv'></div>
+#' "
+#' session <- minimal_selenider_session(html)
 #'
-#' s(".class1") |>
+#' s(".mydiv") |>
 #'   html_name()
-#' 
+#'
 #' @family properties
 #'
 #' @export
@@ -29,7 +32,7 @@ html_name.selenider_element <- function(x, timeout = NULL, ...) {
   check_number_decimal(timeout, allow_null = TRUE)
 
   timeout <- get_timeout(timeout, x$timeout)
-  
+
   element <- get_element_for_property(
     x,
     action = "get the tag name of {.arg x}",
@@ -37,7 +40,7 @@ html_name.selenider_element <- function(x, timeout = NULL, ...) {
   )
 
   if (uses_selenium(x$driver)) {
-    element$getElementTagName()
+    unpack_list(element$getElementTagName())
   } else {
     driver <- x$driver
     tolower(driver$DOM$describeNode(backendNodeId = element)$node$nodeName)
@@ -109,7 +112,7 @@ html_text.selenider_element <- function(x, timeout = NULL, ...) {
   )
 
   if (uses_selenium(x$driver)) {
-    element$getElementText()
+    unpack_list(element$getElementText())
   } else {
     driver <- x$driver
     chromote_get_text(element, driver = driver)
@@ -145,8 +148,8 @@ html_text.rvest_session <- function(x, ...) {
 }
 
 chromote_get_text <- function(x, driver) {
-  driver$Runtime$callFunctionOn("function() { 
-    return this.textContent; 
+  driver$Runtime$callFunctionOn("function() {
+    return this.textContent;
   }", chromote_object_id(backend_id = x, driver = driver))$result$value
 }
 
@@ -163,7 +166,7 @@ chromote_get_text <- function(x, driver) {
 #'
 #' @param x A `selenider_element` object.
 #' @param name The name of the attribute to get; a string.
-#' @param default The default value to use if the attribute does not exist in 
+#' @param default The default value to use if the attribute does not exist in
 #'   the element.
 #' @param ptype The type to cast the value to. Useful when the value is an integer
 #'   or decimal number. By default, the value is returned as a string.
@@ -201,11 +204,11 @@ html_attr.selenider_element <- function(x, name, default = NA_character_, timeou
     action = paste0("get the \"", name, "\" attribute of {.arg x}"),
     timeout = timeout
   )
-  
+
   if (uses_selenium(x$driver)) {
     result <- element$getElementAttribute(name)
 
-    if (is.null(result)) {
+    if (length(result) == 0) {
       default
     } else {
       result[[1]]
@@ -246,7 +249,7 @@ html_attr.rvest_session <- function(x, name, default = NA_character_, ...) {
 
 chromote_get_attribute <- function(x, name, default, driver) {
   response <- driver$DOM$getAttributes(chromote_node_id(backend_id = x, driver = driver))$attributes
-  
+
   # CDP returns a list of interleaved names and values
   # So the names are the 1st, 3rd, etc. elements.
   names <- response[seq_len(length(response) / 2) * 2 - 1]
@@ -298,14 +301,14 @@ html_attrs <- function(x, timeout = NULL, ...) {
   )
 
   if (uses_selenium(x$driver)) {
-    x$driver$executeScript("
+    unpack_list(x$driver$executeScript("
       let element = arguments[0];
       let attributes = {};
       for (let i = 0; i < element.attributes.length; i++) {
         attributes[element.attributes[i].name] = element.attributes[i].value;
       }
       return attributes;
-    ", list(element))
+    ", list(element)))
   } else {
     driver <- x$driver
     chromote_get_attributes(element, driver = driver)
@@ -425,7 +428,10 @@ html_css_property <- function(x, name, timeout = NULL) {
 }
 
 chromote_get_css_property <- function(x, name, default, driver) {
-  driver$CSS$enable()
+  if (!is.null(driver$CSS$enable)) {
+    driver$CSS$enable()
+  }
+
   if (is.null(driver$CSS$getComputedStyleForNode)) {
     result <- driver$Runtime$callFunctionOn("function() {
       return getComputedStyle(this).getPropertyValue('aa')

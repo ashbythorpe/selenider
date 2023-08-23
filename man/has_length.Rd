@@ -33,9 +33,15 @@ once. Use \code{\link[=html_expect]{html_expect()}} or \code{\link[=html_wait_un
 tests.
 }
 \examples{
-session <- mock_selenider_session()
+html <- "
+<div class='div1'></div>
+<div class='div2'></div>
+<div class='div3'></div>
+"
+session <- minimal_selenider_session(html)
 
-has_length(ss(".class1"), 2)
+has_length(ss("div"), 3)
+has_at_least(ss("div"), 2)
 
 }
 \concept{collection conditions}

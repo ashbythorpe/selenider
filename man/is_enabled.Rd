@@ -26,9 +26,16 @@ once. Use \code{\link[=html_expect]{html_expect()}} or \code{\link[=html_wait_un
 tests.
 }
 \examples{
-session <- mock_selenider_session()
+html <- "
+<button></button>
+<button disabled></button>
+"
 
-is_enabled(s(".class1"))
+session <- minimal_selenider_session(html)
+
+is_enabled(s("button")) # TRUE
+
+is_disabled(ss("button")[[2]]) # TRUE
 
 }
 \seealso{

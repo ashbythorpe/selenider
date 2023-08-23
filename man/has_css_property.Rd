@@ -21,9 +21,12 @@ Check that the CSS property (e.g. \code{"background-color"}) of an element match
 a value.
 }
 \examples{
-session <- mock_selenider_session()
+html <- "
+<div style='display:none;'></div>
+"
+session <- minimal_selenider_session(html)
 
-has_css_property(s(".class1"), "background-color", "red")
+has_css_property(s("div"), "display", "none")
 
 }
 \seealso{

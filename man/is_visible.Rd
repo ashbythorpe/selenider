@@ -32,9 +32,19 @@ once. Use \code{\link[=html_expect]{html_expect()}} or \code{\link[=html_wait_un
 tests.
 }
 \examples{
-session <- mock_selenider_session()
+html <- "
+<div style='visibility:hidden;'>Content 1</div>
+<div style='display:none'>Content 2</div>
+<div>Content 3</div>
+"
 
-is_visible(s(".class1"))
+session <- minimal_selenider_session(html)
+
+is_visible(s("div")) # FALSE
+
+is_invisible(ss("div")[[2]]) # TRUE
+
+is_visible(ss("div")[[3]]) # TRUE
 
 }
 \seealso{

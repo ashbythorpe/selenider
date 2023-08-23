@@ -116,6 +116,7 @@ selector_to_css <- function(using, value) {
     "class name" = paste0(".", value),
     "name" = paste0("[name = '", value, "']"),
     "link text" = paste0("a:contains(^", value, "$)"),
+    stop(paste0("Unexpected using value: ", using))
   )
 }
 

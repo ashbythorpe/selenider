@@ -31,10 +31,34 @@ element two times in a short period of time, while \code{right_click()} right
 clicks on an element, opening its context menu.
 }
 \examples{
-session <- mock_selenider_session()
+html <- "
+<button onclick = hidetext() oncontextmenu = showtext()></button>
+<p id = 'texttohide'>Hello!</p>
+"
 
-s(".class1") |>
+js <- "
+function hidetext() {
+  document.getElementById('texttohide').style.display = 'none'
+}
+
+function showtext() {
+  document.getElementById('texttohide').style.display = 'block'
+}
+"
+
+session <- minimal_selenider_session(html, js = js)
+
+html_expect(s("p"), is_visible)
+
+s("button") |>
   click()
+
+html_expect(s("p"), is_invisible)
+
+s("button") |>
+  right_click()
+
+html_expect(s("p"), is_visible)
 
 }
 \seealso{

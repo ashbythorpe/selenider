@@ -60,7 +60,7 @@ html_elements.selenider_session <- function(x,
                                            ...) {
   check_dots_used()
 
-  selector <- new_selector(css, xpath, id, class_name, name, link_text, filter = NULL)
+  selector <- new_selector(css, xpath, id, class_name, name, link_text, filter = list())
 
   new_selenider_elements(x, selector)
 }
@@ -78,7 +78,7 @@ html_elements.selenider_element <- function(x,
                                            ...) {
   check_dots_used()
 
-  selector <- new_selector(css, xpath, id, class_name, name, link_text, filter = NULL)
+  selector <- new_selector(css, xpath, id, class_name, name, link_text, filter = list())
   
   x$selectors <- append(x$selectors, list(selector))
   
@@ -124,8 +124,7 @@ new_selenider_elements <- function(session, selector) {
     element = NULL,
     timeout = session$timeout,
     selectors = list(selector),
-    to_be_found = 1,
-    to_be_filtered = 0
+    to_be_found = 1
   )
 
   class(res) <- c("selenider_elements", "list")

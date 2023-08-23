@@ -25,9 +25,15 @@ parent elements (if any) to exist before returning a value.
 difference being that \code{html_size()} allows you to specify a timeout.
 }
 \examples{
-session <- mock_selenider_session()
+html <- "
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+"
+session <- minimal_selenider_session(html)
 
-ss(".class1") |>
+ss("div") |>
   length()
 
 }

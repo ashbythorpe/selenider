@@ -84,10 +84,10 @@ reset_session <- function(session, old_session, close) {
 #' `local_session()` is called by [selenider_session()] unless otherwise
 #' specified.
 #' 
-#' @examples 
+#' @examplesIf selenider_available(online = FALSE)
 #' # Don't set the local session, since we want to do it manually.
-#' session_1 <- mock_selenider_session(local = FALSE)
-#' session_2 <- mock_selenider_session(local = FALSE)
+#' session_1 <- selenider_session(local = FALSE)
+#' session_2 <- selenider_session(local = FALSE)
 #' 
 #' get_session(create = FALSE) # NULL
 #' 

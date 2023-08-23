@@ -28,9 +28,17 @@ once. Use \code{\link[=html_expect]{html_expect()}} or \code{\link[=html_wait_un
 tests.
 }
 \examples{
-session <- mock_selenider_session()
+html <- "
+<p class='class1'></p>
+"
 
-is_present(s(".class1"))
+session <- minimal_selenider_session(html)
+
+is_present(s(".class1")) # TRUE
+
+is_in_dom(s(".class2")) # FALSE
+
+is_absent(s(".class2")) # TRUE
 
 }
 \seealso{

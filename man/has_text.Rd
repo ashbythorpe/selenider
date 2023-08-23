@@ -28,9 +28,22 @@ once. Use \code{\link[=html_expect]{html_expect()}} or \code{\link[=html_wait_un
 tests.
 }
 \examples{
-session <- mock_selenider_session()
+html <- "
+<p>Example text</p>
+<p class='empty'></p>
+"
 
-has_text(s(".class1"), "Example")
+session <- minimal_selenider_session(html)
+
+has_text(s("p"), "Example") # TRUE
+
+has_exact_text(s("p"), "Example") # FALSE
+
+has_exact_text(s("p"), "Example text") # TRUE
+
+# has_exact_text() is useful for checking when there is no text,
+# since has_text("") will always be TRUE.
+has_exact_text(s(".empty"), "")
 
 }
 \seealso{

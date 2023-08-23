@@ -23,7 +23,8 @@ element.}
 
 \item{...}{A set of inputs to send to \code{x}.}
 
-\item{modifiers}{A character vector; one or more of "shift", "ctrl"/"control", "alt", and "command"/meta".}
+\item{modifiers}{A character vector; one or more of "shift", "ctrl"/"control", "alt", and "command"/meta".
+Note that when using chromote as a backend, these do not work on Mac.}
 }
 \value{
 \code{x}, invisibly
@@ -38,10 +39,43 @@ element.}
 existing content.
 }
 \examples{
-session <- mock_selenider_session()
+html <- "
+<input type='text' oninput='recordChange(event)' onkeypress='return checkEnter(event);'>
+<p></p>
+"
 
-s(".class1") |>
-  set_value("my text")
+js <- "
+function recordChange(e) {
+  document.getElementsByTagName('p').item(0).innerText = e.target.value;
+}
+
+function checkEnter(e) {
+  // If the key pressed was Enter
+  if (e.keyCode == 13) {
+    document.getElementsByTagName('p').item(0).innerText = 'Enter pressed!';
+    return false;
+  }
+  return true;
+}
+"
+
+session <- minimal_selenider_session(html, js = js)
+
+html_expect(s("p"), has_exact_text(""))
+
+input <- s("input")
+
+set_value(input, "my text")
+
+html_expect(s("p"), has_text("my text"))
+
+clear_value(input)
+
+html_expect(s("p"), has_exact_text(""))
+
+send_keys(input, keys$enter)
+
+html_expect(s("p"), has_text("Enter pressed!"))
 
 }
 \seealso{

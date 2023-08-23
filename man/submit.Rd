@@ -28,11 +28,21 @@ there are a few differences: see
 \url{https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/submit}
 }
 \examples{
-session <- mock_selenider_session()
+html <- "
+<form>
+<input type='submit'>
+<p>Random text</p>
+</form>
+<a>Random link</a>
+"
+
+session <- minimal_selenider_session(html)
+
+submit(s("input"))
+submit(s("p"))
 
 # Won't work since doesn't have a form ancestor
-# s(".class1") |>
-#   submit()
+try(submit(s("a"), timeout = 0.5))
 
 }
 \seealso{

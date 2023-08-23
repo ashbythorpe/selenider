@@ -6,7 +6,7 @@
 \alias{html_siblings}
 \alias{html_children}
 \alias{html_descendants}
-\title{Get the family elements of an element}
+\title{Get the DOM family of an element}
 \usage{
 html_ancestors(x)
 
@@ -42,6 +42,65 @@ the current element.
 \code{html_descendants()} selects every element that is contained by the current element.
 The current element does not have to be a direct parent, but must be some type of
 ancestor.
+}
+\details{
+All functions except \code{html_children()} and \code{html_descendants()} use XPath selectors,
+so may be slow, especially when using \code{chromote} as a backend.
+}
+\examples{
+html <- "
+<html>
+<body>
+  <div>
+    <div id='current'>
+      <p></p>
+      <div>
+        <p></p>
+        <br>
+      </div>
+    </div>
+    <div></div>
+    <p></p>
+  </div>
+</body>
+</html>
+"
+
+session <- minimal_selenider_session(html)
+
+current <- s("#current")
+
+# Get all the names of an element collection
+html_names <- function(x) {
+  x |>
+    element_list() |>
+    vapply(html_name, FUN.VALUE = character(1))
+}
+
+current |>
+  html_ancestors() |>
+  html_expect(has_length(3)) |>
+  html_names() # html, div, body
+
+current |>
+  html_parent() |>
+  html_name() # div
+
+current |>
+  html_siblings() |>
+  html_expect(has_length(2)) |>
+  html_names() # div, p
+
+current |>
+  html_children() |>
+  html_expect(has_length(2)) |>
+  html_names() # p, div
+
+current |>
+  html_descendants() |>
+  html_expect(has_length(4)) |>
+  html_names() # p, div, p, br
+
 }
 \seealso{
 \itemize{

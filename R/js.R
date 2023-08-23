@@ -57,7 +57,7 @@ execute_js_fn <- function(fn, ..., timeout = NULL, session = NULL) {
         final_args[[i]] <- arg
       }
     }
-    driver$executeScript(script, args)
+    unpack_list(driver$executeScript(script, args))
   } else {
     chromote_execute_js_fn(fn, args, .driver = driver, .driver_id = driver_id, .timeout = timeout)
   }
@@ -93,13 +93,17 @@ chromote_execute_js_fn <- function(fn, args, .driver = NULL, .driver_id = NULL, 
       expr <- paste0(expr, "let inner_arg_", i, " = ", jsonlite::toJSON(arg, auto_unbox = TRUE), ";")
     }
   }
+  print(expr)
 
-  outer_n_args <- if (arg_n == 0) 0 else arg_n - 1
-  outer_fn_expr <- paste0("function(", paste0("arg_", seq_len(outer_n_args), collapse = ","), ") {")
+  outer_fn_expr <- if(arg_n <= 1) {
+    "function() {"
+  } else {
+    paste0("function(", paste0("arg_", seq_len(arg_n - 1), collapse = ","), ") {")
+  }
 
   arg_names <- names(args)
   inner_args <- if (is.null(arg_names)) {
-    paste0("inner_arg_", seq_along(args), collapse = ",")
+    if (length(args) == 0) "" else paste0("inner_arg_", seq_along(args), collapse = ",")
   } else {
     prefixes <- ifelse(arg_names == "", "", paste0(arg_names, " = "))
     paste0(prefixes, paste0("inner_arg_", seq_along(args)), collapse = ",")
@@ -119,16 +123,23 @@ chromote_execute_js_fn <- function(fn, args, .driver = NULL, .driver_id = NULL, 
 
   rest <- lapply(element_args[-1], function(x) list(objectId = x))
 
+  print(final_expr)
   result <- if (length(rest) == 0) {
     .driver$Runtime$callFunctionOn(final_expr, objectId = first_element, returnByValue = FALSE)
   } else {
     .driver$Runtime$callFunctionOn(final_expr, objectId = first_element, arguments = rest, returnByValue = FALSE)
   }
+  print(result)
 
   if (!is.null(result$exceptionDetails)) {
+    details <- if (is.null(result$exceptionDetails$exception$description)) {
+      result$exceptionDetails$text
+    } else {
+      result$exceptionDetails$exception$description
+    }
     cli::cli_abort(c(
       "JavaScript function returned the following error:",
-      "i = {.val {result$exceptionDetails$text}}"
+      "i" = "{.val {details}}"
     ))
   } else {
     if (identical(result$result$subtype, "node")) {
@@ -152,7 +163,11 @@ chromote_execute_js_fn <- function(fn, args, .driver = NULL, .driver_id = NULL, 
 
       new_js_nodes(ids, .driver, .driver_id, .timeout)
     } else {
-      get_objectid_value(result$result$objectId, driver = .driver)
+      if (is.null(result$objectId)) {
+        result$result$value
+      } else {
+        get_objectid_value(result$result$objectId, driver = .driver)
+      }
     }
   }
 }
@@ -180,8 +195,7 @@ new_js_node <- function(x, driver, driver_id, timeout) {
     element = x,
     timeout = timeout,
     selectors = list(new_js_selector()),
-    to_be_found = 0,
-    to_be_filtered = 0
+    to_be_found = 0
   )
 
   class(res) <- "selenider_element"
@@ -196,8 +210,7 @@ new_js_nodes <- function(x, driver, driver_id, timeout) {
     element = x,
     timeout = timeout,
     selectors = list(new_js_selector()),
-    to_be_found = 0,
-    to_be_filtered = 0
+    to_be_found = 0
   )
 
   class(res) <- c("selenider_elements", "list")

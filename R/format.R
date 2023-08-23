@@ -9,8 +9,8 @@
 #'   not have a parent.
 #' @param multiple Does this selector select multiple elements?
 #' @param element_name Overrides the description of the element, not
-#'   including any filters applied to it. For example, the string
-#'   "element" would be a valid name.
+#'   including any filters applied to it. Must start with a space. For
+#'   example, the string " element" would be a valid name.
 #' @param One of "each", "any" or `NULL`. Used to modify the element name to
 #'   create complex bullets such as "The children of each element", and
 #'   "The first child of any element with ...". This option is used
@@ -26,11 +26,11 @@
 #'
 #' @noRd
 #' @export
-format.selenider_selector <- function(x, first = FALSE, multiple = FALSE, element_name = NULL, of = NULL, ...) {
+format.selenider_selector <- function(x, first = FALSE, multiple = FALSE, element_name = NULL, of = NULL, with = NULL, ...) {
   if (multiple) {
-    format_selector_multiple(x, first, element_name = element_name, of = of)
+    format_selector_multiple(x, first, element_name = element_name, of = of, with = with)
   } else {
-    format_selector(x, first, element_name = element_name, of = of)
+    format_selector(x, first, element_name = element_name, of = of, with = with)
   }
 }
 
@@ -46,11 +46,11 @@ format.selenider_flattened_selector <- function(x, multiple = FALSE, ...) {
 #' @export
 format.selenider_ancestor_selector <- function(x, multiple = FALSE, of = NULL, ...) {
   if (multiple) {
-    element_name <- if (!is.null(of)) paste("ancestors of", of, "element") else "ancestors"
-    format_selector_multiple(x, element_name = element_name)
+    element_name <- if (!is.null(of)) paste(" ancestors of", of, "element") else " ancestors"
+    format_selector_multiple(x, element_name = element_name, with = "")
   } else {
-    element_name <- if (!is.null(of)) paste("ancestor of", of, "element") else "ancestor"
-    format_selector(x, element_name = element_name)
+    element_name <- if (!is.null(of)) paste(" ancestor of", of, "element") else " ancestor"
+    format_selector(x, element_name = element_name, with = "")
   }
 }
 
@@ -62,33 +62,33 @@ format.selenider_parent_selector <- function(x, of = NULL, ...) {
 #' @export
 format.selenider_sibling_selector <- function(x, multiple = FALSE, of = NULL, ...) {
   if (multiple) {
-    element_name <- if (!is.null(of)) paste("siblings of", of, "element") else "siblings"
-    format_selector_multiple(x, element_name = element_name)
+    element_name <- if (!is.null(of)) paste(" siblings of", of, "element") else " siblings"
+    format_selector_multiple(x, element_name = element_name, with = "")
   } else {
-    element_name <- if (!is.null(of)) paste("sibling of", of, "element") else "sibling"
-    format_selector(x, element_name = element_name)
+    element_name <- if (!is.null(of)) paste(" sibling of", of, "element") else " sibling"
+    format_selector(x, element_name = element_name, with = "")
   }
 }
 
 #' @export
 format.selenider_child_selector <- function(x, multiple = FALSE, of = NULL, ...) {
   if (multiple) {
-    element_name <- if (!is.null(of)) paste("children of", of, "element") else "children"
-    format_selector_multiple(x, element_name = element_name)
+    element_name <- if (!is.null(of)) paste(" children of", of, "element") else " children"
+    format_selector_multiple(x, element_name = element_name, with = "")
   } else {
-    element_name <- if (!is.null(of)) paste("child of", of, "element") else "child"
-    format_selector(x, element_name = element_name)
+    element_name <- if (!is.null(of)) paste(" child of", of, "element") else " child"
+    format_selector(x, element_name = element_name, with = "")
   }
 }
 
 #' @export
 format.selenider_descendant_selector <- function(x, multiple = FALSE, of = NULL, ...) {
   if (multiple) {
-    element_name <- if (!is.null(of)) paste("descendants of", of, "element") else "descendants"
-    format_selector_multiple(x, element_name = element_name)
+    element_name <- if (!is.null(of)) paste(" descendants of", of, "element") else " descendants"
+    format_selector_multiple(x, element_name = element_name, with = "")
   } else {
-    element_name <- if (!is.null(of)) paste("descendant of", of, "element") else "descendant"
-    format_selector(x, element_name = element_name)
+    element_name <- if (!is.null(of)) paste(" descendant of", of, "element") else " descendant"
+    format_selector(x, element_name = element_name, with = "")
   }
 }
 
@@ -137,7 +137,8 @@ format_selector <- function(selector, first, element_name = NULL, of = NULL, wit
   }
 
   if (length(filter) == 1) {
-    paste0("The ", ordinal(filter[[1]]), element) 
+    stopifnot(is.numeric(filter[[1]]))
+    paste0("The ", ordinal(filter[[1]]), element)
   } else {
     last <- filter[[length(filter)]]
     stopifnot(is.numeric(last))
@@ -157,6 +158,7 @@ format_selector <- function(selector, first, element_name = NULL, of = NULL, wit
 }
 
 format_query <- function(selector, element_name) {
+  selector$to_be_filtered <- NULL
   names <- names(selector)
 
   values <- unlist(selector, use.names = FALSE)
@@ -234,10 +236,10 @@ format_selector_multiple <- function(selector, first = FALSE, element_name = NUL
 
 format_ordinal <- function(x, element, condition = "") {
   first_condition <- condition
-  if (all(x) >= 0) {
+  if (all(x >= 0)) {
     c(paste0("The ", subscript_ordinal(x), element, condition[1]), condition[-1])
   } else {
-    c(paste0("All", element, " except the ", subscript_ordinal(x), condition[1]), condition[-1])
+    c(paste0("All", element, " except the ", subscript_ordinal(abs(x)), condition[1]), condition[-1])
   }
 }
 
@@ -310,18 +312,18 @@ format_flattened_selector_multiple <- function(selector) {
 }
 
 format_ordinal_flattened <- function(x, condition = "") {
-  if (all(x) >= 0) {
+  if (all(x >= 0)) {
     element <- if (length(x) == 1) " element" else " elements"
     c(paste0("The ", subscript_ordinal(x), " of a combination of elements", condition[1]), condition[-1])
   } else {
-    c(paste0("All elements of a combination of elements except the ", subscript_ordinal(x), condition[1]), condition[-1])
+    c(paste0("All elements of a combination of elements except the ", subscript_ordinal(abs(x)), condition[1]), condition[-1])
   }
 }
 
 format_flatmap_selector <- function(selector, multiple = FALSE) {
-  first <- format_element(selector$element)
+  first <- format_elements(selector$element)
 
-  mock_selector <- list(filter = NULL)
+  mock_selector <- list(filter = list(1))
 
   class(mock_selector) <- "selenider_flattened_selector"
 
@@ -352,18 +354,26 @@ format_flatmap_selector <- function(selector, multiple = FALSE) {
 
     class(mock_element) <- selector$resulting_class
     
-    mapped <- format_element(mock_element, inside_flatmap = TRUE, of = "each")[-1]
+    mapped <- if ("selenider_elements" %in% selector$resulting_class) {
+      format_elements(mock_element, inside_flatmap = TRUE, of = "each")[-1]
+    } else {
+      format_element(mock_element, inside_flatmap = TRUE, of = "each")[-1]
+    }
 
     filter <- selector$filter
+    if (length(filter) > 0) {
+      element <- list(
+        filter = filter
+      )
 
-    element <- list(
-      filter = selector$filter
-    )
+      class(element) <- "selenider_selector"
+      
+      final <- format(element, element_name = " element", with = "", multiple = multiple)
+      c(first, mapped, final)
+    } else {
+      c(first, mapped)
+    }
 
-    class(element) <- "selenider_selector"
-
-    final <- format(element, with = "")
-    c(first, mapped, final)
   }
 }
 

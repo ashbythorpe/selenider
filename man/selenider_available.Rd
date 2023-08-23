@@ -2,12 +2,17 @@
 % Please edit documentation in R/utils.R
 \name{selenider_available}
 \alias{selenider_available}
+\alias{skip_if_selenider_unavailable}
 \title{Check if selenider can be used}
 \usage{
-selenider_available(session = c("chromote", "selenium"))
+selenider_available(session = c("chromote", "selenium"), online = TRUE)
+
+skip_if_selenider_unavailable(session = c("chromote", "selenium"))
 }
 \arguments{
 \item{session}{Which session we should check. \code{"chromote"} is used by default.}
+
+\item{Whether}{we need to check for an internet connection.}
 }
 \value{
 A boolean flag: \code{TRUE} or \code{FALSE}.
