@@ -97,6 +97,10 @@ on_cran <- function() {
   !is_interactive() && !isTRUE(as.logical(Sys.getenv("NOT_CRAN", "false")))
 }
 
+on_ci <- function() {
+  isTRUE(as.logical(Sys.getenv("CI", "false")))
+}
+
 elem_unique <- function(x, driver) {
   compare_selenium <- function(x, y) selenium_equal(x, y, driver)
   comparison_function <- if (uses_selenium(driver)) compare_selenium else `==`

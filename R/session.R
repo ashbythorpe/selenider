@@ -263,7 +263,8 @@ create_chromote_driver <- function(extra_args) {
   #   "--disable-crash-reporter",
   #   chromote::get_chrome_args()
   # )))
-  withr::with_options(list(chromote.timeout = 60), {
+  timeout <- if (on_ci()) 60 * 5 else 60
+  withr::with_options(list(chromote.timeout = timeout), {
     rlang::inject(chromote::ChromoteSession$new(!!!extra_args))
   })
 }
