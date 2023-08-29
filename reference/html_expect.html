@@ -166,60 +166,60 @@ condition on multiple elements.</p></li>
 <span class="r-in"><span><span class="st">&lt;/div&gt;</span></span></span>
 <span class="r-in"><span><span class="st">"</span></span></span>
 <span class="r-in"><span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="minimal_selenider_session.html">minimal_selenider_session</a></span><span class="op">(</span><span class="va">html</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpsDbC9p/file16f876fe26ba.html"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpPWY0gw/file162638628256.html"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class1"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_expect</span><span class="op">(</span><span class="va">is_present</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session B29543B603CDCF0C728F13738786D40F is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session BBC53FD480BFD6DDCC0307B7C1389AD0 is closed.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"#enabled-button"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_expect</span><span class="op">(</span><span class="va">is_visible</span>, <span class="va">is_enabled</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session B29543B603CDCF0C728F13738786D40F is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session BBC53FD480BFD6DDCC0307B7C1389AD0 is closed.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"#disabled-button"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_expect</span><span class="op">(</span><span class="va">is_disabled</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session B29543B603CDCF0C728F13738786D40F is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session BBC53FD480BFD6DDCC0307B7C1389AD0 is closed.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Error: element is visible but not enabled</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"#disabled-button"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_expect</span><span class="op">(</span><span class="va">is_visible</span>, <span class="va">is_enabled</span>, timeout <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Since this condition will fail</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error in self$send_command(msg, callback = callback_, error = error_,  : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Session B29543B603CDCF0C728F13738786D40F is closed.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Session BBC53FD480BFD6DDCC0307B7C1389AD0 is closed.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class2"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_expect</span><span class="op">(</span><span class="op">!</span><span class="va">is_present</span>, <span class="op">!</span><span class="va">is_in_dom</span>, <span class="va">is_absent</span><span class="op">)</span> <span class="co"># All 3 are equivalent</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session B29543B603CDCF0C728F13738786D40F is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session BBC53FD480BFD6DDCC0307B7C1389AD0 is closed.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># All other conditions will error if the element does not exist</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class2"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_expect</span><span class="op">(</span><span class="va">is_invisible</span>, timeout <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error in self$send_command(msg, callback = callback_, error = error_,  : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Session B29543B603CDCF0C728F13738786D40F is closed.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Session BBC53FD480BFD6DDCC0307B7C1389AD0 is closed.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># html_expect() returns the element, so can be used in chains</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"#enabled-button"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_expect</span><span class="op">(</span><span class="va">is_visible</span> <span class="op">&amp;&amp;</span> <span class="va">is_enabled</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="click.html">click</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session B29543B603CDCF0C728F13738786D40F is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session BBC53FD480BFD6DDCC0307B7C1389AD0 is closed.</span>
 <span class="r-in"><span><span class="co"># Note that click() will do this automatically</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"p"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_expect</span><span class="op">(</span><span class="va">is_hidden</span>, <span class="fu"><a href="has_text.html">has_exact_text</a></span><span class="op">(</span><span class="st">"Example text"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session B29543B603CDCF0C728F13738786D40F is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session BBC53FD480BFD6DDCC0307B7C1389AD0 is closed.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Or use an anonymous function</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"p"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_expect</span><span class="op">(</span>\<span class="op">(</span><span class="va">elem</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="html_text.html">html_text</a></span><span class="op">(</span><span class="va">elem</span><span class="op">)</span>, <span class="st">"Example text"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session B29543B603CDCF0C728F13738786D40F is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session BBC53FD480BFD6DDCC0307B7C1389AD0 is closed.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># If your conditions are not specific to an element, you can omit the `x` argument</span></span></span>
 <span class="r-in"><span><span class="va">elem_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class1"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">elem_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class2"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">html_expect</span><span class="op">(</span><span class="fu"><a href="is_present.html">is_present</a></span><span class="op">(</span><span class="va">elem_1</span><span class="op">)</span> <span class="op">||</span> <span class="fu"><a href="is_present.html">is_present</a></span><span class="op">(</span><span class="va">elem_2</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session B29543B603CDCF0C728F13738786D40F is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session BBC53FD480BFD6DDCC0307B7C1389AD0 is closed.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># We can now use the conditions on their own to figure out which element exists</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="is_present.html">is_present</a></span><span class="op">(</span><span class="va">elem_1</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
@@ -227,7 +227,7 @@ condition on multiple elements.</p></li>
 <span class="r-in"><span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="st">"Element 2 is visible"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session B29543B603CDCF0C728F13738786D40F is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session BBC53FD480BFD6DDCC0307B7C1389AD0 is closed.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Use html_wait_until() to handle failures manually</span></span></span>
 <span class="r-in"><span><span class="va">elem</span> <span class="op">&lt;-</span> <span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class2"</span><span class="op">)</span></span></span>
@@ -236,7 +236,7 @@ condition on multiple elements.</p></li>
 <span class="r-in"><span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="reload.html">reload</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session B29543B603CDCF0C728F13738786D40F is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session BBC53FD480BFD6DDCC0307B7C1389AD0 is closed.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Creating a custom condition is easiest with an anonymous function</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"p"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
@@ -245,7 +245,7 @@ condition on multiple elements.</p></li>
 <span class="r-in"><span>      <span class="fu"><a href="html_text.html">html_text</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"Example .*"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session B29543B603CDCF0C728F13738786D40F is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session BBC53FD480BFD6DDCC0307B7C1389AD0 is closed.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Or create a function, to reuse the condition multiple times</span></span></span>
 <span class="r-in"><span><span class="va">text_contains</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">pattern</span><span class="op">)</span> <span class="op">{</span></span></span>
@@ -256,7 +256,7 @@ condition on multiple elements.</p></li>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"p"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_expect</span><span class="op">(</span><span class="fu">text_contains</span><span class="op">(</span><span class="st">"Example *"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session B29543B603CDCF0C728F13738786D40F is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session BBC53FD480BFD6DDCC0307B7C1389AD0 is closed.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># If we want to continue on error, we need to use the "expect_error_continue" class</span></span></span>
 <span class="r-in"><span><span class="co"># This involves making a custom error object</span></span></span>
@@ -289,6 +289,11 @@ condition on multiple elements.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `error_condition_2()`:</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Custom error!</span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># \dontshow{</span></span></span>
+<span class="r-in"><span><span class="co"># Clean up all connections and invalidate default chromote object</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="selenider_cleanup.html">selenider_cleanup</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in selenider_cleanup():</span> 0</span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

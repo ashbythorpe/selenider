@@ -68,8 +68,9 @@ html_value() returns the 'value' attribute."><!-- mathjax --><script src="https:
 <span><span class="co"># S3 method for selenider_element</span></span>
 <span><span class="fu">html_attr</span><span class="op">(</span><span class="va">x</span>, <span class="va">name</span>, default <span class="op">=</span> <span class="cn">NA_character_</span>, timeout <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">html_attrs</span><span class="op">(</span><span class="va">x</span>, timeout <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu">html_attrs</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
+<span><span class="co"># S3 method for selenider_element</span></span>
 <span><span class="fu">html_attrs</span><span class="op">(</span><span class="va">x</span>, timeout <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">html_value</span><span class="op">(</span><span class="va">x</span>, ptype <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>, timeout <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
@@ -88,6 +89,10 @@ html_value() returns the 'value' attribute."><!-- mathjax --><script src="https:
 <dt>default</dt>
 <dd><p>The default value to use if the attribute does not exist in
 the element.</p></dd>
+
+
+<dt>...</dt>
+<dd><p>Not used.</p></dd>
 
 
 <dt>timeout</dt>
@@ -119,12 +124,31 @@ same type as <code>ptype</code> and length 1.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="mock_selenider_session.html">mock_selenider_session</a></span><span class="op">(</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">html</span> <span class="op">&lt;-</span> <span class="st">"</span></span></span>
+<span class="r-in"><span><span class="st">&lt;a class='link' href='https://r-project.org'&gt;R&lt;/a&gt;</span></span></span>
+<span class="r-in"><span><span class="st">&lt;input type='number' value='0'&gt;</span></span></span>
+<span class="r-in"><span><span class="st">"</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class1"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="minimal_selenider_session.html">minimal_selenider_session</a></span><span class="op">(</span><span class="va">html</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpPWY0gw/file16264af7ecba.html"</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_attr</span><span class="op">(</span><span class="st">"href"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session B29543B603CDCF0C728F13738786D40F is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session BBC53FD480BFD6DDCC0307B7C1389AD0 is closed.</span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">html_attrs</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session BBC53FD480BFD6DDCC0307B7C1389AD0 is closed.</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"input[type='number']"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">html_value</span><span class="op">(</span>ptype <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session BBC53FD480BFD6DDCC0307B7C1389AD0 is closed.</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># \dontshow{</span></span></span>
+<span class="r-in"><span><span class="co"># Clean up all connections and invalidate default chromote object</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="selenider_cleanup.html">selenider_cleanup</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in selenider_cleanup():</span> 0</span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

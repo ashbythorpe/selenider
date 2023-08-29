@@ -141,13 +141,20 @@ outer (including the element itself) HTML of <code>x</code>.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p><code>read_html()</code> returns an XML document.
-<code>html_table()</code> returns a tibble or list of tibbles (when applied to a page).</p>
+<p><code><a href="http://xml2.r-lib.org/reference/read_xml.html" class="external-link">read_html()</a></code> returns an XML document.
+<code><a href="https://rvest.tidyverse.org/reference/html_table.html" class="external-link">html_table()</a></code> returns a tibble or list of tibbles (when applied to a page).</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">selenider_prefer</span><span class="op">(</span>quiet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rvest.tidyverse.org/" class="external-link">rvest</a></span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘rvest’</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:selenider’:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     back, forward, html_attr, html_attrs, html_children, html_element,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     html_elements, html_name, html_text</span>
+<span class="r-in"><span><span class="fu">selenider_prefer</span><span class="op">(</span>quiet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">[conflicted]</span> Will prefer <span style="color: #0000BB; font-weight: bold;">selenider</span>::html_attr over any other package.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">[conflicted]</span> Will prefer <span style="color: #0000BB; font-weight: bold;">selenider</span>::html_attrs over any other package.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">[conflicted]</span> Will prefer <span style="color: #0000BB; font-weight: bold;">selenider</span>::html_element over any other package.</span>
@@ -155,6 +162,39 @@ outer (including the element itself) HTML of <code>x</code>.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">[conflicted]</span> Will prefer <span style="color: #0000BB; font-weight: bold;">selenider</span>::html_name over any other package.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">[conflicted]</span> Will prefer <span style="color: #0000BB; font-weight: bold;">selenider</span>::html_text over any other package.</span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">html</span> <span class="op">&lt;-</span> <span class="st">"</span></span></span>
+<span class="r-in"><span><span class="st">&lt;div&gt;</span></span></span>
+<span class="r-in"><span><span class="st">&lt;p&gt;Example text&lt;/p&gt;</span></span></span>
+<span class="r-in"><span><span class="st">&lt;/div&gt;</span></span></span>
+<span class="r-in"><span><span class="st"></span></span></span>
+<span class="r-in"><span><span class="st">&lt;table&gt;</span></span></span>
+<span class="r-in"><span><span class="st">  &lt;tr&gt;</span></span></span>
+<span class="r-in"><span><span class="st">    &lt;th&gt;Column 1&lt;/th&gt;</span></span></span>
+<span class="r-in"><span><span class="st">    &lt;th&gt;Column 2&lt;/th&gt;</span></span></span>
+<span class="r-in"><span><span class="st">  &lt;/tr&gt;</span></span></span>
+<span class="r-in"><span><span class="st">  &lt;tr&gt;</span></span></span>
+<span class="r-in"><span><span class="st">    &lt;td&gt;10&lt;/td&gt;</span></span></span>
+<span class="r-in"><span><span class="st">    &lt;td&gt;Data&lt;/td&gt;</span></span></span>
+<span class="r-in"><span><span class="st">  &lt;/tr&gt;</span></span></span>
+<span class="r-in"><span><span class="st">&lt;/table&gt;</span></span></span>
+<span class="r-in"><span><span class="st">"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="minimal_selenider_session.html">minimal_selenider_session</a></span><span class="op">(</span><span class="va">html</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpPWY0gw/file16267709227c.html"</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="http://xml2.r-lib.org/reference/read_xml.html" class="external-link">read_html</a></span><span class="op">(</span><span class="va">session</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session C961871431FFCA3A08D6DD4774CFE22E is closed.</span>
+<span class="r-in"><span><span class="fu"><a href="http://xml2.r-lib.org/reference/read_xml.html" class="external-link">read_html</a></span><span class="op">(</span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"div"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session BBC53FD480BFD6DDCC0307B7C1389AD0 is closed.</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rvest.tidyverse.org/reference/html_table.html" class="external-link">html_table</a></span><span class="op">(</span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"table"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session BBC53FD480BFD6DDCC0307B7C1389AD0 is closed.</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># \dontshow{</span></span></span>
+<span class="r-in"><span><span class="co"># Clean up all connections and invalidate default chromote object</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="selenider_cleanup.html">selenider_cleanup</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in selenider_cleanup():</span> 0</span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
