@@ -90,11 +90,11 @@ session object (the result of <code><a href="get_session.html">get_session()</a>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="selenider_session.html">selenider_session</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">open_url</span><span class="op">(</span><span class="st">"https://r-project.org"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in private$register_event_listener("Page.loadEventFired", callback_,     timeout_):</span> Session BBC53FD480BFD6DDCC0307B7C1389AD0 is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in private$register_event_listener("Page.loadEventFired", callback_,     timeout_):</span> Session 033FA94FFA5FB053B7B0A073D6AD3433 is closed.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Or:</span></span></span>
 <span class="r-in"><span><span class="fu">open_url</span><span class="op">(</span>session <span class="op">=</span> <span class="va">session</span>, <span class="st">"https://r-project.org"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in private$register_event_listener("Page.loadEventFired", callback_,     timeout_):</span> Session 5D7D382A9223AF8BC8003E626AC62B25 is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in private$register_event_listener("Page.loadEventFired", callback_,     timeout_):</span> Session 212515911A16419C93A755A71C5DD78F is closed.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># \dontshow{</span></span></span>
 <span class="r-in"><span><span class="co"># Clean up all connections and invalidate default chromote object</span></span></span>
