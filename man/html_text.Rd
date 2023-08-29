@@ -12,6 +12,8 @@ html_text(x, ...)
 \arguments{
 \item{x}{A \code{selenider_element} object.}
 
+\item{...}{Not used.}
+
 \item{timeout}{The time to wait for \code{x} to exist.}
 }
 \value{
@@ -21,11 +23,21 @@ A string
 Get the inner text of a \code{selenider_element} object.
 }
 \examples{
-session <- mock_selenider_session()
+\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+html <- "
+<p>Example text</p>
+"
 
-s(".class1") |>
+session <- minimal_selenider_session(html)
+
+s("p") |>
   html_text()
 
+\dontshow{
+# Clean up all connections and invalidate default chromote object
+selenider_cleanup()
+}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other properties: 

@@ -36,7 +36,7 @@
 #' The same type as `x`. The result of `cache_element()`/`cache_elements()` can be used
 #' as a normal `selenider_element`/`selenider_elements` object.
 #'
-#' @examples
+#' @examplesIf selenider_available(online = FALSE)
 #' html <- "
 #' <div>
 #' <p id='specifictext'></p>
@@ -70,6 +70,11 @@
 #'
 #' # But the non-cached version works
 #' click(button)
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
 #'
 #' @export
 cache_element <- function(x, timeout = NULL) {

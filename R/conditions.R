@@ -15,7 +15,7 @@
 #' 
 #' @family conditions
 #' 
-#' @examples 
+#' @examplesIf selenider_available(online = FALSE)
 #' html <- "
 #' <p class='class1'></p>
 #' "
@@ -27,6 +27,11 @@
 #' is_in_dom(s(".class2")) # FALSE
 #'
 #' is_absent(s(".class2")) # TRUE
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
 #' 
 #' @export
 is_present <- function(x) {
@@ -59,7 +64,7 @@ is_absent <- function(x) !is_present(x)
 #' 
 #' @family conditions
 #' 
-#' @examples 
+#' @examplesIf selenider_available(online = FALSE)
 #' html <- "
 #' <div style='visibility:hidden;'>Content 1</div>
 #' <div style='display:none'>Content 2</div>
@@ -73,6 +78,11 @@ is_absent <- function(x) !is_present(x)
 #' is_invisible(ss("div")[[2]]) # TRUE
 #'
 #' is_visible(ss("div")[[3]]) # TRUE
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
 #' 
 #' @export
 is_visible <- function(x) {
@@ -87,8 +97,7 @@ is_visible <- function(x) {
       driver <- x$driver
       tryCatch({
         coords <- driver$DOM$getBoxModel(backendNodeId = element)$model$content
-        !(coords[[1]] == coords[[3]] || coords[[2]] == coords[[6]] ||
-          chromote_get_css_property(element, "visibility", default = NULL, driver = driver) %in% c("hidden", "collapse"))
+        !chromote_get_css_property(element, "visibility", default = NULL, driver = driver) %in% c("hidden", "collapse")
       }, error = function(e) FALSE)
     }
   } else {
@@ -123,7 +132,7 @@ is_invisible <- is_hidden
 #' 
 #' @family conditions
 #' 
-#' @examples 
+#' @examplesIf selenider_available(online = FALSE)
 #' html <- "
 #' <button></button>
 #' <button disabled></button>
@@ -134,6 +143,11 @@ is_invisible <- is_hidden
 #' is_enabled(s("button")) # TRUE
 #'
 #' is_disabled(ss("button")[[2]]) # TRUE
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
 #' 
 #' @export
 is_enabled <- function(x) {
@@ -172,7 +186,7 @@ is_disabled <- function(x) !is_enabled(x)
 #'
 #' @family conditions
 #'
-#' @examples
+#' @examplesIf selenider_available(online = FALSE)
 #' html <- "
 #' <div id='mydiv'></div>
 #' "
@@ -181,6 +195,11 @@ is_disabled <- function(x) !is_enabled(x)
 #' has_name(s("#mydiv"), "p")
 #'
 #' has_name(s("#mydiv"), "div")
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
 #'
 #' @export
 has_name <- function(x, name) {
@@ -214,7 +233,7 @@ has_name <- function(x, name) {
 #' 
 #' @family conditions
 #' 
-#' @examples 
+#' @examplesIf selenider_available(online = FALSE)
 #' html <- "
 #' <p>Example text</p>
 #' <p class='empty'></p>
@@ -231,6 +250,11 @@ has_name <- function(x, name) {
 #' # has_exact_text() is useful for checking when there is no text,
 #' # since has_text("") will always be TRUE.
 #' has_exact_text(s(".empty"), "")
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
 #' 
 #' @export
 has_text <- function(x, text) {
@@ -293,7 +317,7 @@ has_exact_text <- function(x, text) {
 #'
 #' @returns A boolean value: TRUE or FALSE.
 #'
-#' @examples
+#' @examplesIf selenider_available(online = FALSE)
 #' html <- "
 #' <input class='myclass' value='1.0' data-customattr='Custom attribute text'></p>
 #' "
@@ -306,6 +330,11 @@ has_exact_text <- function(x, text) {
 #' has_value(s("input"), 1)
 #'
 #' attr_contains(s("input"), "data-customattr", "Custom attribute")
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
 #'
 #' @export
 has_attr <- function(x, name, value) {
@@ -430,13 +459,18 @@ has_value <- function(x, value) {
 #'
 #' @returns A boolean value: TRUE or FALSE.
 #'
-#' @examples
+#' @examplesIf selenider_available(online = FALSE)
 #' html <- "
 #' <div style='display:none;'></div>
 #' "
 #' session <- minimal_selenider_session(html)
 #'
 #' has_css_property(s("div"), "display", "none")
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
 #'
 #' @export
 has_css_property <- function(x, property, value) {

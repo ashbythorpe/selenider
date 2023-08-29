@@ -11,18 +11,51 @@
 #' 
 #' @returns A `selenider_elements` object.
 #'
-#' @examples
-#' session <- mock_selenider_session()
+#' @examplesIf selenider_available(online = FALSE)
+#' html <- "
+#' <div id='id1'></div>
+#' <div class='.class2'></div>
+#' <button id='button1'>Click me!</button>
+#' <div class='button-container'>
+#'   <button id='button2'>No, click me!</button>
+#' </div>
+#' "
 #'
-#' element <- s(".class1")
+#' session <- minimal_selenider_session(html)
 #'
-#' collection <- ss(".class2")
+#' button_1 <- s("#button1")
+#' button_2 <- s("#button2")
 #'
-#' html_flatten(element, collection)
+#' buttons <- html_flatten(button_1, button_2)
 #'
-#' c(collection, element)
+#' buttons |>
+#'   html_expect_all(is_enabled)
 #'
-#' html_flatten(list(element, collection))
+#' buttons |>
+#'   element_list() |>
+#'   lapply(click)
+#'
+#' # Doesn't just have to be single elements
+#' first_2_divs <- ss("div")[1:2]
+#'
+#' html_flatten(first_2_divs, button_2) |>
+#'   length()
+#'
+#' # We would like to use multiple css selectors and combine the results
+#' selectors <- c(
+#'   "#id1", # Will select 1 element
+#'   "button", # Will select 2 elements
+#'   "p" # Will select 0 elements
+#' )
+#'
+#' lapply(selectors, ss) |>
+#'   html_flatten() |>
+#'   length() # 3
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
 #'
 #' @export
 html_flatten <- function(...) {

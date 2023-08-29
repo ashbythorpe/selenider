@@ -24,6 +24,7 @@ using \code{==}, but allows you to specify a timeout value if
 needed.
 }
 \examples{
+\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <div></div>
 <div class='second'>
@@ -46,4 +47,9 @@ ss("div") |>
   html_find(has_p_child) |>
   html_equal(s(".second")) # TRUE
 
+\dontshow{
+# Clean up all connections and invalidate default chromote object
+selenider_cleanup()
+}
+\dontshow{\}) # examplesIf}
 }

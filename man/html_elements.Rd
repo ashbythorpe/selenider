@@ -60,22 +60,40 @@ If more than one method is used to select an element (e.g. \code{css} and
 \code{xpath}), the first element which satisfies every condition will be found.
 }
 \examples{
-session <- mock_selenider_session()
+\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+html <- "
+<div id='outer-div'>
+  <div>
+    <p>Text 1</p>
+    <p>Text 2</p>
+    <p>Text 3</p>
+  </div>
+</div>
+
+<div></div>
+"
+
+session <- minimal_selenider_session(html)
 
 session |>
-  html_elements(".class1")
+  html_elements("div")
 
 # Or:
-ss(".class1")
+ss("div")
 
 session |>
-  html_element(".class1") |>
-  html_elements(".class2")
+  html_element("#outer-div") |>
+  html_elements("p")
   
 # The above can be shortened to:
-s(".class1") |>
-  html_elements(".class2")
+s("#outer-div") |>
+  html_elements("p")
 
+\dontshow{
+# Clean up all connections and invalidate default chromote object
+selenider_cleanup()
+}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \itemize{

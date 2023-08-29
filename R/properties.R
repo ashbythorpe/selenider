@@ -4,11 +4,12 @@
 #'
 #' @param x A `selenider_element` object.
 #' @param timeout The time to wait for `x` to exist.
+#' @param ... Not used.
 #'
 #' @returns
 #' A string
 #'
-#' @examples
+#' @examplesIf selenider_available(online = FALSE)
 #' html <- "
 #' <div class='mydiv'></div>
 #' "
@@ -16,6 +17,11 @@
 #'
 #' s(".mydiv") |>
 #'   html_name()
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
 #'
 #' @family properties
 #'
@@ -85,11 +91,20 @@ html_name.rvest_session <- function(x, ...) {
 #'
 #' @family properties
 #'
-#' @examples
-#' session <- mock_selenider_session()
+#' @examplesIf selenider_available(online = FALSE)
+#' html <- "
+#' <p>Example text</p>
+#' "
 #'
-#' s(".class1") |>
+#' session <- minimal_selenider_session(html)
+#'
+#' s("p") |>
 #'   html_text()
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
 #'
 #' @export
 html_text <- function(x, ...) {
@@ -171,6 +186,7 @@ chromote_get_text <- function(x, driver) {
 #' @param ptype The type to cast the value to. Useful when the value is an integer
 #'   or decimal number. By default, the value is returned as a string.
 #' @param timeout The time to wait for `x` to exist.
+#' @param ... Not used.
 #'
 #' @returns `html_attr()` returns a character vector of length 1. `html_attrs()`
 #'   returns a named list of strings. The return value of `html_value()` has the
@@ -178,11 +194,27 @@ chromote_get_text <- function(x, driver) {
 #'
 #' @family properties
 #'
-#' @examples
-#' session <- mock_selenider_session()
+#' @examplesIf selenider_available(online = FALSE)
+#' html <- "
+#' <a class='link' href='https://r-project.org'>R</a>
+#' <input type='number' value='0'>
+#' "
 #'
-#' s(".class1") |>
+#' session <- minimal_selenider_session(html)
+#'
+#' s("a") |>
 #'   html_attr("href")
+#'
+#' s("a") |>
+#'   html_attrs()
+#'
+#' s("input[type='number']") |>
+#'   html_value(ptype = integer())
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
 #'
 #' @export
 html_attr <- function(x, name, default = NA_character_, ...) {
@@ -288,7 +320,7 @@ html_attrs <- function(x, ...) {
 #' @rdname html_attr
 #'
 #' @export
-html_attrs <- function(x, timeout = NULL, ...) {
+html_attrs.selenider_element <- function(x, timeout = NULL, ...) {
   check_dots_used()
   check_number_decimal(timeout, allow_null = TRUE)
 
@@ -383,6 +415,9 @@ html_value <- function(x, ptype = character(), timeout = NULL) {
 #' Get a CSS property of an element
 #'
 #' Get a CSS property of an element (e.g. `"background-color"`).
+#' Specifically, the *computed* style is returned, meaning that,
+#' for example, widths and heights will be returned in pixels, and
+#' colors will be returned as an RGB value.
 #'
 #' @param x A `selenider_element` object.
 #' @param name The name of the CSS property to get.
@@ -393,11 +428,23 @@ html_value <- function(x, ptype = character(), timeout = NULL) {
 #'
 #' @family properties
 #'
-#' @examples
-#' session <- mock_selenider_session()
+#' @examplesIf selenider_available(online = FALSE)
+#' html <- "
+#' <p style='visibility:hidden; color:red;'>Text</p>
+#' "
 #'
-#' s(".class1") |>
-#'   html_css_property("background-color")
+#' session <- minimal_selenider_session(html)
+#'
+#' s("p") |>
+#'   html_css_property("visibility")
+#'
+#' s("p") |>
+#'   html_css_property("color")
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
 #'
 #' @export
 html_css_property <- function(x, name, timeout = NULL) {

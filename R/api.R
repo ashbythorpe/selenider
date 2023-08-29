@@ -1,14 +1,14 @@
 #' Quickly select HTML elements
-#' 
-#' @description 
+#'
+#' @description
 #' Both `s()` and `ss()` allow you to select elements without specifying a
 #' session object.
-#' 
+#'
 #' `s()` selects a single element, being a shorthand for [html_element()]
 #' on the current session.
-#' 
+#'
 #' `ss()` selects multiple elements, being a shorthand for [html_elements()].
-#' 
+#'
 #' @param css A css selector.
 #' @param xpath An XPath.
 #' @param id The id of the element you want to select.
@@ -16,46 +16,51 @@
 #' @param name The name attribute of the element you want to select.
 #' @param link_text The link text of the link element that you would like to
 #'   select.
-#' 
-#' @details 
+#'
+#' @details
 #' Both functions allow the starting point for chains of selectors to be made
 #' more concise. Both use [get_session()] to get the global session object.
-#' 
-#' @returns 
+#'
+#' @returns
 #' `s()` returns a `selenider_element` object.
 #' `s()` returns a `selenider_elements` object.
-#' 
-#' @seealso 
+#'
+#' @seealso
 #' * [html_element()] and [html_elements()]
 #' * [selenider_session()] to begin a session.
-#' 
-#' @examples 
+#'
+#' @examplesIf selenider_available(online = FALSE)
 #' html <- "
 #' <div>
-#' <p id="id1" class="inner"></p>
-#' <div class="child">
-#' <p class="inner"></p>
+#' <p id='id1' class='inner'></p>
+#' <div class='child'>
+#' <p class='inner'></p>
 #' </div>
 #' </div>
 #' "
 #'
 #' session <- minimal_selenider_session(html)
-#' 
+#'
 #' s("#id1")
-#' 
+#'
 #' # This is the equivalent of:
 #' html_element(session, "id1")
-#' 
+#'
 #' ss(".inner")
-#' 
+#'
 #' # This is the equivalent of:
 #' html_element(session, ".inner")
-#' 
+#'
 #' # This provides a more concise way to begin a chain of selectors
 #' s("div") |>
 #'   html_element(".child") |>
 #'   html_element(".inner")
-#' 
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
+#'
 #' @export
 s <- function(css = NULL,
               xpath = NULL,
@@ -64,7 +69,7 @@ s <- function(css = NULL,
               name = NULL,
               link_text = NULL) {
   session <- get_session(.env = caller_env())
-  
+
   html_element(session, css, xpath, id, class_name, name, link_text)
 }
 
@@ -78,7 +83,6 @@ ss <- function(css = NULL,
                name = NULL,
                link_text = NULL) {
   session <- get_session(.env = caller_env())
-  
+
   html_elements(session, css, xpath, id, class_name, name, link_text)
 }
-

@@ -28,6 +28,7 @@ once. Use \code{\link[=html_expect]{html_expect()}} or \code{\link[=html_wait_un
 tests.
 }
 \examples{
+\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <p class='class1'></p>
 "
@@ -40,6 +41,11 @@ is_in_dom(s(".class2")) # FALSE
 
 is_absent(s(".class2")) # TRUE
 
+\dontshow{
+# Clean up all connections and invalidate default chromote object
+selenider_cleanup()
+}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other conditions: 

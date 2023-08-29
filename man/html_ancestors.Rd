@@ -48,6 +48,7 @@ All functions except \code{html_children()} and \code{html_descendants()} use XP
 so may be slow, especially when using \code{chromote} as a backend.
 }
 \examples{
+\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <html>
 <body>
@@ -101,6 +102,11 @@ current |>
   html_expect(has_length(4)) |>
   html_names() # p, div, p, br
 
+\dontshow{
+# Clean up all connections and invalidate default chromote object
+selenider_cleanup()
+}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \itemize{

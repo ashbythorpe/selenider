@@ -55,11 +55,12 @@ Both functions allow the starting point for chains of selectors to be made
 more concise. Both use \code{\link[=get_session]{get_session()}} to get the global session object.
 }
 \examples{
+\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <div>
-<p id="id1" class="inner"></p>
-<div class="child">
-<p class="inner"></p>
+<p id='id1' class='inner'></p>
+<div class='child'>
+<p class='inner'></p>
 </div>
 </div>
 "
@@ -81,6 +82,11 @@ s("div") |>
   html_element(".child") |>
   html_element(".inner")
 
+\dontshow{
+# Clean up all connections and invalidate default chromote object
+selenider_cleanup()
+}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \itemize{

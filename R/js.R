@@ -4,7 +4,8 @@
 #'
 #' @param fn A string defining the function.
 #' @param ... Arguments to the function.
-#' @param The session to use, if `...` does not contain any
+#' @param timeout How long to wait for any elements to exist in the DOM.
+#' @param session The session to use, if `...` does not contain any
 #'   selenider elements.
 #'
 #' @details

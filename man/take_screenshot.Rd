@@ -22,6 +22,7 @@ The session object, invisibly.
 Take a screenshot of the current session state, saving this image to a file.
 }
 \examples{
+\dontshow{if (selenider_available()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 session <- mock_selenider_session()
 
 open_url("https://www.google.com")
@@ -30,6 +31,11 @@ file_path <- withr::local_tempfile(fileext = "png")
 
 take_screenshot(file_path)
 
+\dontshow{
+# Clean up all connections and invalidate default chromote object
+selenider_cleanup()
+}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other global actions: 

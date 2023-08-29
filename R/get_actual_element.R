@@ -25,18 +25,41 @@
 #' * The documentation for [RSelenium::webElement()] to see the things you can
 #'   do with them.
 #'
-#' @examples
-#' session <- mock_selenider_session()
+#' @examplesIf selenider_available(online = FALSE)
+#' html <- "
+#' <div>
+#' <p>Text</p>
+#' <p>More text</p>
+#' </div>
+#' "
 #'
-#' elem <- s(".class1") |>
+#' session <- minimal_selenider_session(html)
+#'
+#' elem <- s("div") |>
 #'   get_actual_webelement()
 #'
-#' elem$getElementLocation()
+#' # The webDriver/ChromoteSession can be accessed using session$driver
+#' driver <- session$driver
 #'
-#' elems <- ss(".class2") |>
+#' if (inherits(driver, "ChromoteSession")) {
+#'   driver$DOM$getBoxModel(backendNodeId = elem)
+#' } else {
+#'   elem$getElementLocation()
+#' }
+#'
+#' elems <- ss("p") |>
 #'   get_actual_webelements()
 #'
-#' elems[[1]]$getElementSize()
+#' if (inherits(driver, "ChromoteSession")) {
+#'   driver$DOM$describeNode(backendNodeId = elems[[1]])
+#' } else {
+#'   elems[[1]]$describeElement()
+#' }
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
 #'
 #' @export
 get_actual_webelement <- function(x, timeout = NULL) {

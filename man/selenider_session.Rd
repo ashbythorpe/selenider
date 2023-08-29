@@ -7,6 +7,7 @@
 selenider_session(
   session = NULL,
   browser = NULL,
+  view = FALSE,
   timeout = 4,
   driver = NULL,
   local = TRUE,
@@ -16,12 +17,17 @@ selenider_session(
 )
 }
 \arguments{
-\item{session}{The package to use as a backend.}
+\item{session}{The package to use as a backend: either "chromote" or
+"selenium".}
 
 \item{browser}{The name of the browser to run the session in; one of
 "chrome", "firefox", "phantomjs" or "internet explorer" (only on
 Windows). IF \code{NULL}, the function will try to work out which browser
 you have installed.}
+
+\item{view}{Whether to open the browser and view it, for visual testing.
+This is ignored if session is "selenium", since selenium drivers cannot
+be headless.}
 
 \item{timeout}{The default time to wait when collecting an element.}
 
@@ -55,40 +61,36 @@ session. It then uses withr to set the session locally (unless otherwise
 specified). To reset the local session object, use \code{\link[withr:defer]{withr::deferred_run()}}.
 }
 \examples{
-\dontrun{
-# Note that these examples will create real browser sessions, so should only be
-# run interactively.
-
-session <- selenider_session(browser = "firefox")
-
-withr::deferred_run() # Reset the session
-
-# If we want to use the session manually:
-selenider_session(local = FALSE)
+\dontshow{if (selenider_available()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
 session_1 <- selenider_session(timeout = 10)
 # session_1 is the local session here
 
+get_session() # Returns session 1
+
+\dontshow{
+# Clean up all connections and invalidate default chromote object
+selenider_cleanup()
+}
+
 my_function <- function() {
-  session <- selenider_session(browser = "internet explorer")
+  session_2 <- selenider_session()
 
   # In here, session_2 is the local session
   get_session()
+  \dontshow{
+  # Clean up all connections and invalidate default chromote object
+  selenider_cleanup()
+  }
 } # When the function finishes executing, the session is closed
 
 my_function() # Returns `session_2`
-
-# But outside the function, session_1 is the global session again
-
-get_session() # Returns `session_1`
- 
-withr::deferred_run() # Close `session_1`
 
 # If we want to use a session outside the scope of a function,
 # we need to use the `.env` argument.
 create_session <- function(timeout = 10, .env = rlang::caller_env()) {
   # caller_env() is the environment where the function is called
-  selenider_session(browser = "firefox", timeout = timeout, .env = .env)
+  selenider_session(timeout = timeout, .env = .env)
 }
 
 my_session <- create_session()
@@ -97,8 +99,12 @@ my_session <- create_session()
 get_session()
 
 # `my_session` will be closed automatically.
-}
 
+\dontshow{
+# Clean up all connections and invalidate default chromote object
+selenider_cleanup()
+}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \itemize{

@@ -20,6 +20,7 @@ scroll_to(x, js = FALSE, timeout = NULL)
 Scrolls to an HTML element.
 }
 \examples{
+\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <div style = 'height:100\%; min-height:100vh'></div>
 <button onclick='checkScrolled()'></button>
@@ -47,6 +48,11 @@ s("button") |>
 
 html_expect(s("p"), has_text("You found me!"))
 
+\dontshow{
+# Clean up all connections and invalidate default chromote object
+selenider_cleanup()
+}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other actions: 

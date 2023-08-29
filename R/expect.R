@@ -76,7 +76,7 @@
 #'   condition on multiple elements.
 #' * [html_filter()] and [html_find()] to use conditions to filter elements.
 #' 
-#' @examples
+#' @examplesIf selenider_available(online = FALSE)
 #' html <- "
 #' <div class='class1'>
 #' <button id='disabled-button' disabled>Disabled</button>
@@ -182,6 +182,11 @@
 #' # These will eventually throw an error, but will wait 0.5 seconds to do so.
 #' try(html_expect(error_condition(), timeout = 0.5))
 #' try(html_expect(error_condition_2(), timeout = 0.5))
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
 #' 
 #' @export
 html_expect <- function(x, ..., testthat = NULL, timeout = NULL) {

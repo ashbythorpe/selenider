@@ -85,6 +85,7 @@ These custom conditions can also be used with \code{\link[=html_filter]{html_fil
 }
 
 \examples{
+\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <div class='class1'>
 <button id='disabled-button' disabled>Disabled</button>
@@ -191,6 +192,11 @@ try(html_expect(stop("Uncaught error!")))
 try(html_expect(error_condition(), timeout = 0.5))
 try(html_expect(error_condition_2(), timeout = 0.5))
 
+\dontshow{
+# Clean up all connections and invalidate default chromote object
+selenider_cleanup()
+}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \itemize{

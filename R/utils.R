@@ -26,7 +26,7 @@ get_with_timeout <- function(timeout, .f, ...) {
 #' returns `FALSE`.
 #'
 #' @param session Which session we should check. `"chromote"` is used by default.
-#' @param Whether we need to check for an internet connection.
+#' @param online Whether we need to check for an internet connection.
 #' 
 #' @details
 #' Specifically, the following is checked:
@@ -49,6 +49,9 @@ get_with_timeout <- function(timeout, .f, ...) {
 #'
 #' @returns
 #' A boolean flag: `TRUE` or `FALSE`.
+#'
+#' @examples
+#' selenider_available()
 #'
 #' @export
 selenider_available <- function(session = c("chromote", "selenium"), online = TRUE) {
@@ -118,16 +121,16 @@ lazy_intersect_by <- function(x, .f) {
     index <- 1
     value <- get_item(first, index)
     while(!is.null(value)) {
-      element_in <- FALSE
+      elem_in <- FALSE
 
       for (l in rest) {
-        if (element_in(value, l)) {
-          element_in <- TRUE
+        if (element_in(value, l, .f)) {
+          elem_in <- TRUE
           break
         }
       }
 
-      if (element_in) {
+      if (elem_in) {
         coro::yield(value)
       }
 
@@ -238,3 +241,47 @@ is_mac <- function() Sys.info()[['sysname']] == 'Darwin'
 
 is_linux <- function() Sys.info()[['sysname']] == 'Linux'
 
+#' Cleanup after an example
+#'
+#' Clean up after a selenider example, making sure all environment variables are
+#' reset and no connections are left open.
+#'
+#' @param close_session Whether there is still a local session that needs to be
+#'   closed (via [withr::deferred_run()]). This is usually the case.
+#' @param env The environment to get the local session.
+#'
+#' @keywords internal
+#'
+#' @export
+selenider_cleanup <- function(close_session = TRUE, env = rlang::caller_env()) {
+  if (close_session) {
+    session <- NULL
+    old <- NULL
+
+    withr_ns <- rlang::ns_env("withr")
+    if (env_has(withr_ns, "exit_frame")) {
+      env <- withr_ns$exit_frame(env)
+    } else {
+      rlang::abort("Can't find exit_frame()")
+    }
+
+    if (length(attr(env, "withr_handlers")) != 0) {
+      # Do everything except actually close the session (since this can cause errors with processx::supervisor_kill())
+      attr(env, "withr_handlers")[[2]]$expr <- rlang::expr(reset_session(session, old, close = FALSE))
+      try_fetch(withr::deferred_run(env), error = function(e) rlang::abort(c("Error in withr::deferred_run()"), parent = e))
+    } else {
+      rlang::abort(as.character(length(attr(env, "withr_handlers"))))
+    }
+  }
+
+  # Kill the Chrome process and the supervisor of it.
+  try_fetch(processx::supervisor_kill(), error = function(e) rlang::abort("Error in processx::supervisor_kill()", parent = e))
+  # Reset the chromote object, ensuring that it is no longer considered active, and so a new
+  # one will be made when [chromote::default_chromote_object()] is called.
+  try_fetch(
+    chromote::set_default_chromote_object(
+      structure(list(is_active = function() FALSE), class = "Chromote")
+    ),
+    error = function(e) rlang::abort("Error chromote::set_default_chromote_object()", parent = e)
+  )
+}

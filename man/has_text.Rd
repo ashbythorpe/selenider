@@ -28,6 +28,7 @@ once. Use \code{\link[=html_expect]{html_expect()}} or \code{\link[=html_wait_un
 tests.
 }
 \examples{
+\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <p>Example text</p>
 <p class='empty'></p>
@@ -45,6 +46,11 @@ has_exact_text(s("p"), "Example text") # TRUE
 # since has_text("") will always be TRUE.
 has_exact_text(s(".empty"), "")
 
+\dontshow{
+# Clean up all connections and invalidate default chromote object
+selenider_cleanup()
+}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other conditions: 

@@ -12,7 +12,7 @@ skip_if_selenider_unavailable(session = c("chromote", "selenium"))
 \arguments{
 \item{session}{Which session we should check. \code{"chromote"} is used by default.}
 
-\item{Whether}{we need to check for an internet connection.}
+\item{online}{Whether we need to check for an internet connection.}
 }
 \value{
 A boolean flag: \code{TRUE} or \code{FALSE}.
@@ -45,4 +45,8 @@ If \code{session} is \code{"selenium"}, we check:
 \item Whether \code{RSelenium} is installed.
 \item Whether we can find a valid browser that is supported by \code{RSelenium}.
 }
+}
+\examples{
+selenider_available()
+
 }

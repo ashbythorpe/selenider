@@ -18,13 +18,29 @@ A string, or \code{NA} if the property does not exist.
 }
 \description{
 Get a CSS property of an element (e.g. \code{"background-color"}).
+Specifically, the \emph{computed} style is returned, meaning that,
+for example, widths and heights will be returned in pixels, and
+colors will be returned as an RGB value.
 }
 \examples{
-session <- mock_selenider_session()
+\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+html <- "
+<p style='visibility:hidden; color:red;'>Text</p>
+"
 
-s(".class1") |>
-  html_css_property("background-color")
+session <- minimal_selenider_session(html)
 
+s("p") |>
+  html_css_property("visibility")
+
+s("p") |>
+  html_css_property("color")
+
+\dontshow{
+# Clean up all connections and invalidate default chromote object
+selenider_cleanup()
+}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other properties: 

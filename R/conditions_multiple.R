@@ -18,7 +18,7 @@
 #'
 #' @family collection conditions
 #'
-#' @examples
+#' @examplesIf selenider_available(online = FALSE)
 #' html <- "
 #' <div class='div1'></div>
 #' <div class='div2'></div>
@@ -28,6 +28,11 @@
 #'
 #' has_length(ss("div"), 3)
 #' has_at_least(ss("div"), 2)
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
 #'
 #' @export
 has_length <- function(x, n) {

@@ -3,11 +3,15 @@
 #' Begin a session in selenider, setting the session globally unless otherwise
 #' specified.
 #'
-#' @param session The package to use as a backend.
+#' @param session The package to use as a backend: either "chromote" or
+#'   "selenium".
 #' @param browser The name of the browser to run the session in; one of
 #'   "chrome", "firefox", "phantomjs" or "internet explorer" (only on
 #'   Windows). IF `NULL`, the function will try to work out which browser
 #'   you have installed.
+#' @param view Whether to open the browser and view it, for visual testing.
+#'   This is ignored if session is "selenium", since selenium drivers cannot
+#'   be headless.
 #' @param timeout The default time to wait when collecting an element.
 #' @param driver A driver object to use instead of creating one manually.
 #' @param local Whether to set the session as the local session object, 
@@ -36,41 +40,36 @@
 #' @returns
 #' A `selenider_session` object.
 #'
-#' @examples
-#' \dontrun{
-#' # Note that these examples will create real browser sessions, so should only be
-#' # run interactively.
-#'
-#' session <- selenider_session(browser = "firefox")
-#'
-#' withr::deferred_run() # Reset the session
-#'
-#' # If we want to use the session manually:
-#' selenider_session(local = FALSE)
+#' @examplesIf selenider_available()
 #'
 #' session_1 <- selenider_session(timeout = 10)
 #' # session_1 is the local session here
 #'
+#' get_session() # Returns session 1
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
+#'
 #' my_function <- function() {
-#'   session <- selenider_session(browser = "internet explorer")
+#'   session_2 <- selenider_session()
 #'
 #'   # In here, session_2 is the local session
 #'   get_session()
+#'   \dontshow{
+#'   # Clean up all connections and invalidate default chromote object
+#'   selenider_cleanup()
+#'   }
 #' } # When the function finishes executing, the session is closed
 #'
 #' my_function() # Returns `session_2`
-#'
-#' # But outside the function, session_1 is the global session again
-#'
-#' get_session() # Returns `session_1`
-#'  
-#' withr::deferred_run() # Close `session_1`
 #'
 #' # If we want to use a session outside the scope of a function,
 #' # we need to use the `.env` argument.
 #' create_session <- function(timeout = 10, .env = rlang::caller_env()) {
 #'   # caller_env() is the environment where the function is called
-#'   selenider_session(browser = "firefox", timeout = timeout, .env = .env)
+#'   selenider_session(timeout = timeout, .env = .env)
 #' }
 #'
 #' my_session <- create_session()
@@ -79,11 +78,16 @@
 #' get_session()
 #'
 #' # `my_session` will be closed automatically.
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
 #' }
 #'
 #' @export
 selenider_session <- function(session = NULL,
                               browser = NULL,
+                              view = FALSE,
                               timeout = 4,
                               driver = NULL,
                               local = TRUE,
@@ -110,6 +114,10 @@ selenider_session <- function(session = NULL,
     }
   }
 
+  check_bool(view)
+  if (!view && session == "selenium") {
+    cli::cli_warn("{.arg session} is {.val selenium}, ignoring {.arg view}.")
+  }
   check_number_decimal(timeout, allow_null = TRUE)
   check_driver(driver, allow_null = TRUE)
   check_bool(local)
@@ -152,6 +160,9 @@ selenider_session <- function(session = NULL,
   if (is.null(driver)) {
     if (session == "chromote") {
       driver <- create_chromote_driver(extra_args)
+      if (view) {
+        driver$view()
+      }
     } else {
       client_args <- c(
         "remoteServerAddr",
@@ -181,6 +192,12 @@ selenider_session <- function(session = NULL,
   
   if (local) {
     local_session(session, .local_envir = .env)
+    if (inherits(session$driver, "ChromoteSession")) {
+      withr::defer({
+        # Delete the Crashpad folder if it exists
+        unlink(file.path(tempdir(), "Crashpad"), recursive = TRUE)
+      }, envir = .env)
+    }
   }
   
   session
@@ -242,6 +259,10 @@ create_server <- function(browser, version, quiet, extra_args) {
 
 create_chromote_driver <- function(extra_args) {
   rlang::check_installed("chromote")
+  # chromote::set_chrome_args(unique(c(
+  #   "--disable-crash-reporter",
+  #   chromote::get_chrome_args()
+  # )))
   withr::with_options(list(chromote.timeout = 60), {
     rlang::inject(chromote::ChromoteSession$new(!!!extra_args))
   })
@@ -314,20 +335,15 @@ new_selenider_session <- function(session, driver, timeout) {
 #' @returns 
 #' Nothing.
 #' 
-#' @examples
-#' session <- mock_selenider_session(local = FALSE)
+#' @examplesIf selenider_available()
+#' session <- selenider_session(local = FALSE)
 #'
 #' close_session(session)
-#' 
-#' # Reopen the session, this time letting it be set locally.
-#' session <- mock_selenider_session()
 #'
-#' # We don't have to specify the session if it is set locally.
-#' close_session()
-#'
-#' # Since we already closed `session`, we don't need the deferred events to
-#' # run
-#' withr::deferred_clear()
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup(FALSE)
+#' }
 #'
 #' @export
 close_session <- function(x = NULL) {

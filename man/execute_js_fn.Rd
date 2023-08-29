@@ -11,7 +11,9 @@ execute_js_fn(fn, ..., timeout = NULL, session = NULL)
 
 \item{...}{Arguments to the function.}
 
-\item{The}{session to use, if \code{...} does not contain any
+\item{timeout}{How long to wait for any elements to exist in the DOM.}
+
+\item{session}{The session to use, if \code{...} does not contain any
 selenider elements.}
 }
 \value{

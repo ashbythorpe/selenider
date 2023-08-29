@@ -25,6 +25,7 @@ parent elements (if any) to exist before returning a value.
 difference being that \code{html_size()} allows you to specify a timeout.
 }
 \examples{
+\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <div></div>
 <div></div>
@@ -36,4 +37,9 @@ session <- minimal_selenider_session(html)
 ss("div") |>
   length()
 
+\dontshow{
+# Clean up all connections and invalidate default chromote object
+selenider_cleanup()
+}
+\dontshow{\}) # examplesIf}
 }

@@ -39,6 +39,7 @@ Note that when using chromote as a backend, these do not work on Mac.}
 existing content.
 }
 \examples{
+\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <input type='text' oninput='recordChange(event)' onkeypress='return checkEnter(event);'>
 <p></p>
@@ -77,6 +78,11 @@ send_keys(input, keys$enter)
 
 html_expect(s("p"), has_text("Enter pressed!"))
 
+\dontshow{
+# Clean up all connections and invalidate default chromote object
+selenider_cleanup()
+}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other actions: 

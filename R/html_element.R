@@ -17,6 +17,10 @@
 #' If more than one method is used to select an element (e.g. `css` and
 #' `xpath`), the first element which satisfies all conditions will be found.
 #'
+#' CSS selectors are generally recommended over other options, since they are usually
+#' the easiest to read. Use `"tag_name"` to select by tag name, `".class"` to select
+#' by class, and `"#id"` to select by id.
+#'
 #' @returns
 #' A `selenider_element` object.
 #'
@@ -25,19 +29,43 @@
 #' * [html_elements()] to select multiple elements.
 #' * [selenider_session()] to begin a session.
 #'
-#' @examples
-#' session <- mock_selenider_session()
+#' @examplesIf selenider_available(online = FALSE)
+#' html <- "
+#' <div class='class1'>
+#'   <div id='id1'>
+#'     <a href='https://r-project.org'>Click me!</a>
+#'   </div>
+#'   <p>Example text</p>
+#' </div>
+#' "
+#'
+#' session <- minimal_selenider_session(html)
 #'
 #' session |>
-#'   html_element(".class1")
+#'   html_element("div")
 #'
 #' session |>
-#'   html_element(".class1") |>
-#'   html_element(".class2")
+#'   html_element(name = "div") |>
+#'   html_element(xpath = "./p")
 #'
-#' # The above can be shortened to:
-#' s(".class1") |>
-#'   html_element(".class2")
+#' s("div") |>
+#'   html_element("#id1")
+#'
+#' s("div") |>
+#'   html_element(id = "id1") |>
+#'   html_element(link_text = "Click me!")
+#'
+#' # Complex Xpath expressions are easier to read as chained CSS selectors.
+#' s("//div[contains(@class, 'class1')]/div/a")
+#'
+#' s("div.class1") |>
+#'   html_element("div") |>
+#'   html_element("a")
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
 #'
 #' @export
 html_element <- function(x, ...) {

@@ -1,23 +1,28 @@
 #' Open a URL
-#' 
+#'
 #' Navigate the browser to specified URL, waiting until the page is considered
 #' open before finishing.
-#' 
+#'
 #' @param url The URL to navigate to: a string.
 #' @inheritParams back
 #'
 #' @returns
 #' The session object, invisibly.
-#' 
+#'
 #' @family global actions
 #'
-#' @examples
-#' session <- mock_selenider_session()
+#' @examplesIf selenider_available()
+#' session <- selenider_session()
 #'
-#' open_url("https://www.google.com")
+#' open_url("https://r-project.org")
 #'
 #' # Or:
-#' open_url(session = session, "https://www.google.com")
+#' open_url(session = session, "https://r-project.org")
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
 #'
 #' @export
 open_url <- function(url, session = NULL) {
@@ -27,47 +32,54 @@ open_url <- function(url, session = NULL) {
   if (is.null(session)) {
     session <- get_session(.env = caller_env())
   }
-  
+
   driver <- session$driver
 
   if (uses_selenium(session$driver)) {
     driver$client$navigate(url)
   } else {
-    promise <- driver$Page$loadEventFired(wait_ = FALSE)
-    driver$Page$navigate(url, wait_ = FALSE)
-    driver$wait_for(promise)
+    withr::with_options(list(chromote.timeout = 60), {
+      promise <- driver$Page$loadEventFired(wait_ = FALSE)
+      driver$Page$navigate(url, wait_ = FALSE)
+      driver$wait_for(promise)
+    })
   }
-  
+
   invisible(session)
 }
 
 #' Move back or forward in browsing history
-#' 
+#'
 #' @description
 #' `back()` navigates to the previously opened URL, or the previously opened
 #' page in your browsing history.
 #'
 #' `forward()` reverses the action of `back()`, going to the next page in your
 #' browsing history.
-#' 
-#' @param session A `selenider_session object. If not specified, the global 
+#'
+#' @param session A `selenider_session object. If not specified, the global
 #'   session object (the result of [get_session()]) is used.
 #'
 #' @returns
 #' The session object, invisibly.
-#' 
+#'
 #' @family global actions
 #'
-#' @examples
-#' session <- mock_selenider_session()
+#' @examplesIf selenider_available()
+#' session <- selenider_session()
 #'
-#' open_url("https://www.google.com")
+#' open_url("https://r-project.org")
 #'
 #' open_url("https://www.tidyverse.org/")
-#' 
+#'
 #' back()
-#' 
+#'
 #' forward()
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
 #'
 #' @export
 back <- function(session = NULL) {
@@ -78,23 +90,26 @@ back <- function(session = NULL) {
   }
 
   driver <- session$driver
-  
+
   if (uses_selenium(session$driver)) {
     driver$client$goBack()
   } else {
     navigation_history <- driver$Page$getNavigationHistory()
-    index <- navigation_history$index + 1
+    index <- navigation_history$currentIndex + 1
     history <- navigation_history$entries
     if (index > 1) {
       new_id <- history[[index - 1]]$id
-      promise <- driver$Page$loadEventFired(wait_ = FALSE)
-      driver$Page$navigateToHistoryEntry(new_id, wait_ = FALSE)
-      driver$wait_for(promise)
+
+      withr::with_options(list(chromote.timeout = 60), {
+        promise <- driver$Page$loadEventFired(wait_ = FALSE)
+        driver$Page$navigateToHistoryEntry(new_id, wait_ = FALSE)
+        driver$wait_for(promise)
+      })
     } else {
       cli::cli_warn("Previous page in history not found")
     }
   }
-  
+
   invisible(session)
 }
 
@@ -109,18 +124,21 @@ forward <- function(session = NULL) {
   }
 
   driver <- session$driver
-  
+
   if (uses_selenium(session$driver)) {
     driver$client$goForward()
   } else {
     navigation_history <- driver$Page$getNavigationHistory()
-    index <- navigation_history$index + 1
+    index <- navigation_history$currentIndex + 1
     history <- navigation_history$entries
     if (index < length(history)) {
       new_id <- history[[index - 1]]$id
-      promise <- driver$Page$loadEventFired(wait_ = FALSE)
-      driver$Page$navigateToHistoryEntry(new_id, wait_ = FALSE)
-      driver$wait_for(promise)
+
+      withr::with_options(list(chromote.timeout = 60), {
+        promise <- driver$Page$loadEventFired(wait_ = FALSE)
+        driver$Page$navigateToHistoryEntry(new_id, wait_ = FALSE)
+        driver$wait_for(promise)
+      })
     } else {
       cli::cli_warn("Next page in history not found")
     }
@@ -130,22 +148,27 @@ forward <- function(session = NULL) {
 }
 
 #' Reload the current page
-#' 
+#'
 #' `reload()` and `refresh()` both reload the current page.
 #'
 #' @inheritParams back
 #'
 #' @returns
 #' The session object, invisibly.
-#' 
+#'
 #' @family global actions
 #'
-#' @examples
-#' session <- mock_selenider_session()
+#' @examplesIf selenider_available()
+#' session <- selenider_session()
 #'
-#' open_url("https://www.google.com")
+#' open_url("https://r-project.org")
 #'
 #' reload()
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
 #'
 #' @export
 reload <- function(session = NULL) {
@@ -154,17 +177,19 @@ reload <- function(session = NULL) {
   if (is.null(session)) {
     session <- get_session(.env = caller_env())
   }
-  
+
   driver <- session$driver
 
   if (uses_selenium(session$driver)) {
     driver$client$refresh()
   } else {
-    promise <- driver$Page$loadEventFired(wait_ = FALSE)
-    session$driver$Page$reload(wait_ = FALSE)
-    driver$wait_for(promise)
+    withr::with_options(list(chromote.timeout = 60), {
+      promise <- driver$Page$loadEventFired(wait_ = FALSE)
+      session$driver$Page$reload(wait_ = FALSE)
+      driver$wait_for(promise)
+    })
   }
-  
+
   invisible(session)
 }
 
@@ -174,9 +199,9 @@ reload <- function(session = NULL) {
 refresh <- reload
 
 #' Take a screenshot of the current page
-#' 
+#'
 #' Take a screenshot of the current session state, saving this image to a file.
-#' 
+#'
 #' @param file The file path to save the screenshot to.
 #' @param view Whether to open the interactively view the screenshot. If this is
 #'   `TRUE` and `file` is `NULL`, the screenshot will be deleted after viewing.
@@ -184,17 +209,22 @@ refresh <- reload
 #'
 #' @returns
 #' The session object, invisibly.
-#' 
+#'
 #' @family global actions
 #'
-#' @examples
+#' @examplesIf selenider_available()
 #' session <- mock_selenider_session()
 #'
 #' open_url("https://www.google.com")
-#' 
+#'
 #' file_path <- withr::local_tempfile(fileext = "png")
 #'
 #' take_screenshot(file_path)
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
 #'
 #' @export
 take_screenshot <- function(file = NULL, view = FALSE, session = NULL) {
@@ -220,7 +250,7 @@ take_screenshot <- function(file = NULL, view = FALSE, session = NULL) {
   if (is.null(file)) {
     file <- withr::local_tempfile(fileext = "png")
   }
-  
+
   if (uses_selenium(session$driver)) {
     session$driver$client$screenshot(file)
 
@@ -230,7 +260,7 @@ take_screenshot <- function(file = NULL, view = FALSE, session = NULL) {
   } else {
     session$driver$screenshot(file, view = view)
   }
-  
+
   invisible(session)
 }
 
@@ -242,6 +272,20 @@ take_screenshot <- function(file = NULL, view = FALSE, session = NULL) {
 #' @param ... Passed into [read_html.selenider_session()]
 #'
 #' @returns An XML document, which can be operated on using `rvest`.
+#'
+#' @examplesIf selenider_available(online = FALSE)
+#' html <- "
+#' <p>Example text</p>
+#' "
+#'
+#' session <- minimal_selenider_session(html)
+#'
+#' get_page_source()
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
 #'
 #' @export
 get_page_source <- function(session = NULL, ...) {

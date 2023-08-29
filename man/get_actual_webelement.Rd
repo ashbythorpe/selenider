@@ -32,18 +32,42 @@ exist in the DOM.
 of \link[RSelenium:webElement-class]{RSelenium::webElement} objects.
 }
 \examples{
-session <- mock_selenider_session()
+\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+html <- "
+<div>
+<p>Text</p>
+<p>More text</p>
+</div>
+"
 
-elem <- s(".class1") |>
+session <- minimal_selenider_session(html)
+
+elem <- s("div") |>
   get_actual_webelement()
 
-elem$getElementLocation()
+# The webDriver/ChromoteSession can be accessed using session$driver
+driver <- session$driver
 
-elems <- ss(".class2") |>
+if (inherits(driver, "ChromoteSession")) {
+  driver$DOM$getBoxModel(backendNodeId = elem)
+} else {
+  elem$getElementLocation()
+}
+
+elems <- ss("p") |>
   get_actual_webelements()
 
-elems[[1]]$getElementSize()
+if (inherits(driver, "ChromoteSession")) {
+  driver$DOM$describeNode(backendNodeId = elems[[1]])
+} else {
+  elems[[1]]$describeElement()
+}
 
+\dontshow{
+# Clean up all connections and invalidate default chromote object
+selenider_cleanup()
+}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \itemize{

@@ -32,6 +32,7 @@ once. Use \code{\link[=html_expect]{html_expect()}} or \code{\link[=html_wait_un
 tests.
 }
 \examples{
+\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <div style='visibility:hidden;'>Content 1</div>
 <div style='display:none'>Content 2</div>
@@ -46,6 +47,11 @@ is_invisible(ss("div")[[2]]) # TRUE
 
 is_visible(ss("div")[[3]]) # TRUE
 
+\dontshow{
+# Clean up all connections and invalidate default chromote object
+selenider_cleanup()
+}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other conditions: 

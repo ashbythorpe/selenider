@@ -20,13 +20,19 @@ Navigate the browser to specified URL, waiting until the page is considered
 open before finishing.
 }
 \examples{
-session <- mock_selenider_session()
+\dontshow{if (selenider_available()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+session <- selenider_session()
 
-open_url("https://www.google.com")
+open_url("https://r-project.org")
 
 # Or:
-open_url(session = session, "https://www.google.com")
+open_url(session = session, "https://r-project.org")
 
+\dontshow{
+# Clean up all connections and invalidate default chromote object
+selenider_cleanup()
+}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other global actions: 

@@ -24,8 +24,38 @@
 #' `read_html()` returns an XML document.
 #' `html_table()` returns a tibble or list of tibbles (when applied to a page).
 #'
-#' @examples
+#' @examplesIf selenider_available(online = FALSE)
+#' library(rvest)
 #' selenider_prefer(quiet = FALSE)
+#'
+#' html <- "
+#' <div>
+#' <p>Example text</p>
+#' </div>
+#'
+#' <table>
+#'   <tr>
+#'     <th>Column 1</th>
+#'     <th>Column 2</th>
+#'   </tr>
+#'   <tr>
+#'     <td>10</td>
+#'     <td>Data</td>
+#'   </tr>
+#' </table>
+#' "
+#'
+#' session <- minimal_selenider_session(html)
+#'
+#' read_html(session)
+#' read_html(s("div"))
+#'
+#' html_table(s("table"))
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
 #'
 #' @export
 selenider_prefer <- function(quiet = TRUE) {
@@ -105,8 +135,10 @@ html_table.selenider_session <- function(x,
                                          dec = ".",
                                          na.strings = "NA",
                                          convert = TRUE) {
-  x <- read_html(x)
-  NextMethod()
+  rlang::check_installed("xml2")
+  rlang::check_installed("rvest")
+  x <- xml2::read_html(x)
+  rvest::html_table(x)
 }
 
 #' @rdname selenider_prefer
@@ -119,6 +151,8 @@ html_table.selenider_element <- function(x,
                                          dec = ".",
                                          na.strings = "NA",
                                          convert = TRUE) {
-  x <- read_html(x)
-  NextMethod()
+  rlang::check_installed("xml2")
+  rlang::check_installed("rvest")
+  x <- xml2::read_html(x)
+  rvest::html_table(x)
 }

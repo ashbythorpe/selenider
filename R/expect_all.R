@@ -46,7 +46,7 @@
 #' * [html_expect()] and [html_wait_until()]
 #' * [is_present()] and other conditions for predicates for a single HTML element.
 #'
-#' @examples
+#' @examplesIf selenider_available(online = FALSE)
 #' html <- "
 #' <div id='div1'>Content 1</div>
 #' <div id='div2'>Content 2</div>
@@ -62,6 +62,11 @@
 #'
 #' ss("div")[-3] |>
 #'   html_expect_all(is_visible)
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
 #'
 #' @export
 html_expect_all <- function(x, ..., testthat = NULL, timeout = NULL) {

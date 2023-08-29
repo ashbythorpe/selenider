@@ -4,6 +4,7 @@
 \alias{html_attr}
 \alias{html_attr.selenider_element}
 \alias{html_attrs}
+\alias{html_attrs.selenider_element}
 \alias{html_value}
 \title{Get element attribute}
 \usage{
@@ -11,9 +12,9 @@ html_attr(x, name, default = NA_character_, ...)
 
 \method{html_attr}{selenider_element}(x, name, default = NA_character_, timeout = NULL, ...)
 
-html_attrs(x, timeout = NULL, ...)
+html_attrs(x, ...)
 
-html_attrs(x, timeout = NULL, ...)
+\method{html_attrs}{selenider_element}(x, timeout = NULL, ...)
 
 html_value(x, ptype = character(), timeout = NULL)
 }
@@ -24,6 +25,8 @@ html_value(x, ptype = character(), timeout = NULL)
 
 \item{default}{The default value to use if the attribute does not exist in
 the element.}
+
+\item{...}{Not used.}
 
 \item{timeout}{The time to wait for \code{x} to exist.}
 
@@ -45,11 +48,28 @@ Get an attribute of a \code{selenider_element} object.
 \code{html_value()} returns the 'value' attribute.
 }
 \examples{
-session <- mock_selenider_session()
+\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+html <- "
+<a class='link' href='https://r-project.org'>R</a>
+<input type='number' value='0'>
+"
 
-s(".class1") |>
+session <- minimal_selenider_session(html)
+
+s("a") |>
   html_attr("href")
 
+s("a") |>
+  html_attrs()
+
+s("input[type='number']") |>
+  html_value(ptype = integer())
+
+\dontshow{
+# Clean up all connections and invalidate default chromote object
+selenider_cleanup()
+}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other properties: 

@@ -31,6 +31,7 @@ element two times in a short period of time, while \code{right_click()} right
 clicks on an element, opening its context menu.
 }
 \examples{
+\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <button onclick = hidetext() oncontextmenu = showtext()></button>
 <p id = 'texttohide'>Hello!</p>
@@ -60,6 +61,11 @@ s("button") |>
 
 html_expect(s("p"), is_visible)
 
+\dontshow{
+# Clean up all connections and invalidate default chromote object
+selenider_cleanup()
+}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other actions: 

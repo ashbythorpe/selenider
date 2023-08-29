@@ -18,6 +18,7 @@ A boolean value.
 Check that an element has a specified tag name
 }
 \examples{
+\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <div id='mydiv'></div>
 "
@@ -27,6 +28,11 @@ has_name(s("#mydiv"), "p")
 
 has_name(s("#mydiv"), "div")
 
+\dontshow{
+# Clean up all connections and invalidate default chromote object
+selenider_cleanup()
+}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other conditions: 

@@ -17,3 +17,19 @@ An XML document, which can be operated on using \code{rvest}.
 \description{
 A shortcut for \code{xml2::read_html(get_session())}.
 }
+\examples{
+\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+html <- "
+<p>Example text</p>
+"
+
+session <- minimal_selenider_session(html)
+
+get_page_source()
+
+\dontshow{
+# Clean up all connections and invalidate default chromote object
+selenider_cleanup()
+}
+\dontshow{\}) # examplesIf}
+}

@@ -31,7 +31,7 @@
 #' * <http://web.simmons.edu/~grovesd/comm244/notes/week4/document-tree> for a simple
 #'   and visual explanation of the document tree.
 #'
-#' @examples
+#' @examplesIf selenider_available(online = FALSE)
 #' html <- "
 #' <html>
 #' <body>
@@ -84,6 +84,11 @@
 #'   html_descendants() |>
 #'   html_expect(has_length(4)) |>
 #'   html_names() # p, div, p, br
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
 #'
 #' @export
 html_ancestors <- function(x) {

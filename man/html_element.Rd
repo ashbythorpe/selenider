@@ -58,21 +58,50 @@ of other methods.
 \details{
 If more than one method is used to select an element (e.g. \code{css} and
 \code{xpath}), the first element which satisfies all conditions will be found.
+
+CSS selectors are generally recommended over other options, since they are usually
+the easiest to read. Use \code{"tag_name"} to select by tag name, \code{".class"} to select
+by class, and \code{"#id"} to select by id.
 }
 \examples{
-session <- mock_selenider_session()
+\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+html <- "
+<div class='class1'>
+  <div id='id1'>
+    <a href='https://r-project.org'>Click me!</a>
+  </div>
+  <p>Example text</p>
+</div>
+"
+
+session <- minimal_selenider_session(html)
 
 session |>
-  html_element(".class1")
+  html_element("div")
 
 session |>
-  html_element(".class1") |>
-  html_element(".class2")
+  html_element(name = "div") |>
+  html_element(xpath = "./p")
 
-# The above can be shortened to:
-s(".class1") |>
-  html_element(".class2")
+s("div") |>
+  html_element("#id1")
 
+s("div") |>
+  html_element(id = "id1") |>
+  html_element(link_text = "Click me!")
+
+# Complex Xpath expressions are easier to read as chained CSS selectors.
+s("//div[contains(@class, 'class1')]/div/a")
+
+s("div.class1") |>
+  html_element("div") |>
+  html_element("a")
+
+\dontshow{
+# Clean up all connections and invalidate default chromote object
+selenider_cleanup()
+}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \itemize{

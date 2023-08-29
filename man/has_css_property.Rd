@@ -21,6 +21,7 @@ Check that the CSS property (e.g. \code{"background-color"}) of an element match
 a value.
 }
 \examples{
+\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <div style='display:none;'></div>
 "
@@ -28,6 +29,11 @@ session <- minimal_selenider_session(html)
 
 has_css_property(s("div"), "display", "none")
 
+\dontshow{
+# Clean up all connections and invalidate default chromote object
+selenider_cleanup()
+}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other conditions: 

@@ -28,6 +28,7 @@ there are a few differences: see
 \url{https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/submit}
 }
 \examples{
+\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <form>
 <input type='submit'>
@@ -44,6 +45,11 @@ submit(s("p"))
 # Won't work since doesn't have a form ancestor
 try(submit(s("a"), timeout = 0.5))
 
+\dontshow{
+# Clean up all connections and invalidate default chromote object
+selenider_cleanup()
+}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other actions: 

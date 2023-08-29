@@ -24,9 +24,10 @@ page in your browsing history.
 browsing history.
 }
 \examples{
-session <- mock_selenider_session()
+\dontshow{if (selenider_available()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+session <- selenider_session()
 
-open_url("https://www.google.com")
+open_url("https://r-project.org")
 
 open_url("https://www.tidyverse.org/")
 
@@ -34,6 +35,11 @@ back()
 
 forward()
 
+\dontshow{
+# Clean up all connections and invalidate default chromote object
+selenider_cleanup()
+}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other global actions: 

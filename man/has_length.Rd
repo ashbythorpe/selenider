@@ -33,6 +33,7 @@ once. Use \code{\link[=html_expect]{html_expect()}} or \code{\link[=html_wait_un
 tests.
 }
 \examples{
+\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <div class='div1'></div>
 <div class='div2'></div>
@@ -43,5 +44,10 @@ session <- minimal_selenider_session(html)
 has_length(ss("div"), 3)
 has_at_least(ss("div"), 2)
 
+\dontshow{
+# Clean up all connections and invalidate default chromote object
+selenider_cleanup()
+}
+\dontshow{\}) # examplesIf}
 }
 \concept{collection conditions}

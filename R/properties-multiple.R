@@ -12,7 +12,7 @@
 #' 
 #' @returns An integer representing the number of elements in the collection.
 #' 
-#' @examples
+#' @examplesIf selenider_available(online = FALSE)
 #' html <- "
 #' <div></div>
 #' <div></div>
@@ -23,6 +23,11 @@
 #' 
 #' ss("div") |>
 #'   length()
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
 #' 
 #' @export
 html_size <- function(x, timeout = NULL) {

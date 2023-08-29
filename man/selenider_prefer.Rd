@@ -77,6 +77,37 @@ selenider allows \code{\link[xml2:read_xml]{xml2::read_html()}} and \code{\link[
 on \code{selenider_element} and \code{selenider_session} objects.
 }
 \examples{
+\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+library(rvest)
 selenider_prefer(quiet = FALSE)
 
+html <- "
+<div>
+<p>Example text</p>
+</div>
+
+<table>
+  <tr>
+    <th>Column 1</th>
+    <th>Column 2</th>
+  </tr>
+  <tr>
+    <td>10</td>
+    <td>Data</td>
+  </tr>
+</table>
+"
+
+session <- minimal_selenider_session(html)
+
+read_html(session)
+read_html(s("div"))
+
+html_table(s("table"))
+
+\dontshow{
+# Clean up all connections and invalidate default chromote object
+selenider_cleanup()
+}
+\dontshow{\}) # examplesIf}
 }

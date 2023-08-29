@@ -12,6 +12,8 @@ html_name(x, ...)
 \arguments{
 \item{x}{A \code{selenider_element} object.}
 
+\item{...}{Not used.}
+
 \item{timeout}{The time to wait for \code{x} to exist.}
 }
 \value{
@@ -21,6 +23,7 @@ A string
 Get the tag name (e.g. \code{"p"} for a \verb{<p>} tag) of a \code{selenider_element} object.
 }
 \examples{
+\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <div class='mydiv'></div>
 "
@@ -29,6 +32,11 @@ session <- minimal_selenider_session(html)
 s(".mydiv") |>
   html_name()
 
+\dontshow{
+# Clean up all connections and invalidate default chromote object
+selenider_cleanup()
+}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other properties: 

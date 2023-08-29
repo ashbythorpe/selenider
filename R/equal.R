@@ -11,7 +11,7 @@
 #' @returns
 #' `TRUE` or `FALSE`.
 #'
-#' @examples
+#' @examplesIf selenider_available(online = FALSE)
 #' html <- "
 #' <div></div>
 #' <div class='second'>
@@ -33,6 +33,11 @@
 #' ss("div") |>
 #'   html_find(has_p_child) |>
 #'   html_equal(s(".second")) # TRUE
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
 #'
 #' @export
 html_equal <- function(x, y, timeout = NULL) {

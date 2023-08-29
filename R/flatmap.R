@@ -39,7 +39,7 @@
 #' `html_flatmap()` returns a `selenider_element` object.
 #' `element_list()` returns a list of `selenider_element` objects.
 #'
-#' @examples
+#' @examplesIf selenider_available(online = FALSE)
 #' html <- "
 #' <div id='div1'>
 #'   <p>Text 1</p>
@@ -74,6 +74,11 @@
 #'
 #' # Or:
 #' lapply(element_list(p_tags), html_text)
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
 #'
 #' @export
 html_flatmap <- function(x, .f, ...) {

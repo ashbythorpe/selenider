@@ -14,7 +14,7 @@
 #' 
 #' @returns `x`, invisibly
 #'
-#' @examples
+#' @examplesIf selenider_available(online = FALSE)
 #' html <- "
 #' <button onclick = hidetext() oncontextmenu = showtext()></button>
 #' <p id = 'texttohide'>Hello!</p>
@@ -43,6 +43,11 @@
 #'   right_click()
 #'
 #' html_expect(s("p"), is_visible)
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
 #'
 #' @family actions
 #'
@@ -259,7 +264,7 @@ right_click <- function(x, js = FALSE, timeout = NULL) {
 #'
 #' @family actions
 #'
-#' @examples
+#' @examplesIf selenider_available(online = FALSE)
 #' html <- "
 #' <button onmouseover = settext()> </button>
 #' <p class = 'text'></p>
@@ -279,6 +284,11 @@ right_click <- function(x, js = FALSE, timeout = NULL) {
 #'   hover()
 #'
 #' html_expect(s(".text"), has_text("Button hovered!"))
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
 #' 
 #' @export
 hover <- function(x, js = FALSE, timeout = NULL) {
@@ -357,7 +367,7 @@ hover_chromote <- function(element, driver) {
 #' 
 #' @returns `x`, invisibly
 #'
-#' @examples
+#' @examplesIf selenider_available(online = FALSE)
 #' html <- "
 #' <input type='text' oninput='recordChange(event)' onkeypress='return checkEnter(event);'>
 #' <p></p>
@@ -395,6 +405,11 @@ hover_chromote <- function(element, driver) {
 #' send_keys(input, keys$enter)
 #'
 #' html_expect(s("p"), has_text("Enter pressed!"))
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
 #'
 #' @family actions
 #'
@@ -663,7 +678,7 @@ get_element_for_action <- function(x,
 #'
 #' @family actions
 #'
-#' @examples
+#' @examplesIf selenider_available(online = FALSE)
 #' html <- "
 #' <div style = 'height:100%; min-height:100vh'></div>
 #' <button onclick='checkScrolled()'></button>
@@ -690,6 +705,11 @@ get_element_for_action <- function(x,
 #'   click()
 #'
 #' html_expect(s("p"), has_text("You found me!"))
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
 #'
 #' @export
 scroll_to <- function(x, js = FALSE, timeout = NULL) {
@@ -754,7 +774,7 @@ scroll_to <- function(x, js = FALSE, timeout = NULL) {
 #'
 #' @family actions
 #'
-#' @examples
+#' @examplesIf selenider_available(online = FALSE)
 #' html <- "
 #' <form>
 #' <input type='submit'>
@@ -770,6 +790,11 @@ scroll_to <- function(x, js = FALSE, timeout = NULL) {
 #'
 #' # Won't work since doesn't have a form ancestor
 #' try(submit(s("a"), timeout = 0.5))
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
 #'
 #' @export
 submit <- function(x, js = FALSE, timeout = NULL) {

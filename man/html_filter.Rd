@@ -49,30 +49,48 @@ lazy, meaning that the elements are not fetched and filtered until they are need
 Conditions can be functions or function calls (see \code{\link[=html_expect]{html_expect()}} for more details).
 }
 \examples{
-session <- mock_selenider_session()
+\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+html <- "
+<button disabled>Button 1</button>
+<button>Button 2</button>
+<p>Text</p>
+<div style='display:none;'></div>
+"
+session <- minimal_selenider_session(html)
+
+elements <- ss("./*")
 
 # Gives the same result as s()
-ss(".class1")[[1]]
+elements[[1]]
 
-ss(".class1")[1:5]
+elements[1:3]
 
-ss(".class1") |>
+elements[-2]
+
+elements |>
   html_filter(is_visible)
 
-ss(".class1") |>
+elements |>
   html_find(is_visible)
 
 # The above is equivalent to:
-elems <- ss(".class1") |>
+visible_elems <- elements |>
   html_filter(is_visible)
-
-elems[[1]]
+visible_elems[[1]]
 
 # In R >= 4.3.0, we can instead do:
 # ss(".class1") |>
 #   html_filter(is_visible) |>
 #   _[[1]]
 
+ss("button") |>
+  html_filter(is_enabled)
+
+\dontshow{
+# Clean up all connections and invalidate default chromote object
+selenider_cleanup()
+}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \itemize{

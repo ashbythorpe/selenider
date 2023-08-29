@@ -34,30 +34,47 @@
 #' * [html_elements()] and [ss()] to get elements to filter.
 #' * [is_present()] and other conditions for conditions to filter by.
 #'
-#' @examples
-#' session <- mock_selenider_session()
+#' @examplesIf selenider_available(online = FALSE)
+#' html <- "
+#' <button disabled>Button 1</button>
+#' <button>Button 2</button>
+#' <p>Text</p>
+#' <div style='display:none;'></div>
+#' "
+#' session <- minimal_selenider_session(html)
+#'
+#' elements <- ss("./*")
 #'
 #' # Gives the same result as s()
-#' ss(".class1")[[1]]
+#' elements[[1]]
 #'
-#' ss(".class1")[1:5]
+#' elements[1:3]
 #'
-#' ss(".class1") |>
+#' elements[-2]
+#'
+#' elements |>
 #'   html_filter(is_visible)
 #'
-#' ss(".class1") |>
+#' elements |>
 #'   html_find(is_visible)
 #'
 #' # The above is equivalent to:
-#' elems <- ss(".class1") |>
+#' visible_elems <- elements |>
 #'   html_filter(is_visible)
-#'
-#' elems[[1]]
+#' visible_elems[[1]]
 #'
 #' # In R >= 4.3.0, we can instead do:
 #' # ss(".class1") |>
 #' #   html_filter(is_visible) |>
 #' #   _[[1]]
+#'
+#' ss("button") |>
+#'   html_filter(is_enabled)
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
 #'
 #' @export
 html_filter <- function(x, ...) {
