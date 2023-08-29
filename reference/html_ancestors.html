@@ -142,7 +142,7 @@ and visual explanation of the document tree.</p></li>
 <span class="r-in"><span><span class="st">"</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="minimal_selenider_session.html">minimal_selenider_session</a></span><span class="op">(</span><span class="va">html</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpYiVOy9/file162f377026ef.html"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpqB4ABe/file16761ea4d883.html"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">current</span> <span class="op">&lt;-</span> <span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"#current"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -157,35 +157,39 @@ and visual explanation of the document tree.</p></li>
 <span class="r-in"><span>  <span class="fu">html_ancestors</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="html_expect.html">html_expect</a></span><span class="op">(</span><span class="fu"><a href="has_length.html">has_length</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_names</span><span class="op">(</span><span class="op">)</span> <span class="co"># html, div, body</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session 033FA94FFA5FB053B7B0A073D6AD3433 is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in html_size(x):</span> To get the number of elements in `x`, its parent must exist.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> After <span style="color: #0000BB;">"timeout"</span> seconds, `x`'s parent did not exist.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">current</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_parent</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="html_name.html">html_name</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># div</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session 033FA94FFA5FB053B7B0A073D6AD3433 is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in get_element_for_action(x, action = action, conditions = list(),     timeout = timeout, failure_messages = c(), conditions_text = c(),     call = call):</span> To get the tag name of `x`, it must exist.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> After 4 seconds, `x` was not present.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">current</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_siblings</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="html_expect.html">html_expect</a></span><span class="op">(</span><span class="fu"><a href="has_length.html">has_length</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_names</span><span class="op">(</span><span class="op">)</span> <span class="co"># div, p</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session 033FA94FFA5FB053B7B0A073D6AD3433 is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in html_size(x):</span> To get the number of elements in `x`, its parent must exist.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> After <span style="color: #0000BB;">"timeout"</span> seconds, `x`'s parent did not exist.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">current</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_children</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="html_expect.html">html_expect</a></span><span class="op">(</span><span class="fu"><a href="has_length.html">has_length</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_names</span><span class="op">(</span><span class="op">)</span> <span class="co"># p, div</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session 033FA94FFA5FB053B7B0A073D6AD3433 is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in html_size(x):</span> To get the number of elements in `x`, its parent must exist.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> After <span style="color: #0000BB;">"timeout"</span> seconds, `x`'s parent did not exist.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">current</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_descendants</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="html_expect.html">html_expect</a></span><span class="op">(</span><span class="fu"><a href="has_length.html">has_length</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_names</span><span class="op">(</span><span class="op">)</span> <span class="co"># p, div, p, br</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session 033FA94FFA5FB053B7B0A073D6AD3433 is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in html_size(x):</span> To get the number of elements in `x`, its parent must exist.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> After <span style="color: #0000BB;">"timeout"</span> seconds, `x`'s parent did not exist.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># \dontshow{</span></span></span>
 <span class="r-in"><span><span class="co"># Clean up all connections and invalidate default chromote object</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="selenider_cleanup.html">selenider_cleanup</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in selenider_cleanup():</span> 0</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

@@ -103,22 +103,32 @@ clicking or interacting with it.</p>
 <span class="r-in"><span><span class="st">"</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="minimal_selenider_session.html">minimal_selenider_session</a></span><span class="op">(</span><span class="va">html</span>, js <span class="op">=</span> <span class="va">js</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpYiVOy9/file162f427e4960.html"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpqB4ABe/file167649de4a37.html"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="html_expect.html">html_expect</a></span><span class="op">(</span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".text"</span><span class="op">)</span>, <span class="fu"><a href="has_text.html">has_exact_text</a></span><span class="op">(</span><span class="st">""</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session 033FA94FFA5FB053B7B0A073D6AD3433 is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in html_expect(s(".text"), has_exact_text("")):</span> Condition failed after waiting for 4 seconds:</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> `has_exact_text("")`</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `x` does not have exact text <span style="color: #0000BB;">""</span>.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Actual text: .</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `has_exact_text()`:</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> `x` does not exist in the DOM.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"button"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">hover</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session 033FA94FFA5FB053B7B0A073D6AD3433 is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in hover(s("button")):</span> To hover over `x`, it must exist.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> After 4 seconds, `x` was not present.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="html_expect.html">html_expect</a></span><span class="op">(</span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".text"</span><span class="op">)</span>, <span class="fu"><a href="has_text.html">has_text</a></span><span class="op">(</span><span class="st">"Button hovered!"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session 033FA94FFA5FB053B7B0A073D6AD3433 is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in html_expect(s(".text"), has_text("Button hovered!")):</span> Condition failed after waiting for 4 seconds:</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> `has_text("Button hovered!")`</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `x` does not have text <span style="color: #0000BB;">"Button hovered!"</span>.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Actual text: .</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `has_text()`:</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> `x` does not exist in the DOM.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># \dontshow{</span></span></span>
 <span class="r-in"><span><span class="co"># Clean up all connections and invalidate default chromote object</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="selenider_cleanup.html">selenider_cleanup</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in selenider_cleanup():</span> 0</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

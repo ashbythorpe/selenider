@@ -110,23 +110,22 @@ a string.</p></dd>
 <span class="r-in"><span><span class="st">"</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="minimal_selenider_session.html">minimal_selenider_session</a></span><span class="op">(</span><span class="va">html</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpYiVOy9/file162f2b3a512.html"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpqB4ABe/file167628e64cc7.html"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">has_attr</span><span class="op">(</span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"input"</span><span class="op">)</span>, <span class="st">"class"</span>, <span class="st">"myclass"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session 033FA94FFA5FB053B7B0A073D6AD3433 is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in has_attr(s("input"), "class", "myclass"):</span> `x` does not exist in the DOM.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">has_attr</span><span class="op">(</span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"input"</span><span class="op">)</span>, <span class="st">"value"</span>, <span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session 033FA94FFA5FB053B7B0A073D6AD3433 is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in has_attr(s("input"), "value", 1):</span> `x` does not exist in the DOM.</span>
 <span class="r-in"><span><span class="fu">has_value</span><span class="op">(</span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"input"</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session 033FA94FFA5FB053B7B0A073D6AD3433 is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in has_value(s("input"), 1):</span> `x` does not exist in the DOM.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">attr_contains</span><span class="op">(</span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"input"</span><span class="op">)</span>, <span class="st">"data-customattr"</span>, <span class="st">"Custom attribute"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session 033FA94FFA5FB053B7B0A073D6AD3433 is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in attr_contains(s("input"), "data-customattr", "Custom attribute"):</span> `x` does not exist in the DOM.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># \dontshow{</span></span></span>
 <span class="r-in"><span><span class="co"># Clean up all connections and invalidate default chromote object</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="selenider_cleanup.html">selenider_cleanup</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in selenider_cleanup():</span> 0</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

@@ -134,22 +134,18 @@ element collection).</p>
 <span class="r-in"><span><span class="st">"</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="minimal_selenider_session.html">minimal_selenider_session</a></span><span class="op">(</span><span class="va">html</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpYiVOy9/file162f5e96deaf.html"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpqB4ABe/file16761f667fd0.html"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="s.html">ss</a></span><span class="op">(</span><span class="st">"div"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_expect_all</span><span class="op">(</span><span class="va">is_visible</span>, timeout <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in self$send_command(msg, callback = callback_, error = error_,  : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Session 033FA94FFA5FB053B7B0A073D6AD3433 is closed.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="s.html">ss</a></span><span class="op">(</span><span class="st">"div"</span><span class="op">)</span><span class="op">[</span><span class="op">-</span><span class="fl">3</span><span class="op">]</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_expect_all</span><span class="op">(</span><span class="va">is_visible</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session 033FA94FFA5FB053B7B0A073D6AD3433 is closed.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># \dontshow{</span></span></span>
 <span class="r-in"><span><span class="co"># Clean up all connections and invalidate default chromote object</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="selenider_cleanup.html">selenider_cleanup</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in selenider_cleanup():</span> 0</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

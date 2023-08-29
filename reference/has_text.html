@@ -106,26 +106,25 @@ tests.</p>
 <span class="r-in"><span><span class="st">"</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="minimal_selenider_session.html">minimal_selenider_session</a></span><span class="op">(</span><span class="va">html</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpYiVOy9/file162f236d67d2.html"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpqB4ABe/file1676552f7c82.html"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">has_text</span><span class="op">(</span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"p"</span><span class="op">)</span>, <span class="st">"Example"</span><span class="op">)</span> <span class="co"># TRUE</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session 033FA94FFA5FB053B7B0A073D6AD3433 is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in has_text(s("p"), "Example"):</span> `x` does not exist in the DOM.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">has_exact_text</span><span class="op">(</span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"p"</span><span class="op">)</span>, <span class="st">"Example"</span><span class="op">)</span> <span class="co"># FALSE</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session 033FA94FFA5FB053B7B0A073D6AD3433 is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in has_exact_text(s("p"), "Example"):</span> `x` does not exist in the DOM.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">has_exact_text</span><span class="op">(</span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"p"</span><span class="op">)</span>, <span class="st">"Example text"</span><span class="op">)</span> <span class="co"># TRUE</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session 033FA94FFA5FB053B7B0A073D6AD3433 is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in has_exact_text(s("p"), "Example text"):</span> `x` does not exist in the DOM.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># has_exact_text() is useful for checking when there is no text,</span></span></span>
 <span class="r-in"><span><span class="co"># since has_text("") will always be TRUE.</span></span></span>
 <span class="r-in"><span><span class="fu">has_exact_text</span><span class="op">(</span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".empty"</span><span class="op">)</span>, <span class="st">""</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session 033FA94FFA5FB053B7B0A073D6AD3433 is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in has_exact_text(s(".empty"), ""):</span> `x` does not exist in the DOM.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># \dontshow{</span></span></span>
 <span class="r-in"><span><span class="co"># Clean up all connections and invalidate default chromote object</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="selenider_cleanup.html">selenider_cleanup</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in selenider_cleanup():</span> 0</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
