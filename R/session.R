@@ -197,6 +197,7 @@ selenider_session <- function(session = NULL,
         # Delete the Crashpad folder if it exists
         unlink(file.path(tempdir(), "Crashpad"), recursive = TRUE)
       }, envir = .env)
+      withr::local_options(list(chromote.timeout = 60), .local_envir = .env)
     }
   }
   
