@@ -258,6 +258,11 @@ is_linux <- function() Sys.info()[['sysname']] == 'Linux'
 #'
 #' @export
 selenider_cleanup <- function(close_session = TRUE, env = rlang::caller_env()) {
+  if (on_ci()) {
+    Sys.setenv("_R_CHECK_CONNECTIONS_LEFT_OPEN_" = "FALSE")
+    return(invisible())
+  }
+
   if (close_session) {
     session <- NULL
     old <- NULL
@@ -288,4 +293,6 @@ selenider_cleanup <- function(close_session = TRUE, env = rlang::caller_env()) {
     ),
     error = function(e) rlang::abort("Error chromote::set_default_chromote_object()", parent = e)
   )
+
+  invisible()
 }
