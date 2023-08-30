@@ -212,6 +212,15 @@ call_insert <- function(call, elem_name, quo = TRUE) {
   }
 }
 
+find_using <- function(x, .f, .default = NULL) {
+  for (a in x) {
+    if (.f(a)) {
+      return(a)
+    }
+  }
+  .default
+}
+
 escape_squirlies <- function(x) {
   x <- gsub("{", "{{", x, fixed = TRUE)
   gsub("}", "}}", x, fixed = TRUE)
@@ -258,10 +267,9 @@ is_linux <- function() Sys.info()[['sysname']] == 'Linux'
 #'
 #' @export
 selenider_cleanup <- function(close_session = TRUE, env = rlang::caller_env()) {
-  if (on_ci()) {
-    Sys.setenv("_R_CHECK_CONNECTIONS_LEFT_OPEN_" = "FALSE")
-    return(invisible())
-  }
+  Sys.setenv("_R_CHECK_CONNECTIONS_LEFT_OPEN_" = "FALSE")
+  try_fetch(withr::deferred_run(env), error = function(e) rlang::abort(c("Error in withr::deferred_run()"), parent = e))
+  return(invisible())
 
   if (close_session) {
     session <- NULL
@@ -276,7 +284,7 @@ selenider_cleanup <- function(close_session = TRUE, env = rlang::caller_env()) {
 
     if (length(attr(env, "withr_handlers")) != 0) {
       # Do everything except actually close the session (since this can cause errors with processx::supervisor_kill())
-      attr(env, "withr_handlers")[[2]]$expr <- rlang::expr(reset_session(session, old, close = FALSE))
+      attr(env, "withr_handlers")[[3]]$expr <- rlang::expr(reset_session(session, old, close = FALSE))
       try_fetch(withr::deferred_run(env), error = function(e) rlang::abort(c("Error in withr::deferred_run()"), parent = e))
     } else {
       rlang::abort(as.character(length(attr(env, "withr_handlers"))))

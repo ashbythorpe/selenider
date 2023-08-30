@@ -51,9 +51,9 @@ execute_js_fn <- function(fn, ..., timeout = NULL, session = NULL) {
     for (i in seq_along(args)) {
       arg <- args[[i]]
       if (inherits(arg, "selenider_element")) {
-        final_args[[i]] <- get_actual_webelement(arg, timeout = timeout)
+        final_args[[i]] <- get_actual_element(arg, timeout = timeout)
       } else if (inherits(arg, "selenider_elements")) {
-        final_args[[i]] <- get_actual_webelements(arg, timeout = timeout)
+        final_args[[i]] <- get_actual_elements(arg, timeout = timeout)
       } else {
         final_args[[i]] <- arg
       }

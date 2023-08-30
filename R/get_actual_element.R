@@ -1,27 +1,32 @@
-#' Get the webElement associated with a selenider element
+#' Get the element associated with a selenider element
 #'
 #' @description
-#' Turn a lazy selenium element or element collection into a
-#' [RSelenium::webElement]. Use this to perform certain actions on the element
-#' that are not implemented in selenider (e.g. getElementLocation())
+#' Turn a lazy selenium element or element collection into a backendNodeId (chromote)
+#' or an [RSelenium::webElement]. Use this to perform certain actions on the
+#' element that are not implemented in selenider.
 #'
-#' `get_actual_webelement()` turns a `selenider_element` object into a
-#' [RSelenium::webElement] object. The function will wait for the object to
-#' exist in the DOM.
+#' `get_actual_element()` turns a `selenider_element` object into a single
+#' backendNodeId or [RSelenium::webElement] object. The function will wait for the object 
+#' to exist in the DOM.
 #'
-#' `get_actual_webelements()` turns a `selenider_elements` object into a list
+#' `get_actual_elements()` turns a `selenider_elements` object into a list
 #' of [RSelenium::webElement] objects.
 #'
 #' @param x A `selenider_element` or `selenider_elements` object, produced by
-#'   [html_element()] / [html_elements()]
+#'   [html_element()] / [html_elements()].
 #' @param timeout The timeout to use while asserting that the item exists. If
 #'   NULL, the timeout of the `selenider_element` will be used.
 #'
-#' @returns A [RSelenium::webElement] object, or a list of such objects.
+#' @returns An integer (backendNodeId), or an[RSelenium::webElement] object.
+#' `get_actual_elements()` returns a list of such objects.
 #'
 #' @seealso
 #' * [s()], [ss()], [html_element()] and [html_elements()] to select selenider
-#'   elements
+#'   elements.
+#' * The [Chrome Devtools Protocol documentation](https://chromedevtools.github.io/devtools-protocol/tot/)
+#'   for the operations that can be performed using a backend node id. Note that
+#'   this requires the [chromote::ChromoteSession] object, which can be retrived using
+#'   `<selenider_session>$driver`.
 #' * The documentation for [RSelenium::webElement()] to see the things you can
 #'   do with them.
 #'
@@ -36,7 +41,7 @@
 #' session <- minimal_selenider_session(html)
 #'
 #' elem <- s("div") |>
-#'   get_actual_webelement()
+#'   get_actual_element()
 #'
 #' # The webDriver/ChromoteSession can be accessed using session$driver
 #' driver <- session$driver
@@ -48,7 +53,7 @@
 #' }
 #'
 #' elems <- ss("p") |>
-#'   get_actual_webelements()
+#'   get_actual_elements()
 #'
 #' if (inherits(driver, "ChromoteSession")) {
 #'   driver$DOM$describeNode(backendNodeId = elems[[1]])
@@ -62,7 +67,7 @@
 #' }
 #'
 #' @export
-get_actual_webelement <- function(x, timeout = NULL) {
+get_actual_element <- function(x, timeout = NULL) {
   check_class(x, "selenider_element")
   check_number_decimal(timeout, allow_null = TRUE)
 
@@ -71,10 +76,10 @@ get_actual_webelement <- function(x, timeout = NULL) {
   get_with_timeout(timeout, get_element, x)
 }
 
-#' @rdname get_actual_webelement
+#' @rdname get_actual_element
 #'
 #' @export
-get_actual_webelements <- function(x, timeout = NULL) {
+get_actual_elements <- function(x, timeout = NULL) {
   check_class(x, "selenider_elements")
   check_number_decimal(timeout, allow_null = TRUE)
 

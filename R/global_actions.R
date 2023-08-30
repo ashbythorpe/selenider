@@ -38,11 +38,9 @@ open_url <- function(url, session = NULL) {
   if (uses_selenium(session$driver)) {
     driver$client$navigate(url)
   } else {
-    withr::with_options(list(chromote.timeout = 60), {
-      promise <- driver$Page$loadEventFired(wait_ = FALSE)
-      driver$Page$navigate(url, wait_ = FALSE)
-      driver$wait_for(promise)
-    })
+    promise <- driver$Page$loadEventFired(wait_ = FALSE)
+    driver$Page$navigate(url, wait_ = FALSE)
+    driver$wait_for(promise)
   }
 
   invisible(session)
@@ -100,11 +98,9 @@ back <- function(session = NULL) {
     if (index > 1) {
       new_id <- history[[index - 1]]$id
 
-      withr::with_options(list(chromote.timeout = 60), {
-        promise <- driver$Page$loadEventFired(wait_ = FALSE)
-        driver$Page$navigateToHistoryEntry(new_id, wait_ = FALSE)
-        driver$wait_for(promise)
-      })
+      promise <- driver$Page$loadEventFired(wait_ = FALSE)
+      driver$Page$navigateToHistoryEntry(new_id, wait_ = FALSE)
+      driver$wait_for(promise)
     } else {
       cli::cli_warn("Previous page in history not found")
     }
@@ -134,11 +130,9 @@ forward <- function(session = NULL) {
     if (index < length(history)) {
       new_id <- history[[index - 1]]$id
 
-      withr::with_options(list(chromote.timeout = 60), {
-        promise <- driver$Page$loadEventFired(wait_ = FALSE)
-        driver$Page$navigateToHistoryEntry(new_id, wait_ = FALSE)
-        driver$wait_for(promise)
-      })
+      promise <- driver$Page$loadEventFired(wait_ = FALSE)
+      driver$Page$navigateToHistoryEntry(new_id, wait_ = FALSE)
+      driver$wait_for(promise)
     } else {
       cli::cli_warn("Next page in history not found")
     }
@@ -182,12 +176,10 @@ reload <- function(session = NULL) {
 
   if (uses_selenium(session$driver)) {
     driver$client$refresh()
-  } else {
-    withr::with_options(list(chromote.timeout = 60), {
-      promise <- driver$Page$loadEventFired(wait_ = FALSE)
-      session$driver$Page$reload(wait_ = FALSE)
-      driver$wait_for(promise)
-    })
+} else {
+    promise <- driver$Page$loadEventFired(wait_ = FALSE)
+    session$driver$Page$reload(wait_ = FALSE)
+    driver$wait_for(promise)
   }
 
   invisible(session)
