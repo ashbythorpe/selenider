@@ -73,6 +73,10 @@ selenider_available <- function(session = c("chromote", "selenium"), online = TR
     if (!internet_available) {
       return(FALSE)
     }
+  } else {
+    if (on_cran()) {
+      return(FALSE)
+    }
   }
 
   if (session == "chromote") {
