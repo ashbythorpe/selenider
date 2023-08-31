@@ -24,5 +24,6 @@ test_that("selenider_element properties work", {
 
   expect_equal(html_value(s(".actions-input"), ptype = integer()), 10L)
 
-  expect_equal(html_css_property(s("#form-output"), "color"), "rgb(255, 0, 0)")
+  # Computed style
+  expect_true(html_css_property(s("#form-output"), "color") %in% c("rgb(255, 0, 0)", "rgba(255, 0, 0, 1)"))
 })

@@ -241,7 +241,7 @@ uses_selenium <- function(x) {
 execute_js_fn_on <- function(fn, x, driver) {
   if (uses_selenium(driver)) {
     script <- paste0("let fn = ", fn, ";", "return fn(arguments[0]);")
-    unpack_list(driver$executeScript(script, list(x)))
+    driver$executeScript(script, list(x))
   } else {
     script <- paste0("function() { return (", fn, ")(this) }")
     driver$Runtime$callFunctionOn(script, chromote_object_id(backend_id = x, driver = driver))$result$value

@@ -202,9 +202,6 @@ selenider_session <- function(session = NULL,
   }
 
   check_bool(view)
-  if (!view && session == "selenium") {
-    cli::cli_warn("{.arg session} is {.val selenium}, ignoring {.arg view}.")
-  }
   check_number_decimal(timeout, allow_null = TRUE)
   check_bool(local)
   check_bool(quiet)

@@ -333,14 +333,14 @@ html_attrs.selenider_element <- function(x, timeout = NULL, ...) {
   )
 
   if (uses_selenium(x$driver)) {
-    unpack_list(x$driver$executeScript("
+    x$driver$executeScript("
       let element = arguments[0];
       let attributes = {};
       for (let i = 0; i < element.attributes.length; i++) {
         attributes[element.attributes[i].name] = element.attributes[i].value;
       }
       return attributes;
-    ", list(element)))
+    ", list(element))
   } else {
     driver <- x$driver
     chromote_get_attributes(element, driver = driver)
@@ -391,12 +391,19 @@ html_value <- function(x, ptype = character(), timeout = NULL) {
   )
 
   if (uses_selenium(x$driver)) {
-    result <- element$getElementAttribute("value")
+    result <- unpack_list(element$getElementAttribute("value"))
 
-    if (length(result) == 0) {
+    if (is.null(result) || identical(result, "")) {
       vctrs::vec_cast(NA, ptype)
     } else {
-      vctrs::vec_cast(result[[1]], ptype)
+
+      if (is.integer(ptype)) {
+        return(suppressWarnings(as.integer(result)))
+      } else if (is.double(ptype)) {
+        return(suppressWarnings(as.double(result)))
+      }
+
+      vctrs::vec_cast(result, ptype)
     }
   } else {
     driver <- x$driver

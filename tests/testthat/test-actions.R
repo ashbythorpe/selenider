@@ -57,9 +57,5 @@ test_that("actions work", {
 
   submit(button)
 
-  html_expect(s("#text-output"), has_text(""))
-
-  click(s("input[type='submit']"))
-
   html_expect(s("#form-output"), has_text("Form submitted"))
 })

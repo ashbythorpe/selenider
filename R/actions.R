@@ -9,7 +9,9 @@
 #' clicks on an element, opening its context menu.
 #' 
 #' @param x A `selenider_element` object.
-#' @param js Whether to click the element using JavaScript.
+#' @param js Whether to click the element using JavaScript. For `right_click()`,
+#'   this is ignored if Selenium is being used, since right clicking using
+#'   RSelenium does not seem to work (so JavaScript is used instead).
 #' @param timeout How long to wait for the element to exist.
 #' 
 #' @returns `x`, invisibly
@@ -163,11 +165,16 @@ double_click <- function(x, js = FALSE, timeout = NULL) {
     )
     
     execute_js_fn_on("function(x) {
-      x.click(); 
-      x.click();
-      let clickevent = document.createevent('mouseevents');
-      clickevent.initevent('dblclick', true, true);
-      x.dispatchevent(clickevent);
+      if (window.MouseEvent) {
+        const event = new MouseEvent('dblclick');
+        x.dispatchEvent(event)
+      } else {
+        x.click();
+        x.click();
+        const event = document.createEvent('mouseevents');
+        event.initEvent('dblclick', true, true);
+        x.dispatchEvent(event);
+      }
     }", element, driver = x$driver)
   } else {
     element <- get_element_for_action(
@@ -185,7 +192,7 @@ double_click <- function(x, js = FALSE, timeout = NULL) {
       x$driver$mouseMoveToLocation(
         x = round(size$width / 3),
         y = round(size$height / 3),
-        webelement = element
+        webElement = element
       )
       
       x$driver$doubleclick()
@@ -207,7 +214,7 @@ right_click <- function(x, js = FALSE, timeout = NULL) {
 
   timeout <- get_timeout(timeout, x$timeout)
   
-  if (js) {
+  if (js || uses_selenium(x$driver)) {
     element <- get_element_for_action(
       x,
       action = "right click {.arg x} using javascript",
@@ -217,12 +224,45 @@ right_click <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("be enabled")
     )
     
-    execute_js_fn_on("function(element) {
-      element.click(); 
-      let clickevent = document.createevent('mouseevents');
-      clickevent.initevent('contextmenu', true, true);
-      element.dispatchevent(clickevent);
-    }", list(element))
+    execute_js_fn_on("function(x) {
+      if (window.MouseEvent) {
+        const ev1 = new MouseEvent('mousedown', {
+            bubbles: true,
+            cancelable: false,
+            view: window,
+            button: 2,
+            buttons: 2,
+            clientX: x.getBoundingClientRect().x,
+            clientY: x.getBoundingClientRect().y
+        });
+        x.dispatchEvent(ev1);
+        const ev2 = new MouseEvent('mouseup', {
+            bubbles: true,
+            cancelable: false,
+            view: window,
+            button: 2,
+            buttons: 0,
+            clientX: x.getBoundingClientRect().x,
+            clientY: x.getBoundingClientRect().y
+        });
+        x.dispatchEvent(ev2);
+        const ev3 = new MouseEvent('contextmenu', {
+            bubbles: true,
+            cancelable: false,
+            view: window,
+            button: 2,
+            buttons: 0,
+            clientX: x.getBoundingClientRect().x,
+            clientY: x.getBoundingClientRect().y
+        });
+        x.dispatchEvent(ev3);
+      } else {
+        x.click();
+        const event = document.createEvent('mouseevents');
+        event.initEvent('contextmenu', true, true);
+        x.dispatchEvent(event);
+      }
+    }", element, driver = x$driver)
   } else {
     element <- get_element_for_action(
       x,
@@ -239,7 +279,7 @@ right_click <- function(x, js = FALSE, timeout = NULL) {
       x$driver$mouseMoveToLocation(
         x = round(size$width / 3),
         y = round(size$height / 3),
-        webelement = element
+        webElement = element
       )
       
       x$driver$click(2)
@@ -308,11 +348,17 @@ hover <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("be enabled")
     )
 
-    execute_js_fn_on("function(element) {
-      element.moveToElement(element);
-      let clickevent = document.createevent('mouseevents');
-      clickevent.initevent('mouseover', true, true);
-      element.dispatchevent(clickevent);
+    execute_js_fn_on("function(x) {
+      if (window.MouseEvent) {
+        const event = new MouseEvent('mouseover');
+        x.dispatchEvent(event)
+      } else {
+        x.click();
+        x.click();
+        const event = document.createEvent('mouseevents');
+        event.initEvent('mouseover', true, true);
+        x.dispatchEvent(event);
+      }
     }", list(element))
   } else {
     element <- get_element_for_action(
@@ -330,7 +376,7 @@ hover <- function(x, js = FALSE, timeout = NULL) {
       x$driver$mouseMoveToLocation(
         x = round(size$width / 3),
         y = round(size$height / 3),
-        webelement = element
+        webElement = element
       )
     } else {
       hover_chromote(element, driver = x$driver)
@@ -605,14 +651,10 @@ clear_value <- function(x, timeout = NULL) {
     failure_messages = c("was not enabled"),
     conditions_text = c("be enabled")
   )
-
-  execute_js_fn_on(
-    paste0("x => x.setAttribute('value', '')"),
-    element, driver = x$driver
-  )
   
   if (uses_selenium(x$driver)) {
     element$clearElement()
+    element$sendKeysToElement(list(" ", RSelenium::selKeys$backspace))
   } else {
     chromote_clear(element, x$driver)
   }
@@ -744,7 +786,7 @@ scroll_to <- function(x, js = FALSE, timeout = NULL) {
       size <- element$getElementSize()
 
       x$driver$mouseMoveToLocation(
-        webelement = element
+        webElement = element
       )
     } else {
       chromote_scroll_into_view(backend_id = element, driver = x$driver)
@@ -764,11 +806,6 @@ scroll_to <- function(x, js = FALSE, timeout = NULL) {
 #' @param x A `selenider_element` object.
 #' @param js Whether to submit the form using JavaScript.
 #' @param timeout How long to wait for the element to exist.
-#'
-#' @details
-#' This method is similar to clicking a submit button within the form, but
-#' there are a few differences: see
-#' <https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/submit>
 #'
 #' @returns `x`, invisibly
 #'
@@ -818,17 +855,17 @@ submit <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("have a form element as its ancestor")
     )
 
-    result <- execute_js_fn_on("function(element) {
+    result <- unpack_list(execute_js_fn_on("function(element) {
       while (element != null) {
         if (element.tagName == 'FORM') {
-          element.submit();
+          element.requestSubmit();
           return true;
         }
 
         element = element.parentElement;
       }
       return false;
-    }", element, driver = x$driver)
+    }", element, driver = x$driver))
 
     if (!result) {
       cli::cli_abort(c(

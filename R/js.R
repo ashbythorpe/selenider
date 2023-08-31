@@ -58,7 +58,7 @@ execute_js_fn <- function(fn, ..., timeout = NULL, session = NULL) {
         final_args[[i]] <- arg
       }
     }
-    unpack_list(driver$executeScript(script, args))
+    driver$executeScript(script, args)
   } else {
     chromote_execute_js_fn(fn, args, .driver = driver, .driver_id = driver_id, .timeout = timeout)
   }
