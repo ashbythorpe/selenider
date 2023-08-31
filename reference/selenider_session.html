@@ -119,7 +119,7 @@ be headless.</p></dd>
 <dt>driver</dt>
 <dd><p>A driver object to use instead of creating one manually. This
 can be one of:</p><ul><li><p>A <a href="http://rstudio.github.io/chromote/reference/ChromoteSession.html" class="external-link">chromote::ChromoteSession</a> object (the result of <code>create_chromote_session()</code>).</p></li>
-<li><p>A shinytest2::AppDriver object.</p></li>
+<li><p>A <a href="https://rstudio.github.io/shinytest2/reference/AppDriver.html" class="external-link">shinytest2::AppDriver</a> object.</p></li>
 <li><p>An <code><a href="https://docs.ropensci.org/RSelenium/reference/remoteDriver-class.html" class="external-link">RSelenium::remoteDriver()</a></code> object (the result of <code>create_selenium_client()</code>).</p></li>
 <li><p>A Selenium server object (the result of <code><a href="https://docs.ropensci.org/wdman/reference/selenium.html" class="external-link">wdman::selenium()</a></code>, or
 <code>create_selenium_server()</code>). In this case, the client object will be created using
@@ -202,7 +202,7 @@ underlying <a href="http://rstudio.github.io/chromote/reference/Chromote.html" c
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>session <span class="ot">&lt;-</span> <span class="fu">selenider_session</span>(</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">driver =</span> <span class="fu">create_chromote_session</span>(<span class="at">parent =</span> my_chromote_object)</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre><p></p></div>
-<p>You can also supply a shinytest2::AppDriver object, allowing selenider and
+<p>You can also supply a <a href="https://rstudio.github.io/shinytest2/reference/AppDriver.html" class="external-link">shinytest2::AppDriver</a> object, allowing selenider and
 shinytest2 to share a session:</p>
 <p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>shiny_app <span class="ot">&lt;-</span> shiny<span class="sc">::</span><span class="fu">shinyApp</span>(</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">ui =</span> shiny<span class="sc">::</span><span class="fu">fluidPage</span>(</span>
