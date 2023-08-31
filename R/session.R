@@ -431,7 +431,7 @@ check_supplied_driver <- function(x, browser = NULL, call = rlang::caller_env())
 
     list(client = client, server = server)
   } else if (is_selenium_client(x)) {
-    list(client = client)
+    list(client = x)
   } else if (is.list(x) || is.environment(x)) {
     nms <- names(x)
 
