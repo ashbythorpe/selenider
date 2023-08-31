@@ -30,6 +30,7 @@ Suggests:
     purrr,
     RSelenium,
     rvest,
+    shinytest2,
     showimage,
     testthat (>= 3.0.0),
     wdman,
