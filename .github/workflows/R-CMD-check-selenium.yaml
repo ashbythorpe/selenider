@@ -28,12 +28,10 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
       SELENIDER_PORT: 4444
+      SELENIDER_DOCKER: TRUE
 
     steps:
       - uses: actions/checkout@v3
-
-      - name: Get IP Address
-        run: echo "SELENIDER_IP=$(docker-machine ip)" >> $GITHUB_ENV
 
       - uses: r-lib/actions/setup-pandoc@v2
 
