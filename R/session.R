@@ -206,7 +206,6 @@ selenider_session <- function(session = NULL,
     cli::cli_warn("{.arg session} is {.val selenium}, ignoring {.arg view}.")
   }
   check_number_decimal(timeout, allow_null = TRUE)
-  check_driver(driver, allow_null = TRUE)
   check_bool(local)
   check_bool(quiet)
   check_environment(.env)
