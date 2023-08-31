@@ -21,7 +21,7 @@ selenider_test_session <- function(x, .env = rlang::caller_env()) {
     }, envir = .env)
   } else if (docker) {
     if (ip == "") {
-      rlang::abort("IP not set.")
+      ip <- "172.17.0.1"
     }
 
     client <- create_selenium_client(browser, port = port, remoteServerAddr = ip)
