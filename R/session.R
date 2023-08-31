@@ -583,7 +583,9 @@ close_session <- function(x = NULL) {
       }
     )
 
-    invisible(x$driver$server$stop())
+    if ("server" %in% names(x$driver)) {
+      invisible(x$driver$server$stop())
+    }
   } else {
     invisible(x$driver$close())
   }
