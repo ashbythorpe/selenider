@@ -25,7 +25,7 @@ selenider_test_session <- function(x, .env = rlang::caller_env()) {
     }
 
     client <- create_selenium_client(browser, port = port, remoteServerAddr = ip)
-    result <- selenider_session(driver = client)
+    result <- selenider_session(driver = client, .env = .env)
   } else {
     result <- selenider_session(session, browser = browser, .env = .env)
   }
