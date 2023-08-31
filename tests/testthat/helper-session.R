@@ -1,7 +1,7 @@
 selenider_test_session <- function(x, .env = rlang::caller_env()) {
   session <- Sys.getenv("SELENIDER_SESSION", "chromote")
   browser <- Sys.getenv("SELENIDER_BROWSER", "chrome")
-  ip <- as.logical(Sys.getenv("SELENIDER_DOCKER", "FALSE"))
+  docker <- as.logical(Sys.getenv("SELENIDER_DOCKER", "FALSE"))
   port <- as.integer(Sys.getenv("SELENIDER_PORT", "4567"))
 
   if (session == "chromote") {
