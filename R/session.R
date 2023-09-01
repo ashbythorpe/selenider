@@ -365,7 +365,13 @@ create_selenium_client <- function(browser, port = 4567L, ...) {
       }
     )
 
-    if (is.null(res)) {
+    if (is.null(res) || !isTRUE(res$ready)) {
+      if (count >= 5) {
+        cli::cli_abort(c(
+          "We could not determine whether the server was successfully started after {count} attempts.",
+          "Value of {.code driver$getStatus()}: {.val {res$ready}}."
+        ))
+      }
       count <- count + 1L
       Sys.sleep(1)
     } else {
