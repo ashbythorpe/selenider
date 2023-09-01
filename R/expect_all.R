@@ -9,7 +9,7 @@
 #'   that must return a logical value. If multiple conditions are given, they
 #'   must all be `TRUE` for the test to pass. See [html_expect()] for more
 #'   details.
-#' @param testthat Whether to treat the expectation as a `testthat` test. You 
+#' @param testthat Whether to treat the expectation as a `testthat` test. You
 #'   *do not* need to explicitly provide this most of the time, since by default,
 #'   we can use [testthat::is_testing()] to figure out whether `html_expect()` is
 #'   being called from within a `testthat` test.
@@ -29,7 +29,7 @@
 #' For example, the following two expressions are equivalent (where `x` is an
 #' element collection).
 #' ```
-#' html_expect(x, \(element) all(vapply(element_list(element), is_present, logical(1))))
+#' html_expect(x, \(element) all(vapply(as.list(element), is_present, logical(1))))
 #' html_expect_all(x, is_present)
 #' ```
 #'

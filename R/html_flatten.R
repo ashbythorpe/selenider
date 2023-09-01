@@ -32,7 +32,7 @@
 #'   html_expect_all(is_enabled)
 #'
 #' buttons |>
-#'   element_list() |>
+#'   as.list() |>
 #'   lapply(click)
 #'
 #' # Doesn't just have to be single elements

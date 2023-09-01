@@ -11,10 +11,12 @@
 #' of this over traditional iteration techniques is that the laziness of the
 #' elements will be maintained, and nothing will be fetched from the DOM.
 #'
-#' `element_list()` transforms a `selenider_elements` object into a list of
+#' `as.list()` transforms a `selenider_elements` object into a list of
 #' `selenider_element` objects. The result can then be used in for loops and
 #' higher order functions like [lapply()]/[purrr::map()] (whereas a `selenider_element`
 #' object cannot)
+#'
+#' `element_list()` is the underlying function called by `element_list()`.
 #'
 #' @param x A `selenider_elements` object.
 #' @param .f A function to apply to each element of `x`.
@@ -27,7 +29,7 @@
 #' once, and during the `html_flatmap()` call. For this reason, `.f` should not invoke
 #' any side effects or do anything other than selecting sub-elements.
 #'
-#' `element_list()` essentially turns `x` into:
+#' `as.list()`/`element_list()` essentially turns `x` into:
 #' `list(x[[1]], x[[2]], ...)`
 #' However, to do this, the length of `x` must be computed. This means that while
 #' each element inside the list is still lazy, the list itself cannot be considered
@@ -37,7 +39,7 @@
 #'
 #' @returns
 #' `html_flatmap()` returns a `selenider_element` object.
-#' `element_list()` returns a list of `selenider_element` objects.
+#' `as.list()`/`element_list()` returns a list of `selenider_element` objects.
 #'
 #' @examplesIf selenider_available(online = FALSE)
 #' html <- "
@@ -68,12 +70,12 @@
 #'   html_flatmap(html_element, "p")
 #'
 #' # To get the text in each tag, we can't use html_flatmap()
-#' for (elem in element_list(p_tags)) {
+#' for (elem in as.list(p_tags)) {
 #'   print(html_text(elem))
 #' }
 #'
 #' # Or:
-#' lapply(element_list(p_tags), html_text)
+#' lapply(as.list(p_tags), html_text)
 #'
 #' \dontshow{
 #' # Clean up all connections and invalidate default chromote object
@@ -149,6 +151,13 @@ new_flatmap_selector <- function(x, selectors, class) {
 #' @rdname html_flatmap
 #'
 #' @export
+as.list.selenider_elements <- function(x, timeout = NULL, ...) {
+  element_list(x)
+}
+
+#' @rdname html_flatmap
+#'
+#' @export
 element_list <- function(x, timeout = NULL) {
   check_class(x, "selenider_elements")
 
@@ -157,8 +166,4 @@ element_list <- function(x, timeout = NULL) {
   size <- html_size(x, timeout = timeout)
 
   lapply(seq_len(size), function(i) x[[i]])
-}
-
-as.list.selenider_elements <- function(x, timeout = NULL, ...) {
-  element_list(x, timeout)
 }
