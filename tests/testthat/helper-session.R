@@ -26,6 +26,11 @@ selenider_test_session <- function(x, .env = rlang::caller_env()) {
 
     client <- create_selenium_client(browser, port = port)
     result <- selenider_session(driver = client, .env = .env)
+
+    Sys.sleep(10)
+    if (!client$getStatus()$ready) {
+      rlang::abort(as.character(session$driver$client$getStatus()))
+    }
   } else {
     result <- selenider_session(session, browser = browser, .env = .env)
   }
