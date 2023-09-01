@@ -369,7 +369,7 @@ create_selenium_client <- function(browser, port = 4567L, ...) {
       count <- count + 1L
       Sys.sleep(1)
     } else {
-       break
+      break
     }
   }
 

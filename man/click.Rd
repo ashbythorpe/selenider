@@ -15,7 +15,9 @@ right_click(x, js = FALSE, timeout = NULL)
 \arguments{
 \item{x}{A \code{selenider_element} object.}
 
-\item{js}{Whether to click the element using JavaScript.}
+\item{js}{Whether to click the element using JavaScript. For \code{right_click()},
+this is ignored if Selenium is being used, since right clicking using
+RSelenium does not seem to work (so JavaScript is used instead).}
 
 \item{timeout}{How long to wait for the element to exist.}
 }

@@ -28,7 +28,8 @@ selenider_test_session <- function(x, .env = rlang::caller_env()) {
     result <- selenider_session(driver = client, .env = .env)
 
     Sys.sleep(10)
-    if (!client$getStatus()$ready) {
+    ready <- session$driver$client$getStatus()$ready
+    if (!isTRUE(ready)) {
       rlang::abort(as.character(session$driver$client$getStatus()))
     }
   } else {
