@@ -24,7 +24,7 @@ selenider_test_session <- function(x, .env = rlang::caller_env()) {
       ip <- "172.17.0.1"
     }
 
-    client <- create_selenium_client(browser, port = port)
+    client <- create_selenium_client(browser, port = port, remoteServerAddr = ip)
     result <- selenider_session(driver = client, .env = .env)
 
     Sys.sleep(10)
