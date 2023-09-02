@@ -44,10 +44,10 @@ jobs:
         run: docker ps -a
 
       - name: Get docker name
-        run: docker ps -a --format '{{.Name}}'
+        run: docker ps -a --format '{{.Names}}'
 
       - name: Print IP Address
-        run: docker-machine ip $(docker ps -a --format '{{.Name}}')
+        run: docker-machine ip $(docker ps -a --format '{{.Names}}')
 
       - name: Get IP Address
         run: echo "SELENIDER_IP=$(docker-machine ip $(docker ps -a --format '{{.Name}}'))" >> $GITHUB_ENV
