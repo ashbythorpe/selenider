@@ -370,12 +370,12 @@ create_selenium_client <- function(browser, port = 4567L, ...) {
         if (is.null(res)) {
           cli::cli_abort(c(
             "We could not determine whether the server was successfully started after {count} attempts.",
-            as.character(res)
+            "{.code driver$getStatus()} is `NULL`."
           ))
         } else {
           cli::cli_abort(c(
             "We could not determine whether the server was successfully started after {count} attempts.",
-            "Value of {.code driver$getStatus()$ready}: {.val {res$ready}}."
+            as.character(res)
           ))
         }
       }
