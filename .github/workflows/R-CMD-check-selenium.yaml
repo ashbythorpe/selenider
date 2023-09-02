@@ -29,11 +29,12 @@ jobs:
       R_KEEP_PKG_SOURCE: yes
       SELENIDER_SESSION: selenium
       SELENIDER_PORT: 4444
+      SELENIDER_IP: localhost
       SELENIDER_DOCKER: TRUE
 
     steps:
-      - name: Get IP Address
-        run: echo "SELENIDER_IP=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(docker ps -a --format '{{.Names}}'))" >> $GITHUB_ENV
+      # - name: Get IP Address
+      #   run: echo "SELENIDER_IP=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(docker ps -a --format '{{.Names}}'))" >> $GITHUB_ENV
 
       - uses: actions/checkout@v3
 
