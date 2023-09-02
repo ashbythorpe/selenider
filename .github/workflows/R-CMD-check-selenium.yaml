@@ -41,13 +41,13 @@ jobs:
             sudo cp /tmp/docker-machine /usr/local/bin/docker-machine
 
       - name: List docker instances
-        run: docker ps -a
+        run: docker-machine ls
 
       - name: Get docker name
-        run: docker ps -a --format '{{.Names}}'
+        run: docker-machine ls --format '{{.Names}}'
 
       - name: Print IP Address
-        run: docker-machine ip $(docker ps -a --format '{{.Names}}')
+        run: docker-machine ip $(docker-machine ls --format '{{.Names}}')
 
       - name: Get IP Address
         run: echo "SELENIDER_IP=$(docker-machine ip $(docker ps -a --format '{{.Name}}'))" >> $GITHUB_ENV
