@@ -12,6 +12,8 @@ jobs:
   R-CMD-check:
     runs-on: ubuntu-latest
 
+    name: ${{ matrix.browser }}
+
     strategy:
       fail-fast: false
       matrix:
