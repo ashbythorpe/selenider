@@ -31,6 +31,7 @@ selenider_test_session <- function(x, .env = rlang::caller_env()) {
           "Creating selenium client failed with port {.val {port}} ip {.val {ip}}."
         ), parent = e)
       }
+    )
     result <- selenider_session(driver = client, .env = .env)
 
     Sys.sleep(10)
