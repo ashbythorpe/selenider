@@ -50,7 +50,7 @@ jobs:
         run: docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(docker ps -a --format '{{.Names}}')
 
       - name: Get IP Address
-        run: echo "SELENIDER_IP=$(docker-machine ip $(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(docker ps -a --format '{{.Names}}')))" >> $GITHUB_ENV
+        run: echo "SELENIDER_IP=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(docker ps -a --format '{{.Names}}'))" >> $GITHUB_ENV
 
       - uses: r-lib/actions/setup-pandoc@v2
 

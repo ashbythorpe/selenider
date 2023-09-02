@@ -21,7 +21,7 @@ selenider_test_session <- function(x, .env = rlang::caller_env()) {
     }, envir = .env)
   } else if (docker) {
     if (ip == "") {
-      ip <- "172.17.0.1"
+      rlang::abort("To test selenider using docker, the `SELENIDER_IP` environment variable must be set.")
     }
 
     client <- create_selenium_client(browser, port = port, remoteServerAddr = ip)
