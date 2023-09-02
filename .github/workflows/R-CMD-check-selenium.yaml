@@ -27,7 +27,7 @@ jobs:
 
     steps:
       - name: Setup Selenium
-        run: docker run -d -p 4444:4444 --shm-size=2g selenium/standalone-chrome::3.141.0
+        run: docker run -d -p 4444:4444 --shm-size=2g selenium/standalone-chrome:3.141.0
 
       - name: Get IP Address
         run: echo "SELENIDER_IP=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(docker ps -a --format '{{.Names}}'))" >> $GITHUB_ENV
