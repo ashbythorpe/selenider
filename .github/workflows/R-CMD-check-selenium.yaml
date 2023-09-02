@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [main, master]
 
-name: R-CMD-check
+name: R-CMD-check-selenium
 
 jobs:
   R-CMD-check:
@@ -15,12 +15,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        config:
-          - {os: ubuntu-latest,   r: 'release'}
+        browser: [chrome, firefox]
 
     services:
       selenium:
-        image: selenium/standalone-chrome:3.141.0
+        image: selenium/standalone-${{ matrix.browser }}:3.141.0
         ports:
           - 4444:4444
 
