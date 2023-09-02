@@ -43,8 +43,14 @@ jobs:
       - name: List docker instances
         run: docker ps -a
 
+      - name: Get docker name
+        run: docker ps -a --format '{{.Name}}'
+
+      - name: Print IP Address
+        run: docker-machine ip $(docker ps -a --format '{{.Name}}')
+
       - name: Get IP Address
-        run: echo "SELENIDER_IP=$(docker-machine ip selenium)" >> $GITHUB_ENV
+        run: echo "SELENIDER_IP=$(docker-machine ip $(docker ps -a --format '{{.Name}}'))" >> $GITHUB_ENV
 
       - uses: r-lib/actions/setup-pandoc@v2
 
