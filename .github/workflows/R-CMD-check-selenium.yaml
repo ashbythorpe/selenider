@@ -12,12 +12,6 @@ jobs:
   R-CMD-check:
     runs-on: ubuntu-latest
 
-    services:
-      selenium:
-        image: selenium/standalone-chrome:latest
-        ports:
-          - 4445:4444
-
     strategy:
       fail-fast: false
       matrix:
@@ -29,28 +23,14 @@ jobs:
       R_KEEP_PKG_SOURCE: yes
       SELENIDER_SESSION: selenium
       SELENIDER_PORT: 4444
+      SELENIDER_IP: localhost
       SELENIDER_DOCKER: TRUE
 
     steps:
+      - name: Setup Selenium
+      - run: docker run -d -p 4444:4444 --net=host --shm-size=2g selenium/standalone-chrome
+
       - uses: actions/checkout@v3
-
-      - name: Install docker-machine
-        run: >
-          curl -L https://github.com/docker/machine/releases/download/v0.16.1/docker-machine-`uname -s`-`uname -m` >/tmp/docker-machine &&
-            chmod +x /tmp/docker-machine &&
-            sudo cp /tmp/docker-machine /usr/local/bin/docker-machine
-
-      - name: List docker instances
-        run: docker-machine ls
-
-      - name: Get docker name
-        run: docker-machine ls --format '{{.Names}}'
-
-      - name: Print IP Address
-        run: docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(docker ps -a --format '{{.Names}}')
-
-      - name: Get IP Address
-        run: echo "SELENIDER_IP=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(docker ps -a --format '{{.Names}}'))" >> $GITHUB_ENV
 
       - uses: r-lib/actions/setup-pandoc@v2
 
