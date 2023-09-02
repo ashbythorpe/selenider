@@ -375,7 +375,7 @@ create_selenium_client <- function(browser, port = 4567L, ...) {
         } else {
           cli::cli_abort(c(
             "We could not determine whether the server was successfully started after {count} attempts.",
-            as.character(res)
+            typeof(res), class(res)
           ))
         }
       }
