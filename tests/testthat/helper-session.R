@@ -24,7 +24,13 @@ selenider_test_session <- function(x, .env = rlang::caller_env()) {
       rlang::abort("To test selenider using docker, the `SELENIDER_IP` environment variable must be set.")
     }
 
-    client <- create_selenium_client(browser, port = port, remoteServerAddr = ip)
+    client <- rlang::try_fetch(
+      create_selenium_client(browser, port = port, remoteServerAddr = ip),
+      error = function(e) {
+        cli::cli_abort(c(
+          "Creating selenium client failed with port {.val {port}} ip {.val {ip}}."
+        ), parent = e)
+      }
     result <- selenider_session(driver = client, .env = .env)
 
     Sys.sleep(10)
