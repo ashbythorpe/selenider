@@ -27,6 +27,7 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
       SELENIDER_SESSION: selenium
+      SELENIDER_BROWSER: ${{ matrix.browser }}
       SELENIDER_PORT: 4444
       SELENIDER_DOCKER: TRUE
 
