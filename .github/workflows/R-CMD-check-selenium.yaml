@@ -28,7 +28,7 @@ jobs:
 
     steps:
       - name: Setup Selenium
-      - run: docker run -d -p 4444:4444 --net=host --shm-size=2g selenium/standalone-chrome
+        run: docker run -d -p 4444:4444 --net=host --shm-size=2g selenium/standalone-chrome
 
       - uses: actions/checkout@v3
 
