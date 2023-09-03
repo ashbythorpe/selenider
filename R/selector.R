@@ -88,7 +88,7 @@ use_selector <- function(selector, element, driver) {
       find_elements(element, using = using, value = value, driver = driver)
     }, list(names(selector), selector), NULL)
     
-    elem_unique(element_list, driver = driver)
+    elem_common(element_list, driver = driver)
   }
 }
 

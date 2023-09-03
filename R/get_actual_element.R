@@ -6,7 +6,7 @@
 #' element that are not implemented in selenider.
 #'
 #' `get_actual_element()` turns a `selenider_element` object into a single
-#' backendNodeId or [RSelenium::webElement] object. The function will wait for the object 
+#' backendNodeId or [RSelenium::webElement] object. The function will wait for the object
 #' to exist in the DOM.
 #'
 #' `get_actual_elements()` turns a `selenider_elements` object into a list
@@ -147,6 +147,7 @@ get_elements <- function(x) {
   }
 
   if (is_multiple_elements(element) && to_be_filtered != 0) {
+    print("Filtering")
     filter <- selector_to_filter$filter
     relevant_filters <- utils::tail(filter, to_be_filtered)
 

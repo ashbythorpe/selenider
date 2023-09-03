@@ -172,6 +172,7 @@ lazy_filter <- function(x, .f) {
   force(.f)
 
   generator <- coro::generator(function() {
+    print(x)
     value <- next_value(x)
 
     while (!coro::is_exhausted(value)) {

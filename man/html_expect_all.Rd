@@ -50,7 +50,7 @@ within \code{\link[=html_expect]{html_expect()}} and \code{\link[=html_wait_unti
 For example, the following two expressions are equivalent (where \code{x} is an
 element collection).
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{html_expect(x, \\(element) all(vapply(element_list(element), is_present, logical(1))))
+\if{html}{\out{<div class="sourceCode">}}\preformatted{html_expect(x, \\(element) all(vapply(as.list(element), is_present, logical(1))))
 html_expect_all(x, is_present)
 }\if{html}{\out{</div>}}
 

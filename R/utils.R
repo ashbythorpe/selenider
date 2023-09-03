@@ -105,11 +105,18 @@ on_ci <- function() {
   isTRUE(as.logical(Sys.getenv("CI", "false")))
 }
 
-elem_unique <- function(x, driver) {
+elem_common <- function(x, driver) {
   compare_selenium <- function(x, y) selenium_equal(x, y, driver)
   comparison_function <- if (uses_selenium(driver)) compare_selenium else `==`
 
   lazy_intersect_by(x, comparison_function)
+}
+
+elem_unique <- function(x, driver) {
+  compare_selenium <- function(x, y) selenium_equal(x, y, driver)
+  comparison_function <- if (uses_selenium(driver)) compare_selenium else `==`
+
+  lazy_unique(x, comparison_function)
 }
 
 lazy_intersect_by <- function(x, .f) {
@@ -152,6 +159,38 @@ lazy_intersect_by <- function(x, .f) {
   lazy_list(generator)
 }
 
+lazy_unique <- function(x, .f) {
+  if (length(x) == 0) {
+    return(NULL)
+  } else if (length(x) == 1) {
+    return(x[[1]])
+  }
+
+  force(.f)
+  x <- lapply(x, check_lazylist)
+
+  generator <- coro::generator(function() {
+    seen <- list()
+    for (l in x) {
+      local_seen <- list()
+
+      value <- next_value(l)
+
+      while (!coro::is_exhausted(value)) {
+        if (!element_in_eager(value, seen, .f)) {
+          coro::yield(value)
+          local_seen <- append(local_seen, list(value))
+        }
+        value <- next_value(l)
+      }
+
+      seen <- c(seen, local_seen)
+    }
+  })
+
+  lazy_list(generator)
+}
+
 element_in <- function(x, l, .f) {
   index <- 1
   value <- get_item(l, index)
@@ -163,6 +202,16 @@ element_in <- function(x, l, .f) {
 
     index <- index + 1
     value <- get_item(l, index)
+  }
+
+  FALSE
+}
+
+element_in_eager <- function(x, l, .f) {
+  for (a in l) {
+    if (.f(x, a)) {
+      return(TRUE)
+    }
   }
 
   FALSE
@@ -249,7 +298,13 @@ execute_js_fn_on <- function(fn, x, driver) {
 }
 
 unpack_list <- function(x) {
-  if (length(x) == 0) NULL else x[[1]]
+  if (length(x) == 0) {
+    NULL
+  } else if (length(x) == 1) {
+    x[[1]]
+  } else {
+    x
+  }
 }
 
 is_windows <- function() .Platform$OS.type == "windows"

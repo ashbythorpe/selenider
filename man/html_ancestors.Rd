@@ -74,7 +74,7 @@ current <- s("#current")
 # Get all the names of an element collection
 html_names <- function(x) {
   x |>
-    element_list() |>
+    as.list() |>
     vapply(html_name, FUN.VALUE = character(1))
 }
 

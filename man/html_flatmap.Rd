@@ -2,10 +2,13 @@
 % Please edit documentation in R/flatmap.R
 \name{html_flatmap}
 \alias{html_flatmap}
+\alias{as.list.selenider_elements}
 \alias{element_list}
 \title{Iterate over an element collection}
 \usage{
 html_flatmap(x, .f, ...)
+
+\method{as.list}{selenider_elements}(x, timeout = NULL, ...)
 
 element_list(x, timeout = NULL)
 }
@@ -20,7 +23,7 @@ element_list(x, timeout = NULL)
 }
 \value{
 \code{html_flatmap()} returns a \code{selenider_element} object.
-\code{element_list()} returns a list of \code{selenider_element} objects.
+\code{as.list()}/\code{element_list()} returns a list of \code{selenider_element} objects.
 }
 \description{
 Use \code{html_flatmap()} when you want to select further sub-elements
@@ -33,17 +36,19 @@ then be flattened into a single \code{selenider_elements} object. The benefit
 of this over traditional iteration techniques is that the laziness of the
 elements will be maintained, and nothing will be fetched from the DOM.
 
-\code{element_list()} transforms a \code{selenider_elements} object into a list of
+\code{as.list()} transforms a \code{selenider_elements} object into a list of
 \code{selenider_element} objects. The result can then be used in for loops and
 higher order functions like \code{\link[=lapply]{lapply()}}/\code{\link[purrr:map]{purrr::map()}} (whereas a \code{selenider_element}
 object cannot)
+
+\code{element_list()} is the underlying function called by \code{element_list()}.
 
 \code{html_flatmap()} works by executing \code{.f} on a mock element, then recording the
 results in \code{x}. This means that no matter the length of \code{x}, \code{.f} is only evaluated
 once, and during the \code{html_flatmap()} call. For this reason, \code{.f} should not invoke
 any side effects or do anything other than selecting sub-elements.
 
-\code{element_list()} essentially turns \code{x} into:
+\code{as.list()}/\code{element_list()} essentially turns \code{x} into:
 \code{list(x[[1]], x[[2]], ...)}
 However, to do this, the length of \code{x} must be computed. This means that while
 each element inside the list is still lazy, the list itself cannot be considered
@@ -81,12 +86,12 @@ p_tags <- divs |>
   html_flatmap(html_element, "p")
 
 # To get the text in each tag, we can't use html_flatmap()
-for (elem in element_list(p_tags)) {
+for (elem in as.list(p_tags)) {
   print(html_text(elem))
 }
 
 # Or:
-lapply(element_list(p_tags), html_text)
+lapply(as.list(p_tags), html_text)
 
 \dontshow{
 # Clean up all connections and invalidate default chromote object

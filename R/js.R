@@ -3,12 +3,14 @@
 #' Execute a JavaScript function on zero or more arguments.
 #'
 #' `execute_js_expr()` is a simpler version of `execute_js_fn()` that can evaluate
-#' simple expressions (e.g. "2 + 2").
+#' simple expressions (e.g. "alert()"). To return a value, you must do so explicitly
+#' using "return".
 #'
 #' @param fn A string defining the function.
-#' @param ... Arguments to the function/expression
+#' @param ... Arguments to the function/expression. These must be unnamed, since
+#'   JavaScript does not support named arguments.
 #' @param .timeout How long to wait for any elements to exist in the DOM.
-#' @param session The session to use, if `...` does not contain any
+#' @param .session The session to use, if `...` does not contain any
 #'   selenider elements.
 #'
 #' @details
@@ -23,18 +25,12 @@
 #' [cache_element()]), so make sure you only use them while you are sure they are
 #' still on the page.
 #'
-#' `execute_js_expr()` is useful for simple expressions, but has two limitations:
-#' * To return a value, you must do so explicitly using "return".
-#' * The arguments passed into `...` are stored in an array named `arguments`.
-#'   For example, the first argument to `...` can be accessed using `"arguments[0]"`.
-#'   This means that named arguments cannot be used (Hence, arguments passed into 
-#'   `execute_js_expr()`'s dots must not be named).
-#'
 #' @returns
 #' The return value of the JavaScript function, turned back into an R object.
 #'
 #' @export
 execute_js_fn <- function(fn, ..., .timeout = NULL, .session = NULL) {
+  check_dots_unnamed()
   args <- rlang::list2(...)
 
   info <- get_info_from_args(args, .timeout, .session)
@@ -51,7 +47,7 @@ execute_js_fn <- function(fn, ..., .timeout = NULL, .session = NULL) {
 
 #' @rdname execute_js_fn
 #'
-#' @param An expression to execute.
+#' @param expr An expression to execute.
 #'
 #' @export
 execute_js_expr <- function(expr, ..., .timeout = NULL, .session = NULL) {
@@ -64,7 +60,7 @@ execute_js_expr <- function(expr, ..., .timeout = NULL, .session = NULL) {
   timeout <- info$timeout
 
   if (uses_selenium(driver)) {
-    execute_selenium_expr(fn, args, fn = FALSE, driver = driver, timeout = timeout, driver_id = driver_id)
+    execute_selenium_expr(expr, args, fn = FALSE, driver = driver, timeout = timeout, driver_id = driver_id)
   } else {
     chromote_execute_js_fn(expr, args, .driver = driver, .driver_id = driver_id, .timeout = timeout, fn = FALSE)
   }
@@ -83,9 +79,13 @@ get_info_from_args <- function(args, .session, .timeout) {
 
   if (is.null(driver)) {
     if (is.null(.session)) {
-      session <- get_session()
+      .session <- get_session()
     }
     driver <- .session$driver
+    if (uses_selenium(driver)) {
+      driver <- driver$client
+    }
+
     driver_id <- .session$driver_id
     arg_timeout <- .session$timeout
   }
@@ -99,37 +99,37 @@ get_info_from_args <- function(args, .session, .timeout) {
   )
 }
 
-chromote_execute_js_fn <- function(fn, args, .driver = NULL, .driver_id = NULL, .timeout = NULL, fn = TRUE) {
+chromote_execute_js_fn <- function(expr, args, .driver = NULL, .driver_id = NULL, .timeout = NULL, fn = TRUE) {
   rlang::check_installed("jsonlite")
 
   arg_n <- 0
-  expr <- ""
+  expr_body <- ""
   element_args <- list()
   for (i in seq_along(args)) {
     arg <- args[[i]]
     if (is_selenider_element(arg)) {
       name <- get_argument_name(arg_n)
-      expr <- paste0(expr, "let inner_arg_", i, " = ", name, ";")
+      expr_body <- paste0(expr_body, "let inner_arg_", i, " = ", name, ";")
       element_args <- append(element_args, list(chromote_object_id(backend_id = get_element(arg), driver = arg$driver)))
       arg_n <- arg_n + 1
     } else if (is_selenider_elements(arg)) {
       elements <- get_elements(arg)
 
       if (length(elements) == 0) {
-        expr <- paste0(expr, "let inner_arg_", i, " = [];")
+        expr_body <- paste0(expr_body, "let inner_arg_", i, " = [];")
         next
       }
 
       names <- get_argument_names(arg_n + seq_along(elements) - 1)
       arg_n <- arg_n + length(elements)
 
-      expr <- paste0(expr, "let inner_arg_", i, " = [", paste(names, collapse = ","), "];")
+      expr_body <- paste0(expr_body, "let inner_arg_", i, " = [", paste(names, collapse = ","), "];")
       element_args <- c(element_args, lapply(elements, function(x) chromote_object_id(backend_id = x, driver = arg$driver)))
     } else {
-      expr <- paste0(expr, "let inner_arg_", i, " = ", jsonlite::toJSON(arg, auto_unbox = TRUE), ";")
+      expr_body <- paste0(expr_body, "let inner_arg_", i, " = ", jsonlite::toJSON(arg, auto_unbox = TRUE), ";")
     }
   }
-  print(expr)
+  print(expr_body)
 
   outer_fn_expr <- if(arg_n <= 1) {
     "function() {"
@@ -146,7 +146,7 @@ chromote_execute_js_fn <- function(fn, args, .driver = NULL, .driver_id = NULL, 
       paste0(prefixes, paste0("inner_arg_", seq_along(args)), collapse = ",")
     }
 
-    inner_fn_expr <- paste0("return (", fn, ")(", inner_args, ");")
+    inner_fn_expr <- paste0("return (", expr, ")(", inner_args, ");")
   } else {
     arguments_definition <- if (length(args) == 0) {
       "const arguments = [];"
@@ -156,19 +156,17 @@ chromote_execute_js_fn <- function(fn, args, .driver = NULL, .driver_id = NULL, 
 
     inner_fn_expr <- paste0(
       arguments_definition,
-      "return {",
-      fn,
-      "};"
+      expr
     )
   }
 
   final_expr <- paste0(
-    outer_fn_expr, expr, inner_fn_expr, "}"
+    outer_fn_expr, expr_body, inner_fn_expr, "}"
   )
 
   first_element <- if (length(element_args) == 0) {
     # Create a mock object that is not actually used.
-    hromote_object_id(chromote_root_id(.driver), driver = .driver)
+    chromote_object_id(chromote_root_id(.driver), driver = .driver)
   } else {
     element_args[[1]]
   }
@@ -271,110 +269,110 @@ new_js_nodes <- function(x, driver, driver_id, timeout) {
 }
 
 new_js_selector <- function() {
-  res <- list(filters = list())
+  res <- list(filters = list(), to_be_filtered = 0)
 
   class(res) <- "selenider_js_selector"
 
   res
 }
 
-parse_selenium_args <- function(args) {
-  final_args <- vector("list", length = length(args))
-  for (i in seq_along(args)) {
-    arg <- args[[i]]
-    if (inherits(arg, "selenider_element")) {
-      final_args[[i]] <- get_actual_element(arg, timeout = timeout)
-    } else if (inherits(arg, "selenider_elements")) {
-      final_args[[i]] <- get_actual_elements(arg, timeout = timeout)
-    } else {
-      final_args[[i]] <- arg
-    }
-  }
-
-  final_args
-}
-
 parse_selenium_result <- function(x, driver, driver_id, timeout) {
   if (is_selenium_element(x)) {
-    new_js_node(as_webelement(x), driver, driver_id, timeout)
+    new_js_node(as_webelement(x, driver), driver, driver_id, timeout)
+  } else if (inherits(x, "webElement")) {
+    new_js_node(x, driver, driver_id, timeout)
   } else if (is.list(x)) {
+    if (length(x) == 0) {
+      return(NULL)
+    }
     ret <- TRUE
     res <- vector("list", length = length(x))
 
     for (i in seq_along(x)) {
       a <- x[[i]]
-      if (!is_selenium_element(a)) {
+      if (is_selenium_element(a)) {
+        res[[i]] <- as_webelement(a, driver)
+      } else if (inherits(a, "webElement")) {
+        res[[i]] <- a
+      } else {
         ret <- FALSE
         break
-      } else {
-        res[[i]] <- as_webelement(a)
       }
     }
 
     if (ret) {
-      res
+      new_js_nodes(res, driver, driver_id, timeout)
     } else {
-      x
+      unpack_list(x)
     }
   } else {
-    x
+    unpack_list(x)
   }
 }
 
 is_selenium_element <- function(x) {
-  is.list(x) && (length(x) == 1) && (nchar(names(x)) == 35L) && grepl("^element", names(x))
+  is.list(x) && (length(names(x)) == 1) && (nchar(names(x)) == 35L) && grepl("^element", names(x))
 }
 
-as_webelement <- function(x) {
+as_webelement <- function(x, driver) {
   rlang::check_installed("RSelenium")
   RSelenium::webElement$new(as.character(x))$import(driver$export("remoteDriver"))
 }
 
 execute_selenium_expr <- function(expr, args, fn = FALSE, driver, timeout, driver_id) {
   n <- 0
-  expr <- ""
+  expr_body <- ""
   final_args <- list()
   for (i in seq_along(args)) {
     arg <- args[[i]]
     if (is_selenider_element(arg)) {
       name <- paste0("inner_arg_", i)
-      expr <- paste0(expr, name, " = arguments[", n, "];")
+      expr_body <- paste0(expr_body, name, " = arguments[", n, "];")
       final_args <- append(final_args, list(get_actual_element(arg, timeout = timeout)))
       n <- n + 1
     } else if (is_selenider_elements(arg)) {
       elements <- get_actual_elements(arg, timeout = timeout)
 
       if (length(elements) == 0) {
-        expr <- paste0(expr, "let inner_arg_", i, " = [];")
+        expr_body <- paste0(expr_body, "let inner_arg_", i, " = [];")
         next
       }
 
-      names <- paste0("arguments[", n + seq_along(elements), "]")
+      names <- paste0("arguments[", n + seq_along(elements) - 1, "]")
       n <- n + length(elements)
 
-      expr <- paste0(expr, "let inner_arg_", i, " = [", paste(names, collapse = ","), "];")
+      expr_body <- paste0(expr_body, "let inner_arg_", i, " = [", paste(names, collapse = ","), "];")
       final_args <- append(final_args, elements)
     } else {
-      expr <- paste0(expr, "let inner_arg_", i, " = arguments[", n, "];")
+      expr_body <- paste0(expr_body, "let inner_arg_", i, " = arguments[", n, "];")
       final_args <- append(final_args, list(arg))
       n <- n + 1
     }
   }
-  print(expr)
 
-  inner_args <- paste0("inner_arg_", seq_len(i) + 1, collapse = ", ")
+  print(expr_body)
+
+  inner_args <- if (is.null(i)) "" else paste0("inner_arg_", seq_len(i), collapse = ", ")
   if (fn) {
     return_expr <- paste0("return (", expr, ")(", inner_args, ");")
   } else {
     return_expr <- paste0(
       "return (() => {",
       "const arguments = [", inner_args, "];",
-      "return {", expr, "};",
-      "});"
+      expr,
+      "})();"
     )
   }
 
-  result <- driver$executeScript(return_expr, final_args)
+  final_expr <- paste0(
+    expr_body,
+    return_expr
+  )
+
+  print(final_expr)
+  final_args <- if (length(final_args) == 0) list("") else final_args
+
+  result <- driver$executeScript(final_expr, args = final_args)
 
   parse_selenium_result(result, driver, driver_id, timeout)
 }

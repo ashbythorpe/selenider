@@ -2,19 +2,25 @@
 % Please edit documentation in R/js.R
 \name{execute_js_fn}
 \alias{execute_js_fn}
+\alias{execute_js_expr}
 \title{Execute a JavaScript function}
 \usage{
-execute_js_fn(fn, ..., timeout = NULL, session = NULL)
+execute_js_fn(fn, ..., .timeout = NULL, .session = NULL)
+
+execute_js_expr(expr, ..., .timeout = NULL, .session = NULL)
 }
 \arguments{
 \item{fn}{A string defining the function.}
 
-\item{...}{Arguments to the function.}
+\item{...}{Arguments to the function/expression. These must be unnamed, since
+JavaScript does not support named arguments.}
 
-\item{timeout}{How long to wait for any elements to exist in the DOM.}
+\item{.timeout}{How long to wait for any elements to exist in the DOM.}
 
-\item{session}{The session to use, if \code{...} does not contain any
+\item{.session}{The session to use, if \code{...} does not contain any
 selenider elements.}
+
+\item{expr}{An expression to execute.}
 }
 \value{
 The return value of the JavaScript function, turned back into an R object.
@@ -23,12 +29,18 @@ The return value of the JavaScript function, turned back into an R object.
 Execute a JavaScript function on zero or more arguments.
 }
 \details{
+\code{execute_js_expr()} is a simpler version of \code{execute_js_fn()} that can evaluate
+simple expressions (e.g. "alert()"). To return a value, you must do so explicitly
+using "return".
+
 \code{...} can contain \code{selenider_element}/\code{selenider_elements} objects,
 which will be collected and then passed into the function. However,
 more complex objects (e.g. lists of selenider elements) will not be
 moved into the JavaScript world correctly.
 
-Additionally, if the JavaScript function returns a node or array of
-nodes, they will be turned back into \code{selenider_element}/\code{selenider_elements}
-objects.
+Similarly, nodes and lists of nodes returned from a JavaScript function will
+be converted into their corresponding \code{selenider_element}/\code{selenider_elements}
+objects, while more complex objects will not. These elements are not lazy (see
+\code{\link[=cache_element]{cache_element()}}), so make sure you only use them while you are sure they are
+still on the page.
 }

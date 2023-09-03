@@ -61,10 +61,7 @@ Use \code{\link[withr:defer]{withr::deferred_run()}} to reset any local sessions
 \code{local_session()}.
 }
 \examples{
-\dontshow{if (selenider_available(online = FALSE) && Sys.setenv("_R_CHECK_CONNECTIONS_LEFT_OPEN_" = "FALSE")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-\dontshow{
-vctrs::s3_register("base::print", "selenider_session", function(xm, ...) cat("A selenider session\n"))
-}
+\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # Since we don't want to open a bunch of sessions for no reason
 mock_session <- function() {
   structure(
@@ -72,6 +69,9 @@ mock_session <- function() {
     class = c("selenider_session")
   )
 }
+
+# Create a custom print method for our custom session
+vctrs::s3_register("base::print", "selenider_session", function(xm, ...) cat("A selenider session\n"))
 
 # Don't set the local session, since we want to do it manually.
 session_1 <- mock_session()
