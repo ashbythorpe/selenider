@@ -112,7 +112,7 @@ to the use of <code>all(vapply(FUN.VALUE = logical(1)))</code> (or <code><a href
 within <code><a href="html_expect.html">html_expect()</a></code> and <code><a href="html_expect.html">html_wait_until()</a></code>.</p>
 <p>For example, the following two expressions are equivalent (where <code>x</code> is an
 element collection).</p>
-<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">html_expect</span>(x, \(element) <span class="fu">all</span>(<span class="fu">vapply</span>(<span class="fu">element_list</span>(element), is_present, <span class="fu">logical</span>(<span class="dv">1</span>))))</span>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">html_expect</span>(x, \(element) <span class="fu">all</span>(<span class="fu">vapply</span>(<span class="fu">as.list</span>(element), is_present, <span class="fu">logical</span>(<span class="dv">1</span>))))</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">html_expect_all</span>(x, is_present)</span></code></pre><p></p></div>
 <p>However, the second example will give a more detailed error message on failure.</p>
     </div>
@@ -134,7 +134,7 @@ element collection).</p>
 <span class="r-in"><span><span class="st">"</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="minimal_selenider_session.html">minimal_selenider_session</a></span><span class="op">(</span><span class="va">html</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpV9R44g/file18541705b578.html"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpYVjcaE/file184338a5cff1.html"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="s.html">ss</a></span><span class="op">(</span><span class="st">"div"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_expect_all</span><span class="op">(</span><span class="va">is_visible</span>, timeout <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>

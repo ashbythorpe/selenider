@@ -7,15 +7,16 @@ selenider_element/selenider_elements object itself. The result will
 then be flattened into a single selenider_elements object. The benefit
 of this over traditional iteration techniques is that the laziness of the
 elements will be maintained, and nothing will be fetched from the DOM.
-element_list() transforms a selenider_elements object into a list of
+as.list() transforms a selenider_elements object into a list of
 selenider_element objects. The result can then be used in for loops and
 higher order functions like lapply()/purrr::map() (whereas a selenider_element
 object cannot)
+element_list() is the underlying function called by element_list().
 html_flatmap() works by executing .f on a mock element, then recording the
 results in x. This means that no matter the length of x, .f is only evaluated
 once, and during the html_flatmap() call. For this reason, .f should not invoke
 any side effects or do anything other than selecting sub-elements.
-element_list() essentially turns x into:
+as.list()/element_list() essentially turns x into:
 list(x[[1]], x[[2]], ...)
 However, to do this, the length of x must be computed. This means that while
 each element inside the list is still lazy, the list itself cannot be considered
@@ -29,15 +30,16 @@ selenider_element/selenider_elements object itself. The result will
 then be flattened into a single selenider_elements object. The benefit
 of this over traditional iteration techniques is that the laziness of the
 elements will be maintained, and nothing will be fetched from the DOM.
-element_list() transforms a selenider_elements object into a list of
+as.list() transforms a selenider_elements object into a list of
 selenider_element objects. The result can then be used in for loops and
 higher order functions like lapply()/purrr::map() (whereas a selenider_element
 object cannot)
+element_list() is the underlying function called by element_list().
 html_flatmap() works by executing .f on a mock element, then recording the
 results in x. This means that no matter the length of x, .f is only evaluated
 once, and during the html_flatmap() call. For this reason, .f should not invoke
 any side effects or do anything other than selecting sub-elements.
-element_list() essentially turns x into:
+as.list()/element_list() essentially turns x into:
 list(x[[1]], x[[2]], ...)
 However, to do this, the length of x must be computed. This means that while
 each element inside the list is still lazy, the list itself cannot be considered
@@ -101,15 +103,16 @@ a <code>selenider_elements</code> object, provided that the function returns a
 then be flattened into a single <code>selenider_elements</code> object. The benefit
 of this over traditional iteration techniques is that the laziness of the
 elements will be maintained, and nothing will be fetched from the DOM.</p>
-<p><code>element_list()</code> transforms a <code>selenider_elements</code> object into a list of
+<p><code><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list()</a></code> transforms a <code>selenider_elements</code> object into a list of
 <code>selenider_element</code> objects. The result can then be used in for loops and
 higher order functions like <code><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply()</a></code>/<code><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">purrr::map()</a></code> (whereas a <code>selenider_element</code>
 object cannot)</p>
+<p><code>element_list()</code> is the underlying function called by <code>element_list()</code>.</p>
 <p><code>html_flatmap()</code> works by executing <code>.f</code> on a mock element, then recording the
 results in <code>x</code>. This means that no matter the length of <code>x</code>, <code>.f</code> is only evaluated
 once, and during the <code>html_flatmap()</code> call. For this reason, <code>.f</code> should not invoke
 any side effects or do anything other than selecting sub-elements.</p>
-<p><code>element_list()</code> essentially turns <code>x</code> into:
+<p><code><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list()</a></code>/<code>element_list()</code> essentially turns <code>x</code> into:
 <code>list(x[[1]], x[[2]], ...)</code>
 However, to do this, the length of <code>x</code> must be computed. This means that while
 each element inside the list is still lazy, the list itself cannot be considered
@@ -121,6 +124,9 @@ list is an accurate representation of the DOM when it is being used.</p>
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">html_flatmap</span><span class="op">(</span><span class="va">x</span>, <span class="va">.f</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for selenider_elements</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">x</span>, timeout <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">element_list</span><span class="op">(</span><span class="va">x</span>, timeout <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -148,7 +154,7 @@ list is an accurate representation of the DOM when it is being used.</p>
     
 
 <p><code>html_flatmap()</code> returns a <code>selenider_element</code> object.
-<code>element_list()</code> returns a list of <code>selenider_element</code> objects.</p>
+<code><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list()</a></code>/<code>element_list()</code> returns a list of <code>selenider_element</code> objects.</p>
     </div>
 
     <div class="section level2">
@@ -169,7 +175,7 @@ list is an accurate representation of the DOM when it is being used.</p>
 <span class="r-in"><span><span class="st">"</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="minimal_selenider_session.html">minimal_selenider_session</a></span><span class="op">(</span><span class="va">html</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpV9R44g/file185460fa3b22.html"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpYVjcaE/file184317b67ac.html"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">divs</span> <span class="op">&lt;-</span> <span class="fu"><a href="s.html">ss</a></span><span class="op">(</span><span class="st">"div"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -185,13 +191,13 @@ list is an accurate representation of the DOM when it is being used.</p>
 <span class="r-in"><span>  <span class="fu">html_flatmap</span><span class="op">(</span><span class="va">html_element</span>, <span class="st">"p"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the text in each tag, we can't use html_flatmap()</span></span></span>
-<span class="r-in"><span><span class="kw">for</span> <span class="op">(</span><span class="va">elem</span> <span class="kw">in</span> <span class="fu">element_list</span><span class="op">(</span><span class="va">p_tags</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw">for</span> <span class="op">(</span><span class="va">elem</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">p_tags</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="html_text.html">html_text</a></span><span class="op">(</span><span class="va">elem</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> list()</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Or:</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu">element_list</span><span class="op">(</span><span class="va">p_tags</span><span class="op">)</span>, <span class="va">html_text</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">p_tags</span><span class="op">)</span>, <span class="va">html_text</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> list()</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> list()</span>
 <span class="r-in"><span></span></span>

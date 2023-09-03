@@ -106,18 +106,2241 @@ an element does not exist, an error is thrown.
 <span class="r-in"><span><span class="st">"</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="minimal_selenider_session.html">minimal_selenider_session</a></span><span class="op">(</span><span class="va">html</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpV9R44g/file18547b2a1e9c.html"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpYVjcaE/file1843109c1d2f.html"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">submit</span><span class="op">(</span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"input"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in submit(s("input")):</span> To submit `x` using JavaScript, it must exist.</span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> After 4 seconds, `x` was not present.</span>
 <span class="r-in"><span><span class="fu">submit</span><span class="op">(</span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"p"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa7aca9220&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa7aca9220&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa7aca9220&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa74391100&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa74391100&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa74391100&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa76a1fd40&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa76a1fd40&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa76a1fd40&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa79f25148&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa79f25148&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa79f25148&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa79eaf8d0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa79eaf8d0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa79eaf8d0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa75690038&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa75690038&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa75690038&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa743917c8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa743917c8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa743917c8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa77373720&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa77373720&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa77373720&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa782034d8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa782034d8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa782034d8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa79eb3e08&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa79eb3e08&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa79eb3e08&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa77032358&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa77032358&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa77032358&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa740e3738&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa740e3738&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa740e3738&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa78373200&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa78373200&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa78373200&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa73fc3ce0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa73fc3ce0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa73fc3ce0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa7685c5b8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa7685c5b8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa7685c5b8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa78580220&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa78580220&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa78580220&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa74049670&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa74049670&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa74049670&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa796f3850&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa796f3850&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa796f3850&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa77f12958&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa77f12958&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa77f12958&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa799ca898&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa799ca898&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa799ca898&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa78ffb258&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa78ffb258&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa78ffb258&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa744af7a0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa744af7a0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa744af7a0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa760e7ad8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa760e7ad8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa760e7ad8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa6f86c688&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa6f86c688&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa6f86c688&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa79095550&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa79095550&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa79095550&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa77f6d068&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa77f6d068&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa77f6d068&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa74499c68&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa74499c68&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa74499c68&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa7a32d600&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa7a32d600&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa7a32d600&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa77078788&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa77078788&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa77078788&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa767dd2c8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa767dd2c8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa767dd2c8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa78d0ea48&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa78d0ea48&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa78d0ea48&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa73a89bd8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa73a89bd8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa73a89bd8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa78980000&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa78980000&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa78980000&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa77f4e710&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa77f4e710&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa77f4e710&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa76275428&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa76275428&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa76275428&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa76e90100&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa76e90100&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa76e90100&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa73033280&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa73033280&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa73033280&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa7b81fdc0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa7b81fdc0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa7b81fdc0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa7482d880&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa7482d880&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa7482d880&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa7519a2b0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa7519a2b0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa7519a2b0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa77aa5420&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa77aa5420&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa77aa5420&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa77dd3f50&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa77dd3f50&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa77dd3f50&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa76654660&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa76654660&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa76654660&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in submit(s("p")):</span> To submit `x` using JavaScript, it must have a form element as its</span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> ancestor.</span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> After 4 seconds, `x` did not have a form ancestor.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Won't work since doesn't have a form ancestor</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">submit</span><span class="op">(</span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span>, timeout <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa7660b878&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa7660b878&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa7660b878&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[8]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 64</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa77f6b810&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa77f6b810&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa77f6b810&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[8]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 64</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa7b29fbe8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa7b29fbe8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa7b29fbe8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[8]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 64</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa75c55be8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa75c55be8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa75c55be8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[8]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 64</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa7841c338&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa7841c338&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa7841c338&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[8]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 64</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$increment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- x + 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14868&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa7a7dbcd8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$get</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14a98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa7a7dbcd8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $current_value$set</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> function (y) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> x &lt;&lt;- y</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55aa79b14d70&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55aa7a7dbcd8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data[[8]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 64</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "eager_list"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error in submit(s("a"), timeout = 0.5) : </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   To submit `x` using JavaScript, it must have a form element as its</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ancestor.</span>
