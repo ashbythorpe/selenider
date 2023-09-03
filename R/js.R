@@ -284,7 +284,10 @@ parse_selenium_result <- function(x, driver, driver_id, timeout) {
   } else if (is.list(x)) {
     if (length(x) == 0) {
       return(NULL)
+    } else if (length(x) == 1 && inherits(x[[1]], "webElement")) {
+      return(new_js_node(x[[1]], driver, driver_id, timeout))
     }
+
     ret <- TRUE
     res <- vector("list", length = length(x))
 
