@@ -218,16 +218,25 @@ element_in_eager <- function(x, l, .f) {
 }
 
 # Adapted from scales::ordinal()
-ordinal <- function(x) {
+ordinal <- function(x, tail = FALSE) {
   res <- character(length(x))
-  res[x == 1] <- "first"
-  res[x == 2] <- "second"
-  res[x == 3] <- "third"
-  res[res == ""] <- ordinal_numbers(x[res == ""])
+
+  if (tail) {
+    res[x == 1] <- "last"
+    res[x == 2] <- "second-last"
+    res[x == 3] <- "third-last"
+    res[res == ""] <- paste0(ordinal_numbers(x[res == ""]), "-last")
+  } else {
+    res[x == 1] <- "first"
+    res[x == 2] <- "second"
+    res[x == 3] <- "third"
+    res[res == ""] <- ordinal_numbers(x[res == ""])
+  }
+
   res
 }
 
-ordinal_numbers <- function(x) {
+ordinal_numbers <- function(x, tail = FALSE) {
   rules <- list(
     st = "(?<!1)1$",
     nd = "(?<!1)2$",
@@ -239,10 +248,17 @@ ordinal_numbers <- function(x) {
   
   out <- utils::stack(lapply(rules, grep, x = x, perl = TRUE))
   out <- out[!duplicated(out$values), ] # only first result should be considered
-  paste0(
+  res <- paste0(
     x,
     out$ind[order(out$values)]
   )
+
+  if (tail) {
+    res[x == 1] <- "last"
+    res[x != 1] <- paste0(res[x != 1], "-last")
+  }
+
+  res
 }
 
 call_insert <- function(call, elem_name, quo = TRUE) {
@@ -277,6 +293,16 @@ find_using <- function(x, .f, .default = NULL) {
 escape_squirlies <- function(x) {
   x <- gsub("{", "{{", x, fixed = TRUE)
   gsub("}", "}}", x, fixed = TRUE)
+}
+
+format_value <- function(x) {
+  if (is.null(x)) {
+    "{.code NULL}"
+  } else if (is.na(x)) {
+    paste0("{.code ", x, "}")
+  } else {
+    paste0("{.val ", x, "}")
+  }
 }
 
 is_multiple_elements <- function(x) {

@@ -1,10 +1,17 @@
 #' Execute a JavaScript function
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' Execute a JavaScript function on zero or more arguments.
 #'
 #' `execute_js_expr()` is a simpler version of `execute_js_fn()` that can evaluate
 #' simple expressions (e.g. "alert()"). To return a value, you must do so explicitly
 #' using "return".
+#'
+#' These functions are experimental because their names and parameters are liable to
+#' change. Additonally, their behaviour can be inconsistent between different session types
+#' (chromote and selenium) and different browsers.
 #'
 #' @param fn A string defining the function.
 #' @param ... Arguments to the function/expression. These must be unnamed, since
@@ -30,6 +37,7 @@
 #'
 #' @export
 execute_js_fn <- function(fn, ..., .timeout = NULL, .session = NULL) {
+  lifecycle::signal_stage("experimental", "execute_js_fn()")
   check_dots_unnamed()
   args <- rlang::list2(...)
 
@@ -51,6 +59,7 @@ execute_js_fn <- function(fn, ..., .timeout = NULL, .session = NULL) {
 #'
 #' @export
 execute_js_expr <- function(expr, ..., .timeout = NULL, .session = NULL) {
+  lifecycle::signal_stage("experimental", "execute_js_expr()")
   check_dots_unnamed()
   args <- rlang::list2(...)
 

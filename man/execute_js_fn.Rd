@@ -26,13 +26,19 @@ selenider elements.}
 The return value of the JavaScript function, turned back into an R object.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Execute a JavaScript function on zero or more arguments.
-}
-\details{
+
 \code{execute_js_expr()} is a simpler version of \code{execute_js_fn()} that can evaluate
 simple expressions (e.g. "alert()"). To return a value, you must do so explicitly
 using "return".
 
+These functions are experimental because their names and parameters are liable to
+change. Additonally, their behaviour can be inconsistent between different session types
+(chromote and selenium) and different browsers.
+}
+\details{
 \code{...} can contain \code{selenider_element}/\code{selenider_elements} objects,
 which will be collected and then passed into the function. However,
 more complex objects (e.g. lists of selenider elements) will not be

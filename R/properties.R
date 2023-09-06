@@ -396,11 +396,8 @@ html_value <- function(x, ptype = character(), timeout = NULL) {
     if (is.null(result) || identical(result, "")) {
       vctrs::vec_cast(NA, ptype)
     } else {
-
-      if (is.integer(ptype)) {
-        return(suppressWarnings(as.integer(result)))
-      } else if (is.double(ptype)) {
-        return(suppressWarnings(as.double(result)))
+      if (is.numeric(ptype)) {
+        result <- suppressWarnings(as.numeric(result))
       }
 
       vctrs::vec_cast(result, ptype)

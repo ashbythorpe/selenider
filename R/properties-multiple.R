@@ -36,10 +36,18 @@ html_size <- function(x, timeout = NULL) {
   elements <- get_with_timeout(timeout, get_elements, x)
 
   if (is.null(elements)) {
-    cli::cli_abort(c(
-      "To get the number of elements in {.arg x}, its parent must exist.",
-      "After {.val timeout} seconds, {.arg x}'s parent did not exist."
-    ))
+    cli::cli_abort(
+      c(
+        "To get the number of elements in {.arg x}, its parent must exist.",
+        "i" = paste0(format_timeout_for_error(timeout), "{.arg x}'s parent did not exist.")
+      ),
+      class = c(
+        "error_not_actionable",
+        "selenider_error_absent_parent",
+        "selenider_error_absent_element",
+        "expect_error_continue"
+      )
+    )
   } else {
     length(elements)
   }

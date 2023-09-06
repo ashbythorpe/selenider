@@ -13,7 +13,7 @@ stop_absent_parent_element <- function(call = rlang::caller_env()) {
   cli::cli_abort(
     c("{.arg x}'s parent element does not exist in the DOM."), 
     class = c(
-      "selenider_error_absent_parent_element",
+      "selenider_error_absent_parent",
       "selenider_error_absent_element",
       "expect_error_continue"
     ),
@@ -89,8 +89,8 @@ stop_subscript_max_length <- function(i, call = rlang::caller_env()) {
 
 stop_no_conditions <- function(call = rlang::caller_env()) {
   cli::cli_abort(c(
-    "No conditions were specified",
-    "i" = "Try specifying a condition",
+    "No conditions were specified.",
+    "i" = "Try specifying a condition.",
     "x" = "Instead of: {.code html_expect(element)}",
     "v" = "Try: {.code html_expect(element, is_present)}"
   ), class = "selenider_error_no_conditions", call = call)

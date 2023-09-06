@@ -115,56 +115,9 @@ parse_condition <- function(x, elem_name) {
     stop_condition_exists()
   }
 
-  if (quo_is_call(x)) {
-    if (is_call_simple(x)) {
-      name <- call_name(x)
+  new_expr <- parse_condition_expr(quo_get_expr(x), elem_name)
 
-      if (name %in% c("(", "!", "negate", "Negate")) {
-        return(new_quosure(call2(
-          name, parse_condition_expr(call_args(x)[[1]], elem_name), .ns = call_ns(x)
-        )))
-      } else if (name %in% c("|", "||", "&", "&&")) {
-        args <- call_args(x)
-
-        return(new_quosure(
-          call2(
-            name,
-            parse_condition_expr(args[[1]], elem_name),
-            parse_condition_expr(args[[2]], elem_name),
-            .ns = call_ns(x)
-          ),
-          env
-        ))
-      } else if (name %in% c("all", "any")) {
-        args <- call_args(x)
-        return(new_quosure(
-          call2(
-            name,
-            !!!lapply(args[names(args) != "na.rm"], parse_condition_expr, elem_name),
-            !!!args[names(args) == "na.rm"],
-            .ns = call_ns(x)
-          ),
-          env
-        ))
-      }
-    } else {
-      name <- NA
-    }
-
-    if (!name %in% c("function", "new_function", "as_function", "as_closure")) {
-      if ("x" %in% call_args_names(x)) {
-        return(x)
-      } else {
-        return(call_insert(x, elem_name))
-      }
-    }
-  }
-
-
-  new_quosure(call2(
-    quo_get_expr(x),
-    parse_expr(elem_name)
-  ), env)
+  new_quosure(new_expr, env)
 }
 
 parse_condition_expr <- function(x, elem_name) {
@@ -172,7 +125,11 @@ parse_condition_expr <- function(x, elem_name) {
     if (is_call_simple(x)) {
       name <- call_name(x)
 
-      if (name %in% c("(", "!", "negate", "Negate")) {
+      if (name == "{") {
+        return(x)
+      }
+
+      if (name %in% c("(", "!")) {
         return(call2(
           name, parse_condition_expr(call_args(x)[[1]], elem_name), .ns = call_ns(x)
         ))
@@ -199,7 +156,7 @@ parse_condition_expr <- function(x, elem_name) {
     }
 
     if (!name %in% c("function", "new_function", "as_function", "as_closure")) {
-      if ("x" %in% call_args_names(x)) {
+      if ("x" %in% call_args_names(x) && name %in% names(rlang::ns_env("selenider"))) {
         return(x)
       } else {
         return(call_insert(x, elem_name, quo = FALSE))
@@ -230,13 +187,13 @@ parse_condition_expr <- function(x, elem_name) {
 make_elem_name <- function(x, name = "element") {
   expr <- paste0(lapply(x, get_expr_string), collapse = "")
 
-  collisions <- regmatches(expr, gregexpr(paste0(name, "(?:_*)"), expr))[[1]]
+  collisions <- regmatches(expr, gregexpr(paste0("\\Q", name, "\\E(?:_*)"), expr))[[1]]
 
   if (length(collisions) == 0) {
     return(name)
   }
 
-  underscores <- nchar(collisions) - 7
+  underscores <- nchar(collisions) - nchar(name)
 
   potential <- 0:length(underscores)
 

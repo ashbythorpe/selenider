@@ -202,7 +202,9 @@ get_timeout <- function(user_timeout, element_timeout) {
   } else if (!is.null(element_timeout)) {
     element_timeout
   } else {
-    get_session()$timeout
+    timeout <- get_session(create = FALSE)$timeout
+    
+    if (!is.null(timeout)) timeout else 4
   }
 }
 

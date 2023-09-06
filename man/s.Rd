@@ -39,7 +39,7 @@ select.}
 }
 \value{
 \code{s()} returns a \code{selenider_element} object.
-\code{s()} returns a \code{selenider_elements} object.
+\code{ss()} returns a \code{selenider_elements} object.
 }
 \description{
 Both \code{s()} and \code{ss()} allow you to select elements without specifying a

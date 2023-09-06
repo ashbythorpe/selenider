@@ -680,7 +680,7 @@ get_element_for_action <- function(x,
     if (length(conditions) == 0 || !is_present(x)) {
       stop_not_actionable(c(
         paste0("To ", action, ", it must exist."),
-        "i" = "After {timeout} seconds, {.arg x} was not present."
+        "i" = paste0(format_timeout_for_error(timeout), "{.arg x} was not present.")
       ), call = call, exists = TRUE)
     }
 
@@ -690,7 +690,7 @@ get_element_for_action <- function(x,
       if (!condition(x)) {
         stop_not_actionable(c(
           paste0("To ", action, ", it must ", conditions_text, "."),
-          "i" = "After {timeout} seconds, {.arg x} {failure_messages[[n]]}."
+          "i" = paste0(format_timeout_for_error(timeout), "{.arg x} {failure_messages[[n]]}.")
         ), call = call)
       }
     }
@@ -701,11 +701,19 @@ get_element_for_action <- function(x,
   if (is.null(element)) {
     stop_not_actionable(c(
       paste0("To ", action, ", it must exist."),
-      "i" = "After {timeout} seconds, {.arg x} was not present."
-    ))
+      "i" = paste0(format_timeout_for_error(timeout), "{.arg x} was not present.")
+    ), call = call, exists = TRUE)
   }
 
   element
+}
+
+format_timeout_for_error <- function(x) {
+  if (x == 0) {
+    ""
+  } else {
+    paste("After", timeout, "seconds, ")
+  }
 }
 
 #' Scroll to an element

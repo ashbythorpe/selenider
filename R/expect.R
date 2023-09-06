@@ -272,28 +272,25 @@ diagnose_condition <- function(x,
                                timeout,
                                original_env,
                                testthat,
-                               call_name = NULL,
-                               negated_call_name = NULL,
                                call_env = caller_env(),
                                x_name = "x") {
-  if (is.null(call_name)) {
-    call_name <- if (is_call_simple(call)) call_name(call) else ""
-  }
+  call_name <- if (is_call_simple(call)) call_name(call) else ""
   
   expr_print <- paste0(
     expr_deparse(quo_squash(original_expr)), collapse = "\n"
   )
 
-  condition <- c(
-    "Condition failed after waiting for {timeout} seconds:",
-    "{.code {expr_print}}"
-  )
-  
-  call_name <- switch(call_name,
-    is_in_dom = "is in the DOM",
-    has_name = "has tag name",
-    gsub("_", " ", call_name, fixed = TRUE)
-  )
+  if (timeout == 0) {
+    condition <- c(
+      "Condition failed:",
+      "{.code {expr_print}}"
+    )
+  } else {
+    condition <- c(
+      "Condition failed after waiting for {timeout} seconds:",
+      "{.code {expr_print}}"
+    )
+  }
 
   parent <- NULL
   if (!identical(result, FALSE)) {
@@ -312,39 +309,82 @@ diagnose_condition <- function(x,
           "x" = "Instead of {.code html_expect({expr_print})}",
           "v" = "Use: {.code html_expect(element, {expr_print})}"
         )
+
+        stop_expect_error(condition, parent = parent, call = call_env)
       }
     }
   }
 
-  if (call_name == "!") {
-    invert <- TRUE
+  condition_result <- diagnose_condition_call(
+    condition,
+    x,
+    call = call,
+    call_name = call_name,
+    original_env = original_env
+  )
+  condition <- condition_result$condition
+  call_name <- condition_result$call_name
+  negated_call_name <- condition_result$negated_call_name
+  
+  if (testthat) {
+    # We have already checked that testthat is installed if `testthat` is `TRUE`.
+    html_expect_fail(condition, parent = parent, call = call_env, x = x, x_name = x_name)
+  } else {
+    stop_expect_error(condition, parent = parent, call = call_env)
+  }
+}
+
+get_call_arg <- function(call, name) {
+  fn <- eval_tidy(parse_expr(call_name(call)), env = ns_env("selenider"))
+  args <- call_args(call_match(quo_get_expr(call), fn))
+  args[[name]]
+}
+
+diagnose_condition_call <- function(condition, x, call, call_name, original_env, negated_call_name = NULL) {
+  call_name <- switch(call_name,
+    is_in_dom = "is in the DOM",
+    has_name = "has tag name",
+    gsub("_", " ", call_name, fixed = TRUE)
+  )
+
+  if (call_name %in% c("(", "!")) {
+    invert <- FALSE
     inner_call_name <- call_name
-    while (inner_call_name == "!") {
-      new_call <- call_args(call)[[1]]
+    new_call <- call
+    while (inner_call_name %in% c("(", "!")) {
+      if (inner_call_name == "!") {
+        invert <- !invert
+      }
+      new_call <- call_args(new_call)[[1]]
       inner_call_name <- if (is_call_simple(new_call)) call_name(new_call) else ""
-      invert <- !invert
     }
+
+    inner_call_name <- switch(inner_call_name,
+      is_in_dom = "is in the DOM",
+      has_name = "has tag name",
+      gsub("_", " ", inner_call_name, fixed = TRUE)
+    )
     
     if (!invert) {
-      return(diagnose_condition(
-        x, n, new_call, original_expr, result, timeout, inner_call_name,
-        call_env = call_env
+      return(diagnose_condition_call(
+        condition,
+        x,
+        call = new_call,
+        call_name = inner_call_name,
+        original_env = original_env
       ))
     }
 
     new_call_name <- negate_call_name(inner_call_name)
 
     if (!is.null(x)) {
-      return(diagnose_condition(
+      return(diagnose_condition_call(
+        condition,
         x,
-        n = n,
         call = new_call,
-        original_expr = original_expr,
-        result = result,
-        timeout = timeout,
         call_name = new_call_name,
         negated_call_name = inner_call_name,
-        call_env = call_env
+        original_env = original_env
       ))
     }
   } else if (call_name %in% condition_dependencies$none) {
@@ -362,19 +402,18 @@ diagnose_condition <- function(x,
     }
 
     expected_name <- eval_tidy(get_call_arg(call, "name"), env = original_env)
+    actual_name <- get_or_null(x, html_name, timeout = 0)
 
-    if (is.null(x)) {
+    if (is.null(actual_name)) {
       condition <- c(
         condition,
-        "i" = "{.arg {x_name}} {negated_call_name} {.val {expected_name}}."
+        "i" = paste0("{.arg {x_name}} {negated_call_name} ", format_value(expected_name), ".")
       )
     } else {
-      actual_text <- tryCatch(html_name(x, timeout = 0), error = function(e) NULL)
-
       condition <- c(
         condition,
-        "i" = "{.arg {x_name}} {negated_call_name} {.val {expected_name}}.",
-        "i" = "Actual text: {.val {expected_name}}."
+        "i" = paste0("{.arg {x_name}} {negated_call_name} ", format_value(expected_name), "."),
+        "i" = paste0("Actual tag name: ", format_value(actual_name), ".")
       )
     }
   } else if (call_name %in% condition_dependencies$text) {
@@ -383,19 +422,20 @@ diagnose_condition <- function(x,
     }
 
     target_text <- eval_tidy(get_call_arg(call, "text"), env = original_env)
+    actual_text <- get_or_null(x, html_text, timeout = 0)
 
-    if (is.null(x)) {
+    if (is.null(actual_text)) {
       condition <- c(
         condition,
-        "i" = "{.arg {x_name}} {negated_call_name} {.val {target_text}}."
+        "i" = paste0("{.arg {x_name}} {negated_call_name} ", format_value(target_text), ".")
       )
     } else {
       actual_text <- tryCatch(html_text(x, timeout = 0), error = function(e) NULL)
 
       condition <- c(
         condition,
-        "i" = "{.arg {x_name}} {negated_call_name} {.val {target_text}}.",
-        "i" = "Actual text: {.val {actual_text}}."
+        "i" = paste0("{.arg {x_name}} {negated_call_name} ", format_value(target_text), "."),
+        "i" = paste0("Actual text: ", format_value(actual_text), ".")
       )
     }
   } else if (call_name %in% condition_dependencies$attribute) {
@@ -413,19 +453,18 @@ diagnose_condition <- function(x,
 
     name <- eval_tidy(get_call_arg(call, "name"), env = original_env)
     expected_value <- eval_tidy(get_call_arg(call, "value"), env = original_env)
+    actual_value <- get_or_null(x, html_attr, name, timeout = 0)
     
-    if (is.null(x)) {
+    if (is.null(actual_value)) {
       condition <- c(
         condition,
-        "i" = "{.arg {x_name}}'s {.val {name}} attribute {negated_call_name} {.val {expected_value}}."
+        "i" = paste0("{.arg {x_name}}'s ", format_value(name), " attribute {negated_call_name} ", format_value(expected_value), ".")
       )
     } else {
-      actual_value <- tryCatch(html_attr(x, name, timeout = 0), error = function(e) NULL)
-
       condition <- c(
         condition,
-        "i" = "{.arg {x_name}}'s {.val {name}} attribute {negated_call_name} {.val {expected_value}}.",
-        "i" = "Actual value: {.val {actual_value}}."
+        "i" = paste0("{.arg {x_name}}'s ", format_value(name), " attribute {negated_call_name} ", format_value(expected_value), "."),
+        "i" = paste0("Actual value: ", format_value(actual_value), ".")
       )
     }
   } else if (call_name %in% condition_dependencies$value) {
@@ -434,19 +473,19 @@ diagnose_condition <- function(x,
     }
 
     value <- eval_tidy(get_call_arg(call, "value"), env = original_env)
+    expected_value <- eval_tidy(get_call_arg(call, "value"), env = original_env)
+    actual_value <- get_or_null(x, html_value, timeout = 0)
     
-    if (is.null(x)) {
+    if (is.null(actual_value)) {
       condition <- c(
         condition,
-        "i" = "{.arg {x_name}} {negated_call_name} {.val {expected_value}}."
+        "i" = paste0("{.arg {x_name}} {negated_call_name} ", format_value(expected_value), ".")
       )
     } else {
-      actual_value <- tryCatch(html_value(x, timeout = 0), error = function(e) NULL)
-
       condition <- c(
         condition,
-        "i" = "{.arg {x_name}} {negated_call_name} {.val {expected_value}}.",
-        "i" = "Actual value: {.val {actual_value}}."
+        "i" = paste0("{.arg {x_name}} {negated_call_name} ", format_value(expected_value), "."),
+        "i" = paste0("Actual value: ", format_value(actual_value), ".")
       )
     }
   } else if (call_name %in% condition_dependencies$css) {
@@ -462,19 +501,18 @@ diagnose_condition <- function(x,
 
     name <- eval_tidy(get_call_arg(call, "property"), env = original_env)
     expected_value <- eval_tidy(get_call_arg(call, "value"), env = original_env)
+    actual_value <- get_or_null(x, html_css_property, name, timeout = 0)
     
-    if (is.null(x)) {
+    if (is.null(actual_value)) {
       condition <- c(
         condition,
-        "i" = "{.arg {x_name}}'s {.val {name}} CSS property {negated_call_name} {.val {expected_value}}."
+        "i" = paste0("{.arg {x_name}}'s ", format_value(name), " CSS property {negated_call_name} ", format_value(expected_value), ".")
       )
     } else {
-      actual_value <- tryCatch(html_css_property(x, name, timeout = 0), error = function(e) NULL)
-
       condition <- c(
         condition,
-        "i" = "{.arg {x_name}}'s {.val {name}} CSS property {negated_call_name} {.val {expected_value}}.",
-        "i" = "Actual value: {.val {actual_value}}."
+        "i" = paste0("{.arg {x_name}}'s ", format_value(name), " CSS property {negated_call_name} ", format_value(expected_value), "."),
+        "i" = paste0("Actual value: ", format_value(actual_value), ".")
       )
     }
   } else if (call_name %in% condition_dependencies$length) {
@@ -484,6 +522,7 @@ diagnose_condition <- function(x,
 
     value <- eval_tidy(get_call_arg(call, "n"), env = original_env)
     elements <- if(value == 1) "element" else "elements"
+    actual_length <- get_or_null(x, html_size, timeout = 0)
 
     cond <- switch(
       negated_call_name,
@@ -493,17 +532,16 @@ diagnose_condition <- function(x,
       "does not have at least" = paste("contains less than", value, elements),
     )
 
-    if (is.null(x)) {
+    if (is.null(actual_length)) {
       condition <- c(
         condition,
-        "i" = "{.arg {x_name}} {cond}."
+        "i" = paste0("{.arg {x_name}} ", cond, ".")
       )
     } else {
-      actual_length <- length(x)
       condition <- c(
         condition,
-        "i" = "{.arg {x_name}} {cond}.",
-        "i" = "Actual number of elements: {.val {actual_length}}."
+        "i" = paste0("{.arg {x_name}} ", cond, "."),
+        "i" = paste0("Actual number of elements: {.val ", actual_length, "}.")
       )
     }
   } else if (inherits(x, "selenider_element")) {
@@ -519,9 +557,14 @@ diagnose_condition <- function(x,
       )
     }
   } else if (inherits(x, "selenider_elements")) {
-    l <- length(x)
+    l <- tryCatch(html_size(x, timeout = 0), selenider_error_absent_parent = function(e) NULL)
 
-    if (l == 0L) {
+    if (is.null(l)) {
+      condition <- c(
+        condition,
+        "i" = "{.arg x}'s parent element does not exist, which may have caused the condition to fail."
+      )
+    } else if (l == 0L) {
       condition <- c(
         condition,
         "i" = "{.arg x} contains no elements, which may have caused the condition to fail."
@@ -529,30 +572,23 @@ diagnose_condition <- function(x,
     } else {
       condition <- c(
         condition,
-        "i" = "{.arg x} contains {.val {l}} elements, but the condition still failed."
+        "i" = paste0("{.arg x} contains {.val {", l, "}} element{?s}, but the condition still failed.")
       )
     }
   }
-  
-  if (testthat) {
-    # We have already checked that testthat is installed if `testthat` is `TRUE`.
-    html_expect_fail(condition, parent = parent, call = call_env, x = x, x_name = x_name)
-  } else {
-    stop_expect_error(condition, parent = parent, call = call_env)
-  }
-}
 
-get_call_arg <- function(call, name) {
-  fn <- eval_tidy(parse_expr(call_name(call)), env = ns_env("selenider"))
-  args <- call_args(call_match(quo_get_expr(call), fn))
-  args[[name]]
+  list(
+    condition = condition,
+    call_name = call_name,
+    negated_call_name = negated_call_name
+  )
 }
 
 negate_call_name <- function(x) {
   # Replace e.g. !is present with is not present, but cancel out double negatives
   switch(x,
     "is present" = "is not present",
-    "is in dom" = "is not in the DOM",
+    "is in the DOM" = "is not in the DOM",
     "is missing" = "is present", 
     "is absent" = "is in the DOM",
     "is visible" = "is not visible",
@@ -570,6 +606,14 @@ negate_call_name <- function(x) {
     "has css property" = "does not have css property",
     "has length" = "does not have length",
     "has at least" = "does not have at least",
-    NULL
+    ""
   )
+}
+
+get_or_null <- function(x, .f, ...) {
+  if (is.null(x)) {
+    NULL
+  } else {
+    tryCatch(.f(x, ...), error = function(e) NULL)
+  }
 }

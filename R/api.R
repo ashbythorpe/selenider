@@ -23,7 +23,7 @@
 #'
 #' @returns
 #' `s()` returns a `selenider_element` object.
-#' `s()` returns a `selenider_elements` object.
+#' `ss()` returns a `selenider_elements` object.
 #'
 #' @seealso
 #' * [html_element()] and [html_elements()]

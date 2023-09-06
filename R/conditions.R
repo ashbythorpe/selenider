@@ -356,7 +356,7 @@ has_attr <- function(x, name, value) {
   }
   
   if (length(result) == 0) {
-    if (is.null(value)) {
+    if (is.na(value)) {
       TRUE
     } else {
       FALSE

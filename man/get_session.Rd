@@ -71,7 +71,11 @@ mock_session <- function() {
 }
 
 # Create a custom print method for our custom session
-vctrs::s3_register("base::print", "selenider_session", function(xm, ...) cat("A selenider session\n"))
+vctrs::s3_register(
+  "base::print",
+  "selenider_session",
+  function(x, ...) cat("A selenider session\n")
+)
 
 # Don't set the local session, since we want to do it manually.
 session_1 <- mock_session()
