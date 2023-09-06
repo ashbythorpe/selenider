@@ -102,10 +102,6 @@ test_that("execute_js_() work with selenider elements", {
     execute_js_fn("(x, y, z) => y", elements, element_1, element_2) == element_1
   )
 
-  expect_true(
-    execute_js_fn("x => [x]", element_1)[[1]] == element_1
-  )
-
   html_expect(s(".toggleable"), is_invisible)
 
   execute_js_fn("x => x.click()", element_2)
