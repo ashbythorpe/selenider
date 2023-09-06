@@ -166,7 +166,7 @@ condition on multiple elements.</p></li>
 <span class="r-in"><span><span class="st">&lt;/div&gt;</span></span></span>
 <span class="r-in"><span><span class="st">"</span></span></span>
 <span class="r-in"><span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="minimal_selenider_session.html">minimal_selenider_session</a></span><span class="op">(</span><span class="va">html</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpIlT0FY/file180c5bff8816.html"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/Rtmp7iV2Ue/file180b8262031.html"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class1"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">html_expect</span><span class="op">(</span><span class="va">is_present</span><span class="op">)</span></span></span>
@@ -240,9 +240,9 @@ condition on multiple elements.</p></li>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in html_expect(s("p"), function(elem) identical(html_text(elem),     "Example text")):</span> Condition failed after waiting for 4 seconds:</span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> `function(elem) identical(html_text(elem), "Example text")`</span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `x` does not exist, which may have caused the condition to fail.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `get_element_for_action()`:</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `html_text()`:</span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> To get the text inside `x`, it must exist.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> After 0 seconds, `x` was not present.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `x` was not present.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># If your conditions are not specific to an element, you can omit the `x` argument</span></span></span>
 <span class="r-in"><span><span class="va">elem_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class1"</span><span class="op">)</span></span></span>
@@ -278,9 +278,9 @@ condition on multiple elements.</p></li>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in html_expect(s("p"), function(elem) grepl(html_text(elem), pattern = "Example .*")):</span> Condition failed after waiting for 4 seconds:</span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> `function(elem) grepl(html_text(elem), pattern = "Example .*")`</span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `x` does not exist, which may have caused the condition to fail.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `get_element_for_action()`:</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `html_text()`:</span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> To get the text inside `x`, it must exist.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> After 0 seconds, `x` was not present.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `x` was not present.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Or create a function, to reuse the condition multiple times</span></span></span>
 <span class="r-in"><span><span class="va">text_contains</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">pattern</span><span class="op">)</span> <span class="op">{</span></span></span>
@@ -294,9 +294,9 @@ condition on multiple elements.</p></li>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in html_expect(s("p"), text_contains("Example *")):</span> Condition failed after waiting for 4 seconds:</span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> `text_contains("Example *")`</span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `x` does not exist, which may have caused the condition to fail.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `get_element_for_action()`:</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `html_text()`:</span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> To get the text inside `x`, it must exist.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> After 0 seconds, `x` was not present.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `x` was not present.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># If we want to continue on error, we need to use the "expect_error_continue" class</span></span></span>
 <span class="r-in"><span><span class="co"># This involves making a custom error object</span></span></span>
