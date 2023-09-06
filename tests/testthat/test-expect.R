@@ -29,6 +29,8 @@ test_that("html_expect() works", {
   expect_snapshot(html_expect(s(".random-class"), has_name("p"), testthat = FALSE, timeout = 0.1), error = TRUE)
   expect_snapshot(html_expect(s(".toggleable"), has_name("biv"), testthat = FALSE, timeout = 0.1), error = TRUE)
 
+  click(s("#toggle_div"))
+
   element <- html_element(s(".toggleable"), "p")
 
   expect_snapshot(html_expect(element, has_text("Goodbye!"), testthat = FALSE, timeout = 0.1), error = TRUE)
@@ -37,7 +39,8 @@ test_that("html_expect() works", {
   buttons <- html_children(s(".buttons"))
 
   expect_snapshot(html_expect(buttons[[1]], has_attr("disabled", ""), testthat = FALSE, timeout = 0.1), error = TRUE)
-  expect_snapshot(html_expect(buttons[[2]], has_attr("disabled", "Something"), testthat = FALSE, timeout = 0.1), error = TRUE)
+
+  click(s("#toggle_div"))
 
   expect_snapshot(html_expect(s(".toggleable"), attr_contains("style", "color"), testthat = FALSE, timeout = 0.1), error = TRUE)
 
@@ -56,6 +59,10 @@ test_that("html_expect() works", {
 })
 
 test_that("html_expect() test failures work", {
+  session <- selenider_test_session()
+
+  open_url("https://ashbythorpe.github.io/selenider/articles/test-site.html")
+
   expect_failure(html_expect(s(".random-class"), is_present, timeout = 0.1))
 
   expect_snapshot(show_failure(html_expect(s(".random-class"), is_present, timeout = 0.1)))

@@ -193,18 +193,6 @@
 ---
 
     Code
-      html_expect(buttons[[2]], has_attr("disabled", "Something"), testthat = FALSE,
-      timeout = 0.1)
-    Condition
-      Error in `html_expect()`:
-      ! Condition failed after waiting for 0.1 seconds:
-      `has_attr("disabled", "Something")`
-      i `x`'s "disabled" attribute is not "Something".
-      i Actual value: "".
-
----
-
-    Code
       html_expect(s(".toggleable"), attr_contains("style", "color"), testthat = FALSE,
       timeout = 0.1)
     Condition

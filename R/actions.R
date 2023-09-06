@@ -712,7 +712,7 @@ format_timeout_for_error <- function(x) {
   if (x == 0) {
     ""
   } else {
-    paste("After", timeout, "seconds, ")
+    paste("After", x, "seconds, ")
   }
 }
 

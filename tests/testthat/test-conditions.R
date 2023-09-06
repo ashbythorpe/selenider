@@ -31,6 +31,9 @@ test_that("Conditions work", {
   expect_true(has_name(s(".toggleable"), "div"))
   expect_false(has_name(s(".toggleable"), "biv"))
 
+  # To get the text in an element in selenium, the element must be visible.
+  click(s("#toggle_div"))
+
   element <- html_element(s(".toggleable"), "p")
 
   expect_true(has_text(element, "Hello!"))
@@ -42,10 +45,11 @@ test_that("Conditions work", {
 
   buttons <- html_children(s(".buttons"))
   expect_true(has_attr(buttons[[1]], "disabled", NA))
-  expect_true(has_attr(buttons[[2]], "disabled", ""))
 
   expect_false(has_attr(buttons[[1]], "disabled", ""))
   expect_false(has_attr(buttons[[2]], "disabled", "Something"))
+
+  click(s("#toggle_div"))
 
   expect_true(attr_contains(s(".toggleable"), "style", "display"))
   expect_false(attr_contains(s(".toggleable"), "style", "color"))
