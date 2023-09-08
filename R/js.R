@@ -35,6 +35,27 @@
 #' @returns
 #' The return value of the JavaScript function, turned back into an R object.
 #'
+#' @family global actions
+#'
+#' @examplesIf selenider_available(online = FALSE)
+#' html <- "
+#' <button class='mybutton'>Click me</button>
+#' "
+#' session <- minimal_selenider_session(html)
+#'
+#' execute_js_fn("(x, y) => x + y", 1, 1)
+#'
+#' execute_js_expr("arguments[0] + arguments[1]", 1, 1)
+#'
+#' execute_js_fn("x => x.click()", s(".mybutton"))
+#'
+#' execute_js_expr("arguments[0].click()", s(".mybutton"))
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
+#'
 #' @export
 execute_js_fn <- function(fn, ..., .timeout = NULL, .session = NULL) {
   lifecycle::signal_stage("experimental", "execute_js_fn()")
