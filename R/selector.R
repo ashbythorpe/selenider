@@ -17,7 +17,7 @@ new_selector <- function(css,
   )
   
   args <- args[!vapply(args, is.null, logical(1))]
-  args_without_filter <- args[names(args) != "filter"]
+  args_without_filter <- args[!names(args) %in% c("filter", "to_be_filtered")]
 
   if (length(args_without_filter) == 0) {
     stop_bad_selector()

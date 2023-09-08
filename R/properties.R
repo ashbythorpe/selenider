@@ -424,10 +424,10 @@ get_elements_for_property <- function(x, action, timeout, call = rlang::caller_e
         paste0("To ", action, ", its parent must exist."),
         "i" = paste0(format_timeout_for_error(timeout), "{.arg x}'s parent did not exist.")
       ),
-      call = call
+      call = call,
       class = c(
         "selenider_error_absent_parent",
-        "selenider_error_absent_element",
+        "selenider_error_absent_element"
       )
     )
   }

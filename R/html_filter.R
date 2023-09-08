@@ -131,6 +131,7 @@ html_find <- function(x, ...) {
 `[.selenider_elements` <- function(x, i) {
   i <- vctrs::vec_cast(i, integer())
   i <- stats::na.omit(i)
+  i <- i[i != 0]
 
   if (elements_is_empty(x)) {
     if (all(i > 0L)) {
@@ -176,6 +177,10 @@ check_subscript_vctrs <- function(i, call = rlang::caller_env()) {
 
   check_number_whole(i)
   i <- vctrs::vec_cast(i, integer())
+  
+  if (i == 0) {
+    stop_subscript_0()
+  }
 
   if (elements_is_empty(x)) {
     stop_subscript_max_length(i, 0L)

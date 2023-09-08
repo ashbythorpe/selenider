@@ -109,7 +109,7 @@ c.selenider_elements <- function(...) {
 }
 
 html_combine <- function(elements) {
-  ids <- vapply(elements, function(x) x$driver_id, FUN.VALUE = integer(1))
+  ids <- vapply(elements, function(x) x$driver_id, FUN.VALUE = double(1))
   if (length(unique(ids)) > 1) {
     stop_incompatible_drivers(ids)
   }

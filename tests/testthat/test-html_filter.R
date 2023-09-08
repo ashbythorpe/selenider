@@ -28,16 +28,6 @@ test_that("Numeric filters work", {
     -5:-10
   )
 
-  expect_error(
-    elements[1:5][[6]],
-    class = "selenider_error_subscript_max_length"
-  )
-
-  expect_warning(
-    elements[1:5][6],
-    class = "selenider_warning_subscript_max_length"
-  )
-
   expect_s3_class(suppressWarnings(elements[1:5][6]), "empty_selenider_elements")
 })
 

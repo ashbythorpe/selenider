@@ -42,11 +42,11 @@ stop_expect_error <- function(condition, parent, call, env = rlang::caller_env()
   )
 }
 
-stop_bad_selector <- function() {
+stop_bad_selector <- function(call = rlang::caller_env()) {
   cli::cli_abort(c(
     "No arguments specified to select elements with",
     "i" = "Use `css = '*'` to select all elements"
-  ), class = "selenider_error_bad_selector")
+  ), class = "selenider_error_bad_selector", call = call)
 }
 
 stop_not_actionable <- function(x, call = rlang::caller_env(), class = c(), env = rlang::caller_env()) {
@@ -86,8 +86,21 @@ stop_subscript_na <- function(i, call = rlang::caller_env()) {
   cli::cli_abort(
     c(
       "Invalid subscript {.arg i}.",
-      "x" = "{.arg i} must be an integer, no"
-    )
+      "x" = "{.arg i} must be an integer, not `NA`."
+    ),
+    class = c("selenider_error_subscript", "selenider_error_subscript_na"),
+    call = call
+  )
+}
+
+stop_subscript_0 <- function(call = rlang::caller_env()) {
+  cli::cli_abort(
+    c(
+      "Invalid subscript {.arg i}.",
+      "x" = "{.arg i} must not be 0."
+    ),
+    class = c("selenider_error_subscript", "selenider_error_subscript_zero"),
+    call = call
   )
 }
 
@@ -184,7 +197,7 @@ stop_connect_selenium_server <- function(count, error = NULL, res = NULL, call =
 
 stop_selenium_client <- function(error, browser, call = rlang::caller_env()) {
   cli::cli_abort(
-    "The client of the session ({tools::toTitleCase(browser)}) failed to start."
+    "The client of the session ({tools::toTitleCase(browser)}) failed to start.",
     class = "selenider_error_selenium_client",
     parent = error,
     call = call
@@ -302,8 +315,8 @@ warn_default_port <- function(call = rlang::caller_env()) {
   ), class = "selenider_warning_default_port", call = call)
 }
 
-warn_history_page_not_found <- function(next = TRUE, call = rlang::caller_env()) {
-  if (next) {
+warn_history_page_not_found <- function(next_page = TRUE, call = rlang::caller_env()) {
+  if (next_page) {
     cli::cli_warn("Next page in history not found", class = "selenider_warning_history_page", call = call)
   } else {
     cli::cli_warn("Next page in history not found", class = "selenider_warning_history_page", call = call)

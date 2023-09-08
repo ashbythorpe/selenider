@@ -102,7 +102,7 @@ back <- function(session = NULL) {
       driver$Page$navigateToHistoryEntry(new_id, wait_ = FALSE)
       driver$wait_for(promise)
     } else {
-      warn_history_page_not_found(next = FALSE)
+      warn_history_page_not_found(next_page = FALSE)
     }
   }
 
@@ -134,7 +134,7 @@ forward <- function(session = NULL) {
       driver$Page$navigateToHistoryEntry(new_id, wait_ = FALSE)
       driver$wait_for(promise)
     } else {
-      warn_history_page_not_found(next = TRUE)
+      warn_history_page_not_found(next_page = TRUE)
     }
   }
 
