@@ -4,6 +4,8 @@ selenider_test_session <- function(x, .env = rlang::caller_env()) {
   docker <- as.logical(Sys.getenv("SELENIDER_DOCKER", "FALSE"))
   port <- as.integer(Sys.getenv("SELENIDER_PORT", "4567"))
 
+  skip_if_selenider_unavailable(session)
+
   if (session == "chromote") {
     chromote::set_chrome_args(c(
       # https://peter.sh/experiments/chromium-command-line-switches/#disable-crash-reporter
