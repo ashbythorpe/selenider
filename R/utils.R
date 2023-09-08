@@ -242,51 +242,15 @@ is_linux <- function() Sys.info()[['sysname']] == 'Linux'
 
 #' Cleanup after an example
 #'
-#' Clean up after a selenider example, making sure all environment variables are
-#' reset and no connections are left open.
+#' Clean up after a selenider example, making sure all deferred events are run.
 #'
-#' @param close_session Whether there is still a local session that needs to be
-#'   closed (via [withr::deferred_run()]). This is usually the case.
-#' @param env The environment to get the local session.
+#' @param env The environment in which deferred events are contained.
 #'
 #' @keywords internal
 #'
 #' @export
-selenider_cleanup <- function(close_session = TRUE, env = rlang::caller_env()) {
+selenider_cleanup <- function(env = rlang::caller_env()) {
   Sys.setenv("_R_CHECK_CONNECTIONS_LEFT_OPEN_" = "FALSE")
   try_fetch(withr::deferred_run(env), error = function(e) rlang::abort(c("Error in withr::deferred_run()"), parent = e))
   return(invisible())
-
-  if (close_session) {
-    session <- NULL
-    old <- NULL
-
-    withr_ns <- rlang::ns_env("withr")
-    if (env_has(withr_ns, "exit_frame")) {
-      env <- withr_ns$exit_frame(env)
-    } else {
-      rlang::abort("Can't find exit_frame()")
-    }
-
-    if (length(attr(env, "withr_handlers")) != 0) {
-      # Do everything except actually close the session (since this can cause errors with processx::supervisor_kill())
-      attr(env, "withr_handlers")[[3]]$expr <- rlang::expr(reset_session(session, old, close = FALSE))
-      try_fetch(withr::deferred_run(env), error = function(e) rlang::abort(c("Error in withr::deferred_run()"), parent = e))
-    } else {
-      rlang::abort(as.character(length(attr(env, "withr_handlers"))))
-    }
-  }
-
-  # Kill the Chrome process and the supervisor of it.
-  try_fetch(processx::supervisor_kill(), error = function(e) rlang::abort("Error in processx::supervisor_kill()", parent = e))
-  # Reset the chromote object, ensuring that it is no longer considered active, and so a new
-  # one will be made when [chromote::default_chromote_object()] is called.
-  try_fetch(
-    chromote::set_default_chromote_object(
-      structure(list(is_active = function() FALSE), class = "Chromote")
-    ),
-    error = function(e) rlang::abort("Error chromote::set_default_chromote_object()", parent = e)
-  )
-
-  invisible()
 }
