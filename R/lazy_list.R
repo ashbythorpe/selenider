@@ -1,4 +1,4 @@
-# Simple 
+# Simple mutable objects
 counter <- function() {
   x <- 0
   list(
@@ -122,6 +122,8 @@ next_value <- function(x) {
 #' @returns The value at index `i`.
 #'
 #' @noRd
+#' 
+#' @export
 `[[.lazy_list` <- function(x, i, ...) {
   current_value <- x$current_value$get()
   if (i > current_value) {
@@ -239,7 +241,7 @@ eager_list <- function(x) {
         value <- next_value(x)
       }
     } else {
-      to_exclude <- abs(after)
+      to_exclude <- abs(i)
 
       if (all(seq_len(current_value) %in% to_exclude)) {
         n <- current_value + 1

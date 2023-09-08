@@ -2,17 +2,12 @@
 % Please edit documentation in R/properties.R
 \name{html_name}
 \alias{html_name}
-\alias{html_name.selenider_element}
 \title{Get tag name of an element}
 \usage{
-html_name(x, ...)
-
-\method{html_name}{selenider_element}(x, timeout = NULL, ...)
+html_name(x, timeout = NULL)
 }
 \arguments{
 \item{x}{A \code{selenider_element} object.}
-
-\item{...}{Not used.}
 
 \item{timeout}{The time to wait for \code{x} to exist.}
 }

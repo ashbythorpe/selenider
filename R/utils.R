@@ -192,9 +192,8 @@ find_using <- function(x, .f, .default = NULL) {
   .default
 }
 
-escape_squirlies <- function(x) {
-  x <- gsub("{", "{{", x, fixed = TRUE)
-  gsub("}", "}}", x, fixed = TRUE)
+escape_single_quotes <- function(x) {
+  gsub("'", "\\'", x, fixed = TRUE)
 }
 
 format_value <- function(x) {

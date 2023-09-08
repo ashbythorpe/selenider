@@ -302,7 +302,25 @@
       
       Where `x` is:
       A selenider element selecting:
-      The first element with css selector ".random-class"
+      The first element with css selector ".random-class".
+      
+      
+
+---
+
+    Code
+      show_failure(html_expect(s(".random-class"), is_visible, timeout = 0.1))
+    Output
+      Failed expectation:
+      Condition failed after waiting for 0.1 seconds:
+      `is_visible`
+      i `x` is not visible.
+      Caused by error in `is_visible()`:
+      ! `x` does not exist in the DOM.
+      
+      Where `x` is:
+      A selenider element selecting:
+      The first element with css selector ".random-class".
       
       
 

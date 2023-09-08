@@ -71,12 +71,12 @@ html_flatten <- function(...) {
     ), class = "selenider_error_dots_empty")
   }
   
-  to_combine <- flatten_init(elements, exprs)
+  to_combine <- html_flatten_init(elements, exprs)
   
   html_combine(to_combine)
 }
 
-flatten_init <- function(x, exprs, is_nested = FALSE, index = NULL, call = rlang::caller_env()) {
+html_flatten_init <- function(x, exprs, is_nested = FALSE, index = NULL, call = rlang::caller_env()) {
   accepted_classes <- c("selenider_element", "selenider_elements")
 
   result <- list()
@@ -85,7 +85,7 @@ flatten_init <- function(x, exprs, is_nested = FALSE, index = NULL, call = rlang
 
     if (!inherits_any(element, accepted_classes)) {
       if (is.list(element) && !is_nested) {
-        result <- c(result, flatten_init(element, is_nested = TRUE, index = i, call = call))
+        result <- c(result, html_flatten_init(element, is_nested = TRUE, index = i, call = call))
       } else {
         stop_flatten_dots(x, exprs, i, index, is_nested, call)
       }
@@ -178,14 +178,4 @@ new_flattened_selector <- function(elements) {
   class(res) <- c("selenider_flattened_selector", "selenider_selector")
 
   res
-}
-
-get_selector <- function(x) {
-  if (inherits(x, "selenider_element")) {
-    selectors <- x$selectors
-    selectors[[length(selectors)]]$filters <- c(selectors[[length(selectors)]]$filters, list(1))
-    selectors
-  } else {
-    x$selectors
-  }
 }

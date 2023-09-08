@@ -602,25 +602,30 @@ close_session <- function(x = NULL) {
 }
 
 #' @export
-print.selenider_session <- function(x, ...) {
+print.selenider_session <- function(x, ..., .time = NULL) {
   check_dots_empty()
-  time <- as_pretty_dt(prettyunits::pretty_dt(Sys.time() - x$start_time))
-  
-  current_url <- if (is.null(x$current_url)) {
-    "Nothing" 
+  if (is.null(.time)) {
+    time <- Sys.time() - x$start_time
   } else {
-    paste0("{.url ", x$current_url, "}")
+    time <- .time
   }
+
+  time <- as_pretty_dt(prettyunits::pretty_dt(time))
   
   timeout <- as_pretty_dt(prettyunits::pretty_sec(x$timeout))
+
+  selenium <- uses_selenium(x$driver)
+
+  browser_name <- if (selenium) x$driver$client$browserName else "Chrome"
+  port <- if (selenium) x$driver$client$port else NA
   
   cli::cli({
     cli::cli_text("A selenider session object")
     cli::cli_bullets(c(
       "*" = "Open for {.val {time}}",
-      "*" = "Browser: {.val {x$driver$client$browserName}}",
-      "*" = "Port: {.val {x$driver$client$port}}",
-      "*" = paste0("Currently opened: ", current_url),
+      "*" = "Session: {.val {x$session}}",
+      "*" = "Browser: {.val {browser_name}}",
+      "*" = "Port: {.val {port}}",
       "*" = "Timeout: {.val {timeout}}"
     ))
   })

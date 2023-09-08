@@ -2,19 +2,13 @@
 % Please edit documentation in R/properties.R
 \name{html_attr}
 \alias{html_attr}
-\alias{html_attr.selenider_element}
 \alias{html_attrs}
-\alias{html_attrs.selenider_element}
 \alias{html_value}
 \title{Get element attribute}
 \usage{
-html_attr(x, name, default = NA_character_, ...)
+html_attr(x, name, default = NA_character_, timeout = NULL)
 
-\method{html_attr}{selenider_element}(x, name, default = NA_character_, timeout = NULL, ...)
-
-html_attrs(x, ...)
-
-\method{html_attrs}{selenider_element}(x, timeout = NULL, ...)
+html_attrs(x, timeout = NULL, ...)
 
 html_value(x, ptype = character(), timeout = NULL)
 }
@@ -25,8 +19,6 @@ html_value(x, ptype = character(), timeout = NULL)
 
 \item{default}{The default value to use if the attribute does not exist in
 the element.}
-
-\item{...}{Not used.}
 
 \item{timeout}{The time to wait for \code{x} to exist.}
 

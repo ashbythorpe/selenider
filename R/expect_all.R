@@ -79,10 +79,8 @@ html_expect_all <- function(x, ..., testthat = NULL, timeout = NULL) {
   # `testthat` can only be TRUE if it is installed.
   if (is.null(testthat)) {
     testthat <- is_installed("testthat") && testthat::is_testing()
-  } else {
-    if (testthat) {
-      check_installed("testthat", reason = "for `html_expect(testthat = TRUE)`.")
-    }
+  } else if (testthat) {
+    check_installed("testthat", reason = "for `html_expect(testthat = TRUE)`.")
   }
 
   timeout <- result$timeout

@@ -203,8 +203,6 @@ eval_condition_multiple <- function(x, elements, name) {
         val = res
       ))
     }
-
-    index <- index + 1
   }
 
   TRUE

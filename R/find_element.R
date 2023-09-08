@@ -96,7 +96,7 @@ find_elements <- function(x, using, value, driver) {
     
     selector <- selector_to_css(using, value)
     document <- x$DOM$getDocument()
-    node_ids <- x$DOM$querySelectorAll(document$root$nodeId, value)$nodeIds
+    node_ids <- x$DOM$querySelectorAll(document$root$nodeId, selector)$nodeIds
     lapply(node_ids, chromote_backend_id, driver = x)
   } else if (is.numeric(x)) {
     if (using == "xpath") {
@@ -104,7 +104,7 @@ find_elements <- function(x, using, value, driver) {
     }
 
     selector <- selector_to_css(using, value)
-    node_ids <- driver$DOM$querySelectorAll(chromote_node_id(backend_id = x, driver = driver), value)$nodeIds
+    node_ids <- driver$DOM$querySelectorAll(chromote_node_id(backend_id = x, driver = driver), selector)$nodeIds
     lapply(node_ids, chromote_backend_id, driver = driver)
   }
 }
@@ -116,7 +116,7 @@ selector_to_css <- function(using, value) {
     "class name" = paste0(".", value),
     "name" = paste0("[name = '", value, "']"),
     "link text" = paste0("a:contains(^", value, "$)"),
-    stop(paste0("Unexpected using value: ", using))
+    stop(paste0("Unexpected `using` value: ", using))
   )
 }
 

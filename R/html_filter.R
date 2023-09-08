@@ -80,6 +80,10 @@
 html_filter <- function(x, ...) {
   check_class(x, "selenider_elements")
 
+  if (elements_is_empty(x)) {
+    return(x)
+  }
+
   exprs <- enquos(...)
   arg_names <- lapply(c("a1", "a2", "a3"), function(x) make_elem_name(exprs, x))
   elem_name <- make_elem_name(exprs)
@@ -108,9 +112,16 @@ html_filter <- function(x, ...) {
 #'
 #' @export
 html_find <- function(x, ...) {
+  if (elements_is_empty(x)) {
+    cli::cli_abort(c(
+      "Cannot extract an element from {.arg x}.",
+      "{.arg x} contains 0 elements."
+    ), class = c("selenider_error_empty_elements", "selenider_error_empty_elements_find"))
+  }
+
   x <- html_filter(x, ...)
 
-  x <- add_numeric_filter(x, 1)
+  x <- add_numeric_filter(x, 1, max_subscript_error = TRUE)
 
   class(x) <- "selenider_element"
 
@@ -121,11 +132,34 @@ html_find <- function(x, ...) {
 #'
 #' @export
 `[.selenider_elements` <- function(x, i) {
-  example_vec <- rep(1, max(abs(i), na.rm = TRUE))
-  # Check that i is a valid subscript
-  vctrs::vec_slice(example_vec, i)
+  i <- vctrs::vec_cast(i, integer())
+  i <- stats::na.omit(i)
+
+  if (elements_is_empty(x)) {
+    if (all(i > 0L)) {
+      warn_subscript_max_length(max(i), 0)
+    }
+
+    return(x)
+  }
+
+  if (length(i) == 0) {
+    return(empty_selenider_elements(x$driver, x$driver_id))
+  }
+
+  check_subscript_vctrs(i)
 
   add_numeric_filter(x, i)
+}
+
+# Checks that `i` is invalid using vctrs
+# If `i` can be used to subset a vector, then it can be used to subset
+# a selenider element.
+check_subscript_vctrs <- function(i, call = rlang::caller_env()) {
+  len <- max(abs(i))
+  x <- rep.int(1L, len)
+  # Check that i is a valid subscript
+  vctrs::vec_slice(x, i, error_call = call)
 }
 
 #' @rdname html_filter
@@ -134,46 +168,64 @@ html_find <- function(x, ...) {
 `[[.selenider_elements` <- function(x, i) {
   if (!is.vector(i)) {
     stop_subscript_type(i)
+  } else if (isTRUE(is.na(i))) {
+    stop_subscript_na(i)
   } else if (!is.numeric(i)) {
     NextMethod()
   } else if (length(i) != 1) {
     stop_subscript_length(i)
   }
 
-  x <- add_numeric_filter(x, i)
+
+  check_number_whole(i)
+  i <- vctrs::vec_cast(i, integer())
+
+  if (elements_is_empty(x)) {
+    stop_subscript_max_length(i, 0L)
+  }
+
+  x <- add_numeric_filter(x, i, max_subscript_error = TRUE)
 
   class(x) <- "selenider_element"
 
   x
 }
 
-add_numeric_filter <- function(x, i, call = rlang::caller_env()) {
+add_numeric_filter <- function(x, i, call = rlang::caller_env(), max_subscript_error = FALSE) {
   selectors <- x$selectors
 
   filters <- selectors[[length(selectors)]]$filter
 
-  numeric_filters <- Filter(is.numeric, filters)
-  numeric_filters <- numeric_filters[numeric_filters > 0]
+  is_numeric_and_positive <- function(x) {
+    is.numeric(x) && length(x) > 0 && all(x > 0)
+  }
+  numeric_filters <- Filter(is_numeric_and_positive, filters)
 
   min_length <- if (length(numeric_filters) != 0) min(lengths(numeric_filters)) else Inf
   max_sub <- max(i, na.rm = TRUE)
 
   if (max_sub >= min_length) {
-    cli::cli_warn(c(
-      "Invalid subscript {.arg i}.",
-      "Attempt to select the {ordinal(max_sub)} element of {.arg x}.",
-      "{.arg x} has a known maximum length of {.arg {min_length}}."
-    ), class = "selenider_warning_subscript_max_length", call = call)
+    if (max_subscript_error) {
+      stop_subscript_max_length(max_sub, min_length, call = call)
+    } else {
+      warn_subscript_max_length(max_sub, min_length, call = call)
+    }
   }
 
   if (length(filters) != 0 && is.numeric(filters[[length(filters)]])) {
     filter <- filters[[length(filters)]]
-    if (filter > 0) {
+    if (all(filter > 0)) {
       new_filter <- filter[i]
-    } else if (i > 0) {
-      new_filter <- seq_len(i + length(filter))[filter][i]
+    } else if (all(i > 0)) {
+      new_filter <- seq_len(max(i, na.rm = TRUE) + length(filter))[filter][i]
     } else {
       new_filter <- unique(c(filter, i))
+    }
+
+    new_filter <- stats::na.omit(new_filter)
+
+    if (length(new_filter) == 0) {
+      return(empty_selenider_elements(x$driver, x$driver_id))
     }
 
     x$selectors[[length(selectors)]]$filter[[length(filters)]] <- new_filter

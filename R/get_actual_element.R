@@ -132,6 +132,10 @@ get_element <- function(x) {
 }
 
 get_elements <- function(x) {
+  if (elements_is_empty(x)) {
+    return(list())
+  }
+
   element <- x$element
 
   if (is.null(element)) {
@@ -147,7 +151,6 @@ get_elements <- function(x) {
   }
 
   if (is_multiple_elements(element) && to_be_filtered != 0) {
-    print("Filtering")
     filter <- selector_to_filter$filter
     relevant_filters <- utils::tail(filter, to_be_filtered)
 

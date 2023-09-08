@@ -2,17 +2,12 @@
 % Please edit documentation in R/properties.R
 \name{html_text}
 \alias{html_text}
-\alias{html_text.selenider_element}
 \title{Get element text}
 \usage{
-html_text(x, ...)
-
-\method{html_text}{selenider_element}(x, timeout = NULL, ...)
+html_text(x, timeout = NULL)
 }
 \arguments{
 \item{x}{A \code{selenider_element} object.}
-
-\item{...}{Not used.}
 
 \item{timeout}{The time to wait for \code{x} to exist.}
 }

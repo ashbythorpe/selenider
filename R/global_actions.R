@@ -128,7 +128,7 @@ forward <- function(session = NULL) {
     index <- navigation_history$currentIndex + 1
     history <- navigation_history$entries
     if (index < length(history)) {
-      new_id <- history[[index - 1]]$id
+      new_id <- history[[index + 1]]$id
 
       promise <- driver$Page$loadEventFired(wait_ = FALSE)
       driver$Page$navigateToHistoryEntry(new_id, wait_ = FALSE)
@@ -250,7 +250,7 @@ take_screenshot <- function(file = NULL, view = FALSE, session = NULL) {
       showimage::show_image(file)
     }
   } else {
-    session$driver$screenshot(file, view = view)
+    session$driver$screenshot(file, show = view)
   }
 
   invisible(session)
@@ -286,6 +286,8 @@ get_page_source <- function(session = NULL, ...) {
   if (is.null(session)) {
     session <- get_session()
   }
+
+  driver <- session$driver
 
   if (uses_selenium(driver)) {
     page_source <- unpack_list(driver$client$getPageSource())

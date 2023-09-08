@@ -51,7 +51,6 @@ use_selector <- function(selector, element, driver) {
     elements <- selector$element
     elements$driver <- driver
     actual_elements <- get_elements(elements)
-    print(as.list(actual_elements))
     return(lazy_flatten(lazy_map(actual_elements, function(x) {
       get_elements(list(selectors = selector$selectors, element = x, driver = driver, to_be_found = length(selector$selectors)))
     })))
@@ -84,10 +83,10 @@ use_selector <- function(selector, element, driver) {
         link_text = "link text",
         name
       )
-      
+
       find_elements(element, using = using, value = value, driver = driver)
     }, list(names(selector), selector), NULL)
-    
+
     elem_common(element_list, driver = driver)
   }
 }

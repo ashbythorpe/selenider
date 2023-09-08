@@ -26,7 +26,6 @@
 #'
 #' @export
 html_name <- function(x, timeout = NULL) {
-  check_dots_used()
   check_number_decimal(timeout, allow_null = TRUE)
 
   timeout <- get_timeout(timeout, x$timeout)
@@ -72,7 +71,6 @@ html_name <- function(x, timeout = NULL) {
 #'
 #' @export
 html_text <- function(x, timeout = NULL) {
-  check_dots_used()
   check_number_decimal(timeout, allow_null = TRUE)
 
   timeout <- get_timeout(timeout, x$timeout)
@@ -146,7 +144,6 @@ chromote_get_text <- function(x, driver) {
 #'
 #' @export
 html_attr <- function(x, name, default = NA_character_, timeout = NULL) {
-  check_dots_used()
   check_string(name)
   check_number_decimal(timeout, allow_null = TRUE)
 
@@ -207,7 +204,6 @@ chromote_get_attributes <- function(x, driver) {
 #'
 #' @export
 html_attrs <- function(x, timeout = NULL, ...) {
-  check_dots_used()
   check_number_decimal(timeout, allow_null = TRUE)
 
   timeout <- get_timeout(timeout, x$timeout)

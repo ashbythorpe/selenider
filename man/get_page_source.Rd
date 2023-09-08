@@ -9,13 +9,13 @@ get_page_source(session = NULL, ...)
 \arguments{
 \item{session}{Optionally, a \code{selenider_session} object.}
 
-\item{...}{Passed into \code{\link[=read_html.selenider_session]{read_html.selenider_session()}}}
+\item{...}{Passed into \code{\link[xml2:read_xml]{xml2::read_html()}}}
 }
 \value{
-An XML document, which can be operated on using \code{rvest}.
+An XML document.
 }
 \description{
-A shortcut for \code{xml2::read_html(get_session())}.
+Uses \code{\link[xml2:read_xml]{xml2::read_html()}} to read the page source of the session
 }
 \examples{
 \dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

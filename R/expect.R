@@ -198,10 +198,8 @@ html_expect <- function(x, ..., testthat = NULL, timeout = NULL) {
   # `testthat` can only be TRUE if it is installed.
   if (is.null(testthat)) {
     testthat <- is_installed("testthat") && testthat::is_testing()
-  } else {
-    if (testthat) {
-      check_installed("testthat", reason = "for `html_expect(testthat = TRUE)`.")
-    }
+  } else if (testthat) {
+    check_installed("testthat", reason = "for `html_expect(testthat = TRUE)`.")
   }
   
   result <- eval_conditions(x, dots, timeout)
@@ -240,6 +238,20 @@ html_expect <- function(x, ..., testthat = NULL, timeout = NULL) {
   } else {
     invisible(NULL)
   }
+}
+
+#' @export
+#'
+#' @rdname html_expect
+html_wait_until <- function(x, ..., timeout = NULL) {
+  x <- enquo(x)
+  dots <- enquos(...)
+
+  check_number_decimal(timeout, allow_null = TRUE)
+  result <- eval_conditions(x, dots, timeout)
+  res <- result$res
+
+  return(isTRUE(res))
 }
 
 #' If a condition fails, throw an informative error

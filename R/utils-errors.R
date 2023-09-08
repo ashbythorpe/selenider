@@ -11,7 +11,7 @@ stop_absent_element <- function(call = rlang::caller_env()) {
 
 stop_absent_parent_element <- function(call = rlang::caller_env()) {
   cli::cli_abort(
-    c("{.arg x}'s parent element does not exist in the DOM."), 
+    c("{.arg x}'s parent element does not exist in the DOM."),
     class = c(
       "selenider_error_absent_parent",
       "selenider_error_absent_element",
@@ -23,9 +23,9 @@ stop_absent_parent_element <- function(call = rlang::caller_env()) {
 
 stop_expect_error <- function(condition, parent, call, env = rlang::caller_env()) {
   cli::cli_abort(
-    condition, 
-    class = c("selenider_expect_error", "expect_error_continue"), 
-    parent = parent, 
+    condition,
+    class = c("selenider_expect_error", "expect_error_continue"),
+    parent = parent,
     call = call,
     .envir = env
   )
@@ -54,7 +54,7 @@ stop_subscript_type <- function(i, call = rlang::caller_env()) {
     c(
       "Invalid subscript {.arg i}.",
       "x" = "{.arg i} must be a vector, not {.obj_type_friendly {i}}."
-    ), 
+    ),
     class = c("selenider_error_subscript", "selenider_error_subscript_type"),
     call = call
   )
@@ -65,25 +65,42 @@ stop_subscript_length <- function(i, call = rlang::caller_env()) {
     c(
       "Invalid subscript {.arg i}.",
       "x" = "{.arg i} must have length 1, not {length(i)}."
-    ), 
+    ),
     class = c("selenider_error_subscript", "selenider_error_subscript_length"),
     call = call
   )
 }
 
-stop_subscript_max_length <- function(i, call = rlang::caller_env()) {
+stop_subscript_na <- function(i, call = rlang::caller_env()) {
   cli::cli_abort(
     c(
       "Invalid subscript {.arg i}.",
-      "Attempt to select the {ordinal(max_sub)} element of {.arg x}.",
-      "{.arg x} has a known maximum length of {.arg min_length}."
-    ), 
+      "x" = "{.arg i} must be an integer, no"
+    )
+  )
+}
+
+stop_subscript_max_length <- function(i, max_length, call = rlang::caller_env()) {
+  cli::cli_abort(
+    c(
+      "Invalid subscript {.arg i}.",
+      "Attempt to select the {ordinal(i)} element of {.arg x}.",
+      "{.arg x} has a known maximum length of {.arg {max_length}}."
+    ),
     class = c(
       "selenider_error_subscript",
       "selenider_error_subscript_max_length"
     ),
     call = call
   )
+}
+
+warn_subscript_max_length <- function(i, max_length, call = rlang::caller_env()) {
+  cli::cli_warn(c(
+    "Invalid subscript {.arg i}.",
+    "Attempt to select the {ordinal(i)} element of {.arg x}.",
+    "{.arg x} has a known maximum length of {.arg {max_length}}."
+  ), class = "selenider_warning_subscript_max_length", call = call)
 }
 
 

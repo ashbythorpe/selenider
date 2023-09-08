@@ -66,4 +66,17 @@ test_that("html_expect() test failures work", {
   expect_failure(html_expect(s(".random-class"), is_present, timeout = 0.1))
 
   expect_snapshot(show_failure(html_expect(s(".random-class"), is_present, timeout = 0.1)))
+
+  expect_failure(html_expect(s(".random-class"), is_visible, timeout = 0.1))
+
+  expect_snapshot(show_failure(html_expect(s(".random-class"), is_visible, timeout = 0.1)))
+})
+
+test_that("html_wait_until() works", {
+  session <- selenider_test_session()
+
+  open_url("https://ashbythorpe.github.io/selenider/articles/test-site.html")
+
+  expect_false(html_wait_until(s(".random-class"), is_present, timeout = 0))
+  expect_true(html_wait_until(s(".toggleable"), is_present, timeout = 0))
 })

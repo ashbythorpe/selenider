@@ -108,7 +108,7 @@ html_flatmap <- function(x, .f, ...) {
 
   if (!inherits_any(fn_result, c("selenider_element", "selenider_elements"))) {
     cli::cli_abort(c(
-      "{.arg .f} must return a {.cls {c(selenider_element, selenider_elements)}} object.",
+      "{.arg .f} must return a {.cls {c('selenider_element', 'selenider_elements')}} object.",
       "When executed on a mock element, {.arg .f} returned {.obj_type_friendly {fn_result}}"
     ))
   } else if (length(fn_result$selectors) <= 0) {
