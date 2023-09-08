@@ -106,34 +106,6 @@ html_elements.selenider_element <- function(x,
   x
 }
 
-#' @export
-html_elements.xml_missing <- function(x, ...) {
-  check_dots_used()
-  rlang::check_installed("rvest")
-  rvest::html_elements(x, ...)
-}
-
-#' @export
-html_elements.xml_node <- function(x, ...) {
-  check_dots_used()
-  rlang::check_installed("rvest")
-  rvest::html_elements(x, ...)
-}
-
-#' @export
-html_elements.xml_nodeset <- function(x, ...) {
-  check_dots_used()
-  rlang::check_installed("rvest")
-  rvest::html_elements(x, ...)
-}
-
-#' @export
-html_elements.rvest_session <- function(x, ...) {
-  check_dots_used()
-  rlang::check_installed("rvest")
-  rvest::html_elements(x, ...)
-}
-
 new_selenider_elements <- function(session, selector) {
   res <- list(
     driver = get_driver(session),

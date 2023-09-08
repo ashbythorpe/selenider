@@ -258,12 +258,12 @@ take_screenshot <- function(file = NULL, view = FALSE, session = NULL) {
 
 #' Read the HTML of a session
 #'
-#' A shortcut for `xml2::read_html(get_session())`.
+#' Uses [xml2::read_html()] to read the page source of the session
 #'
 #' @param session Optionally, a `selenider_session` object.
-#' @param ... Passed into [read_html.selenider_session()]
+#' @param ... Passed into [xml2::read_html()]
 #'
-#' @returns An XML document, which can be operated on using `rvest`.
+#' @returns An XML document.
 #'
 #' @examplesIf selenider_available(online = FALSE)
 #' html <- "
@@ -287,5 +287,14 @@ get_page_source <- function(session = NULL, ...) {
     session <- get_session()
   }
 
-  xml2::read_html(session, ...)
+  if (uses_selenium(driver)) {
+    page_source <- unpack_list(driver$client$getPageSource())
+
+  } else {
+    document <- driver$DOM$getDocument()
+    root <- document$root$nodeId
+    page_source <- driver$DOM$getOuterHTML(root)$outerHTML
+  }
+
+  xml2::read_html(page_source, ...)
 }
