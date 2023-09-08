@@ -103,14 +103,11 @@ cache_elements <- function(x, timeout = NULL) {
 
   timeout <- get_timeout(timeout, x$timeout)
 
-  elements <- as.list(get_with_timeout(timeout, get_elements, x))
-
-  if (is.null(elements)) {
-    cli::cli_abort(c(
-      "To get the cache {.arg x}, its parent must exist.",
-      "After {.val timeout} seconds, {.arg x}'s parent did not exist."
-    ))
-  }
+  elements <- get_elements_for_property(
+    x,
+    action = "cache the elements in {.arg x}",
+    timeout = timeout
+  )
 
   x$element <- elements
 

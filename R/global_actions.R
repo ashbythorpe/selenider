@@ -102,7 +102,7 @@ back <- function(session = NULL) {
       driver$Page$navigateToHistoryEntry(new_id, wait_ = FALSE)
       driver$wait_for(promise)
     } else {
-      cli::cli_warn("Previous page in history not found")
+      warn_history_page_not_found(next = FALSE)
     }
   }
 
@@ -134,7 +134,7 @@ forward <- function(session = NULL) {
       driver$Page$navigateToHistoryEntry(new_id, wait_ = FALSE)
       driver$wait_for(promise)
     } else {
-      cli::cli_warn("Next page in history not found")
+      warn_history_page_not_found(next = TRUE)
     }
   }
 
@@ -229,10 +229,7 @@ take_screenshot <- function(file = NULL, view = FALSE, session = NULL) {
   }
 
   if (is.null(file) && !view) {
-    cli::cli_abort(c(
-      "{.arg file} can only be {.val {NULL}} if {.arg view} is {.val {TRUE}}.",
-      "i" = "If you want to view a screenshot without saving it, use {.code take_screenshot(view = TRUE)}."
-    ))
+    stop_null_screenshot_file()
   }
 
   if (is.null(session)) {

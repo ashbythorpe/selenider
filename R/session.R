@@ -186,9 +186,7 @@ selenider_session <- function(session = getOption("selenider.session"),
   if (is.null(session)) {
     chromote_installed <- rlang::is_installed("chromote")
     if (!chromote_installed && !rlang::is_installed("RSelenium")) {
-      cli::cli_abort(c(
-        "One of {.pkg chromote} or {.pkg RSelenium} must be installed to use {.pkg selenider}."
-      ))
+      stop_no_dependencies()
     }
 
     session <- if (chromote_installed) "chromote" else "selenium"
@@ -211,9 +209,7 @@ selenider_session <- function(session = getOption("selenider.session"),
   
   if (session == "chromote") {
     if (!is.null(browser) && browser != "chrome") {
-      cli::cli_warn(c(
-        "{.pkg chromote} only supports {.val chrome}"
-      ))
+      warn_browser_chromote()
     }
 
     browser <- "chrome"
@@ -324,24 +320,18 @@ create_selenium_server <- function(browser, version = "latest", port = 4567L, qu
         )
         
         pattern <- "'[^']+LICENSE.chromedriver'"
-        license <- regmatches(output, regexpr(pattern, output))[1]
-        license <- gsub("'", "", license, fixed = TRUE)
+        licence <- regmatches(output, regexpr(pattern, output))[1]
+        licence <- gsub("'", "", licence, fixed = TRUE)
 
-        if (!is.null(license)) {
-          cli::cli_abort(c(
-            "The server of the session could not be started.",
-            "i" = "Try deleting the following directory:",
-            " " = "{.file {license}}"
-          ), parent = e)
+        if (!is.null(licence)) {
+          stop_selenium_server(e, licence)
         }
       } else if (browser == "chrome" && grepl("version requested doesnt match versions available", e$message)) {
         # If the version of chrome we found is not available as a webdriver, use the latest one instead.
         return(create_selenium_server(browser, port = port, version = "latest", quiet = quiet, ...))
       }
 
-      cli::cli_abort(c(
-        "The server of the session could not be started."
-      ), parent = e)
+      stop_selenium_server(e)
     }
   )
 }
@@ -359,9 +349,7 @@ create_selenium_client <- function(browser, port = 4567L, ...) {
       driver$getStatus(),
       error = function(e) {
         if (count >= 5) {
-          cli::cli_abort(c(
-            "We could not determine whether the server was successfully started after {count} attempts."
-          ), parent = e)
+          stop_connect_selenium_server(count, error = e)
         }
         NULL
       }
@@ -369,18 +357,9 @@ create_selenium_client <- function(browser, port = 4567L, ...) {
 
     if (is.null(res) || !isTRUE(res$ready)) {
       if (count >= 5) {
-        if (is.null(res)) {
-          cli::cli_abort(c(
-            "We could not determine whether the server was successfully started after {count} attempts.",
-            "{.code driver$getStatus()} is `NULL`."
-          ))
-        } else {
-          cli::cli_abort(c(
-            "We could not determine whether the server was successfully started after {count} attempts.",
-            typeof(res), class(res)
-          ))
-        }
+        stop_connect_selenium_server(count, res = res)
       }
+
       count <- count + 1L
       Sys.sleep(1)
     } else {
@@ -391,9 +370,7 @@ create_selenium_client <- function(browser, port = 4567L, ...) {
   try_fetch(
     driver$open(silent = TRUE),
     error = function(e) {
-      cli::cli_abort(c(
-        "The client of the session ({tools::toTitleCase(browser)}) failed to start."
-      ), parent = e)
+      stop_selenium_client(e, browser)
     }
   )
 
@@ -459,9 +436,7 @@ check_supplied_driver <- function(x, browser = NULL, call = rlang::caller_env())
     }
 
     if (is.null(client) && is.null(server)) {
-      cli::cli_abort(c(
-        "{.arg driver} is a list, but seems to contain neither a Selenium client, nor a Selenium server."
-      ))
+      stop_invalid_driver(x, is_list = TRUE, call = call)
     } else if (is.null(client)) {
       bv <- find_browser_and_version()
 
@@ -491,38 +466,8 @@ check_supplied_driver <- function(x, browser = NULL, call = rlang::caller_env())
 
     result
   } else {
-    cls <- c("ChromoteSession", "AppDriver", "remoteDriver")
-    what <- cli::format_inline("A {.cls {cls}} object, a list or an environment")
-    stop_input_type(x, what, call = call)
+    stop_invalid_driver(x, call = call)
   }
-}
-
-is_selenium_server <- function(x) {
-  is.list(x) && all(c("process", "log", "stop") %in% names(x))
-}
-
-check_selenium_server <- function(x, call = rlang::caller_env()) {
-  if (!is_selenium_server(x)) {
-    cli::cli_abort(c(
-      "{.code driver$server} must be a valid Selenium server object",
-      "i" = "This can be the result of {.fun selenider::create_selenium_server} or {.fun wdman::selenium}."
-    ), call = call)
-  }
-  x
-}
-
-is_selenium_client <- function(x) {
-  inherits(x, "remoteDriver")
-}
-
-check_selenium_client <- function(x, call = rlang::caller_env()) {
-  if (!is_selenium_client(x)) {
-    cli::cli_abort(c(
-      "{.code driver$client} must be a {.cls remoteDriver} object",
-      "i" = "This can be the result of {.fun selenider::create_selenium_client} or {.fun RSelenium::rsDriver}."
-    ), call = call)
-  }
-  x
 }
 
 find_port_from_server <- function(x, call = rlang::caller_env()) {
@@ -535,10 +480,7 @@ find_port_from_server <- function(x, call = rlang::caller_env()) {
   }
 
   if (is.na(port)) {
-    cli::cli_warn(c(
-      "Could not find port number from server object.",
-      "i" = "Using default port {.val {4567L}}"
-    ), call = call)
+    warn_default_port(call = call)
     port <- 4567L
   }
 
@@ -587,11 +529,7 @@ close_session <- function(x = NULL) {
         if ("server" %in% names(x$driver)) {
           x$driver$server$stop()
         }
-        cli::cli_abort(
-          "Could not close session", 
-          class = "selenider_error_close_session", 
-          parent = e
-        )
+        stop_close_session(e)
       }
     )
 

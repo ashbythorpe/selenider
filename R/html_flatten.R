@@ -65,10 +65,7 @@ html_flatten <- function(...) {
   elements <- list2(...)
 
   if (length(elements) == 0) {
-    cli::cli_abort(c(
-      "`...` is empty.",
-      "i" = "Supply one or more arguments to combine into an element collection."
-    ), class = "selenider_error_dots_empty")
+    stop_dots_empty()
   }
   
   to_combine <- html_flatten_init(elements, exprs)
@@ -97,26 +94,6 @@ html_flatten_init <- function(x, exprs, is_nested = FALSE, index = NULL, call = 
   result
 }
 
-stop_flatten_dots <- function(x, exprs, i, index, is_nested, call = rlang::caller_env()) {
-  accepted_classes <- c("selenider_element", "selenider_elements")
-
-  if (!is_nested) {
-    expr <- exprs[[i]]
-    cli::cli_abort(c(
-      "Every arguments in `...` must be a {.cls {accepted_classes}} object or a list of such objects, not {.obj_type_friendly {x}}.",
-      "x" = "Problematic argument ({.val {i}}):",
-      "i" = "`{expr}`"
-    ), class = "selenider_error_flatten_dots", call = call)
-  } else {
-    cli::cli_abort(c(
-      "Every arguments in `...` must be a {.cls {accepted_classes}} object or a list of such objects.",
-      "x" = "Argument {.val {index}} was a list, but contained {.obj_type_friendly {x}} as its {ordinal(i)} element.",
-      "x" = "Problematic argument:",
-      "i" = "`{expr}`"
-    ), class = "selenider_error_flatten_dots", call = call)
-  }
-}
-
 #' @rdname html_flatten
 #' 
 #' @export
@@ -132,11 +109,9 @@ c.selenider_elements <- function(...) {
 }
 
 html_combine <- function(elements) {
-  ids <- lapply(elements, function(x) x$driver_id)
+  ids <- vapply(elements, function(x) x$driver_id, FUN.VALUE = integer(1))
   if (length(unique(ids)) > 1) {
-    cli::cli_abort(c(
-      "Cannot combine elements with different drivers."
-    ))
+    stop_incompatible_drivers(ids)
   }
 
   driver <- elements[[1]]$driver

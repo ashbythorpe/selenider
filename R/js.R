@@ -217,10 +217,7 @@ chromote_execute_js_fn <- function(expr, args, .driver = NULL, .driver_id = NULL
     } else {
       result$exceptionDetails$exception$description
     }
-    cli::cli_abort(c(
-      "JavaScript function returned the following error:",
-      "i" = "{.val {details}}"
-    ))
+    stop_js_error(details)
   } else {
     if (identical(result$result$subtype, "node")) {
       id <- chromote_backend_id(object_id = result$result$objectId, driver = .driver)

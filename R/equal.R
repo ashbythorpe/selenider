@@ -47,10 +47,12 @@ html_equal <- function(x, y, timeout = NULL) {
   timeout <- get_timeout(timeout, x$timeout)
   if (!html_wait_until(is_present(x), is_present(y), timeout = timeout)) {
     missing_arg <- if (is_present(x)) "y" else "x"
-    cli::cli_abort(c(
-      "To compare {.arg x} and {.arg y}, both must be present in the DOM.",
-      "After {timeout} seconds, {.arg {missing_arg}} was not found."
-    ))
+    stop_not_actionable(
+      c(
+        "To compare {.arg x} and {.arg y}, both must be present in the DOM.",
+        paste0(format_timeout_for_error(timeout), "{.arg {missing_arg}} was not found.")
+      )
+    )
   }
 
   if (x$driver_id != y$driver_id) {

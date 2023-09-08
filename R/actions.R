@@ -536,11 +536,7 @@ send_keys <- function(x, ..., modifiers = NULL, timeout = NULL) {
 
     if (!is_string(key) && !inherits(key, "selenider_key")) {
       expr <- exprs[[i]]
-      cli::cli_abort(c(
-        "Every arguments in `...` must be a string or a {.cls selenider_key} object, not {.obj_type_friendly {key}}.",
-        "x" = "Problematic argument ({.var {i}}):",
-        "i" = "`{expr}`"
-      ))
+      stop_invalid_keys(key, i, expr)
     }
   }
 
@@ -660,52 +656,6 @@ clear_value <- function(x, timeout = NULL) {
   }
 
   invisible(x)
-}
-
-get_element_for_action <- function(x,
-                                   action,
-                                   conditions,
-                                   timeout,
-                                   failure_messages,
-                                   conditions_text,
-                                   call = rlang::caller_env()) {
-  meets_condition <- 
-    inject(html_wait_until(
-      x,
-      is_present,
-      !!!conditions,
-      timeout = timeout
-    ))
-  if (length(conditions) != 0 && !meets_condition) {
-    if (length(conditions) == 0 || !is_present(x)) {
-      stop_not_actionable(c(
-        paste0("To ", action, ", it must exist."),
-        "i" = paste0(format_timeout_for_error(timeout), "{.arg x} was not present.")
-      ), call = call, exists = TRUE)
-    }
-
-    for (n in seq_along(conditions)) {
-      condition <- conditions[[n]]
-      
-      if (!condition(x)) {
-        stop_not_actionable(c(
-          paste0("To ", action, ", it must ", conditions_text, "."),
-          "i" = paste0(format_timeout_for_error(timeout), "{.arg x} {failure_messages[[n]]}.")
-        ), call = call)
-      }
-    }
-  }
-
-  element <- get_element(x)
-
-  if (is.null(element)) {
-    stop_not_actionable(c(
-      paste0("To ", action, ", it must exist."),
-      "i" = paste0(format_timeout_for_error(timeout), "{.arg x} was not present.")
-    ), call = call, exists = TRUE)
-  }
-
-  element
 }
 
 format_timeout_for_error <- function(x) {
@@ -876,6 +826,7 @@ submit <- function(x, js = FALSE, timeout = NULL) {
     }", element, driver = x$driver))
 
     if (!result) {
+      # Shouldn't happen
       cli::cli_abort(c(
         "To submit {.arg x}, it must be the descendant of a <form> element"
       ))
@@ -894,4 +845,50 @@ submit <- function(x, js = FALSE, timeout = NULL) {
   }
 
   invisible(x)
+}
+
+get_element_for_action <- function(x,
+                                   action,
+                                   conditions,
+                                   timeout,
+                                   failure_messages,
+                                   conditions_text,
+                                   call = rlang::caller_env()) {
+  meets_condition <- 
+    inject(html_wait_until(
+      x,
+      is_present,
+      !!!conditions,
+      timeout = timeout
+    ))
+  if (length(conditions) != 0 && !meets_condition) {
+    if (length(conditions) == 0 || !is_present(x)) {
+      stop_not_actionable(c(
+        paste0("To ", action, ", it must exist."),
+        "i" = paste0(format_timeout_for_error(timeout), "{.arg x} was not present.")
+      ), call = call, class = "selenider_error_absent_element")
+    }
+
+    for (n in seq_along(conditions)) {
+      condition <- conditions[[n]]
+      
+      if (!condition(x)) {
+        stop_not_actionable(c(
+          paste0("To ", action, ", it must ", conditions_text, "."),
+          "i" = paste0(format_timeout_for_error(timeout), "{.arg x} {failure_messages[[n]]}.")
+        ), call = call)
+      }
+    }
+  }
+
+  element <- get_element(x)
+
+  if (is.null(element)) {
+    stop_not_actionable(c(
+      paste0("To ", action, ", it must exist."),
+      "i" = paste0(format_timeout_for_error(timeout), "{.arg x} was not present.")
+    ), call = call, class = "selenider_error_absent_element")
+  }
+
+  element
 }

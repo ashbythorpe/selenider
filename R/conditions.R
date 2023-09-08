@@ -521,10 +521,7 @@ is_covered <- function(x) {
     }
 
     if (!visible) {
-      cli::cli_abort(c(
-        "{.arg x} must be visible to check if it is covered by another element.",
-        "Use {.code is_visible} to check if the element is visible."
-      ))
+      stop_invisible_element()
     } else if (uses_selenium(x$driver)) {
       x$driver$executeScript("
         let element = arguments[0];

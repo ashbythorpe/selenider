@@ -399,24 +399,13 @@ chromote_get_css_property <- function(x, name, default, driver) {
 html_size <- function(x, timeout = NULL) {
   timeout <- get_timeout(timeout, x$timeout)
 
-  elements <- get_with_timeout(timeout, get_elements, x)
+  elements <- get_elements_for_property(
+    x,
+    action = "get the number of elements in {.arg x}",
+    timeout = timeout
+  )
 
-  if (is.null(elements)) {
-    cli::cli_abort(
-      c(
-        "To get the number of elements in {.arg x}, its parent must exist.",
-        "i" = paste0(format_timeout_for_error(timeout), "{.arg x}'s parent did not exist.")
-      ),
-      class = c(
-        "error_not_actionable",
-        "selenider_error_absent_parent",
-        "selenider_error_absent_element",
-        "expect_error_continue"
-      )
-    )
-  } else {
-    length(elements)
-  }
+  length(elements)
 }
 
 #' @rdname html_size
@@ -426,14 +415,22 @@ length.selenider_elements <- function(x) {
   html_size(x)
 }
 
-get_element_for_property <- function(x, action, timeout, call = rlang::caller_env()) {
-  get_element_for_action(
-    x,
-    action = action,
-    conditions = list(),
-    timeout = timeout,
-    failure_messages = c(),
-    conditions_text = c(),
-    call = call
-  )
+get_elements_for_property <- function(x, action, timeout, call = rlang::caller_env()) {
+  elements <- get_with_timeout(timeout, get_elements, x)
+
+  if (is.null(elements)) {
+    stop_not_actionable(
+      c(
+        paste0("To ", action, ", its parent must exist."),
+        "i" = paste0(format_timeout_for_error(timeout), "{.arg x}'s parent did not exist.")
+      ),
+      call = call
+      class = c(
+        "selenider_error_absent_parent",
+        "selenider_error_absent_element",
+      )
+    )
+  }
+
+  elements
 }

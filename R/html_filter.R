@@ -113,10 +113,7 @@ html_filter <- function(x, ...) {
 #' @export
 html_find <- function(x, ...) {
   if (elements_is_empty(x)) {
-    cli::cli_abort(c(
-      "Cannot extract an element from {.arg x}.",
-      "{.arg x} contains 0 elements."
-    ), class = c("selenider_error_empty_elements", "selenider_error_empty_elements_find"))
+    stop_find_empty_elements()
   }
 
   x <- html_filter(x, ...)
