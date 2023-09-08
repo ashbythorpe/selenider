@@ -10,12 +10,14 @@
 #'
 #' @param session The package to use as a backend: either "chromote" or
 #'   "selenium". By default, chromote is used, since this tends to be
-#'   faster and more reliable.
+#'   faster and more reliable. Change the default value using the 
+#'   `selenider.session` option.
 #' @param browser The name of the browser to run the session in; one of
 #'   "chrome", "firefox", "phantomjs" or "internet explorer" (only on
 #'   Windows). IF `NULL`, the function will try to work out which browser
 #'   you have installed. If we are using chromote, this option is ignored,
-#'   since chromote only works on Chrome.
+#'   since chromote only works on Chrome. Change the default value of this
+#'   parameter using the `selenider.browser` option.
 #' @param view Whether to open the browser and view it, for visual testing.
 #'   This is ignored if session is "selenium", since selenium drivers cannot
 #'   be headless.
@@ -173,8 +175,8 @@
 #' }
 #'
 #' @export
-selenider_session <- function(session = NULL,
-                              browser = NULL,
+selenider_session <- function(session = getOption("selenider.session"),
+                              browser = getOption("selenider.browser"),
                               view = FALSE,
                               timeout = 4,
                               driver = NULL,
