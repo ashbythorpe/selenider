@@ -73,29 +73,33 @@ find_browser_and_version <- function() {
       ))
     }
   } else if (is_linux()) {
-    path <- Sys.which("google-chrome")
-    if (nchar(path) == 0) {
-      path <- Sys.which("chromium-browser")
-    }
-    if (nchar(path) == 0) {
-      path <- Sys.which("chromium")
-    }
+    possible_names <- c(
+      "google-chrome",
+      "google-chrome-stable",
+      "chromium-browser",
+      "chromium",
+      "google-chrome-beta",
+      "google-chrome-unstable"
+    )
 
-    if (nchar(path) != 0) {
-      version <- tryCatch(
-        processx::run(path, "--product-version")$stdout,
-        error = function(e) NULL
-      )
+    for (path in possible_names) {
+      path <- Sys.which(path)
+      if (nzchar(path)) {
+        version <- tryCatch(
+          processx::run(path, "--product-version")$stdout,
+          error = function(e) NULL
+        )
 
-      return(list(
-        browser = "chrome",
-        version = selenium_version(version, "chrome")
-      ))
+        return(list(
+          browser = "chrome",
+          version = selenium_version(version, "chrome")
+        ))
+      }
     }
 
     path <- Sys.which("firefox")
 
-    if (nchar(path) != 0) {
+    if (nzchar(path)) {
       return(list(
         browser = "firefox",
         version = "latest"
@@ -107,47 +111,52 @@ find_browser_and_version <- function() {
 }
 
 get_browser_version <- function(x) {
-  if (x == "chrome") {
-    if (is_mac()) {
-      path <- "/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
+  if (x != "chrome") {
+    return("latest")
+  }
 
-      if (file.exists(path)) {
-        version <- tryCatch(
-          processx::run(path, "--product-version", timeout = 10)$stdout,
-          error = function(e) NULL
-        )
+  if (is_mac()) {
+    path <- "/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
 
-        return(selenium_version(version, "chrome"))
-      }
-    } else if (is_windows()) {
-      path <- tryCatch({
-        path <- utils::readRegistry("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\chrome.exe\\")
-        path[["(Default)"]]
-      }, error = function(e) {
-        NULL
-      })
-    
-      if (!is.null(path)) {
-        batch_file <- system.file("scripts/get_chrome_version.bat", package = "selenider")
-        version <- tryCatch(shell.exec(batch_file), error = function(e) NULL)
-        
-        return(selenium_version(version, "chrome"))
-      }
-    } else if (is_linux()) {
-      path <- Sys.which("google-chrome")
-      if (nchar(path) == 0) {
-        path <- Sys.which("chromium-browser")
-      }
-      if (nchar(path) == 0) {
-        path <- Sys.which("chromium")
-      }
+    if (file.exists(path)) {
+      version <- tryCatch(
+        processx::run(path, "--product-version", timeout = 10)$stdout,
+        error = function(e) NULL
+      )
 
-      if (nchar(path) != 0) {
+      return(selenium_version(version, "chrome"))
+    }
+  } else if (is_windows()) {
+    path <- tryCatch({
+      path <- utils::readRegistry("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\chrome.exe\\")
+      path[["(Default)"]]
+    }, error = function(e) {
+      NULL
+    })
+  
+    if (!is.null(path)) {
+      batch_file <- system.file("scripts/get_chrome_version.bat", package = "selenider")
+      version <- tryCatch(shell.exec(batch_file), error = function(e) NULL)
+      
+      return(selenium_version(version, "chrome"))
+    }
+  } else if (is_linux()) {
+    possible_names <- c(
+      "google-chrome",
+      "google-chrome-stable",
+      "chromium-browser",
+      "chromium",
+      "google-chrome-beta",
+      "google-chrome-unstable"
+    )
+
+    for (path in possible_names) {
+      path <- Sys.which(path)
+      if (nzchar(path)) {
         version <- tryCatch(
           processx::run(path, "--product-version")$stdout,
           error = function(e) NULL
         )
-
         return(selenium_version(version, "chrome"))
       }
     }
