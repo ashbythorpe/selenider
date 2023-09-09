@@ -5,9 +5,9 @@
 \alias{execute_js_expr}
 \title{Execute a JavaScript function}
 \usage{
-execute_js_fn(fn, ..., .timeout = NULL, .session = NULL)
+execute_js_fn(fn, ..., .timeout = NULL, .session = NULL, .debug = FALSE)
 
-execute_js_expr(expr, ..., .timeout = NULL, .session = NULL)
+execute_js_expr(expr, ..., .timeout = NULL, .session = NULL, .debug = FALSE)
 }
 \arguments{
 \item{fn}{A string defining the function.}
@@ -19,6 +19,10 @@ JavaScript does not support named arguments.}
 
 \item{.session}{The session to use, if \code{...} does not contain any
 selenider elements.}
+
+\item{.debug}{Whether to print the final expression that is executed. Mostly
+used for debugging the functions themselves, but can also be used to
+identify problems in your own JavaScript code.}
 
 \item{expr}{An expression to execute.}
 }
@@ -50,3 +54,32 @@ objects, while more complex objects will not. These elements are not lazy (see
 \code{\link[=cache_element]{cache_element()}}), so make sure you only use them while you are sure they are
 still on the page.
 }
+\examples{
+\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+html <- "
+<button class='mybutton'>Click me</button>
+"
+session <- minimal_selenider_session(html)
+
+execute_js_fn("(x, y) => x + y", 1, 1)
+
+execute_js_expr("arguments[0] + arguments[1]", 1, 1)
+
+execute_js_fn("x => x.click()", s(".mybutton"))
+
+execute_js_expr("arguments[0].click()", s(".mybutton"))
+
+\dontshow{
+# Clean up all connections and invalidate default chromote object
+selenider_cleanup()
+}
+\dontshow{\}) # examplesIf}
+}
+\seealso{
+Other global actions: 
+\code{\link{back}()},
+\code{\link{open_url}()},
+\code{\link{reload}()},
+\code{\link{take_screenshot}()}
+}
+\concept{global actions}

@@ -174,7 +174,7 @@ stop_selenium_server <- function(error, licence = NULL, call = rlang::caller_env
   } else {
     cli::cli_abort(c(
       "The server of the session could not be started."
-    ), class = "selenider_error_selenium_server", parent = e)
+    ), class = "selenider_error_selenium_server", parent = error)
   }
 }
 
@@ -323,7 +323,7 @@ warn_history_page_not_found <- function(next_page = TRUE, call = rlang::caller_e
   }
 }
 
-warn_browser_chrome <- function(call = rlang::caller_env()) {
+warn_browser_chromote <- function(call = rlang::caller_env()) {
   cli::cli_warn(c(
     "Ignoring {.arg browser}.",
     "{.pkg chromote} only supports {.val chrome}."

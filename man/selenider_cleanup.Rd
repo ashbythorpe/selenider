@@ -4,16 +4,12 @@
 \alias{selenider_cleanup}
 \title{Cleanup after an example}
 \usage{
-selenider_cleanup(close_session = TRUE, env = rlang::caller_env())
+selenider_cleanup(env = rlang::caller_env())
 }
 \arguments{
-\item{close_session}{Whether there is still a local session that needs to be
-closed (via \code{\link[withr:defer]{withr::deferred_run()}}). This is usually the case.}
-
-\item{env}{The environment to get the local session.}
+\item{env}{The environment in which deferred events are contained.}
 }
 \description{
-Clean up after a selenider example, making sure all environment variables are
-reset and no connections are left open.
+Clean up after a selenider example, making sure all deferred events are run.
 }
 \keyword{internal}

@@ -40,6 +40,7 @@ selenider_cleanup()
 \seealso{
 Other global actions: 
 \code{\link{back}()},
+\code{\link{execute_js_fn}()},
 \code{\link{open_url}()},
 \code{\link{reload}()}
 }

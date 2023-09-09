@@ -38,6 +38,7 @@ selenider_cleanup()
 \seealso{
 Other conditions: 
 \code{\link{has_attr}()},
+\code{\link{has_length}()},
 \code{\link{has_name}()},
 \code{\link{has_text}()},
 \code{\link{is_enabled}()},

@@ -8,7 +8,7 @@
 \usage{
 html_attr(x, name, default = NA_character_, timeout = NULL)
 
-html_attrs(x, timeout = NULL, ...)
+html_attrs(x, timeout = NULL)
 
 html_value(x, ptype = character(), timeout = NULL)
 }
@@ -67,6 +67,7 @@ selenider_cleanup()
 Other properties: 
 \code{\link{html_css_property}()},
 \code{\link{html_name}()},
+\code{\link{html_size}()},
 \code{\link{html_text}()}
 }
 \concept{properties}

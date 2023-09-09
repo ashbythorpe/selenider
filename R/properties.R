@@ -203,7 +203,7 @@ chromote_get_attributes <- function(x, driver) {
 #' @rdname html_attr
 #'
 #' @export
-html_attrs <- function(x, timeout = NULL, ...) {
+html_attrs <- function(x, timeout = NULL) {
   check_number_decimal(timeout, allow_null = TRUE)
 
   timeout <- get_timeout(timeout, x$timeout)

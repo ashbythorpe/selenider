@@ -46,6 +46,7 @@ selenider_cleanup()
 Other properties: 
 \code{\link{html_attr}()},
 \code{\link{html_name}()},
+\code{\link{html_size}()},
 \code{\link{html_text}()}
 }
 \concept{properties}
