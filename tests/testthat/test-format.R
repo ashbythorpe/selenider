@@ -113,7 +113,7 @@ test_that("Printing DOM-relative selectors works", {
 })
 
 test_that("Printing flattened objects works", {
-  session <- selenider_session()
+  session <- selenider_test_session()
 
   # The contents don't matter
   elements <- html_flatten(s(".random-class"))
@@ -129,6 +129,8 @@ test_that("Printing flattened objects works", {
 })
 
 test_that("Printing results of html_flatmap() works", {
+  session <- selenider_test_session()
+
   elements <- html_flatmap(
     ss(".class"),
     function(x) html_element(x, "p")

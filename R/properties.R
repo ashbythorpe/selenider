@@ -415,6 +415,18 @@ length.selenider_elements <- function(x) {
   html_size(x)
 }
 
+get_element_for_property <- function(x, action, timeout, call = rlang::caller_env()) {
+  get_element_for_action(
+    x,
+    action = action,
+    conditions = list(),
+    timeout = timeout,
+    failure_messages = c(),
+    conditions_text = c(),
+    call = call
+  )
+}
+
 get_elements_for_property <- function(x, action, timeout, call = rlang::caller_env()) {
   elements <- get_with_timeout(timeout, get_elements, x)
 

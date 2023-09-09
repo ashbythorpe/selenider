@@ -6,7 +6,7 @@ current_url <- function(session = NULL) {
   driver <- session$driver
 
   if (uses_selenium(driver)) {
-    driver$client$getCurrentURL()
+    unpack_list(driver$client$getCurrentUrl())
   } else {
     history <- driver$Page$getNavigationHistory()
     current_page <- history$entries[[history$currentIndex + 1]]
