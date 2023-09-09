@@ -241,7 +241,7 @@ take_screenshot <- function(file = NULL, view = FALSE, session = NULL) {
   }
 
   if (uses_selenium(session$driver)) {
-    session$driver$client$screenshot(file)
+    session$driver$client$screenshot(file = file)
 
     if (view) {
       showimage::show_image(file)
