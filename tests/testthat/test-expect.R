@@ -56,6 +56,9 @@ test_that("html_expect() works", {
   expect_snapshot(html_expect(html_children(s(".random-class")), function(x) html_name(x[[1]]) == "biv", testthat = FALSE, timeout = 0.1), error = TRUE)
   expect_snapshot(html_expect(ss(".random-class"), function(x) html_name(x[[1]]) == "biv", testthat = FALSE, timeout = 0.1), error = TRUE)
   expect_snapshot(html_expect(ss(".toggleable"), function(x) html_name(x[[1]]) == "biv", testthat = FALSE, timeout = 0.1), error = TRUE)
+
+  expect_snapshot(html_expect(ss(".random-class"), has_at_least(1), testthat = FALSE, timeout = 0.1), error = TRUE)
+  expect_snapshot(html_expect(ss(".toggleable"), has_length(2), testthat = FALSE, timeout = 0.1), error = TRUE)
 })
 
 test_that("html_expect() test failures work", {

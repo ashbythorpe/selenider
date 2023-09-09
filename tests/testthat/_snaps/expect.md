@@ -290,6 +290,28 @@
       `function(x) html_name(x[[1]]) == "biv"`
       i `x` contains 1 element, but the condition still failed.
 
+---
+
+    Code
+      html_expect(ss(".random-class"), has_at_least(1), testthat = FALSE, timeout = 0.1)
+    Condition
+      Error in `html_expect()`:
+      ! Condition failed after waiting for 0.1 seconds:
+      `has_at_least(1)`
+      i `x` contains less than 1 element.
+      i Actual number of elements: "0".
+
+---
+
+    Code
+      html_expect(ss(".toggleable"), has_length(2), testthat = FALSE, timeout = 0.1)
+    Condition
+      Error in `html_expect()`:
+      ! Condition failed after waiting for 0.1 seconds:
+      `has_length(2)`
+      i `x` does not contain 2 elements.
+      i Actual number of elements: "1".
+
 # html_expect() test failures work
 
     Code

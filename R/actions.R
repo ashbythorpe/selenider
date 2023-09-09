@@ -71,7 +71,31 @@ click <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("be enabled")
     )
 
-    execute_js_fn_on("x => x.click()", element, driver = x$driver)
+    execute_js_fn_on("function(x) {
+      if (window.MouseEvent) {
+        const ev1 = new MouseEvent('mousedown', {
+            bubbles: true,
+            cancelable: false,
+            view: window,
+            clientX: x.getBoundingClientRect().x,
+            clientY: x.getBoundingClientRect().y
+        });
+        x.dispatchEvent(ev1);
+        const ev2 = new MouseEvent('mouseup', {
+            bubbles: true,
+            cancelable: false,
+            view: window,
+            clientX: x.getBoundingClientRect().x,
+            clientY: x.getBoundingClientRect().y
+        });
+        x.dispatchEvent(ev2);
+      } else {
+        x.click();
+        const event = document.createEvent('MouseEvent');
+        event.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+        x.dispatchEvent(event);
+      }
+    }", element, driver = x$driver)
   } else {
     element <- get_element_for_action(
       x,
@@ -359,7 +383,7 @@ hover <- function(x, js = FALSE, timeout = NULL) {
         event.initEvent('mouseover', true, true);
         x.dispatchEvent(event);
       }
-    }", list(element))
+    }", element, driver = x$driver)
   } else {
     element <- get_element_for_action(
       x,

@@ -7,4 +7,9 @@ test_that("html_element() work", {
     html_element(session, "div", class_name = "actions-test") ==
       html_element(session, ".actions-test")
   )
+
+  expect_true(
+    html_element(session, xpath = "//button[@id = 'toggle_div']") ==
+      html_element(session, "#toggle_div")
+  )
 })

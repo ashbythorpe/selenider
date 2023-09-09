@@ -126,6 +126,7 @@ selector_to_css <- function(using, value) {
 #'
 #' @noRd
 use_xpath_chromote <- function(xpath, element, driver, multiple = FALSE) {
+  xpath <- escape_single_quotes(xpath)
   if(multiple) {
     if (is.null(driver)) {
       driver <- element

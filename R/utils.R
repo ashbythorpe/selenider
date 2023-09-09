@@ -120,25 +120,18 @@ elem_unique <- function(x, driver) {
 }
 
 # Adapted from scales::ordinal()
-ordinal <- function(x, tail = FALSE) {
+ordinal <- function(x) {
   res <- character(length(x))
 
-  if (tail) {
-    res[x == 1] <- "last"
-    res[x == 2] <- "second-last"
-    res[x == 3] <- "third-last"
-    res[res == ""] <- paste0(ordinal_numbers(x[res == ""]), "-last")
-  } else {
-    res[x == 1] <- "first"
-    res[x == 2] <- "second"
-    res[x == 3] <- "third"
-    res[res == ""] <- ordinal_numbers(x[res == ""])
-  }
+  res[x == 1] <- "first"
+  res[x == 2] <- "second"
+  res[x == 3] <- "third"
+  res[res == ""] <- ordinal_numbers(x[res == ""])
 
   res
 }
 
-ordinal_numbers <- function(x, tail = FALSE) {
+ordinal_numbers <- function(x) {
   rules <- list(
     st = "(?<!1)1$",
     nd = "(?<!1)2$",
@@ -154,11 +147,6 @@ ordinal_numbers <- function(x, tail = FALSE) {
     x,
     out$ind[order(out$values)]
   )
-
-  if (tail) {
-    res[x == 1] <- "last"
-    res[x != 1] <- paste0(res[x != 1], "-last")
-  }
 
   res
 }

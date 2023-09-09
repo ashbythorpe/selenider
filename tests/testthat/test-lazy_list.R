@@ -31,6 +31,8 @@ test_that("eager lists work", {
   expect_equal(next_value(x), 3)
   expect_equal(next_value(x), 4)
   expect_equal(next_value(x), coro::exhausted())
+
+  expect_equal(x[[1]], 1)
 })
 
 test_that("Subsetting lazy lists works", {
@@ -55,6 +57,14 @@ test_that("Subsetting lazy lists works", {
   expect_equal(as.list(x[1:4]), list(1, 2, 3))
   expect_equal(as.list(x[-2:-3]), list(1))
   expect_equal(as.list(x[-4]), list(1, 2, 3))
+
+  reset_iterator(x)
+
+  expect_equal(as.list(x[2:3]), list(2, 3))
+
+  reset_iterator(x)
+
+  expect_equal(as.list(x[-1]), list(2, 3))
 })
 
 test_that("Filtering lazy lists works", {

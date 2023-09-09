@@ -8,8 +8,10 @@ test_that("html_expect_all() works", {
   buttons <- html_children(s(".buttons"))
 
   expect_no_error(html_expect_all(buttons, is_visible))
+  expect_snapshot(html_expect_all(buttons, is_enabled, testthat = FALSE, timeout = 0), error = TRUE)
   expect_snapshot(html_expect_all(buttons, is_enabled, testthat = FALSE, timeout = 0.1), error = TRUE)
   expect_snapshot(html_expect_all(buttons, is_disabled, testthat = FALSE, timeout = 0.1), error = TRUE)
+  expect_snapshot(html_expect_all(buttons, is_visible, is_disabled, testthat = FALSE, timeout = 0.1), error = TRUE)
 })
 
 test_that("html_wait_until_all() works", {

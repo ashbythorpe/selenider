@@ -59,3 +59,37 @@ test_that("actions work", {
 
   html_expect(s("#form-output"), has_text("Form submitted"))
 })
+
+test_that("JavaScript actions work", {
+  session <- selenider_test_session()
+
+  open_url("https://ashbythorpe.github.io/selenider/articles/test-site.html")
+
+  # Button tests
+
+  button <- html_element(s(".actions-test"), "button")
+
+  html_expect(s("#button-output"), has_exact_text(""))
+
+  hover(button, js = TRUE)
+
+  html_expect(s("#button-output"), has_text("Hovered"))
+
+  click(button, js = TRUE)
+
+  html_expect(s("#button-output"), has_text("Left clicked"))
+
+  right_click(button, js = TRUE)
+
+  html_expect(s("#button-output"), has_text("Right clicked"))
+
+  double_click(button, js = TRUE)
+
+  html_expect(s("#button-output"), has_text("Double clicked"))
+
+  html_expect(s("#form-output"), has_exact_text(""))
+
+  submit(button, js = TRUE)
+
+  html_expect(s("#form-output"), has_text("Form submitted"))
+})

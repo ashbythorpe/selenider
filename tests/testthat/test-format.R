@@ -91,6 +91,8 @@ test_that("Printing filters works", {
 })
 
 test_that("Printing DOM-relative selectors works", {
+  session <- selenider_test_session()
+
   element <- s(".class")
 
   expect_snapshot(print(html_ancestors(element)))
