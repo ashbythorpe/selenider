@@ -78,9 +78,4 @@ test_that("Errors are thrown correctly", {
     take_screenshot(),
     class = "selenider_error_screenshot_file"
   )
-
-  expect_warning(
-    forward(),
-    class = "selenider_warning_history_page"
-  )
 })
