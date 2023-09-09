@@ -19,6 +19,9 @@
 #' @param .timeout How long to wait for any elements to exist in the DOM.
 #' @param .session The session to use, if `...` does not contain any
 #'   selenider elements.
+#' @param .debug Whether to print the final expression that is executed. Mostly
+#'   used for debugging the functions themselves, but can also be used to
+#'   identify problems in your own JavaScript code.
 #'
 #' @details
 #' `...` can contain `selenider_element`/`selenider_elements` objects,
@@ -57,7 +60,7 @@
 #' }
 #'
 #' @export
-execute_js_fn <- function(fn, ..., .timeout = NULL, .session = NULL) {
+execute_js_fn <- function(fn, ..., .timeout = NULL, .session = NULL, .debug = FALSE) {
   lifecycle::signal_stage("experimental", "execute_js_fn()")
   check_dots_unnamed()
   args <- rlang::list2(...)
@@ -68,9 +71,9 @@ execute_js_fn <- function(fn, ..., .timeout = NULL, .session = NULL) {
   timeout <- info$timeout
 
   if (uses_selenium(driver)) {
-    execute_selenium_expr(fn, args, fn = TRUE, driver = driver, timeout = timeout, driver_id = driver_id)
+    execute_selenium_expr(fn, args, fn = TRUE, driver = driver, timeout = timeout, driver_id = driver_id, .debug = .debug)
   } else {
-    chromote_execute_js_fn(fn, args, .driver = driver, .driver_id = driver_id, .timeout = timeout)
+    chromote_execute_js_fn(fn, args, .driver = driver, .driver_id = driver_id, .timeout = timeout, .debug = .debug)
   }
 }
 
@@ -79,7 +82,7 @@ execute_js_fn <- function(fn, ..., .timeout = NULL, .session = NULL) {
 #' @param expr An expression to execute.
 #'
 #' @export
-execute_js_expr <- function(expr, ..., .timeout = NULL, .session = NULL) {
+execute_js_expr <- function(expr, ..., .timeout = NULL, .session = NULL, .debug = FALSE) {
   lifecycle::signal_stage("experimental", "execute_js_expr()")
   check_dots_unnamed()
   args <- rlang::list2(...)
@@ -90,9 +93,9 @@ execute_js_expr <- function(expr, ..., .timeout = NULL, .session = NULL) {
   timeout <- info$timeout
 
   if (uses_selenium(driver)) {
-    execute_selenium_expr(expr, args, fn = FALSE, driver = driver, timeout = timeout, driver_id = driver_id)
+    execute_selenium_expr(expr, args, fn = FALSE, driver = driver, timeout = timeout, driver_id = driver_id, .debug = .debug)
   } else {
-    chromote_execute_js_fn(expr, args, .driver = driver, .driver_id = driver_id, .timeout = timeout, fn = FALSE)
+    chromote_execute_js_fn(expr, args, .driver = driver, .driver_id = driver_id, .timeout = timeout, fn = FALSE, .debug = .debug)
   }
 }
 
@@ -129,7 +132,7 @@ get_info_from_args <- function(args, .session, .timeout) {
   )
 }
 
-chromote_execute_js_fn <- function(expr, args, .driver = NULL, .driver_id = NULL, .timeout = NULL, fn = TRUE) {
+chromote_execute_js_fn <- function(expr, args, .driver = NULL, .driver_id = NULL, .timeout = NULL, fn = TRUE, .debug = FALSE) {
   rlang::check_installed("jsonlite")
 
   arg_n <- 0
@@ -159,7 +162,6 @@ chromote_execute_js_fn <- function(expr, args, .driver = NULL, .driver_id = NULL
       expr_body <- paste0(expr_body, "let inner_arg_", i, " = ", jsonlite::toJSON(arg, auto_unbox = TRUE), ";")
     }
   }
-  print(expr_body)
 
   outer_fn_expr <- if(arg_n <= 1) {
     "function() {"
@@ -203,13 +205,15 @@ chromote_execute_js_fn <- function(expr, args, .driver = NULL, .driver_id = NULL
 
   rest <- lapply(element_args[-1], function(x) list(objectId = x))
 
-  print(final_expr)
+  if (.debug) {
+    print(final_expr)
+  }
+
   result <- if (length(rest) == 0) {
     .driver$Runtime$callFunctionOn(final_expr, objectId = first_element, returnByValue = FALSE)
   } else {
     .driver$Runtime$callFunctionOn(final_expr, objectId = first_element, arguments = rest, returnByValue = FALSE)
   }
-  print(result)
 
   if (!is.null(result$exceptionDetails)) {
     details <- if (is.null(result$exceptionDetails$exception$description)) {
@@ -349,7 +353,7 @@ as_webelement <- function(x, driver) {
   RSelenium::webElement$new(as.character(x))$import(driver$export("remoteDriver"))
 }
 
-execute_selenium_expr <- function(expr, args, fn = FALSE, driver, timeout, driver_id) {
+execute_selenium_expr <- function(expr, args, fn = FALSE, driver, timeout, driver_id, .debug = FALSE) {
   n <- 0
   expr_body <- ""
   final_args <- list()
@@ -380,8 +384,6 @@ execute_selenium_expr <- function(expr, args, fn = FALSE, driver, timeout, drive
     }
   }
 
-  print(expr_body)
-
   inner_args <- if (is.null(i)) "" else paste0("inner_arg_", seq_len(i), collapse = ", ")
   if (fn) {
     return_expr <- paste0("return (", expr, ")(", inner_args, ");")
@@ -399,7 +401,10 @@ execute_selenium_expr <- function(expr, args, fn = FALSE, driver, timeout, drive
     return_expr
   )
 
-  print(final_expr)
+  if (.debug) {
+    print(final_expr)
+  }
+
   final_args <- if (length(final_args) == 0) list("") else final_args
 
   result <- driver$executeScript(final_expr, args = final_args)
