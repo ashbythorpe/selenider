@@ -145,6 +145,9 @@
     <loc>https://ashbythorpe.github.io/selenider/reference/scroll_to.html</loc>
   </url>
   <url>
+    <loc>https://ashbythorpe.github.io/selenider/reference/selenider-config.html</loc>
+  </url>
+  <url>
     <loc>https://ashbythorpe.github.io/selenider/reference/selenider-package.html</loc>
   </url>
   <url>
@@ -152,9 +155,6 @@
   </url>
   <url>
     <loc>https://ashbythorpe.github.io/selenider/reference/selenider_cleanup.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/selenider_prefer.html</loc>
   </url>
   <url>
     <loc>https://ashbythorpe.github.io/selenider/reference/selenider_session.html</loc>
