@@ -68,17 +68,13 @@
 </h1></div>
 <!-- badges: start -->
 
-</div>
-<div class="section level1">
-<h1 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
-</h1>
-<p>selenider aims to make web testing and scraping much simpler. It is inspired by Java’s <a href="https://selenide.org/" class="external-link">Selenide</a> and Python’s <a href="https://yashaka.github.io/selene/" class="external-link">Selene</a>. It provides a simple and consistent interface to both [chromote] and [RSelenium].</p>
+<p>selenider aims to make web testing and scraping using Selenium much simpler. It is inspired by Java’s <a href="https://selenide.org/" class="external-link">Selenide</a> and Python’s <a href="https://yashaka.github.io/selene/" class="external-link">Selene</a>.</p>
 <p>It provides the following features:</p>
 <ul>
 <li>All elements are lazy, meaning that they will only actually collect an element when absolutely necessary.</li>
 <li>Automatic implicit waiting, meaning that functions will automatically wait a certain amount of time (by default, 4 seconds) before performing some action on it.</li>
 <li>An API that is designed for use with the pipe operator (<code>|&gt;</code> or <code>%&gt;%</code>).</li>
-<li>A quick and concise way to specify test expectations, including automatic [testthat] integration.</li>
+<li>A quick and concise way to specify test expectations.</li>
 </ul>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -91,25 +87,11 @@
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
-<p>To use selenider, you first have to create a session.</p>
+<p>To navigate to a website, use <code><a href="reference/open_url.html">open_url()</a></code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ashbythorpe/selenider" class="external-link">selenider</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/selenider_session.html">selenider_session</a></span><span class="op">(</span><span class="st">"firefox"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">session</span></span>
-<span><span class="co">#&gt; A selenider session object</span></span>
-<span><span class="co">#&gt; • Open for 0s</span></span>
-<span><span class="co">#&gt; • Browser: "firefox"</span></span>
-<span><span class="co">#&gt; • Port: 4567</span></span>
-<span><span class="co">#&gt; • Currently opened: Nothing</span></span>
-<span><span class="co">#&gt; • Timeout: 4s</span></span></code></pre></div>
-<p>This session object is stored globally, so we don’t need to pass it into any subsequent functions.</p>
-<p>To navigate to a website, use <code><a href="reference/open_url.html">open_url()</a></code></p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/open_url.html">open_url</a></span><span class="op">(</span><span class="st">"https://www.google.com/"</span><span class="op">)</span></span></code></pre></div>
 <p>Use <code><a href="reference/html_element.html">html_element()</a></code> to select an element. By default, CSS selectors are used, but other options are available.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/html_element.html">html_element</a></span><span class="op">(</span><span class="va">session</span>, <span class="st">".myclass"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; A selenider element selecting:</span></span>
 <span><span class="co">#&gt; The first element with css selector ".myclass"</span></span>
@@ -118,7 +100,7 @@
 <span><span class="co">#&gt; A selenider element selecting:</span></span>
 <span><span class="co">#&gt; The first element with xpath "//div/a"</span></span></code></pre></div>
 <p>However, there is a more concise way, that allows you to skip specifying the session, using <code><a href="reference/s.html">s()</a></code>. The above code can be translated to:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/s.html">s</a></span><span class="op">(</span><span class="st">".myclass"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; A selenider element selecting:</span></span>
 <span><span class="co">#&gt; The first element with css selector ".myclass"</span></span>
@@ -127,7 +109,7 @@
 <span><span class="co">#&gt; A selenider element selecting:</span></span>
 <span><span class="co">#&gt; The first element with xpath "//div/a"</span></span></code></pre></div>
 <p>These functions can be chained to find child elements, providing a much nicer syntax than complex XPaths.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/s.html">s</a></span><span class="op">(</span><span class="st">".myclass"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/html_element.html">html_element</a></span><span class="op">(</span>class_name <span class="op">=</span> <span class="st">"mydiv"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/html_element.html">html_element</a></span><span class="op">(</span><span class="st">"#mychild"</span><span class="op">)</span></span>
@@ -136,7 +118,7 @@
 <span><span class="co">#&gt; • The first child element with class name "mydiv"</span></span>
 <span><span class="co">#&gt; • The first child element with css selector "#mychild"</span></span></code></pre></div>
 <p>If you want to select all matching HTML elements rather than just one, use <code><a href="reference/s.html">ss()</a></code> or <code><a href="reference/html_elements.html">html_elements()</a></code>.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Select all &lt;div&gt; elements</span></span>
 <span><span class="fu"><a href="reference/s.html">ss</a></span><span class="op">(</span><span class="st">"div"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; A collection of selenider elements selecting:</span></span>
@@ -149,6 +131,23 @@
 <span><span class="co">#&gt; • The first element with css selector ".myclass"</span></span>
 <span><span class="co">#&gt; • The first child element with css selector ".mychild"</span></span>
 <span><span class="co">#&gt; • The child elements with css selector ".multiplechild"</span></span></code></pre></div>
+<p>You can then subset/filter these elements to get a specific element.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">elements</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/s.html">ss</a></span><span class="op">(</span><span class="st">"p"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Get the first element</span></span>
+<span><span class="va">elements</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span></span>
+<span><span class="co"># Find the first visible element</span></span>
+<span><span class="va">elements</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/html_filter.html">html_find</a></span><span class="op">(</span><span class="va">is_visible</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Get the 1st-5th elements</span></span>
+<span><span class="va">elements</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
+<span></span>
+<span><span class="co"># Get all visible elements</span></span>
+<span><span class="va">elements</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/html_filter.html">html_filter</a></span><span class="op">(</span><span class="va">is_visible</span><span class="op">)</span></span></code></pre></div>
 <p>Note that unless we do something with these elements, they will not actually be collected from the website.</p>
 <p>(Todo: Element specific actions e.g. click)</p>
 <p>selenider provides a concise testing interface using the <code><a href="reference/html_expect.html">html_expect()</a></code> function. Provide an element, and one or more conditions, and the function will wait until all the conditions are met. If the session’s timeout is reached, then the function will provide an informative error message.</p>
@@ -189,7 +188,6 @@
 <p>(Todo: Link to documentation of conditions)</p>
 </div>
 </div>
-
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
@@ -225,6 +223,7 @@
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://github.com/ashbythorpe/selenider/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/ashbythorpe/selenider/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://app.codecov.io/gh/ashbythorpe/selenider?branch=main" class="external-link"><img src="https://codecov.io/gh/ashbythorpe/selenider/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
 </ul>
 </div>
 
