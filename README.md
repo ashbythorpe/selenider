@@ -6,14 +6,13 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/ashbythorpe/selenider/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ashbythorpe/selenider/actions/workflows/R-CMD-check.yaml)
+[![Codecov test
+coverage](https://codecov.io/gh/ashbythorpe/selenider/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ashbythorpe/selenider?branch=main)
 <!-- badges: end -->
 
-# Overview
-
-selenider aims to make web testing and scraping much simpler. It is
-inspired by Java’s [Selenide](https://selenide.org/) and Python’s 
-[Selene](https://yashaka.github.io/selene/). It provides a simple
-and consistent interface to both [chromote] and [RSelenium].
+selenider aims to make web testing and scraping using Selenium much
+simpler. It is inspired by Java’s [Selenide](https://selenide.org/) and
+Python’s [Selene](https://yashaka.github.io/selene/).
 
 It provides the following features:
 
@@ -24,8 +23,7 @@ It provides the following features:
   performing some action on it.
 - An API that is designed for use with the pipe operator (`|>` or
   `%>%`).
-- A quick and concise way to specify test expectations, including
-  automatic [testthat] integration.
+- A quick and concise way to specify test expectations.
 
 ## Installation
 
@@ -38,26 +36,7 @@ remotes::install_github("ashbythorpe/selenider")
 
 ## Usage
 
-To use selenider, you first have to create a session.
-
-``` r
-library(selenider)
-
-session <- selenider_session("firefox")
-
-session
-#> A selenider session object
-#> • Open for 0s
-#> • Browser: "firefox"
-#> • Port: 4567
-#> • Currently opened: Nothing
-#> • Timeout: 4s
-```
-
-This session object is stored globally, so we don’t need to pass it into
-any subsequent functions.
-
-To navigate to a website, use `open_url()`
+To navigate to a website, use `open_url()`.
 
 ``` r
 open_url("https://www.google.com/")
@@ -118,6 +97,26 @@ s(".myclass") |>
 #> • The first element with css selector ".myclass"
 #> • The first child element with css selector ".mychild"
 #> • The child elements with css selector ".multiplechild"
+```
+
+You can then subset/filter these elements to get a specific element.
+
+``` r
+elements <- ss("p")
+
+# Get the first element
+elements[[1]]
+
+# Find the first visible element
+elements |>
+  html_find(is_visible)
+
+# Get the 1st-5th elements
+elements[1:5]
+
+# Get all visible elements
+elements |>
+  html_filter(is_visible)
 ```
 
 Note that unless we do something with these elements, they will not
