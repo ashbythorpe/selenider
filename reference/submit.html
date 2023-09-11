@@ -106,7 +106,7 @@ an element does not exist, an error is thrown.
 <span class="r-in"><span><span class="st">"</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="minimal_selenider_session.html">minimal_selenider_session</a></span><span class="op">(</span><span class="va">html</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmplHBClf/file1815652c034a.html"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpXJgKeh/file181a5ca8f49c.html"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">submit</span><span class="op">(</span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"input"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in submit(s("input")):</span> To submit `x` using JavaScript, it must exist.</span>
@@ -116,7 +116,7 @@ an element does not exist, an error is thrown.
 <span class="r-err co"><span class="r-pr">#&gt;</span> ancestor.</span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> After 4 seconds, `x` did not have a form ancestor.</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Won't work since doesn't have a form ancestor</span></span></span>
+<span class="r-in"><span><span class="co"># Won't work since the element doesn't have a form ancestor</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">submit</span><span class="op">(</span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span>, timeout <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error in submit(s("a"), timeout = 0.5) : </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   To submit `x` using JavaScript, it must have a form element as its</span>

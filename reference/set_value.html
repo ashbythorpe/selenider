@@ -65,8 +65,8 @@
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>x</dt>
 <dd><p>A <code>selenider_element</code> object. For <code>send_keys()</code>, this can be <code>NULL</code>,
-meaning that the keys will be sent to the current page instead of a specific
-element.</p></dd>
+meaning that the keys will be sent to the current page (or the currently focused
+element) instead of a specific element.</p></dd>
 
 
 <dt>text</dt>
@@ -83,7 +83,7 @@ element.</p></dd>
 
 <dt>modifiers</dt>
 <dd><p>A character vector; one or more of "shift", "ctrl"/"control", "alt", and "command"/meta".
-Note that when using chromote as a backend, these do not work on Mac.</p></dd>
+Note that when using chromote as a backend, these do not work on Mac OS.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -130,7 +130,7 @@ existing content.</p>
 <span class="r-in"><span><span class="st">"</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="minimal_selenider_session.html">minimal_selenider_session</a></span><span class="op">(</span><span class="va">html</span>, js <span class="op">=</span> <span class="va">js</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmplHBClf/file18157862f3a3.html"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpXJgKeh/file181a36089334.html"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="html_expect.html">html_expect</a></span><span class="op">(</span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"p"</span><span class="op">)</span>, <span class="fu"><a href="has_text.html">has_exact_text</a></span><span class="op">(</span><span class="st">""</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>

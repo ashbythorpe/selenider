@@ -142,13 +142,14 @@ This is the same as running <code>get_session()</code> before this function.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code>local_session()</code> is called by <code><a href="selenider_session.html">selenider_session()</a></code> unless otherwise
+    <div class="dont-index"><p><code><a href="selenider_session.html">selenider_session()</a></code>, which calls <code>local_session()</code> unless otherwise
 specified.</p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Since we don't want to open a bunch of sessions for no reason</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Since we don't want to open a bunch of sessions for no reason,</span></span></span>
+<span class="r-in"><span><span class="co"># we create a custom session object (that is just an empty list).</span></span></span>
 <span class="r-in"><span><span class="va">mock_session</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/structure.html" class="external-link">structure</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
