@@ -86,3 +86,9 @@ selenider_cleanup()
 }
 \dontshow{\}) # examplesIf}
 }
+\seealso{
+\itemize{
+\item \code{\link[=html_element]{html_element()}} and \code{\link[=html_elements]{html_elements()}} to select elements.
+\item \code{\link[=element_list]{element_list()}} and \code{\link[=html_flatmap]{html_flatmap()}} if you want to iterate over an element collection.
+}
+}

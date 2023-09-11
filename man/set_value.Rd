@@ -14,8 +14,8 @@ clear_value(x, timeout = NULL)
 }
 \arguments{
 \item{x}{A \code{selenider_element} object. For \code{\link[=send_keys]{send_keys()}}, this can be \code{NULL},
-meaning that the keys will be sent to the current page instead of a specific
-element.}
+meaning that the keys will be sent to the current page (or the currently focused
+element) instead of a specific element.}
 
 \item{text}{A string to set the value of the input element to.}
 
@@ -24,7 +24,7 @@ element.}
 \item{...}{A set of inputs to send to \code{x}.}
 
 \item{modifiers}{A character vector; one or more of "shift", "ctrl"/"control", "alt", and "command"/meta".
-Note that when using chromote as a backend, these do not work on Mac.}
+Note that when using chromote as a backend, these do not work on Mac OS.}
 }
 \value{
 \code{x}, invisibly

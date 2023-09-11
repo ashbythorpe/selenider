@@ -37,7 +37,7 @@ session <- minimal_selenider_session(html)
 submit(s("input"))
 submit(s("p"))
 
-# Won't work since doesn't have a form ancestor
+# Won't work since the element doesn't have a form ancestor
 try(submit(s("a"), timeout = 0.5))
 
 \dontshow{
