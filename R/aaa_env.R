@@ -75,11 +75,12 @@ reset_session <- function(session, old_session, close) {
 #' `with_session()` returns the result of `code`.
 #' 
 #' @seealso 
-#' `local_session()` is called by [selenider_session()] unless otherwise
+#' [selenider_session()], which calls `local_session()` unless otherwise
 #' specified.
 #' 
 #' @examplesIf selenider_available(online = FALSE)
-#' # Since we don't want to open a bunch of sessions for no reason
+#' # Since we don't want to open a bunch of sessions for no reason,
+#' # we create a custom session object (that is just an empty list).
 #' mock_session <- function() {
 #'   structure(
 #'     list(),

@@ -93,3 +93,42 @@ test_that("JavaScript actions work", {
 
   html_expect(s("#form-output"), has_text("Form submitted"))
 })
+
+test_that("scroll_to() works", {
+  session <- selenider_test_session()
+
+  html <- "
+  <!DOCTYPE html>
+  <div style = 'height:100%; min-height:100vh'></div>
+  <button onclick='checkScrolled()'></button>
+  <p>Scroll down to find me!</p>
+  <script>
+  function checkScrolled() {
+    let element = document.getElementsByTagName('p').item(0);
+    let rect = element.getBoundingClientRect();
+    // If paragraph is in view
+    if (rect.bottom <= (window.innerHeight || document.documentElement.clientHeight)) {
+      element.innerText = 'You found me!';
+    }
+  }
+  </script>
+  "
+
+  file <- withr::local_tempfile(fileext = ".html")
+  writeLines(html, file(file))
+  open_url(paste0("file://", file))
+
+  scroll_to(s("p"))
+
+  click(s("button"))
+
+  html_expect(s("p"), has_text("You found me!"))
+
+  reload()
+
+  scroll_to(s("p"), js = TRUE)
+
+  click(s("button"))
+
+  html_expect(s("p"), has_text("You found me!"))
+})

@@ -21,3 +21,15 @@ testthat::test_that("Keys matched to Selenium keys", {
     RSelenium::selKeys$command_meta
   )
 })
+
+test_that("Each key has a selenium key definition", {
+  for (key in keys) {
+    rlang::inject(expect_no_error(get_selenider_key(!!key)))
+  }
+})
+
+test_that("Each key has a chromote key definition", {
+  for (key in keys) {
+    rlang::inject(expect_no_error(get_chromote_key(!!key)))
+  }
+})

@@ -37,6 +37,16 @@ test_that("Errors are thrown correctly", {
 
   expect_error(html_expect(s(".random-class"), exists), class = "selenider_error_base_exists")
 
+  expect_error(
+    selenider_session(driver = list(1, 2, 3)),
+    class = "selenider_error_invalid_driver"
+  )
+
+  expect_error(
+    selenider_session(driver = 1),
+    class = "selenider_error_invalid_driver"
+  )
+
   empty_elements <- suppressWarnings(ss(".class1")[0])
 
   expect_error(
@@ -62,6 +72,16 @@ test_that("Errors are thrown correctly", {
   expect_error(
     html_flatten(1),
     class = "selenider_error_flatten_dots"
+  )
+
+  expect_error(
+    html_flatten(list(1)),
+    class = "selenider_error_flatten_dots"
+  )
+
+  expect_error(
+    html_flatmap(ss(".class"), function(x) stop()),
+    class = "selenider_error_flatmap_result"
   )
 
   expect_error(

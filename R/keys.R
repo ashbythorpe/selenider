@@ -32,7 +32,6 @@ keys <- list(
   left = key("LEFT"),
   right = key("RIGHT"),
   insert = key("INSERT"),
-  delete = key("DELETE"),
   f1 = key("F1"),
   f2 = key("F2"),
   f3 = key("F3"),
@@ -80,7 +79,8 @@ get_selenider_key <- function(x) {
     F11 = RSelenium::selKeys$f11,
     F12 = RSelenium::selKeys$f12,
     COMMAND = RSelenium::selKeys$command_meta,
-    META = RSelenium::selKeys$command_meta
+    META = RSelenium::selKeys$command_meta,
+    stop("Key not found")
   )
 }
 
@@ -115,7 +115,8 @@ get_chromote_key <- function(x) {
     F11 = list(windowsVirtualKeyCode = 122, code = "F11", key = "F11"),
     F12 = list(windowsVirtualKeyCode = 123, code = "F12", key = "F12"),
     COMMAND = list(windowsVirtualKeyCode = 91, code = "MetaLeft", key = "Meta", location = 1),
-    META = list(windowsVirtualKeyCode = 91, code = "MetaLeft", key = "Meta", location = 1)
+    META = list(windowsVirtualKeyCode = 91, code = "MetaLeft", key = "Meta", location = 1),
+    stop("Key not found")
   )
 }
 

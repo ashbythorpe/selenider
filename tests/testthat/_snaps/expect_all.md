@@ -11,6 +11,16 @@
 ---
 
     Code
+      html_expect_all(buttons, is_enabled, is_visible, testthat = FALSE, timeout = 0)
+    Condition
+      Error in `html_expect_all()`:
+      ! Condition failed:
+      `is_enabled`
+      i `x[[2]]` is not enabled.
+
+---
+
+    Code
       html_expect_all(buttons, is_enabled, testthat = FALSE, timeout = 0.1)
     Condition
       Error in `html_expect_all()`:

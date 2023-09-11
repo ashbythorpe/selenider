@@ -9,6 +9,7 @@ test_that("html_expect_all() works", {
 
   expect_no_error(html_expect_all(buttons, is_visible))
   expect_snapshot(html_expect_all(buttons, is_enabled, testthat = FALSE, timeout = 0), error = TRUE)
+  expect_snapshot(html_expect_all(buttons, is_enabled, is_visible, testthat = FALSE, timeout = 0), error = TRUE)
   expect_snapshot(html_expect_all(buttons, is_enabled, testthat = FALSE, timeout = 0.1), error = TRUE)
   expect_snapshot(html_expect_all(buttons, is_disabled, testthat = FALSE, timeout = 0.1), error = TRUE)
   expect_snapshot(html_expect_all(buttons, is_visible, is_disabled, testthat = FALSE, timeout = 0.1), error = TRUE)

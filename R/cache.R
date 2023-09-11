@@ -36,6 +36,10 @@
 #' The same type as `x`. The result of `cache_element()`/`cache_elements()` can be used
 #' as a normal `selenider_element`/`selenider_elements` object.
 #'
+#' @seealso
+#' * [html_element()] and [html_elements()] to select elements.
+#' * [element_list()] and [html_flatmap()] if you want to iterate over an element collection.
+#'
 #' @examplesIf selenider_available(online = FALSE)
 #' html <- "
 #' <div>

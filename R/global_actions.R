@@ -205,7 +205,7 @@ refresh <- reload
 #' @family global actions
 #'
 #' @examplesIf selenider_available()
-#' session <- mock_selenider_session()
+#' session <- selenider_session()
 #'
 #' open_url("https://www.google.com")
 #'

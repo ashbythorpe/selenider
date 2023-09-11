@@ -180,3 +180,20 @@ test_that("Printing results of html_flatmap() works", {
   expect_snapshot(print(elements[-seq_len(10)]))
   expect_snapshot(print(html_find(elements, is_visible)))
 })
+
+test_that("Printing works for results of JS expressions.", {
+  session <- selenider_test_session()
+
+  open_url("https://ashbythorpe.github.io/selenider/articles/test-site.html")
+
+  js_element <- execute_js_fn("x => x", s(".toggleable"))
+  
+  expect_snapshot(print(js_element))
+  expect_snapshot(print(html_element(js_element, "p")))
+
+  js_elements <- execute_js_fn("x => [x, x]", s(".toggleable"))
+
+  expect_snapshot(print(js_elements))
+  expect_snapshot(print(js_elements[1:2]))
+  expect_snapshot(print(js_elements[[1]]))
+})

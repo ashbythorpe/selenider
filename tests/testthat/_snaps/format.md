@@ -585,3 +585,44 @@
       * The first element matching the following condition:
         `is_visible`
 
+# Printing works for results of JS expressions.
+
+    Code
+      print(js_element)
+    Output
+      A selenider element selecting:
+      The result of a JavaScript expression.
+
+---
+
+    Code
+      print(html_element(js_element, "p"))
+    Output
+      A selenider element selecting:
+      * The result of a JavaScript expression.
+      * The first child element with css selector "p".
+
+---
+
+    Code
+      print(js_elements)
+    Output
+      A collection of selenider elements selecting:
+      The results of a JavaScript expression.
+
+---
+
+    Code
+      print(js_elements[1:2])
+    Output
+      A collection of selenider elements selecting:
+      The 1st and 2nd results of a JavaScript expression.
+
+---
+
+    Code
+      print(js_elements[[1]])
+    Output
+      A selenider element selecting:
+      The first result of a JavaScript expression.
+

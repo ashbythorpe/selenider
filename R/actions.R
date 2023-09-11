@@ -430,8 +430,8 @@ hover_chromote <- function(element, driver) {
 #' existing content.
 #'
 #' @param x A `selenider_element` object. For [send_keys()], this can be `NULL`,
-#'   meaning that the keys will be sent to the current page instead of a specific
-#'   element.
+#'   meaning that the keys will be sent to the current page (or the currently focused
+#'   element) instead of a specific element.
 #' @param text A string to set the value of the input element to.
 #' @param timeout How long to wait for the element to exist.
 #' 
@@ -540,7 +540,7 @@ chromote_send_chars <- function(x, driver) {
 #' 
 #' @param ... A set of inputs to send to `x`.
 #' @param modifiers A character vector; one or more of "shift", "ctrl"/"control", "alt", and "command"/meta".
-#'   Note that when using chromote as a backend, these do not work on Mac.
+#'   Note that when using chromote as a backend, these do not work on Mac OS.
 #' 
 #' @export
 send_keys <- function(x, ..., modifiers = NULL, timeout = NULL) {
@@ -807,7 +807,7 @@ scroll_to <- function(x, js = FALSE, timeout = NULL) {
 #' submit(s("input"))
 #' submit(s("p"))
 #'
-#' # Won't work since doesn't have a form ancestor
+#' # Won't work since the element doesn't have a form ancestor
 #' try(submit(s("a"), timeout = 0.5))
 #'
 #' \dontshow{

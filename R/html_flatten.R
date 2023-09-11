@@ -68,7 +68,7 @@ html_flatten <- function(...) {
     stop_dots_empty()
   }
   
-  to_combine <- html_flatten_init(elements, exprs)
+  to_combine <- html_flatten_init(elements, exprs = exprs)
   
   html_combine(to_combine)
 }
@@ -82,9 +82,9 @@ html_flatten_init <- function(x, exprs, is_nested = FALSE, index = NULL, call = 
 
     if (!inherits_any(element, accepted_classes)) {
       if (is.list(element) && !is_nested) {
-        result <- c(result, html_flatten_init(element, is_nested = TRUE, index = i, call = call))
+        result <- c(result, html_flatten_init(element, exprs = exprs, is_nested = TRUE, index = i, call = call))
       } else {
-        stop_flatten_dots(x, exprs, i, index, is_nested, call)
+        stop_flatten_dots(x, exprs = exprs, i = i, index = index, is_nested = is_nested, call = call)
       }
     } else {
       result <- append(result, list(element))

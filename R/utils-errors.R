@@ -261,14 +261,14 @@ stop_flatten_dots <- function(x, exprs, i, index, is_nested, call = rlang::calle
     cli::cli_abort(c(
       "Every arguments in `...` must be a {.cls {accepted_classes}} object or a list of such objects, not {.obj_type_friendly {x}}.",
       "x" = "Problematic argument ({.val {i}}):",
-      "i" = "`{expr}`"
+      "i" = "`{exprs[[i]]}`"
     ), class = "selenider_error_flatten_dots", call = call)
   } else {
     cli::cli_abort(c(
       "Every arguments in `...` must be a {.cls {accepted_classes}} object or a list of such objects.",
       "x" = "Argument {.val {index}} was a list, but contained {.obj_type_friendly {x}} as its {ordinal(i)} element.",
       "x" = "Problematic argument:",
-      "i" = "`{expr}`"
+      "i" = "`{exprs[[i]]}`"
     ), class = "selenider_error_flatten_dots", call = call)
   }
 }
