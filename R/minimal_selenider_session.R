@@ -12,7 +12,7 @@
 #' A `selenider_session` object.
 #'
 #' @export
-minimal_selenider_session <- function(html, js = NULL, ..., .env = rlang::caller_env()) {
+minimal_selenider_session <- function(html, js = NULL, ..., .env = rlang::caller_env()) { # nocov start
   check_string(js, allow_null = TRUE)
   if (!is.character(html) || length(html) != 1) {
     if (inherits_any(html, c("xml_missing", "xml_node", "xml_nodeset"))) {
@@ -41,4 +41,4 @@ minimal_selenider_session <- function(html, js = NULL, ..., .env = rlang::caller
   session <- selenider_session(..., .env = .env)
   open_url(paste0("file://", file), session = session)
   session
-}
+} # nocov end

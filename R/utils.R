@@ -237,8 +237,8 @@ is_linux <- function() Sys.info()[['sysname']] == 'Linux'
 #' @keywords internal
 #'
 #' @export
-selenider_cleanup <- function(env = rlang::caller_env()) {
+selenider_cleanup <- function(env = rlang::caller_env()) { # nocov start
   Sys.setenv("_R_CHECK_CONNECTIONS_LEFT_OPEN_" = "FALSE")
   try_fetch(withr::deferred_run(env), error = function(e) rlang::abort(c("Error in withr::deferred_run()"), parent = e))
   return(invisible())
-}
+} # nocov end
