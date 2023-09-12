@@ -20,4 +20,16 @@ test_selenider <- function(x) {
     "SELENIDER_SESSION" = "chromote",
     "SELENIDER_BROWSER" = "chrome"
   ), rlang::ns_env("devtools")$test())
+
+  cli::cli_alert_info("Running tests using Chromote session, displayed in the browser")
+  withr::with_envvar(c(
+    "SELENIDER_SESSION" = "chromote",
+    "SELENIDER_BROWSER" = "chrome",
+    "SELENIDER_VIEW" = "TRUE"
+  ), rlang::ns_env("devtools")$test())
+
+  cli::cli_alert_info("Running manual tests")
+  withr::with_envvar(c(
+    "NOT_CRAN" = "true"
+  ), testthat::test_dir("tests/manual"))
 }

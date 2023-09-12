@@ -7,6 +7,8 @@ selenider_test_session <- function(x, .env = rlang::caller_env()) {
   skip_if_selenider_unavailable(session)
 
   if (session == "chromote") {
+    view <- as.logical(Sys.getenv("SELENIDER_VIEW", "FALSE"))
+
     chromote::set_chrome_args(c(
       # https://peter.sh/experiments/chromium-command-line-switches/#disable-crash-reporter
       "--disable-crash-reporter",
@@ -14,7 +16,7 @@ selenider_test_session <- function(x, .env = rlang::caller_env()) {
       chromote::default_chrome_args()
     ))
 
-    result <- selenider_session(session, browser = browser, .env = .env)
+    result <- selenider_session(session, browser = browser, view = view, .env = .env)
 
     withr::defer({
       # Delete the Crashpad folder if it exists
