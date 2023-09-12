@@ -200,8 +200,8 @@ selenider_cleanup()
 }
 \seealso{
 \itemize{
-\item \code{\link[=is_present]{is_present()}} and other conditions for predicates for a single HTML element.
-\item \code{\link[=has_length]{has_length()}} and other conditions for predicates for multiple HTML elements.
+\item \code{\link[=is_present]{is_present()}} and other conditions for predicates for HTML elements.
+(If you scroll down to the \emph{See also} section, you will find the rest).
 \item \code{\link[=html_expect_all]{html_expect_all()}} and \code{\link[=html_wait_until_all]{html_wait_until_all()}} for an easy way to test a single
 condition on multiple elements.
 \item \code{\link[=html_filter]{html_filter()}} and \code{\link[=html_find]{html_find()}} to use conditions to filter elements.

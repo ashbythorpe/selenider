@@ -7,7 +7,7 @@
 minimal_selenider_session(html, js = NULL, ..., .env = rlang::caller_env())
 }
 \arguments{
-\item{html}{A string to use as HTML.}
+\item{html}{A string to use as HTML. Can also be an \code{xml2} object.}
 
 \item{js}{A string (or \code{NULL}) to use as JavaScript.}
 
@@ -19,6 +19,22 @@ minimal_selenider_session(html, js = NULL, ..., .env = rlang::caller_env())
 A \code{selenider_session} object.
 }
 \description{
-Create a \code{selenider_session} using custom HTML/JavaScript. Similar to
-\code{\link[rvest:minimal_html]{rvest::minimal_html()}}.
+Create a \code{selenider_session} using custom HTML/JavaScript.
+}
+\details{
+The function works by combining \code{html} and \code{js} into a single string, then
+writing this to a temporary file (and opening it in the session's browser).
+}
+\examples{
+\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+session <- minimal_selenider_session("<p>Example</p>")
+
+\dontshow{
+# Clean up all connections and invalidate default chromote object
+selenider_cleanup()
+}
+\dontshow{\}) # examplesIf}
+}
+\seealso{
+\code{\link[=selenider_session]{selenider_session()}}
 }

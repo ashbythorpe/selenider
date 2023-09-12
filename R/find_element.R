@@ -3,7 +3,7 @@
 #' @param x The parent element.
 #' @param using The type of the selector (e.g. "css selector", "xpath").
 #' @param value The value of the selector as a string.
-#' @param driver The chromote::ChromoteSession or remoteDriver.
+#' @param driver The [chromote::ChromoteSession] or [RSelenium::remoteDriver].
 #'
 #' @returns
 #' A backendNodeId (chromote) or a webElement (RSelenium)

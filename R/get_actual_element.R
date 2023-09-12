@@ -23,12 +23,13 @@
 #' @seealso
 #' * [s()], [ss()], [html_element()] and [html_elements()] to select selenider
 #'   elements.
+#' * [cache_element()] and [cache_elements()] to cache these values.
 #' * The [Chrome Devtools Protocol documentation](https://chromedevtools.github.io/devtools-protocol/tot/)
 #'   for the operations that can be performed using a backend node id. Note that
-#'   this requires the [chromote::ChromoteSession] object, which can be retrived using
+#'   this requires the [chromote::ChromoteSession] object, which can be retrieved using
 #'   `<selenider_session>$driver`.
 #' * The documentation for [RSelenium::webElement()] to see the things you can
-#'   do with them.
+#'   do with a webElement.
 #'
 #' @examplesIf selenider_available(online = FALSE)
 #' html <- "

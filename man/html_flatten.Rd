@@ -23,7 +23,7 @@ A \code{selenider_elements} object.
 Combine a set of \code{selenider_element}/\code{selenider_elements} objects
 into a single \code{selenider_elements} object, allowing you to
 perform actions on them at once. \code{c()} and \code{html_flatten()} do the same
-thing, but \code{html_flatten()} works on lists of \code{selenider_element}/\code{selenider_elements}
+thing, but \code{html_flatten()} works when given a list of \code{selenider_element}/\code{selenider_elements}
 objects.
 }
 \examples{
@@ -73,4 +73,10 @@ lapply(selectors, ss) |>
 selenider_cleanup()
 }
 \dontshow{\}) # examplesIf}
+}
+\seealso{
+\itemize{
+\item \code{\link[=html_flatmap]{html_flatmap()}} and \code{\link[=as.list.selenider_elements]{as.list.selenider_elements()}} to iterate over element
+collections.
+}
 }

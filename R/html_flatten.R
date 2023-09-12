@@ -1,15 +1,19 @@
 #' Combine multiple HTML elements
-#' 
+#'
 #' Combine a set of `selenider_element`/`selenider_elements` objects
 #' into a single `selenider_elements` object, allowing you to
 #' perform actions on them at once. `c()` and `html_flatten()` do the same
-#' thing, but `html_flatten()` works on lists of `selenider_element`/`selenider_elements`
+#' thing, but `html_flatten()` works when given a list of `selenider_element`/`selenider_elements`
 #' objects.
 #'
 #' @param ... <[`dynamic-dots`][rlang::dyn-dots]> `selenider_element` or
 #'   `selenider_elements` objects to be combined, or lists of such objects.
-#' 
+#'
 #' @returns A `selenider_elements` object.
+#'
+#' @seealso
+#' * [html_flatmap()] and [as.list.selenider_elements()] to iterate over element
+#'   collections.
 #'
 #' @examplesIf selenider_available(online = FALSE)
 #' html <- "
@@ -67,9 +71,9 @@ html_flatten <- function(...) {
   if (length(elements) == 0) {
     stop_dots_empty()
   }
-  
+
   to_combine <- html_flatten_init(elements, exprs = exprs)
-  
+
   html_combine(to_combine)
 }
 
@@ -95,14 +99,14 @@ html_flatten_init <- function(x, exprs, is_nested = FALSE, index = NULL, call = 
 }
 
 #' @rdname html_flatten
-#' 
+#'
 #' @export
 c.selenider_element <- function(...) {
   html_flatten(...)
 }
 
 #' @rdname html_flatten
-#' 
+#'
 #' @export
 c.selenider_elements <- function(...) {
   html_flatten(...)
@@ -143,7 +147,7 @@ remove_driver <- function(x) {
 
 new_flattened_selector <- function(elements) {
   selectors <- lapply(elements, function(x) x$selectors)
-  
+
   res <- list(
     selectors = selectors,
     filter = list(),

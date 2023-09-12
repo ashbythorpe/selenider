@@ -53,3 +53,8 @@ selenider_cleanup()
 }
 \dontshow{\}) # examplesIf}
 }
+\seealso{
+\itemize{
+\item \code{\link[=html_filter]{html_filter()}} and \code{\link[=html_find]{html_find()}} for filtering collection of elements.
+}
+}

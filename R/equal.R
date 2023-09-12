@@ -11,6 +11,9 @@
 #' @returns
 #' `TRUE` or `FALSE`.
 #'
+#' @seealso
+#' * [html_filter()] and [html_find()] for filtering collection of elements.
+#'
 #' @examplesIf selenider_available(online = FALSE)
 #' html <- "
 #' <div></div>

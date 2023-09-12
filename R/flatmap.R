@@ -29,6 +29,17 @@
 #' once, and during the `html_flatmap()` call. For this reason, `.f` should not invoke
 #' any side effects or do anything other than selecting sub-elements.
 #'
+#' `html_flatmap()` can essentially be viewed as a map operation (e.g. [lapply()], [purrr::map()])
+#' followed by a flattening operation ([html_flatmap()]). This means that:
+#' ```
+#' html_flatmap(x, .f)
+#' ```
+#' is essentially equivalent to:
+#' ```
+#' html_flatten(lapply(as.list(x), .f))
+#' ```
+#' However, the second approach is not done lazily.
+#'
 #' `as.list()`/`element_list()` essentially turns `x` into:
 #' `list(x[[1]], x[[2]], ...)`
 #' However, to do this, the length of `x` must be computed. This means that while
@@ -40,6 +51,11 @@
 #' @returns
 #' `html_flatmap()` returns a `selenider_element` object.
 #' `as.list()`/`element_list()` returns a list of `selenider_element` objects.
+#'
+#' @seealso
+#' * [html_flatten()] to combine multiple `selenider_element`/`selenider_elements` objects
+#'   into a single object.
+#' * [html_filter()] and [html_find()] to filter element collections using a condition.
 #'
 #' @examplesIf selenider_available(online = FALSE)
 #' html <- "

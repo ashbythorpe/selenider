@@ -5,7 +5,7 @@
 \alias{keys}
 \title{Special keys}
 \format{
-An object of class \code{list} of length 28.
+A list containing \code{selenider_key} objects.
 }
 \usage{
 keys
@@ -15,6 +15,5 @@ List of special keys, for use with \code{\link[=send_keys]{send_keys()}}.
 }
 \examples{
 keys$backspace
-
 }
 \keyword{datasets}

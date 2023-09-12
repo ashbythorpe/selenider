@@ -43,8 +43,9 @@
 #' otherwise.
 #'
 #' @seealso
-#' * [html_expect()] and [html_wait_until()]
-#' * [is_present()] and other conditions for predicates for a single HTML element.
+#' * [html_expect()] and [html_wait_until()].
+#' * [is_present()] and other conditions for predicates for HTML elements.
+#'   (If you scroll down to the *See also* section, you will find the rest).
 #'
 #' @examplesIf selenider_available(online = FALSE)
 #' html <- "

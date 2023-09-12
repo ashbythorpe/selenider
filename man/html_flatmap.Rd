@@ -48,6 +48,19 @@ results in \code{x}. This means that no matter the length of \code{x}, \code{.f}
 once, and during the \code{html_flatmap()} call. For this reason, \code{.f} should not invoke
 any side effects or do anything other than selecting sub-elements.
 
+\code{html_flatmap()} can essentially be viewed as a map operation (e.g. \code{\link[=lapply]{lapply()}}, \code{\link[purrr:map]{purrr::map()}})
+followed by a flattening operation (\code{\link[=html_flatmap]{html_flatmap()}}). This means that:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{html_flatmap(x, .f)
+}\if{html}{\out{</div>}}
+
+is essentially equivalent to:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{html_flatten(lapply(as.list(x), .f))
+}\if{html}{\out{</div>}}
+
+However, the second approach is not done lazily.
+
 \code{as.list()}/\code{element_list()} essentially turns \code{x} into:
 \code{list(x[[1]], x[[2]], ...)}
 However, to do this, the length of \code{x} must be computed. This means that while
@@ -98,4 +111,11 @@ lapply(as.list(p_tags), html_text)
 selenider_cleanup()
 }
 \dontshow{\}) # examplesIf}
+}
+\seealso{
+\itemize{
+\item \code{\link[=html_flatten]{html_flatten()}} to combine multiple \code{selenider_element}/\code{selenider_elements} objects
+into a single object.
+\item \code{\link[=html_filter]{html_filter()}} and \code{\link[=html_find]{html_find()}} to filter element collections using a condition.
+}
 }

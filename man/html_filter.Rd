@@ -95,6 +95,7 @@ selenider_cleanup()
 \seealso{
 \itemize{
 \item \code{\link[=html_elements]{html_elements()}} and \code{\link[=ss]{ss()}} to get elements to filter.
-\item \code{\link[=is_present]{is_present()}} and other conditions for conditions to filter by.
+\item \code{\link[=is_present]{is_present()}} and other conditions for predicates for HTML elements.
+(If you scroll down to the \emph{See also} section, you will find the rest).
 }
 }

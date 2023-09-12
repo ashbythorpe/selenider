@@ -70,8 +70,8 @@
 #' otherwise.
 #' 
 #' @seealso 
-#' * [is_present()] and other conditions for predicates for a single HTML element.
-#' * [has_length()] and other conditions for predicates for multiple HTML elements.
+#' * [is_present()] and other conditions for predicates for HTML elements.
+#'   (If you scroll down to the *See also* section, you will find the rest).
 #' * [html_expect_all()] and [html_wait_until_all()] for an easy way to test a single
 #'   condition on multiple elements.
 #' * [html_filter()] and [html_find()] to use conditions to filter elements.

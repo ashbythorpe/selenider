@@ -107,7 +107,7 @@ format.selenider_js_selector <- function(x, multiple = FALSE, ...) {
     format_selector_multiple(x, element_name = " results of a JavaScript expression", with = "")
   } else {
     if (length(x$filter) == 0) {
-      "The result of a JavaScript expression."
+      "The result of a JavaScript expression"
     } else {
       format_selector(x, element_name = " result of a JavaScript expression", with = "")
     }

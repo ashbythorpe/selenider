@@ -1,15 +1,28 @@
 #' Create a session with custom HTML
 #'
-#' Create a `selenider_session` using custom HTML/JavaScript. Similar to
-#' [rvest::minimal_html()].
+#' Create a `selenider_session` using custom HTML/JavaScript.
 #'
-#' @param html A string to use as HTML.
+#' @param html A string to use as HTML. Can also be an `xml2` object.
 #' @param js A string (or `NULL`) to use as JavaScript.
 #' @param ... Passed into [selenider_session()].
 #' @param .env The environment in which the session will be used.
 #'
+#' @details
+#' The function works by combining `html` and `js` into a single string, then
+#' writing this to a temporary file (and opening it in the session's browser).
+#'
 #' @returns
 #' A `selenider_session` object.
+#'
+#' @seealso [selenider_session()]
+#'
+#' @examplesIf selenider_available(online = FALSE)
+#' session <- minimal_selenider_session("<p>Example</p>")
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
 #'
 #' @export
 minimal_selenider_session <- function(html, js = NULL, ..., .env = rlang::caller_env()) { # nocov start

@@ -74,11 +74,12 @@ selenider_cleanup()
 \itemize{
 \item \code{\link[=s]{s()}}, \code{\link[=ss]{ss()}}, \code{\link[=html_element]{html_element()}} and \code{\link[=html_elements]{html_elements()}} to select selenider
 elements.
+\item \code{\link[=cache_element]{cache_element()}} and \code{\link[=cache_elements]{cache_elements()}} to cache these values.
 \item The \href{https://chromedevtools.github.io/devtools-protocol/tot/}{Chrome Devtools Protocol documentation}
 for the operations that can be performed using a backend node id. Note that
-this requires the \link[chromote:ChromoteSession]{chromote::ChromoteSession} object, which can be retrived using
+this requires the \link[chromote:ChromoteSession]{chromote::ChromoteSession} object, which can be retrieved using
 \verb{<selenider_session>$driver}.
 \item The documentation for \code{\link[RSelenium:webElement-class]{RSelenium::webElement()}} to see the things you can
-do with them.
+do with a webElement.
 }
 }

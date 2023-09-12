@@ -32,7 +32,8 @@
 #'
 #' @seealso
 #' * [html_elements()] and [ss()] to get elements to filter.
-#' * [is_present()] and other conditions for conditions to filter by.
+#' * [is_present()] and other conditions for predicates for HTML elements.
+#'   (If you scroll down to the *See also* section, you will find the rest).
 #'
 #' @examplesIf selenider_available(online = FALSE)
 #' html <- "

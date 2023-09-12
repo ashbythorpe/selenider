@@ -94,8 +94,9 @@ A \code{selenider_session} object. Use \code{session$driver} to retrieve the dri
 browser.
 }
 \description{
-Begin a session in selenider, setting the session globally unless otherwise
-specified.
+Begin a session in selenider, setting it as the local session unless otherwise
+specified, allowing the session to be accessed globally in the environement
+where it was defined.
 
 \code{create_chromote_session()}, \code{create_selenium_client()} and \code{create_selenium_server()}
 are low-level functions that allow more control over making a web driver, which
@@ -227,6 +228,7 @@ selenider_cleanup()
 \item \code{\link[=close_session]{close_session()}} to close the session. Note that this will not reset the
 result of \code{\link[=get_session]{get_session()}}, which is why \code{\link[withr:defer]{withr::deferred_run()}} is preferred.
 \item \code{\link[=local_session]{local_session()}} and \code{\link[=with_session]{with_session()}} to manually set the local session
-object.
+object (and \code{\link[=get_session]{get_session()}} to get it).
+\item \code{\link[=open_url]{open_url()}}, \code{\link[=s]{s()}} and \code{\link[=html_elements]{html_elements()}} to get started once you have created a session.
 }
 }

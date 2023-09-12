@@ -112,5 +112,9 @@ selenider_cleanup()
 \itemize{
 \item \url{http://web.simmons.edu/~grovesd/comm244/notes/week4/document-tree} for a simple
 and visual explanation of the document tree.
+\item \code{\link[=html_element]{html_element()}} and \code{\link[=html_elements]{html_elements()}} for other ways of selecting elements. These
+functions allow you to select ancestors using one or more conditions (e.g. CSS
+selectors).
+\item \code{\link[=html_filter]{html_filter()}} and \code{\link[=html_find]{html_find()}} for filtering element collections.
 }
 }

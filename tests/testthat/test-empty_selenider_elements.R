@@ -8,4 +8,6 @@ test_that("Printing empty element collections works", {
   expect_true(elements_is_empty(empty_elements))
 
   expect_snapshot(print(empty_elements))
+
+  expect_equal(get_elements(empty_elements), list())
 })

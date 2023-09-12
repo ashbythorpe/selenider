@@ -30,6 +30,10 @@
 #' @seealso
 #' * <http://web.simmons.edu/~grovesd/comm244/notes/week4/document-tree> for a simple
 #'   and visual explanation of the document tree.
+#' * [html_element()] and [html_elements()] for other ways of selecting elements. These
+#'   functions allow you to select ancestors using one or more conditions (e.g. CSS
+#'   selectors).
+#' * [html_filter()] and [html_find()] for filtering element collections.
 #'
 #' @examplesIf selenider_available(online = FALSE)
 #' html <- "

@@ -100,5 +100,8 @@ selenider_cleanup()
 \item \code{\link[=ss]{ss()}} to quickly select multiple elements without specifying the session.
 \item \code{\link[=html_element]{html_element()}} to select multiple elements.
 \item \code{\link[=selenider_session]{selenider_session()}} to begin a session.
+\item \code{\link[=html_children]{html_children()}} and family to select elements using their relative position
+in the DOM.
+\item \code{\link[=html_filter]{html_filter()}} and \code{\link[=html_find]{html_find()}} for filtering element collections.
 }
 }

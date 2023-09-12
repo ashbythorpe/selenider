@@ -82,7 +82,8 @@ selenider_cleanup()
 }
 \seealso{
 \itemize{
-\item \code{\link[=html_expect]{html_expect()}} and \code{\link[=html_wait_until]{html_wait_until()}}
-\item \code{\link[=is_present]{is_present()}} and other conditions for predicates for a single HTML element.
+\item \code{\link[=html_expect]{html_expect()}} and \code{\link[=html_wait_until]{html_wait_until()}}.
+\item \code{\link[=is_present]{is_present()}} and other conditions for predicates for HTML elements.
+(If you scroll down to the \emph{See also} section, you will find the rest).
 }
 }

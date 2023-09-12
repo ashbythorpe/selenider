@@ -24,6 +24,9 @@
 #' * [ss()] to quickly select multiple elements without specifying the session.
 #' * [html_element()] to select multiple elements.
 #' * [selenider_session()] to begin a session.
+#' * [html_children()] and family to select elements using their relative position
+#'   in the DOM.
+#' * [html_filter()] and [html_find()] for filtering element collections.
 #' 
 #' @examplesIf selenider_available(online = FALSE)
 #' html <- "
