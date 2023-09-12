@@ -743,25 +743,26 @@ scroll_to <- function(x, js = FALSE, timeout = NULL) {
 
   timeout <- get_timeout(timeout, x$timeout)
 
-  if (js) {
+  # Firefox does not allow you to scroll to an element if not in view.
+  if (js || (uses_selenium(x$driver) && x$driver$browserName == "firefox")) {
     element <- get_element_for_action(
       x,
       action = "scroll to {.arg x} using JavaScript",
-      conditions = list(is_enabled),
+      conditions = list(),
       timeout = timeout,
       failure_messages = c("was not enabled"),
       conditions_text = c("be enabled")
     )
 
-    execute_js_fn_on("x => element.scrollIntoView()", element, driver = x$driver)
+    execute_js_fn_on("x => x.scrollIntoView()", element, driver = x$driver)
   } else {
     element <- get_element_for_action(
       x,
       action = "scroll to {.arg x}",
-      conditions = list(is_visible, is_enabled),
+      conditions = list(is_visible),
       timeout = timeout,
-      failure_messages = c("was not visible", "was not enabled"),
-      conditions_text = c("be visible and enabled")
+      failure_messages = c("was not visible"),
+      conditions_text = c("be visible")
     )
     
     if (uses_selenium(x$driver)) {

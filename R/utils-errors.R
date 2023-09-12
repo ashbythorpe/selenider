@@ -178,29 +178,30 @@ stop_selenium_server <- function(error, licence = NULL, call = rlang::caller_env
   }
 }
 
-stop_connect_selenium_server <- function(count, error = NULL, res = NULL, call = rlang::caller_env()) {
+stop_connect_selenium_server <- function(count, error = NULL, res = NULL, driver = NULL, call = rlang::caller_env()) {
   if (!is.null(error)) {
     cli::cli_abort(c(
       "We could not determine whether the server was successfully started after {count} attempts."
-    ), class = "selenider_error_server_started", parent = error, call = call)
+    ), class = "selenider_error_server_started", parent = error, call = call, driver = driver)
   } else if (is.list(res) && length(res) == 0) {
     cli::cli_abort(c(
       "We could not determine whether the server was successfully started after {count} attempts.",
       "{.code driver$getStatus()} is an empty list."
-    ), class = "selenider_error_server_started", call = call)
+    ), class = "selenider_error_server_started", call = call, driver = driver)
   } else {
     cli::cli_abort(c(
       "We could not determine whether the server was successfully started after {count} attempts."
-    ), class = "selenider_error_server_started", call = call)
+    ), class = "selenider_error_server_started", call = call, driver = driver)
   }
 }
 
-stop_selenium_client <- function(error, browser, call = rlang::caller_env()) {
+stop_selenium_client <- function(error, browser, driver, call = rlang::caller_env()) {
   cli::cli_abort(
     "The client of the session ({tools::toTitleCase(browser)}) failed to start.",
     class = "selenider_error_selenium_client",
     parent = error,
-    call = call
+    call = call,
+    driver = driver
   )
 }
 

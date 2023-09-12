@@ -32,7 +32,7 @@ test_that("Numeric filters work", {
 })
 
 test_that("Other filters work", {
-  session <- selenider_session()
+  session <- selenider_test_session()
 
   open_url("https://ashbythorpe.github.io/selenider/articles/test-site.html")
 

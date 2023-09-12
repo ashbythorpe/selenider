@@ -100,14 +100,14 @@ test_that("scroll_to() works", {
   html <- "
   <!DOCTYPE html>
   <div style = 'height:100%; min-height:100vh'></div>
-  <button onclick='checkScrolled()'></button>
+  <button onclick='checkScrolled()'>Click to check if scrolled</button>
   <p>Scroll down to find me!</p>
   <script>
   function checkScrolled() {
     let element = document.getElementsByTagName('p').item(0);
     let rect = element.getBoundingClientRect();
     // If paragraph is in view
-    if (rect.bottom <= (window.innerHeight || document.documentElement.clientHeight)) {
+    if (rect.top <= (window.innerHeight || document.documentElement.clientHeight)) {
       element.innerText = 'You found me!';
     }
   }
@@ -124,7 +124,10 @@ test_that("scroll_to() works", {
 
   html_expect(s("p"), has_text("You found me!"))
 
-  reload()
+  file <- withr::local_tempfile(fileext = ".html")
+  writeLines(html, file(file))
+
+  open_url(paste0("file://", file))
 
   scroll_to(s("p"), js = TRUE)
 

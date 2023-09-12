@@ -207,21 +207,23 @@ selenider_session <- function(session = getOption("selenider.session"),
   check_bool(quiet)
   check_environment(.env)
   
-  if (session == "chromote") {
+  if (session == "chromote" && is.null(driver)) {
     if (!is.null(browser) && browser != "chrome") {
       warn_browser_chromote()
     }
 
     browser <- "chrome"
-  } else if (is.null(browser) && (is.null(driver) || is_selenium_server(driver))) {
-    bv <- find_browser_and_version()
+  } else if (is.null(browser)) {
+    if (is.null(driver) || is_selenium_server(driver)) {
+      bv <- find_browser_and_version()
 
-    if (is.null(bv)) {
-      stop_default_browser()
+      if (is.null(bv)) {
+        stop_default_browser()
+      }
+
+      browser <- bv$browser
+      version <- bv$version
     }
-
-    browser <- bv$browser
-    version <- bv$version
   } else {
     browser <- tolower(browser)
 
@@ -231,7 +233,7 @@ selenider_session <- function(session = getOption("selenider.session"),
     )
 
     # Allow e.g. 'Firefox'
-    browser <- arg_match0(browser, browser_opts)
+    browser <- arg_match(browser, values = browser_opts)
     
     if (browser != "phantomjs") {
       version <- get_browser_version(browser)
@@ -253,6 +255,8 @@ selenider_session <- function(session = getOption("selenider.session"),
   } else {
     driver <- check_supplied_driver(driver, browser = browser)
   }
+
+  session <- if (uses_selenium(driver)) "selenium" else "chromote"
   
   session <- new_selenider_session(session, driver, timeout)
   
@@ -349,7 +353,7 @@ create_selenium_client <- function(browser, port = 4567L, ...) {
       driver$getStatus(),
       error = function(e) {
         if (count >= 5) {
-          stop_connect_selenium_server(count, error = e)
+          stop_connect_selenium_server(count, error = e, driver = driver)
         }
         NULL
       }
@@ -357,7 +361,7 @@ create_selenium_client <- function(browser, port = 4567L, ...) {
 
     if (is.null(res) || !isTRUE(res$ready)) {
       if (count >= 5) {
-        stop_connect_selenium_server(count, res = res)
+        stop_connect_selenium_server(count, res = res, driver = driver)
       }
 
       count <- count + 1L
@@ -370,7 +374,7 @@ create_selenium_client <- function(browser, port = 4567L, ...) {
   try_fetch(
     driver$open(silent = TRUE),
     error = function(e) {
-      stop_selenium_client(e, browser)
+      stop_selenium_client(e, browser, driver = driver)
     }
   )
 
@@ -438,14 +442,17 @@ check_supplied_driver <- function(x, browser = NULL, call = rlang::caller_env())
     if (is.null(client) && is.null(server)) {
       stop_invalid_driver(x, is_list = TRUE, call = call)
     } else if (is.null(client)) {
-      bv <- find_browser_and_version()
+      if (is.null(browser)) {
+        bv <- find_browser_and_version()
 
-      if (is.null(bv)) {
-        stop_default_browser(call = call)
+        if (is.null(bv)) {
+          stop_default_browser(call = call)
+        }
+
+        browser <- bv$browser
       }
 
-      browser <- bv$browser
-      port <- find_port_from_server(x, call = call)
+      port <- find_port_from_server(server, call = call)
       client <- create_selenium_client(browser, port = port)
       result <- list(
         client = client,
