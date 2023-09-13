@@ -5,3 +5,4 @@
 .DS_Store
 /man/macros/examples.Rd
 docs
+inst/doc

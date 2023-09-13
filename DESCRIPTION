@@ -26,7 +26,9 @@ BugReports: https://github.com/ashbythorpe/selenider/issues
 Suggests: 
     chromote,
     jsonlite,
+    knitr,
     purrr,
+    rmarkdown,
     RSelenium,
     rvest,
     shinytest2,
@@ -39,3 +41,4 @@ Depends:
     R (>= 2.10)
 Config/Needs/website: rmarkdown
 LazyData: true
+VignetteBuilder: knitr

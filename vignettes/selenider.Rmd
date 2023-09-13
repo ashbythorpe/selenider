@@ -1,0 +1,36 @@
+---
+title: "Getting started with selenider"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{selenider}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Traditionally, automating a web browser, whether for web scraping or testing, is inherently unreliable.
+
+Code is often littered with `Sys.sleep()` calls to *wait for things to happen*. Every time we interact with
+a website, it takes time for the site to respond, and we have to wait for it to do so. `Sys.sleep()`
+allows us to wait for a fixed amount of time.
+
+However, this approach is inherently suboptimal:
+
+This is not necessarily the fault of the automation tools themselves, but the nature of a website.
+
+When a website is interacted with in a browser, it will take a certain amount of time to respond.
+The exact amount of time 
+
+```{r setup}
+library(selenider)
+```
+
+```{r}
+
+```
