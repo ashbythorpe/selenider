@@ -2,9 +2,12 @@
 % Please edit documentation in R/cache.R
 \name{cache_element}
 \alias{cache_element}
+\alias{cache_elements}
 \title{Force an element to be collected and stored}
 \usage{
 cache_element(x, timeout = NULL)
+
+cache_elements(x, timeout = NULL)
 }
 \arguments{
 \item{x}{For \code{cache_element()}, a \code{selenider_element} object. For \code{cache_elements()},

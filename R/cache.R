@@ -101,6 +101,9 @@ cache_element <- function(x, timeout = NULL) {
   x
 }
 
+#' @rdname cache_element
+#'
+#' @export
 cache_elements <- function(x, timeout = NULL) {
   check_class(x, "selenider_elements")
   check_number_decimal(timeout, allow_null = TRUE)

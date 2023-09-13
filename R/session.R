@@ -424,7 +424,7 @@ check_supplied_driver <- function(x, browser = NULL, call = rlang::caller_env())
     port <- find_port_from_server(x, call = call)
     client <- create_selenium_client(browser, port = port)
 
-    list(client = client, server = server)
+    list(client = client, server = x)
   } else if (is_selenium_client(x)) {
     list(client = x)
   } else if (is.list(x) || is.environment(x)) {
