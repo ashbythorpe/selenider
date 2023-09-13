@@ -36,6 +36,9 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item">
+  <a class="nav-link" href="articles/selenider.html">Get started</a>
+</li>
+<li class="nav-item">
   <a class="nav-link" href="reference/index.html">Reference</a>
 </li>
 <li class="nav-item dropdown">
@@ -68,13 +71,20 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>selenider aims to make web testing and scraping in R much simpler, using either <a href="https://rstudio.github.io/chromote/" class="external-link">chromote</a> or <a href="https://www.selenium.dev/" class="external-link">RSelenium</a>. It is inspired by Java’s <a href="https://selenide.org/" class="external-link">Selenide</a> and Python’s <a href="https://yashaka.github.io/selene/" class="external-link">Selene</a>.</p>
-<p>It provides the following features:</p>
+<p>Traditionally, automating a web browser is often unreliable and verbose, especially when using R. Programmers are forced to write verbose code, utilising inconsistent workarounds (such as using <code><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep()</a></code> to wait for something to happen).</p>
+<p>selenider aims to make web testing and scraping in R much simpler, using either <a href="https://rstudio.github.io/chromote/" class="external-link">chromote</a> or <a href="https://docs.ropensci.org/RSelenium/" class="external-link">RSelenium</a>. It is inspired by Java’s <a href="https://selenide.org/" class="external-link">Selenide</a> and Python’s <a href="https://yashaka.github.io/selene/" class="external-link">Selene</a>.</p>
+<p>Code reliability and reproducibility are essential when writing R code. selenider provides features to make your scripts work every time they are run, without any extra code:</p>
 <ul>
-<li>All elements are lazy, meaning that they will only actually collect an element when absolutely necessary.</li>
-<li>Automatic implicit waiting, meaning that functions will automatically wait a certain amount of time (by default, 4 seconds) before performing some action on it.</li>
-<li>An API that is designed for use with the pipe operator (<code>|&gt;</code> or <code>%&gt;%</code>).</li>
-<li>A quick and concise way to specify test expectations.</li>
+<li>Lazy elements: selenider will only try to find an element on the page when it is absolutely necessary. selenider separates your definition of HTML elements from their existence on the page, only allowing the two to converge when absolutely necessary. Elements are stored as the directions to the element, rather than the element itself. This is much more reliable than the alternative since the page can constantly change, resulting in elements becoming invalid between their creation and use (e.g. the dreaded <code>StaleElementReferenceException</code> in Selenium).</li>
+<li>Automatic waiting: selenider will automatically wait for your code to work, allowing you to write code as if your website responds instantly to your interactions.</li>
+</ul>
+<p>selenider’s other main focus is its API. Its design choices result in concise yet expressive code that is easy to read and easy to write:</p>
+<ul>
+<li>A global session object results in shorter, more declarative code. It also allows the session to be created at the beginning of your script or test, and closed at the end.</li>
+<li>All functions are designed for use with the pipe operator (<code>|&gt;</code> or <code>%&gt;%</code>); elements can be selected, tested and operated on in a single pipeline.</li>
+<li>
+<code><a href="reference/html_expect.html">html_expect()</a></code> is a powerful way to specify test expectations, with a simple but extensible syntax and informative error messages.</li>
+<li>selenider is compatible with automated testing frameworks like <a href="https://testthat.r-lib.org" class="external-link">testthat</a> and <a href="https://shinytest2.r-lib.org/" class="external-link">shinytest2</a>.</li>
 </ul>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -83,17 +93,26 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ashbythorpe/selenider"</span><span class="op">)</span></span></code></pre></div>
+<p>Additionally, you must install <a href="https://rstudio.github.io/chromote/" class="external-link">chromote</a> or <a href="https://docs.ropensci.org/RSelenium/" class="external-link">RSelenium</a>. We recommend chromote, as it is quicker and easier to get up and running.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Either:</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"chromote"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Or:</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"RSelenium"</span><span class="op">)</span></span></code></pre></div>
+<p>If you are using RSelenium, you must also have <a href="https://www.java.com/" class="external-link">Java</a> installed.</p>
+<p>Finally, you must have a web browser installed. For chromote, <a href="https://www.google.com/chrome/" class="external-link">Google Chrome</a> is required. For RSelenium, any browser can be used, but <a href="https://www.mozilla.org/firefox/new/" class="external-link">Firefox</a> is recommended.</p>
 </div>
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ashbythorpe/selenider" class="external-link">selenider</a></span><span class="op">)</span></span></code></pre></div>
 <p>To open a session, and navigate to a website, use <code><a href="reference/open_url.html">open_url()</a></code>.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/open_url.html">open_url</a></span><span class="op">(</span><span class="st">"https://www.r-project.org/"</span><span class="op">)</span></span></code></pre></div>
 <p>Use <code><a href="reference/s.html">s()</a></code> to select an element. By default, CSS selectors are used, but other options are available.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">r_header</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/s.html">s</a></span><span class="op">(</span><span class="st">"#r-project"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">r_header</span></span>
@@ -103,12 +122,12 @@
 <span><span class="fu"><a href="reference/html_text.html">html_text</a></span><span class="op">(</span><span class="va">r_header</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "R Project"</span></span></code></pre></div>
 <p>For example, an xpath can be used instead.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/s.html">s</a></span><span class="op">(</span>xpath <span class="op">=</span> <span class="st">"//div/a"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; A selenider element selecting:</span></span>
 <span><span class="co">#&gt; The first element with xpath "//div/a".</span></span></code></pre></div>
-<p>Use <code><a href="reference/s.html">ss()</a></code> to select multiple elements</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<p>Use <code><a href="reference/s.html">ss()</a></code> to select multiple elements.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">all_links</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/s.html">ss</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">all_links</span></span>
@@ -118,14 +137,14 @@
 <span><span class="fu"><a href="reference/html_attr.html">html_attr</a></span><span class="op">(</span><span class="va">all_links</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="st">"href"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "/"</span></span></code></pre></div>
 <p>Use <code><a href="reference/html_element.html">html_element()</a></code> and <code><a href="reference/html_elements.html">html_elements()</a></code> to find child elements of an existing element. These can be chained with the pipe operator (<code>|&gt;</code>) to specify paths to elements.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/s.html">s</a></span><span class="op">(</span><span class="st">".row"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/html_element.html">html_element</a></span><span class="op">(</span><span class="st">"div"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/html_element.html">html_element</a></span><span class="op">(</span><span class="st">"p"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/html_text.html">html_text</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] ""</span></span></code></pre></div>
 <p>Use <code><a href="reference/html_ancestors.html">html_children()</a></code> and friends to find elements using their relative position to another.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/s.html">s</a></span><span class="op">(</span><span class="st">"p"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/html_ancestors.html">html_children</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; A collection of selenider elements selecting:</span></span>
@@ -138,7 +157,7 @@
 <span><span class="co">#&gt; • The first element with css selector "p".</span></span>
 <span><span class="co">#&gt; • The ancestors.</span></span></code></pre></div>
 <p>You can use <code><a href="reference/html_filter.html">html_filter()</a></code> and <code><a href="reference/html_filter.html">html_find()</a></code> to filter collections of elements using a custom function. <code><a href="reference/html_filter.html">html_find()</a></code> returns the first matching element, while <code><a href="reference/html_filter.html">html_filter()</a></code> returns all matching elements.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">all_links</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/s.html">ss</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="reference/s.html">ss</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -154,7 +173,7 @@
 <p>selenider elements are <em>lazy</em>, meaning that when you specify the path to an element or group of elements, they are not actually located in the DOM until you <em>do</em> something with them.</p>
 <p>There are three types of functions that force an element to be collected: * properties (e.g. <code><a href="reference/html_text.html">html_text()</a></code>) * conditions (e.g. <code><a href="reference/is_visible.html">is_visible()</a></code>) * actions (e.g. <code><a href="reference/click.html">click()</a></code>)</p>
 <p>selenider provides a concise testing interface using the <code><a href="reference/html_expect.html">html_expect()</a></code> function. Provide an element, and one or more conditions, and the function will wait until all the conditions are met. Conditions can be functions or simple calls (e.g. <code>has_text("text")</code>)</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/s.html">s</a></span><span class="op">(</span><span class="st">"#getting-started"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/html_expect.html">html_expect</a></span><span class="op">(</span><span class="va">is_present</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/html_expect.html">html_expect</a></span><span class="op">(</span><span class="fu"><a href="reference/has_text.html">has_text</a></span><span class="op">(</span><span class="st">"Getting Started"</span><span class="op">)</span><span class="op">)</span></span>
@@ -173,7 +192,7 @@
 <span>    \<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/substr.html" class="external-link">substring</a></span><span class="op">(</span><span class="fu"><a href="reference/html_text.html">html_text</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span> <span class="op">==</span> <span class="st">"H"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <p>Errors try to give as much information as possible.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/s.html">s</a></span><span class="op">(</span><span class="st">"#news"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/html_expect.html">html_expect</a></span><span class="op">(</span><span class="fu"><a href="reference/has_text.html">has_text</a></span><span class="op">(</span><span class="st">"Getting Started"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Error in `html_expect()`:</span></span>
@@ -182,7 +201,7 @@
 <span><span class="co">#&gt; ℹ `x` does not have text "Getting Started".</span></span>
 <span><span class="co">#&gt; ℹ Actual text: "News".</span></span></code></pre></div>
 <p>And (<code>&amp;&amp;</code>), or (<code>||</code>) and not (<code>!</code>) can be used as if the conditions were logical values. Additionally, you can omit the first argument to <code><a href="reference/html_expect.html">html_expect()</a></code> (but all conditions must be calls).</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/s.html">s</a></span><span class="op">(</span><span class="st">".random-class"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/html_expect.html">html_expect</a></span><span class="op">(</span><span class="op">!</span><span class="va">is_present</span><span class="op">)</span></span>
 <span></span>

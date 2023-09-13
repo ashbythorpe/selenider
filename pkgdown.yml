@@ -3,7 +3,8 @@ pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   test-site: test-site.html
-last_built: 2023-09-13T23:25Z
+  selenider: selenider.html
+last_built: 2023-09-13T23:31Z
 urls:
   reference: https://ashbythorpe.github.io/selenider/reference
   article: https://ashbythorpe.github.io/selenider/articles
