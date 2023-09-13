@@ -81,7 +81,9 @@ will not change on the page while you are using it.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cache_element</span><span class="op">(</span><span class="va">x</span>, timeout <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cache_element</span><span class="op">(</span><span class="va">x</span>, timeout <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cache_elements</span><span class="op">(</span><span class="va">x</span>, timeout <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -132,7 +134,7 @@ but the child element with class ".class2" will not.</p>
 <span class="r-in"><span><span class="st">"</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="minimal_selenider_session.html">minimal_selenider_session</a></span><span class="op">(</span><span class="va">html</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpJIQVTc/file188e7adf1ca3.html"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpGbjLc8/file186b412982b4.html"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Selecting this button may be slow, since we are using relative XPath selectors.</span></span></span>
 <span class="r-in"><span><span class="va">button</span> <span class="op">&lt;-</span> <span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"#specifictext"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
@@ -148,21 +150,21 @@ but the child element with class ".class2" will not.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># But with cache_element(), the button will only be fetched once</span></span></span>
 <span class="r-in"><span><span class="va">cached_button</span> <span class="op">&lt;-</span> <span class="fu">cache_element</span><span class="op">(</span><span class="va">button</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session 31FDA098BA0F2AD47310AC2C4920FA12 is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session 6D5499D698752B23E744A2A46A9324F6 is closed.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">click_button_10_times</span><span class="op">(</span><span class="va">cached_button</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'cached_button' not found</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># But the cached button is less reliable if the DOM is changing</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="execute_js_fn.html">execute_js_fn</a></span><span class="op">(</span><span class="st">"x =&gt; { x.outerHTML = '&lt;button&gt;&lt;/button&gt;'; }"</span>, <span class="va">button</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session 31FDA098BA0F2AD47310AC2C4920FA12 is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session 6D5499D698752B23E744A2A46A9324F6 is closed.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu"><a href="click.html">click</a></span><span class="op">(</span><span class="va">cached_button</span>, timeout <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error in eval(expr, envir, enclos) : object 'cached_button' not found</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># But the non-cached version works</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="click.html">click</a></span><span class="op">(</span><span class="va">button</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session 31FDA098BA0F2AD47310AC2C4920FA12 is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session 6D5499D698752B23E744A2A46A9324F6 is closed.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># \dontshow{</span></span></span>
 <span class="r-in"><span><span class="co"># Clean up all connections and invalidate default chromote object</span></span></span>

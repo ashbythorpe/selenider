@@ -104,7 +104,7 @@ NULL, the timeout of the <code>selenider_element</code> will be used.</p></dd>
     <div class="dont-index">
 <ul><li><p><code><a href="s.html">s()</a></code>, <code><a href="s.html">ss()</a></code>, <code><a href="html_element.html">html_element()</a></code> and <code><a href="html_elements.html">html_elements()</a></code> to select selenider
 elements.</p></li>
-<li><p><code><a href="cache_element.html">cache_element()</a></code> and <code>cache_elements()</code> to cache these values.</p></li>
+<li><p><code><a href="cache_element.html">cache_element()</a></code> and <code><a href="cache_element.html">cache_elements()</a></code> to cache these values.</p></li>
 <li><p>The <a href="https://chromedevtools.github.io/devtools-protocol/tot/" class="external-link">Chrome Devtools Protocol documentation</a>
 for the operations that can be performed using a backend node id. Note that
 this requires the <a href="http://rstudio.github.io/chromote/reference/ChromoteSession.html" class="external-link">chromote::ChromoteSession</a> object, which can be retrieved using
@@ -124,7 +124,7 @@ do with a webElement.</p></li>
 <span class="r-in"><span><span class="st">"</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="minimal_selenider_session.html">minimal_selenider_session</a></span><span class="op">(</span><span class="va">html</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpJIQVTc/file188e7aa663e2.html"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpGbjLc8/file186b13490680.html"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">elem</span> <span class="op">&lt;-</span> <span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"div"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">get_actual_element</span><span class="op">(</span><span class="op">)</span></span></span>
@@ -137,7 +137,7 @@ do with a webElement.</p></li>
 <span class="r-in"><span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>  <span class="va">elem</span><span class="op">$</span><span class="fu">getElementLocation</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session 96441D935E9C9206A4DC438F4E3E531B is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session F2E4CBE20F9B0AEF769CC0DFE63C88C2 is closed.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">elems</span> <span class="op">&lt;-</span> <span class="fu"><a href="s.html">ss</a></span><span class="op">(</span><span class="st">"p"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">get_actual_elements</span><span class="op">(</span><span class="op">)</span></span></span>
