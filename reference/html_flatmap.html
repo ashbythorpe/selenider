@@ -16,6 +16,14 @@ html_flatmap() works by executing .f on a mock element, then recording the
 results in x. This means that no matter the length of x, .f is only evaluated
 once, and during the html_flatmap() call. For this reason, .f should not invoke
 any side effects or do anything other than selecting sub-elements.
+html_flatmap() can essentially be viewed as a map operation (e.g. lapply(), purrr::map())
+followed by a flattening operation (html_flatmap()). This means that:
+html_flatmap(x, .f)
+
+is essentially equivalent to:
+html_flatten(lapply(as.list(x), .f))
+
+However, the second approach is not done lazily.
 as.list()/element_list() essentially turns x into:
 list(x[[1]], x[[2]], ...)
 However, to do this, the length of x must be computed. This means that while
@@ -39,6 +47,14 @@ html_flatmap() works by executing .f on a mock element, then recording the
 results in x. This means that no matter the length of x, .f is only evaluated
 once, and during the html_flatmap() call. For this reason, .f should not invoke
 any side effects or do anything other than selecting sub-elements.
+html_flatmap() can essentially be viewed as a map operation (e.g. lapply(), purrr::map())
+followed by a flattening operation (html_flatmap()). This means that:
+html_flatmap(x, .f)
+
+is essentially equivalent to:
+html_flatten(lapply(as.list(x), .f))
+
+However, the second approach is not done lazily.
 as.list()/element_list() essentially turns x into:
 list(x[[1]], x[[2]], ...)
 However, to do this, the length of x must be computed. This means that while
@@ -112,6 +128,12 @@ object cannot)</p>
 results in <code>x</code>. This means that no matter the length of <code>x</code>, <code>.f</code> is only evaluated
 once, and during the <code>html_flatmap()</code> call. For this reason, <code>.f</code> should not invoke
 any side effects or do anything other than selecting sub-elements.</p>
+<p><code>html_flatmap()</code> can essentially be viewed as a map operation (e.g. <code><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply()</a></code>, <code><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">purrr::map()</a></code>)
+followed by a flattening operation (<code>html_flatmap()</code>). This means that:</p>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">html_flatmap</span>(x, .f)</span></code></pre><p></p></div>
+<p>is essentially equivalent to:</p>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">html_flatten</span>(<span class="fu">lapply</span>(<span class="fu">as.list</span>(x), .f))</span></code></pre><p></p></div>
+<p>However, the second approach is not done lazily.</p>
 <p><code><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list()</a></code>/<code>element_list()</code> essentially turns <code>x</code> into:
 <code>list(x[[1]], x[[2]], ...)</code>
 However, to do this, the length of <code>x</code> must be computed. This means that while
@@ -156,6 +178,14 @@ list is an accurate representation of the DOM when it is being used.</p>
 <p><code>html_flatmap()</code> returns a <code>selenider_element</code> object.
 <code><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list()</a></code>/<code>element_list()</code> returns a list of <code>selenider_element</code> objects.</p>
     </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index">
+<ul><li><p><code><a href="html_flatten.html">html_flatten()</a></code> to combine multiple <code>selenider_element</code>/<code>selenider_elements</code> objects
+into a single object.</p></li>
+<li><p><code><a href="html_filter.html">html_filter()</a></code> and <code><a href="html_filter.html">html_find()</a></code> to filter element collections using a condition.</p></li>
+</ul></div>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
@@ -175,7 +205,7 @@ list is an accurate representation of the DOM when it is being used.</p>
 <span class="r-in"><span><span class="st">"</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="minimal_selenider_session.html">minimal_selenider_session</a></span><span class="op">(</span><span class="va">html</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpfXu7vS/file18397cf4f156.html"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/Rtmpx6JCg9/file186e452f4839.html"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">divs</span> <span class="op">&lt;-</span> <span class="fu"><a href="s.html">ss</a></span><span class="op">(</span><span class="st">"div"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
