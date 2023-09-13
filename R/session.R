@@ -506,12 +506,16 @@ find_port_from_logs <- function(x) {
 #' Close a session object
 #'
 #' Shut down a session object, closing the browser and stopping the server.
+#' This will be done automatically if the session is set as the local session
+#' (which happens by default).
 #'
-#' @param x A `selenider_session` object. If omitted, the global session object
+#' @param x A `selenider_session` object. If omitted, the local session object
 #'   will be closed.
 #' 
 #' @returns 
 #' Nothing.
+#'
+#' @seealso [selenider_session()]
 #' 
 #' @examplesIf selenider_available()
 #' session <- selenider_session(local = FALSE)
