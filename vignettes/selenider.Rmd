@@ -2,7 +2,7 @@
 title: "Getting started with selenider"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{selenider}
+  %\VignetteIndexEntry{Getting started with selenider}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -14,23 +14,167 @@ knitr::opts_chunk$set(
 )
 ```
 
-Traditionally, automating a web browser, whether for web scraping or testing, is inherently unreliable.
-
-Code is often littered with `Sys.sleep()` calls to *wait for things to happen*. Every time we interact with
-a website, it takes time for the site to respond, and we have to wait for it to do so. `Sys.sleep()`
-allows us to wait for a fixed amount of time.
-
-However, this approach is inherently suboptimal:
-
-This is not necessarily the fault of the automation tools themselves, but the nature of a website.
-
-When a website is interacted with in a browser, it will take a certain amount of time to respond.
-The exact amount of time 
+This vignette introduces you to the basics of automating a web browser using selenider.
 
 ```{r setup}
 library(selenider)
 ```
 
-```{r}
+## Starting the session
+To use selenider, you must first start a session with `selenider_session()`. If you don't do this, it
+is done automatically for you, but you may want to change some of the options from their defaults 
+(the backend, for example). Here, we use chromote as a backend (the default), and we set the timeout
+to 10 seconds (the default is 4).
 
+```{r}
+session <- selenider_session(
+  "chromote",
+  timeout = 10
+)
 ```
+
+The session, once created, will be set as the *local session* inside the current environment,
+meaning that in this case, it can be accessed anywhere in this script, and will be closed
+automatically when the script finishes running.
+
+One thing to remember is that if you start a session inside a function, it will be closed
+automatically when the function finishes running. If you want to use the session outside the
+function, you need to use the `.env` argument. For example, let's say we want a wrapper
+function around `selenider_session()` that always uses RSelenium:
+
+```{r}
+# Bad (unless you only need to use the session inside the function)
+my_selenider_session <- function(...) {
+  selenider_session("RSelenium", ...)
+  # The session will be closed here
+}
+
+# Good - the session will be open in the caller environment/function
+my_selenider_session <- function(..., .env = rlang::caller_env()) {
+  selenider_session("RSelenium", ..., .env = .env)
+}
+```
+
+Use `open_url()` to navigate to a website.
+
+``` {r}
+open_url("https://www.r-project.org/")
+```
+
+Use `s()` to select an element. By default, CSS selectors are used, but other options are available.
+
+``` {r}
+r_header <- s("#r-project")
+
+r_header
+
+html_text(r_header)
+```
+
+For example, an xpath can be used instead.
+
+```{r}
+s(xpath = "//div/a")
+```
+
+Use `ss()` to select multiple elements.
+
+```{r}
+all_links <- ss("a")
+
+all_links
+
+html_attr(all_links[[1]], "href")
+```
+
+Use `html_element()` and `html_elements()` to find child elements of an existing element. These can be
+chained with the pipe operator (`|>`) to specify paths to elements.
+
+``` {r}
+s(".row") |>
+  html_element("div") |>
+  html_element("p") |>
+  html_text()
+```
+
+Use `html_children()` and friends to find elements using their relative position to another.
+
+```{r}
+s("p") |>
+  html_children()
+
+s("p") |>
+  html_ancestors()
+```
+
+You can use `html_filter()` and `html_find()` to filter collections of elements using a custom function.
+`html_find()` returns the first matching element, while `html_filter()` returns all matching elements.
+
+``` {r}
+all_links <- ss("a")
+
+ss("a") |>
+  html_find(has_text("About R")) |>
+  html_attr("href")
+
+ss("p") |>
+  html_filter(is_visible)
+```
+
+selenider elements are *lazy*, meaning that when you specify the path to an element or group of
+elements, they are not actually located in the DOM until you *do* something with them.
+
+There are three types of functions that force an element to be collected:
+* properties (e.g. `html_text()`)
+* conditions (e.g. `is_visible()`)
+* actions (e.g. `click()`)
+
+selenider provides a concise testing interface using the `html_expect()` function. Provide an element,
+and one or more conditions, and the function will wait until all the conditions are met. Conditions
+can be functions or simple calls (e.g. `has_text("text")`)
+
+``` {r}
+s("#getting-started") |>
+  html_expect(is_present) |>
+  html_expect(has_text("Getting Started"))
+
+s(".row") |>
+  html_element("#r-foundation") |>
+  html_expect(is_visible, is_enabled)
+
+s("div[role='navigation']") |>
+  html_element(".row") |>
+  html_children() |>
+  html_expect(has_at_least(2))
+
+s("#help-with-r") |>
+  html_expect(
+    \(x) substring(html_text(x), 1, 1) == "H"
+  )
+```
+
+Errors try to give as much information as possible.
+```{r, error = TRUE}
+s("#news") |>
+  html_expect(has_text("Getting Started"))
+```
+
+And (`&&`), or (`||`) and not (`!`) can be used as if the conditions were logical values. Additionally,
+you can omit the first argument to `html_expect()` (but all conditions must be calls).
+
+``` {r}
+s(".random-class") |>
+  html_expect(!is_present)
+
+s(".mt-timeline") |>
+  html_expect(is_visible || is_enabled)
+
+elem_1 <- s(".random-class")
+
+elem_2 <- s("#getting-started")
+
+# Test that either the first or second element exists
+html_expect(is_present(elem_1) || is_present(elem_2))
+```
+
+Once we are done, we do not need to close the session; it is closed for us automatically!

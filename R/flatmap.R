@@ -14,7 +14,7 @@
 #' `as.list()` transforms a `selenider_elements` object into a list of
 #' `selenider_element` objects. The result can then be used in for loops and
 #' higher order functions like [lapply()]/[purrr::map()] (whereas a `selenider_element`
-#' object cannot)
+#' object cannot).
 #'
 #' `element_list()` is the underlying function called by `element_list()`.
 #'
@@ -32,11 +32,15 @@
 #' `html_flatmap()` can essentially be viewed as a map operation (e.g. [lapply()], [purrr::map()])
 #' followed by a flattening operation ([html_flatmap()]). This means that:
 #' ```
-#' html_flatmap(x, .f)
+#' x |>
+#'   html_flatmap(.f)
 #' ```
 #' is essentially equivalent to:
 #' ```
-#' html_flatten(lapply(as.list(x), .f))
+#' x |>
+#'   as.list() |>
+#'   lapply(.f) |>
+#'   html_flatten()
 #' ```
 #' However, the second approach is not done lazily.
 #'

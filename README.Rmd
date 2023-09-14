@@ -105,9 +105,12 @@ s("dl") |>
   html_element(xpath = "./following-sibling::dd") |>
   html_elements("tr") |>
   html_expect(has_at_least(1)) |>
-  html_flatmap(\(x) html_element(x, "a")) |>
   as.list() |>
-  lapply(html_attr, "href")
+  lapply(
+    \(x) x |>
+      html_element("a") |>
+      html_attr("href")
+  )
 ```
 
 <!-- TODO: Link to vignettes -->
