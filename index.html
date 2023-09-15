@@ -83,7 +83,7 @@
 <li>A global session object results in shorter, more declarative code. It also allows the session to be created at the beginning of your script or test, and closed at the end.</li>
 <li>All functions are designed for use with the pipe operator (<code>|&gt;</code> or <code>%&gt;%</code>); elements can be selected, tested and operated on in a single pipeline.</li>
 <li>
-<code><a href="reference/html_expect.html">html_expect()</a></code> is a powerful way to specify test expectations, with a simple but extensible syntax and informative error messages.</li>
+<code><a href="reference/elem_expect.html">elem_expect()</a></code> is a powerful way to specify test expectations, with a simple but extensible syntax and informative error messages.</li>
 <li>selenider is compatible with automated testing frameworks like <a href="https://testthat.r-lib.org" class="external-link">testthat</a> and <a href="https://shinytest2.r-lib.org/" class="external-link">shinytest2</a>.</li>
 </ul>
 <div class="section level2">
@@ -113,22 +113,22 @@
 <code class="sourceCode R"><span><span class="fu"><a href="reference/open_url.html">open_url</a></span><span class="op">(</span><span class="st">"https://www.r-project.org/"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="reference/s.html">s</a></span><span class="op">(</span><span class="st">".row"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="reference/html_element.html">html_element</a></span><span class="op">(</span><span class="st">"div"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="reference/html_elements.html">html_elements</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="reference/html_filter.html">html_find</a></span><span class="op">(</span><span class="fu"><a href="reference/has_text.html">has_text</a></span><span class="op">(</span><span class="st">"CRAN"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="reference/html_expect.html">html_expect</a></span><span class="op">(</span><span class="fu"><a href="reference/has_attr.html">attr_contains</a></span><span class="op">(</span><span class="st">"href"</span>, <span class="st">"cran.r-project.org"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="reference/click.html">click</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="reference/find_element.html">find_element</a></span><span class="op">(</span><span class="st">"div"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/find_elements.html">find_elements</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/elem_filter.html">elem_find</a></span><span class="op">(</span><span class="fu"><a href="reference/has_text.html">has_text</a></span><span class="op">(</span><span class="st">"CRAN"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/elem_expect.html">elem_expect</a></span><span class="op">(</span><span class="fu"><a href="reference/has_attr.html">attr_contains</a></span><span class="op">(</span><span class="st">"href"</span>, <span class="st">"cran.r-project.org"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/elem_click.html">elem_click</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Now that we’re in the mirror list page, let’s find the link to every CRAN mirror in the UK.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/s.html">s</a></span><span class="op">(</span><span class="st">"dl"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="reference/html_elements.html">html_elements</a></span><span class="op">(</span><span class="st">"dt"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="reference/html_filter.html">html_find</a></span><span class="op">(</span><span class="fu"><a href="reference/has_text.html">has_text</a></span><span class="op">(</span><span class="st">"UK"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="reference/html_element.html">html_element</a></span><span class="op">(</span>xpath <span class="op">=</span> <span class="st">"./following-sibling::dd"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="reference/html_elements.html">html_elements</a></span><span class="op">(</span><span class="st">"tr"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="reference/html_expect.html">html_expect</a></span><span class="op">(</span><span class="fu"><a href="reference/has_length.html">has_at_least</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="reference/html_flatmap.html">html_flatmap</a></span><span class="op">(</span>\<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="reference/html_element.html">html_element</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"a"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/find_elements.html">find_elements</a></span><span class="op">(</span><span class="st">"dt"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/elem_filter.html">elem_find</a></span><span class="op">(</span><span class="fu"><a href="reference/has_text.html">has_text</a></span><span class="op">(</span><span class="st">"UK"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/find_element.html">find_element</a></span><span class="op">(</span>xpath <span class="op">=</span> <span class="st">"./following-sibling::dd"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/find_elements.html">find_elements</a></span><span class="op">(</span><span class="st">"tr"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/elem_expect.html">elem_expect</a></span><span class="op">(</span><span class="fu"><a href="reference/has_length.html">has_at_least</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/elem_flatmap.html">elem_flatmap</a></span><span class="op">(</span>\<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="reference/find_element.html">find_element</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"a"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">html_attr</span>, <span class="st">"href"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">elem_attr</span>, <span class="st">"href"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [[1]]</span></span>
 <span><span class="co">#&gt; [1] "https://www.stats.bris.ac.uk/R/"</span></span>
 <span><span class="co">#&gt; </span></span>

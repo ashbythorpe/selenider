@@ -1,7 +1,7 @@
 $(function() {
   $(".toggleable").hide();
 
-  $("#toggle_div").click(function() {
+  $("#toggle_div").click()(function() {
     $(".toggleable").toggle();
   })
 
@@ -14,7 +14,7 @@ $(function() {
     $("#button-output").text("Double clicked!");
   })
 
-  $(".actions-button").hover(function() {
+  $(".actions-button").hover()(function() {
     $("#button-output").text("Hovered!");
   })
 
