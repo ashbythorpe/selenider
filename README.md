@@ -116,9 +116,12 @@ s("dl") |>
   find_element(xpath = "./following-sibling::dd") |>
   find_elements("tr") |>
   elem_expect(has_at_least(1)) |>
-  elem_flatmap(\(x) find_element(x, "a")) |>
   as.list() |>
-  lapply(elem_attr, "href")
+  lapply(
+    \(x) x |>
+      find_element("a") |>
+      elem_attr("href")
+  )
 #> [[1]]
 #> [1] "https://www.stats.bris.ac.uk/R/"
 #> 
