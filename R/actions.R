@@ -109,7 +109,12 @@ elem_click <- function(x, js = FALSE, timeout = NULL) {
     if (uses_selenium(x$driver)) {
       left_click_selenium(element, x)
     } else {
+      promise <- x$driver$Page$loadEventFired(wait_ = FALSE)$catch(function(e) NULL)
       click_chromote(element, driver = x$driver)
+      name <- x$driver$DOM$describeNode(backendNodeId = element)$node$nodeName
+      if (identical(name, "A")) {
+        x$driver$wait_for(promise)
+      }
     }
   }
 
