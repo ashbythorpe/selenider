@@ -67,14 +67,14 @@ selenider_available <- function(session = c("chromote", "selenium"), online = TR
 
   if (online) {
     internet_available <- is_installed("curl") &&
-      !on_cran() &&
+      !is_cran_check() &&
       !is.null(curl::nslookup("r-project.org", error = FALSE))
 
     if (!internet_available) {
       return(FALSE)
     }
   } else {
-    if (on_cran()) {
+    if (is_cran_check()) {
       return(FALSE)
     }
   }
@@ -102,7 +102,7 @@ on_cran <- function() {
 }
 
 is_cran_check <- function() {
-  if (identical(Sys.getenv("NOT_CRAN"), "true")) {
+  if (isTRUE(as.logical(Sys.getenv("NOT_CRAN", "false")))) {
     FALSE
   } else {
     Sys.getenv("_R_CHECK_PACKAGE_NAME_", "") != ""
