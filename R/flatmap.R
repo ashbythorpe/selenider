@@ -1,10 +1,10 @@
 #' Iterate over an element collection
 #'
 #' @description
-#' Use `html_flatmap()` when you want to select further sub-elements
+#' Use `elem_flatmap()` when you want to select further sub-elements
 #' *for each* element of a collection.
 #'
-#' `html_flatmap()` allows you to apply a function to each element of
+#' `elem_flatmap()` allows you to apply a function to each element of
 #' a `selenider_elements` object, provided that the function returns a
 #' `selenider_element`/`selenider_elements` object itself. The result will
 #' then be flattened into a single `selenider_elements` object. The benefit
@@ -24,23 +24,23 @@
 #' @param timeout How long to wait for `x` to exist while computing its length.
 #'
 #' @description
-#' `html_flatmap()` works by executing `.f` on a mock element, then recording the
+#' `elem_flatmap()` works by executing `.f` on a mock element, then recording the
 #' results in `x`. This means that no matter the length of `x`, `.f` is only evaluated
-#' once, and during the `html_flatmap()` call. For this reason, `.f` should not invoke
+#' once, and during the `elem_flatmap()` call. For this reason, `.f` should not invoke
 #' any side effects or do anything other than selecting sub-elements.
 #'
-#' `html_flatmap()` can essentially be viewed as a map operation (e.g. [lapply()], [purrr::map()])
-#' followed by a flattening operation ([html_flatmap()]). This means that:
+#' `elem_flatmap()` can essentially be viewed as a map operation (e.g. [lapply()], [purrr::map()])
+#' followed by a flattening operation ([elem_flatmap()]). This means that:
 #' ```
 #' x |>
-#'   html_flatmap(.f)
+#'   elem_flatmap(.f)
 #' ```
 #' is essentially equivalent to:
 #' ```
 #' x |>
 #'   as.list() |>
 #'   lapply(.f) |>
-#'   html_flatten()
+#'   elem_flatten()
 #' ```
 #' However, the second approach is not done lazily.
 #'
@@ -53,13 +53,13 @@
 #' list is an accurate representation of the DOM when it is being used.
 #'
 #' @returns
-#' `html_flatmap()` returns a `selenider_element` object.
+#' `elem_flatmap()` returns a `selenider_element` object.
 #' `as.list()`/`element_list()` returns a list of `selenider_element` objects.
 #'
 #' @seealso
-#' * [html_flatten()] to combine multiple `selenider_element`/`selenider_elements` objects
+#' * [elem_flatten()] to combine multiple `selenider_element`/`selenider_elements` objects
 #'   into a single object.
-#' * [html_filter()] and [html_find()] to filter element collections using a condition.
+#' * [elem_filter()] and [elem_find()] to filter element collections using a condition.
 #'
 #' @examplesIf selenider_available(online = FALSE)
 #' html <- "
@@ -83,19 +83,19 @@
 #'
 #' # Get the <p> tag inside each div.
 #' divs |>
-#'   html_flatmap(\(x) x |> html_element("p"))
+#'   elem_flatmap(\(x) x |> find_element("p"))
 #'
 #' # Or:
 #' p_tags <- divs |>
-#'   html_flatmap(html_element, "p")
+#'   elem_flatmap(find_element, "p")
 #'
-#' # To get the text in each tag, we can't use html_flatmap()
+#' # To get the text in each tag, we can't use elem_flatmap()
 #' for (elem in as.list(p_tags)) {
-#'   print(html_text(elem))
+#'   print(elem_text(elem))
 #' }
 #'
 #' # Or:
-#' lapply(as.list(p_tags), html_text)
+#' lapply(as.list(p_tags), elem_text)
 #'
 #' \dontshow{
 #' # Clean up all connections and invalidate default chromote object
@@ -103,7 +103,7 @@
 #' }
 #'
 #' @export
-html_flatmap <- function(x, .f, ...) {
+elem_flatmap <- function(x, .f, ...) {
   check_class(x, "selenider_elements")
 
   mock_element <- list(
@@ -163,14 +163,14 @@ new_flatmap_selector <- function(x, selectors, class) {
   res
 }
 
-#' @rdname html_flatmap
+#' @rdname elem_flatmap
 #'
 #' @export
 as.list.selenider_elements <- function(x, timeout = NULL, ...) {
   element_list(x)
 }
 
-#' @rdname html_flatmap
+#' @rdname elem_flatmap
 #'
 #' @export
 element_list <- function(x, timeout = NULL) {
@@ -178,7 +178,7 @@ element_list <- function(x, timeout = NULL) {
 
   timeout <- get_timeout(timeout, x$timeout)
 
-  size <- html_size(x, timeout = timeout)
+  size <- elem_size(x, timeout = timeout)
 
   lapply(seq_len(size), function(i) x[[i]])
 }

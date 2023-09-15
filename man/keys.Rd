@@ -11,7 +11,7 @@ A list containing \code{selenider_key} objects.
 keys
 }
 \description{
-List of special keys, for use with \code{\link[=send_keys]{send_keys()}}.
+List of special keys, for use with \code{\link[=elem_send_keys]{elem_send_keys()}}.
 }
 \examples{
 keys$backspace

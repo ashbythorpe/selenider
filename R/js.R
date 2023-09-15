@@ -32,7 +32,7 @@
 #' Similarly, nodes and lists of nodes returned from a JavaScript function will
 #' be converted into their corresponding `selenider_element`/`selenider_elements`
 #' objects, while more complex objects will not. These elements are not lazy (see
-#' [cache_element()]), so make sure you only use them while you are sure they are
+#' [elem_cache()]), so make sure you only use them while you are sure they are
 #' still on the page.
 #'
 #' @returns

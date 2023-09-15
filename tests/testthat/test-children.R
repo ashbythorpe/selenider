@@ -5,27 +5,27 @@ test_that("DOM-relative functions work", {
 
   element <- s(".actions-form")
 
-  ancestors <- html_ancestors(element)
+  ancestors <- elem_ancestors(element)
   
-  html_expect(ancestors, has_length(5))
+  elem_expect(ancestors, has_length(5))
 
-  parent <- html_parent(element)
+  parent <- elem_parent(element)
 
   expect_true(parent == s("#main"))
 
-  siblings <- html_siblings(element)
+  siblings <- elem_siblings(element)
 
   expect_true(siblings[[1]] == s(".page-header"))
 
-  children <- html_children(element)
+  children <- elem_children(element)
 
-  html_expect(children, has_length(1))
+  elem_expect(children, has_length(1))
 
   expect_true(children[[1]] == s(".actions-test"))
 
-  descendants <- html_descendants(element)
+  descendants <- elem_descendants(element)
 
-  html_expect(descendants, has_length(6))
+  elem_expect(descendants, has_length(6))
 
   expect_true(descendants[[1]] == s(".actions-test"))
   expect_true(descendants[[2]] == s(".actions-button"))

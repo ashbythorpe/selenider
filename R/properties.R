@@ -15,7 +15,7 @@
 #' session <- minimal_selenider_session(html)
 #'
 #' s(".mydiv") |>
-#'   html_name()
+#'   elem_name()
 #'
 #' \dontshow{
 #' # Clean up all connections and invalidate default chromote object
@@ -25,7 +25,7 @@
 #' @family properties
 #'
 #' @export
-html_name <- function(x, timeout = NULL) {
+elem_name <- function(x, timeout = NULL) {
   check_number_decimal(timeout, allow_null = TRUE)
 
   timeout <- get_timeout(timeout, x$timeout)
@@ -48,7 +48,7 @@ html_name <- function(x, timeout = NULL) {
 #'
 #' Get the inner text of a `selenider_element` object.
 #'
-#' @inheritParams html_name
+#' @inheritParams elem_name
 #'
 #' @returns A string
 #'
@@ -62,7 +62,7 @@ html_name <- function(x, timeout = NULL) {
 #' session <- minimal_selenider_session(html)
 #'
 #' s("p") |>
-#'   html_text()
+#'   elem_text()
 #'
 #' \dontshow{
 #' # Clean up all connections and invalidate default chromote object
@@ -70,7 +70,7 @@ html_name <- function(x, timeout = NULL) {
 #' }
 #'
 #' @export
-html_text <- function(x, timeout = NULL) {
+elem_text <- function(x, timeout = NULL) {
   check_number_decimal(timeout, allow_null = TRUE)
 
   timeout <- get_timeout(timeout, x$timeout)
@@ -100,11 +100,11 @@ chromote_get_text <- function(x, driver) {
 #' @description
 #' Get an attribute of a `selenider_element` object.
 #'
-#' `html_attr()` returns a *single* attribute value as a string.
+#' `elem_attr()` returns a *single* attribute value as a string.
 #'
-#' `html_attrs()` returns a named list containing *every* attribute.
+#' `elem_attrs()` returns a named list containing *every* attribute.
 #'
-#' `html_value()` returns the 'value' attribute.
+#' `elem_value()` returns the 'value' attribute.
 #'
 #' @param x A `selenider_element` object.
 #' @param name The name of the attribute to get; a string.
@@ -114,8 +114,8 @@ chromote_get_text <- function(x, driver) {
 #'   or decimal number. By default, the value is returned as a string.
 #' @param timeout The time to wait for `x` to exist.
 #'
-#' @returns `html_attr()` returns a character vector of length 1. `html_attrs()`
-#'   returns a named list of strings. The return value of `html_value()` has the
+#' @returns `elem_attr()` returns a character vector of length 1. `elem_attrs()`
+#'   returns a named list of strings. The return value of `elem_value()` has the
 #'   same type as `ptype` and length 1.
 #'
 #' @family properties
@@ -129,13 +129,13 @@ chromote_get_text <- function(x, driver) {
 #' session <- minimal_selenider_session(html)
 #'
 #' s("a") |>
-#'   html_attr("href")
+#'   elem_attr("href")
 #'
 #' s("a") |>
-#'   html_attrs()
+#'   elem_attrs()
 #'
 #' s("input[type='number']") |>
-#'   html_value(ptype = integer())
+#'   elem_value(ptype = integer())
 #'
 #' \dontshow{
 #' # Clean up all connections and invalidate default chromote object
@@ -143,7 +143,7 @@ chromote_get_text <- function(x, driver) {
 #' }
 #'
 #' @export
-html_attr <- function(x, name, default = NA_character_, timeout = NULL) {
+elem_attr <- function(x, name, default = NA_character_, timeout = NULL) {
   check_string(name)
   check_number_decimal(timeout, allow_null = TRUE)
 
@@ -200,10 +200,10 @@ chromote_get_attributes <- function(x, driver) {
   result
 }
 
-#' @rdname html_attr
+#' @rdname elem_attr
 #'
 #' @export
-html_attrs <- function(x, timeout = NULL) {
+elem_attrs <- function(x, timeout = NULL) {
   check_number_decimal(timeout, allow_null = TRUE)
 
   timeout <- get_timeout(timeout, x$timeout)
@@ -229,10 +229,10 @@ html_attrs <- function(x, timeout = NULL) {
   }
 }
 
-#' @rdname html_attr
+#' @rdname elem_attr
 #'
 #' @export
-html_value <- function(x, ptype = character(), timeout = NULL) {
+elem_value <- function(x, ptype = character(), timeout = NULL) {
   check_class(x, "selenider_element")
   check_number_decimal(timeout, allow_null = TRUE)
 
@@ -294,10 +294,10 @@ html_value <- function(x, ptype = character(), timeout = NULL) {
 #' session <- minimal_selenider_session(html)
 #'
 #' s("p") |>
-#'   html_css_property("visibility")
+#'   elem_css_property("visibility")
 #'
 #' s("p") |>
-#'   html_css_property("color")
+#'   elem_css_property("color")
 #'
 #' \dontshow{
 #' # Clean up all connections and invalidate default chromote object
@@ -305,7 +305,7 @@ html_value <- function(x, ptype = character(), timeout = NULL) {
 #' }
 #'
 #' @export
-html_css_property <- function(x, name, timeout = NULL) {
+elem_css_property <- function(x, name, timeout = NULL) {
   check_class(x, "selenider_element")
   check_string(name)
   check_number_decimal(timeout, allow_null = TRUE)
@@ -368,8 +368,8 @@ chromote_get_css_property <- function(x, name, default, driver) {
 #' Get the number of elements in a HTML element collection, waiting for the 
 #' parent elements (if any) to exist before returning a value.
 #' 
-#' `length()` and `html_size()` can be used interchangeably, the only
-#' difference being that `html_size()` allows you to specify a timeout.
+#' `length()` and `elem_size()` can be used interchangeably, the only
+#' difference being that `elem_size()` allows you to specify a timeout.
 #' 
 #' @param x A `selenider_elements` object.
 #' @param timeout The time to wait for the parent of `x` (if any) to exist.
@@ -396,7 +396,7 @@ chromote_get_css_property <- function(x, name, default, driver) {
 #' }
 #' 
 #' @export
-html_size <- function(x, timeout = NULL) {
+elem_size <- function(x, timeout = NULL) {
   timeout <- get_timeout(timeout, x$timeout)
 
   elements <- get_elements_for_property(
@@ -408,11 +408,11 @@ html_size <- function(x, timeout = NULL) {
   length(elements)
 }
 
-#' @rdname html_size
+#' @rdname elem_size
 #' 
 #' @export
 length.selenider_elements <- function(x) {
-  html_size(x)
+  elem_size(x)
 }
 
 get_element_for_property <- function(x, action, timeout, call = rlang::caller_env()) {

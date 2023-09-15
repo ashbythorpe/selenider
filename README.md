@@ -49,7 +49,7 @@ concise yet expressive code that is easy to read and easy to write:
 - All functions are designed for use with the pipe operator (`|>` or
   `%>%`); elements can be selected, tested and operated on in a single
   pipeline.
-- `html_expect()` is a powerful way to specify test expectations, with a
+- `elem_expect()` is a powerful way to specify test expectations, with a
   simple but extensible syntax and informative error messages.
 - selenider is compatible with automated testing frameworks like
   [testthat](https://testthat.r-lib.org) and
@@ -99,11 +99,11 @@ list, checks that the link is correct, and clicks the link element.
 open_url("https://www.r-project.org/")
 
 s(".row") |>
-  html_element("div") |>
-  html_elements("a") |>
-  html_find(has_text("CRAN")) |>
-  html_expect(attr_contains("href", "cran.r-project.org")) |>
-  click()
+  find_element("div") |>
+  find_elements("a") |>
+  elem_find(has_text("CRAN")) |>
+  elem_expect(attr_contains("href", "cran.r-project.org")) |>
+  elem_click()
 ```
 
 Now that we’re in the mirror list page, let’s find the link to every
@@ -111,14 +111,14 @@ CRAN mirror in the UK.
 
 ``` r
 s("dl") |>
-  html_elements("dt") |>
-  html_find(has_text("UK")) |>
-  html_element(xpath = "./following-sibling::dd") |>
-  html_elements("tr") |>
-  html_expect(has_at_least(1)) |>
-  html_flatmap(\(x) html_element(x, "a")) |>
+  find_elements("dt") |>
+  elem_find(has_text("UK")) |>
+  find_element(xpath = "./following-sibling::dd") |>
+  find_elements("tr") |>
+  elem_expect(has_at_least(1)) |>
+  elem_flatmap(\(x) find_element(x, "a")) |>
   as.list() |>
-  lapply(html_attr, "href")
+  lapply(elem_attr, "href")
 #> [[1]]
 #> [1] "https://www.stats.bris.ac.uk/R/"
 #> 

@@ -6,7 +6,7 @@ print.selenider_key <- function(x, ...) {
 
 #' Special keys
 #' 
-#' List of special keys, for use with [send_keys()].
+#' List of special keys, for use with [elem_send_keys()].
 #'
 #' @format
 #' A list containing `selenider_key` objects.

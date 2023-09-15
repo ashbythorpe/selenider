@@ -3,7 +3,7 @@ test_that("Collection conditions work", {
 
   open_url("https://ashbythorpe.github.io/selenider/articles/test-site.html")
 
-  elements <- html_children(s(".buttons"))
+  elements <- elem_children(s(".buttons"))
 
   expect_false(has_length(elements, 1))
   expect_true(has_length(elements, 2))

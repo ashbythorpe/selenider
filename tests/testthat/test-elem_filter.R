@@ -36,19 +36,19 @@ test_that("Other filters work", {
 
   open_url("https://ashbythorpe.github.io/selenider/articles/test-site.html")
 
-  elements <- html_children(s(".actions-test"))
+  elements <- elem_children(s(".actions-test"))
 
-  inputs <- html_filter(elements, has_name("button") || has_name("input"))
+  inputs <- elem_filter(elements, has_name("button") || has_name("input"))
 
-  html_expect(inputs, has_length(3))
+  elem_expect(inputs, has_length(3))
 
-  submit_button <- html_find(inputs, has_attr("type", "submit"))
+  submit_button <- elem_find(inputs, has_attr("type", "submit"))
 
   expect_true(
-    submit_button == html_element(s(".actions-form"), "input[type='submit']")
+    submit_button == find_element(s(".actions-form"), "input[type='submit']")
   )
 
-  first_input <- html_find(elements, has_name("input"))
+  first_input <- elem_find(elements, has_name("input"))
 
   expect_true(
     first_input == s(".actions-input")

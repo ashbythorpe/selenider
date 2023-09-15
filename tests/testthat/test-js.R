@@ -80,7 +80,7 @@ test_that("execute_js_() work with selenider elements", {
 
   open_url("https://ashbythorpe.github.io/selenider/articles/test-site.html")
 
-  elements <- html_elements(s("main"), "div")
+  elements <- find_elements(s("main"), "div")
 
   expect_true(execute_js_fn("x => x[0]", elements) == elements[[1]])
 
@@ -102,9 +102,9 @@ test_that("execute_js_() work with selenider elements", {
     execute_js_fn("(x, y, z) => y", elements, element_1, element_2) == element_1
   )
 
-  html_expect(s(".toggleable"), is_invisible)
+  elem_expect(s(".toggleable"), is_invisible)
 
   execute_js_fn("x => x.click()", element_2)
 
-  html_expect(s(".toggleable"), is_visible)
+  elem_expect(s(".toggleable"), is_visible)
 })

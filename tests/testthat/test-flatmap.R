@@ -1,21 +1,21 @@
-test_that("html_flatmap() works", {
+test_that("elem_flatmap() works", {
   session <- selenider_test_session()
 
   open_url("https://ashbythorpe.github.io/selenider/articles/test-site.html")
 
-  elements <- html_flatmap(
-    html_flatten(s(".toggleable"), s(".buttons")),
-    function(x) html_children(x)
+  elements <- elem_flatmap(
+    elem_flatten(s(".toggleable"), s(".buttons")),
+    function(x) elem_children(x)
   )
 
-  html_expect(elements, has_length(3))
+  elem_expect(elements, has_length(3))
 
-  elements <- html_flatmap(
-    html_flatten(s(".toggleable"), s(".buttons")),
-    function(x) html_children(x)[[1]]
+  elements <- elem_flatmap(
+    elem_flatten(s(".toggleable"), s(".buttons")),
+    function(x) elem_children(x)[[1]]
   )
 
-  html_expect(elements, has_length(2))
+  elem_expect(elements, has_length(2))
 })
 
 test_that("element_list() works", {
@@ -23,9 +23,9 @@ test_that("element_list() works", {
 
   open_url("https://ashbythorpe.github.io/selenider/articles/test-site.html")
 
-  elements <- html_flatmap(
-    html_flatten(s(".toggleable"), s(".buttons")),
-    function(x) html_children(x)
+  elements <- elem_flatmap(
+    elem_flatten(s(".toggleable"), s(".buttons")),
+    function(x) elem_children(x)
   )
 
   elements_list <- as.list(elements)
@@ -41,7 +41,7 @@ test_that("element_list() works", {
   )
 
   expect_equal(
-    vapply(elements_list, html_name, FUN.VALUE = character(1)),
+    vapply(elements_list, elem_name, FUN.VALUE = character(1)),
     c("p", "button", "button")
   )
 })

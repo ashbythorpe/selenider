@@ -45,10 +45,10 @@ select.}
 Both \code{s()} and \code{ss()} allow you to select elements without specifying a
 session object.
 
-\code{s()} selects a single element, being a shorthand for \code{\link[=html_element]{html_element()}}
+\code{s()} selects a single element, being a shorthand for \code{\link[=find_element]{find_element()}}
 on the current session.
 
-\code{ss()} selects multiple elements, being a shorthand for \code{\link[=html_elements]{html_elements()}}.
+\code{ss()} selects multiple elements, being a shorthand for \code{\link[=find_elements]{find_elements()}}.
 }
 \details{
 Both functions allow the starting point for chains of selectors to be made
@@ -70,17 +70,17 @@ session <- minimal_selenider_session(html)
 s("#id1")
 
 # This is the equivalent of:
-html_element(session, "id1")
+find_element(session, "id1")
 
 ss(".inner")
 
 # This is the equivalent of:
-html_element(session, ".inner")
+find_element(session, ".inner")
 
 # This provides a more concise way to begin a chain of selectors
 s("div") |>
-  html_element(".child") |>
-  html_element(".inner")
+  find_element(".child") |>
+  find_element(".inner")
 
 \dontshow{
 # Clean up all connections and invalidate default chromote object
@@ -90,7 +90,7 @@ selenider_cleanup()
 }
 \seealso{
 \itemize{
-\item \code{\link[=html_element]{html_element()}} and \code{\link[=html_elements]{html_elements()}}
+\item \code{\link[=find_element]{find_element()}} and \code{\link[=find_elements]{find_elements()}}
 \item \code{\link[=selenider_session]{selenider_session()}} to begin a session.
 }
 }

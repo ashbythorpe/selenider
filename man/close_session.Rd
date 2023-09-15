@@ -7,7 +7,7 @@
 close_session(x = NULL)
 }
 \arguments{
-\item{x}{A \code{selenider_session} object. If omitted, the global session object
+\item{x}{A \code{selenider_session} object. If omitted, the local session object
 will be closed.}
 }
 \value{
@@ -15,6 +15,8 @@ Nothing.
 }
 \description{
 Shut down a session object, closing the browser and stopping the server.
+This will be done automatically if the session is set as the local session
+(which happens by default).
 }
 \examples{
 \dontshow{if (selenider_available()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
@@ -27,4 +29,7 @@ close_session(session)
 selenider_cleanup(FALSE)
 }
 \dontshow{\}) # examplesIf}
+}
+\seealso{
+\code{\link[=selenider_session]{selenider_session()}}
 }

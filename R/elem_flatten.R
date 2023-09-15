@@ -2,8 +2,8 @@
 #'
 #' Combine a set of `selenider_element`/`selenider_elements` objects
 #' into a single `selenider_elements` object, allowing you to
-#' perform actions on them at once. `c()` and `html_flatten()` do the same
-#' thing, but `html_flatten()` works when given a list of `selenider_element`/`selenider_elements`
+#' perform actions on them at once. `c()` and `elem_flatten()` do the same
+#' thing, but `elem_flatten()` works when given a list of `selenider_element`/`selenider_elements`
 #' objects.
 #'
 #' @param ... <[`dynamic-dots`][rlang::dyn-dots]> `selenider_element` or
@@ -12,7 +12,7 @@
 #' @returns A `selenider_elements` object.
 #'
 #' @seealso
-#' * [html_flatmap()] and [as.list.selenider_elements()] to iterate over element
+#' * [elem_flatmap()] and [as.list.selenider_elements()] to iterate over element
 #'   collections.
 #'
 #' @examplesIf selenider_available(online = FALSE)
@@ -30,19 +30,19 @@
 #' button_1 <- s("#button1")
 #' button_2 <- s("#button2")
 #'
-#' buttons <- html_flatten(button_1, button_2)
+#' buttons <- elem_flatten(button_1, button_2)
 #'
 #' buttons |>
-#'   html_expect_all(is_enabled)
+#'   elem_expect_all(is_enabled)
 #'
 #' buttons |>
 #'   as.list() |>
-#'   lapply(click)
+#'   lapply(elem_click)
 #'
 #' # Doesn't just have to be single elements
 #' first_2_divs <- ss("div")[1:2]
 #'
-#' html_flatten(first_2_divs, button_2) |>
+#' elem_flatten(first_2_divs, button_2) |>
 #'   length()
 #'
 #' # We would like to use multiple css selectors and combine the results
@@ -53,7 +53,7 @@
 #' )
 #'
 #' lapply(selectors, ss) |>
-#'   html_flatten() |>
+#'   elem_flatten() |>
 #'   length() # 3
 #'
 #' \dontshow{
@@ -62,7 +62,7 @@
 #' }
 #'
 #' @export
-html_flatten <- function(...) {
+elem_flatten <- function(...) {
   check_dots_unnamed()
 
   exprs <- enexprs(...)
@@ -72,12 +72,12 @@ html_flatten <- function(...) {
     stop_dots_empty()
   }
 
-  to_combine <- html_flatten_init(elements, exprs = exprs)
+  to_combine <- elem_flatten_init(elements, exprs = exprs)
 
-  html_combine(to_combine)
+  elem_combine(to_combine)
 }
 
-html_flatten_init <- function(x, exprs, is_nested = FALSE, index = NULL, call = rlang::caller_env()) {
+elem_flatten_init <- function(x, exprs, is_nested = FALSE, index = NULL, call = rlang::caller_env()) {
   accepted_classes <- c("selenider_element", "selenider_elements")
 
   result <- list()
@@ -86,7 +86,7 @@ html_flatten_init <- function(x, exprs, is_nested = FALSE, index = NULL, call = 
 
     if (!inherits_any(element, accepted_classes)) {
       if (is.list(element) && !is_nested) {
-        result <- c(result, html_flatten_init(element, exprs = exprs, is_nested = TRUE, index = i, call = call))
+        result <- c(result, elem_flatten_init(element, exprs = exprs, is_nested = TRUE, index = i, call = call))
       } else {
         stop_flatten_dots(x, exprs = exprs, i = i, index = index, is_nested = is_nested, call = call)
       }
@@ -98,21 +98,21 @@ html_flatten_init <- function(x, exprs, is_nested = FALSE, index = NULL, call = 
   result
 }
 
-#' @rdname html_flatten
+#' @rdname elem_flatten
 #'
 #' @export
 c.selenider_element <- function(...) {
-  html_flatten(...)
+  elem_flatten(...)
 }
 
-#' @rdname html_flatten
+#' @rdname elem_flatten
 #'
 #' @export
 c.selenider_elements <- function(...) {
-  html_flatten(...)
+  elem_flatten(...)
 }
 
-html_combine <- function(elements) {
+elem_combine <- function(elements) {
   ids <- vapply(elements, function(x) x$driver_id, FUN.VALUE = double(1))
   if (length(unique(ids)) > 1) {
     stop_incompatible_drivers(ids)

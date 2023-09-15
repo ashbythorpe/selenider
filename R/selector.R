@@ -71,7 +71,7 @@ use_selector <- function(selector, element, driver) {
       names(selector)
     )
     
-    res <- find_element(element, using = using, value = selector[[1]], driver = driver)
+    res <- find_actual_element(element, using = using, value = selector[[1]], driver = driver)
 
     list(res)
   } else {
@@ -84,7 +84,7 @@ use_selector <- function(selector, element, driver) {
         name
       )
 
-      find_elements(element, using = using, value = value, driver = driver)
+      find_actual_elements(element, using = using, value = value, driver = driver)
     }, list(names(selector), selector), NULL)
 
     elem_common(element_list, driver = driver)

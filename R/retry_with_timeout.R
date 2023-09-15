@@ -100,7 +100,7 @@ eval_condition <- function(x, data_mask = NULL) {
 
 #' Evaluate conditions on multiple elements until a timeout is reached
 #'
-#' A varient of [retry_with_timeout()] for [html_expect_all()].
+#' A varient of [retry_with_timeout()] for [elem_expect_all()].
 #'
 #' @param timeout,exprs Same as [retry_with_timeout()]
 #' @param elements The element collection.
@@ -186,7 +186,7 @@ retry_with_timeout_multiple <- function(timeout, exprs, elements, name) {
 }
 
 eval_condition_multiple <- function(x, elements, name) {
-  len <- html_size(elements)
+  len <- elem_size(elements)
   for (index in seq_len(len)) {
     element <- elements[[index]]
     data_mask <- list(element)

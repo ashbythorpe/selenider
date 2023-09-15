@@ -22,11 +22,11 @@
 #' 
 #' @seealso 
 #' * [ss()] to quickly select multiple elements without specifying the session.
-#' * [html_element()] to select multiple elements.
+#' * [find_element()] to select multiple elements.
 #' * [selenider_session()] to begin a session.
-#' * [html_children()] and family to select elements using their relative position
+#' * [elem_children()] and family to select elements using their relative position
 #'   in the DOM.
-#' * [html_filter()] and [html_find()] for filtering element collections.
+#' * [elem_filter()] and [elem_find()] for filtering element collections.
 #' 
 #' @examplesIf selenider_available(online = FALSE)
 #' html <- "
@@ -44,18 +44,18 @@
 #' session <- minimal_selenider_session(html)
 #' 
 #' session |>
-#'   html_elements("div")
+#'   find_elements("div")
 #'
 #' # Or:
 #' ss("div")
 #'
 #' session |>
-#'   html_element("#outer-div") |>
-#'   html_elements("p")
+#'   find_element("#outer-div") |>
+#'   find_elements("p")
 #'   
 #' # The above can be shortened to:
 #' s("#outer-div") |>
-#'   html_elements("p")
+#'   find_elements("p")
 #'
 #' \dontshow{
 #' # Clean up all connections and invalidate default chromote object
@@ -63,14 +63,14 @@
 #' }
 #' 
 #' @export
-html_elements <- function(x, ...) {
-  UseMethod("html_elements")
+find_elements <- function(x, ...) {
+  UseMethod("find_elements")
 }
 
 #' @export
 #' 
-#' @rdname html_elements
-html_elements.selenider_session <- function(x,
+#' @rdname find_elements
+find_elements.selenider_session <- function(x,
                                            css = NULL,
                                            xpath = NULL,
                                            id = NULL,
@@ -87,8 +87,8 @@ html_elements.selenider_session <- function(x,
 
 #' @export
 #' 
-#' @rdname html_elements
-html_elements.selenider_element <- function(x,
+#' @rdname find_elements
+find_elements.selenider_element <- function(x,
                                            css = NULL,
                                            xpath = NULL,
                                            id = NULL,

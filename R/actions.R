@@ -4,12 +4,12 @@
 #' Clicks on an HTML element, either by simulating a mouse click or by triggering 
 #' the element's "click" event.
 #' 
-#' `click()` left clicks on the element, `double_click()` left clicks on the
-#' element two times in a short period of time, while `right_click()` right
+#' `elem_click()` left clicks on the element, `elem_double_click()` left clicks on the
+#' element two times in a short period of time, while `elem_right_click()` right
 #' clicks on an element, opening its context menu.
 #' 
 #' @param x A `selenider_element` object.
-#' @param js Whether to click the element using JavaScript. For `right_click()`,
+#' @param js Whether to click the element using JavaScript. For `elem_right_click()`,
 #'   this is ignored if Selenium is being used, since right clicking using
 #'   RSelenium does not seem to work (so JavaScript is used instead).
 #' @param timeout How long to wait for the element to exist.
@@ -34,17 +34,17 @@
 #'
 #' session <- minimal_selenider_session(html, js = js)
 #' 
-#' html_expect(s("p"), is_visible)
+#' elem_expect(s("p"), is_visible)
 #'
 #' s("button") |>
-#'   click()
+#'   elem_click()
 #'
-#' html_expect(s("p"), is_invisible)
+#' elem_expect(s("p"), is_invisible)
 #'
 #' s("button") |>
-#'   right_click()
+#'   elem_right_click()
 #'
-#' html_expect(s("p"), is_visible)
+#' elem_expect(s("p"), is_visible)
 #'
 #' \dontshow{
 #' # Clean up all connections and invalidate default chromote object
@@ -54,7 +54,7 @@
 #' @family actions
 #'
 #' @export
-click <- function(x, js = FALSE, timeout = NULL) {
+elem_click <- function(x, js = FALSE, timeout = NULL) {
   check_class(x, "selenider_element")
   check_bool(js)
   check_number_decimal(timeout, allow_null = TRUE)
@@ -168,10 +168,10 @@ capture_mouse_press_error <- function(expr) {
   )
 }
 
-#' @rdname click
+#' @rdname elem_click
 #' 
 #' @export
-double_click <- function(x, js = FALSE, timeout = NULL) {
+elem_double_click <- function(x, js = FALSE, timeout = NULL) {
   check_class(x, "selenider_element")
   check_bool(js)
   check_number_decimal(timeout, allow_null = TRUE)
@@ -219,7 +219,7 @@ double_click <- function(x, js = FALSE, timeout = NULL) {
         webElement = element
       )
       
-      x$driver$doubleclick()
+      x$driver$doubleelem_click()
     } else {
       click_chromote(element, x$driver, type = "left", count = 2)
     }
@@ -228,10 +228,10 @@ double_click <- function(x, js = FALSE, timeout = NULL) {
   invisible(x)
 }
 
-#' @rdname click
+#' @rdname elem_click
 #' 
 #' @export
-right_click <- function(x, js = FALSE, timeout = NULL) {
+elem_right_click <- function(x, js = FALSE, timeout = NULL) {
   check_class(x, "selenider_element")
   check_bool(js)
   check_number_decimal(timeout, allow_null = TRUE)
@@ -306,7 +306,7 @@ right_click <- function(x, js = FALSE, timeout = NULL) {
         webElement = element
       )
       
-      x$driver$click(2)
+      x$driver$elem_click(2)
     } else {
       click_chromote(element, x$driver, type = "right")
     }
@@ -342,12 +342,12 @@ right_click <- function(x, js = FALSE, timeout = NULL) {
 #'
 #' session <- minimal_selenider_session(html, js = js)
 #'
-#' html_expect(s(".text"), has_exact_text(""))
+#' elem_expect(s(".text"), has_exact_text(""))
 #'
 #' s("button") |>
-#'   hover()
+#'   elem_hover()
 #'
-#' html_expect(s(".text"), has_text("Button hovered!"))
+#' elem_expect(s(".text"), has_text("Button hovered!"))
 #'
 #' \dontshow{
 #' # Clean up all connections and invalidate default chromote object
@@ -355,7 +355,7 @@ right_click <- function(x, js = FALSE, timeout = NULL) {
 #' }
 #' 
 #' @export
-hover <- function(x, js = FALSE, timeout = NULL) {
+elem_hover <- function(x, js = FALSE, timeout = NULL) {
   check_class(x, "selenider_element")
   check_bool(js)
   check_number_decimal(timeout, allow_null = TRUE)
@@ -422,14 +422,14 @@ hover_chromote <- function(element, driver) {
 
 #' Set the value of an input
 #'
-#' `set_value()` sets the value of an HTML input element to a string.
+#' `elem_set_value()` sets the value of an HTML input element to a string.
 #'
-#' `send_keys()` sends a set of inputs to an element.
+#' `elem_send_keys()` sends a set of inputs to an element.
 #'
-#' `clear_value()` sets the value of an HTML element to `""`, removing any
+#' `elem_clear_value()` sets the value of an HTML element to `""`, removing any
 #' existing content.
 #'
-#' @param x A `selenider_element` object. For [send_keys()], this can be `NULL`,
+#' @param x A `selenider_element` object. For [elem_send_keys()], this can be `NULL`,
 #'   meaning that the keys will be sent to the current page (or the currently focused
 #'   element) instead of a specific element.
 #' @param text A string to set the value of the input element to.
@@ -460,21 +460,21 @@ hover_chromote <- function(element, driver) {
 #'
 #' session <- minimal_selenider_session(html, js = js)
 #'
-#' html_expect(s("p"), has_exact_text(""))
+#' elem_expect(s("p"), has_exact_text(""))
 #'
 #' input <- s("input")
 #'
-#' set_value(input, "my text")
+#' elem_set_value(input, "my text")
 #'
-#' html_expect(s("p"), has_text("my text"))
+#' elem_expect(s("p"), has_text("my text"))
 #'
-#' clear_value(input)
+#' elem_clear_value(input)
 #'
-#' html_expect(s("p"), has_exact_text(""))
+#' elem_expect(s("p"), has_exact_text(""))
 #' 
-#' send_keys(input, keys$enter)
+#' elem_send_keys(input, keys$enter)
 #'
-#' html_expect(s("p"), has_text("Enter pressed!"))
+#' elem_expect(s("p"), has_text("Enter pressed!"))
 #'
 #' \dontshow{
 #' # Clean up all connections and invalidate default chromote object
@@ -484,7 +484,7 @@ hover_chromote <- function(element, driver) {
 #' @family actions
 #'
 #' @export
-set_value <- function(x, text, timeout = NULL) {
+elem_set_value <- function(x, text, timeout = NULL) {
   check_class(x, "selenider_element")
   if (is.numeric(text) && length(text) == 1) {
     text <- as.character(text)
@@ -536,14 +536,14 @@ chromote_send_chars <- function(x, driver) {
   }
 }
 
-#' @rdname set_value
+#' @rdname elem_set_value
 #' 
 #' @param ... A set of inputs to send to `x`.
 #' @param modifiers A character vector; one or more of "shift", "ctrl"/"control", "alt", and "command"/meta".
 #'   Note that when using chromote as a backend, these do not work on Mac OS.
 #' 
 #' @export
-send_keys <- function(x, ..., modifiers = NULL, timeout = NULL) {
+elem_send_keys <- function(x, ..., modifiers = NULL, timeout = NULL) {
   check_class(x, c("selenider_element", "selenider_session"), allow_null = TRUE)
   check_number_decimal(timeout, allow_null = TRUE)
   check_dots_unnamed()
@@ -654,10 +654,10 @@ get_numeric_modifier <- function(modifiers) {
     8L * ("shift" %in% modifiers)
 }
 
-#' @rdname set_value
+#' @rdname elem_set_value
 #'
 #' @export
-clear_value <- function(x, timeout = NULL) {
+elem_clear_value <- function(x, timeout = NULL) {
   check_class(x, "selenider_element")
   check_number_decimal(timeout, allow_null = TRUE)
 
@@ -723,12 +723,12 @@ format_timeout_for_error <- function(x) {
 #' session <- minimal_selenider_session(html, js = js)
 #'
 #' s("p") |>
-#'   scroll_to()
+#'   elem_scroll_to()
 #'
 #' s("button") |>
-#'   click()
+#'   elem_click()
 #'
-#' html_expect(s("p"), has_text("You found me!"))
+#' elem_expect(s("p"), has_text("You found me!"))
 #'
 #' \dontshow{
 #' # Clean up all connections and invalidate default chromote object
@@ -736,7 +736,7 @@ format_timeout_for_error <- function(x) {
 #' }
 #'
 #' @export
-scroll_to <- function(x, js = FALSE, timeout = NULL) {
+elem_scroll_to <- function(x, js = FALSE, timeout = NULL) {
   check_class(x, "selenider_element")
   check_bool(js)
   check_number_decimal(timeout, allow_null = TRUE)
@@ -805,11 +805,11 @@ scroll_to <- function(x, js = FALSE, timeout = NULL) {
 #'
 #' session <- minimal_selenider_session(html)
 #' 
-#' submit(s("input"))
-#' submit(s("p"))
+#' elem_submit(s("input"))
+#' elem_submit(s("p"))
 #'
 #' # Won't work since the element doesn't have a form ancestor
-#' try(submit(s("a"), timeout = 0.5))
+#' try(elem_submit(s("a"), timeout = 0.5))
 #'
 #' \dontshow{
 #' # Clean up all connections and invalidate default chromote object
@@ -817,7 +817,7 @@ scroll_to <- function(x, js = FALSE, timeout = NULL) {
 #' }
 #'
 #' @export
-submit <- function(x, js = FALSE, timeout = NULL) {
+elem_submit <- function(x, js = FALSE, timeout = NULL) {
   check_class(x, "selenider_element")
   check_bool(js)
   check_number_decimal(timeout, allow_null = TRUE)
@@ -825,7 +825,7 @@ submit <- function(x, js = FALSE, timeout = NULL) {
   timeout <- get_timeout(timeout, x$timeout)
 
   has_form_parent <- function(x) {
-    has_at_least(html_filter(html_ancestors(x), has_name("form")), 1)
+    has_at_least(elem_filter(elem_ancestors(x), has_name("form")), 1)
   }
 
   if (js || !uses_selenium(x$driver)) {
@@ -880,7 +880,7 @@ get_element_for_action <- function(x,
                                    conditions_text,
                                    call = rlang::caller_env()) {
   meets_condition <- 
-    inject(html_wait_until(
+    inject(elem_wait_until(
       x,
       is_present,
       !!!conditions,

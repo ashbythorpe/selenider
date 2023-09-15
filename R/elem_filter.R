@@ -4,9 +4,9 @@
 #' Operators to extract a subset of elements, or a single element, from
 #' a selenider element collection.
 #'
-#' `html_filter()` and `html_find()` allow you to use conditions to filter HTML
-#' elements (see [is_present()] and other conditions). `html_find()` returns the *first*
-#' element that satisfies one or more conditions, while `html_filter()` returns every
+#' `elem_filter()` and `elem_find()` allow you to use conditions to filter HTML
+#' elements (see [is_present()] and other conditions). `elem_find()` returns the *first*
+#' element that satisfies one or more conditions, while `elem_filter()` returns every
 #' element that satisfies these conditions.
 #'
 #' `[` and `[[` with a numeric subscript can be used on an element collection to filter
@@ -20,18 +20,18 @@
 #'   elements by position.
 #'
 #' @details
-#' As with the [html_element()] and [html_elements()] functions, these functions are
+#' As with the [find_element()] and [find_elements()] functions, these functions are
 #' lazy, meaning that the elements are not fetched and filtered until they are needed.
 #'
-#' Conditions can be functions or function calls (see [html_expect()] for more details).
+#' Conditions can be functions or function calls (see [elem_expect()] for more details).
 #'
 #' @returns
-#' `html_filter()` and `[` return a `selenider_elements` object, since they can result
+#' `elem_filter()` and `[` return a `selenider_elements` object, since they can result
 #' in multiple elements.
-#' `html_find()` and `[[` return a single `selenider_element` object.
+#' `elem_find()` and `[[` return a single `selenider_element` object.
 #'
 #' @seealso
-#' * [html_elements()] and [ss()] to get elements to filter.
+#' * [find_elements()] and [ss()] to get elements to filter.
 #' * [is_present()] and other conditions for predicates for HTML elements.
 #'   (If you scroll down to the *See also* section, you will find the rest).
 #'
@@ -54,23 +54,23 @@
 #' elements[-2]
 #'
 #' elements |>
-#'   html_filter(is_visible)
+#'   elem_filter(is_visible)
 #'
 #' elements |>
-#'   html_find(is_visible)
+#'   elem_find(is_visible)
 #'
 #' # The above is equivalent to:
 #' visible_elems <- elements |>
-#'   html_filter(is_visible)
+#'   elem_filter(is_visible)
 #' visible_elems[[1]]
 #'
 #' # In R >= 4.3.0, we can instead do:
 #' # ss(".class1") |>
-#' #   html_filter(is_visible) |>
+#' #   elem_filter(is_visible) |>
 #' #   _[[1]]
 #'
 #' ss("button") |>
-#'   html_filter(is_enabled)
+#'   elem_filter(is_enabled)
 #'
 #' \dontshow{
 #' # Clean up all connections and invalidate default chromote object
@@ -78,7 +78,7 @@
 #' }
 #'
 #' @export
-html_filter <- function(x, ...) {
+elem_filter <- function(x, ...) {
   check_class(x, "selenider_elements")
 
   if (elements_is_empty(x)) {
@@ -109,15 +109,15 @@ html_filter <- function(x, ...) {
   x
 }
 
-#' @rdname html_filter
+#' @rdname elem_filter
 #'
 #' @export
-html_find <- function(x, ...) {
+elem_find <- function(x, ...) {
   if (elements_is_empty(x)) {
     stop_find_empty_elements()
   }
 
-  x <- html_filter(x, ...)
+  x <- elem_filter(x, ...)
 
   x <- add_numeric_filter(x, 1, max_subscript_error = TRUE)
 
@@ -126,7 +126,7 @@ html_find <- function(x, ...) {
   x
 }
 
-#' @rdname html_filter
+#' @rdname elem_filter
 #'
 #' @export
 `[.selenider_elements` <- function(x, i) {
@@ -161,7 +161,7 @@ check_subscript_vctrs <- function(i, call = rlang::caller_env()) {
   vctrs::vec_slice(x, i, error_call = call)
 }
 
-#' @rdname html_filter
+#' @rdname elem_filter
 #'
 #' @export
 `[[.selenider_elements` <- function(x, i) {

@@ -3,37 +3,37 @@
 #' @description
 #' Find all elements with a certain relative position to an HTML element.
 #'
-#' `html_ancestors()` selects every element which contains the current element
+#' `elem_ancestors()` selects every element which contains the current element
 #' (children, grand-children, etc.).
 #'
-#' `html_parent()` selects the element that contains the current element.
+#' `elem_parent()` selects the element that contains the current element.
 #'
-#' `html_siblings()` selects every element which has the same parent as the current
+#' `elem_siblings()` selects every element which has the same parent as the current
 #' element.
 #'
-#' `html_children()` selects every element which is connected to and directly below
+#' `elem_children()` selects every element which is connected to and directly below
 #' the current element.
 #'
-#' `html_descendants()` selects every element that is contained by the current element.
+#' `elem_descendants()` selects every element that is contained by the current element.
 #' The current element does not have to be a direct parent, but must be some type of
 #' ancestor.
 #'
 #' @param x A `selenider_element` object.
 #'
 #' @details
-#' All functions except `html_children()` and `html_descendants()` use XPath selectors,
+#' All functions except `elem_children()` and `elem_descendants()` use XPath selectors,
 #' so may be slow, especially when using `chromote` as a backend.
 #'
-#' @returns All functions return a `selenider_elements` object, except `html_parent()`,
+#' @returns All functions return a `selenider_elements` object, except `elem_parent()`,
 #' which returns a `selenider_element` object (since an element can only have one parent).
 #'
 #' @seealso
 #' * <http://web.simmons.edu/~grovesd/comm244/notes/week4/document-tree> for a simple
 #'   and visual explanation of the document tree.
-#' * [html_element()] and [html_elements()] for other ways of selecting elements. These
+#' * [find_element()] and [find_elements()] for other ways of selecting elements. These
 #'   functions allow you to select ancestors using one or more conditions (e.g. CSS
 #'   selectors).
-#' * [html_filter()] and [html_find()] for filtering element collections.
+#' * [elem_filter()] and [elem_find()] for filtering element collections.
 #'
 #' @examplesIf selenider_available(online = FALSE)
 #' html <- "
@@ -59,35 +59,35 @@
 #' current <- s("#current")
 #'
 #' # Get all the names of an element collection
-#' html_names <- function(x) {
+#' elem_names <- function(x) {
 #'   x |>
 #'     as.list() |>
-#'     vapply(html_name, FUN.VALUE = character(1))
+#'     vapply(elem_name, FUN.VALUE = character(1))
 #' }
 #'
 #' current |>
-#'   html_ancestors() |>
-#'   html_expect(has_length(3)) |>
-#'   html_names() # html, div, body
+#'   elem_ancestors() |>
+#'   elem_expect(has_length(3)) |>
+#'   elem_names() # html, div, body
 #'
 #' current |>
-#'   html_parent() |>
-#'   html_name() # div
+#'   elem_parent() |>
+#'   elem_name() # div
 #'
 #' current |>
-#'   html_siblings() |>
-#'   html_expect(has_length(2)) |>
-#'   html_names() # div, p
+#'   elem_siblings() |>
+#'   elem_expect(has_length(2)) |>
+#'   elem_names() # div, p
 #'
 #' current |>
-#'   html_children() |>
-#'   html_expect(has_length(2)) |>
-#'   html_names() # p, div
+#'   elem_children() |>
+#'   elem_expect(has_length(2)) |>
+#'   elem_names() # p, div
 #'
 #' current |>
-#'   html_descendants() |>
-#'   html_expect(has_length(4)) |>
-#'   html_names() # p, div, p, br
+#'   elem_descendants() |>
+#'   elem_expect(has_length(4)) |>
+#'   elem_names() # p, div, p, br
 #'
 #' \dontshow{
 #' # Clean up all connections and invalidate default chromote object
@@ -95,7 +95,7 @@
 #' }
 #'
 #' @export
-html_ancestors <- function(x) {
+elem_ancestors <- function(x) {
   check_class(x, "selenider_element")
 
   selector <- list(
@@ -115,10 +115,10 @@ html_ancestors <- function(x) {
   x
 }
 
-#' @rdname html_ancestors
+#' @rdname elem_ancestors
 #'
 #' @export
-html_parent <- function(x) {
+elem_parent <- function(x) {
   check_class(x, "selenider_element")
 
   selector <- list(
@@ -136,10 +136,10 @@ html_parent <- function(x) {
   x
 }
 
-#' @rdname html_ancestors
+#' @rdname elem_ancestors
 #'
 #' @export
-html_siblings <- function(x) {
+elem_siblings <- function(x) {
   check_class(x, "selenider_element")
 
   selector <- list(
@@ -159,10 +159,10 @@ html_siblings <- function(x) {
   x
 }
 
-#' @rdname html_ancestors
+#' @rdname elem_ancestors
 #'
 #' @export
-html_children <- function(x) {
+elem_children <- function(x) {
   check_class(x, "selenider_element")
 
   selector <- list(
@@ -182,10 +182,10 @@ html_children <- function(x) {
   x
 }
 
-#' @rdname html_ancestors
+#' @rdname elem_ancestors
 #'
 #' @export
-html_descendants <- function(x) {
+elem_descendants <- function(x) {
   check_class(x, "selenider_element")
 
   selector <- list(

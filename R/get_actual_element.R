@@ -13,7 +13,7 @@
 #' of [RSelenium::webElement] objects.
 #'
 #' @param x A `selenider_element` or `selenider_elements` object, produced by
-#'   [html_element()] / [html_elements()].
+#'   [find_element()] / [find_elements()].
 #' @param timeout The timeout to use while asserting that the item exists. If
 #'   NULL, the timeout of the `selenider_element` will be used.
 #'
@@ -21,9 +21,9 @@
 #' `get_actual_elements()` returns a list of such objects.
 #'
 #' @seealso
-#' * [s()], [ss()], [html_element()] and [html_elements()] to select selenider
+#' * [s()], [ss()], [find_element()] and [find_elements()] to select selenider
 #'   elements.
-#' * [cache_element()] and [cache_elements()] to cache these values.
+#' * [elem_cache()] and [elem_cache()] to cache these values.
 #' * The [Chrome Devtools Protocol documentation](https://chromedevtools.github.io/devtools-protocol/tot/)
 #'   for the operations that can be performed using a backend node id. Note that
 #'   this requires the [chromote::ChromoteSession] object, which can be retrieved using

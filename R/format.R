@@ -375,7 +375,7 @@ format_flatmap_selector <- function(selector, multiple = FALSE) {
 format_flatmap_selector_simple <- function(selector, multiple = FALSE, ...) {
   first <- format_elements(selector$element, ...)
 
-  middle <- "A transformation of each element using `html_flatmap()`."
+  middle <- "A transformation of each element using `elem_flatmap()`."
 
   final <- format_final_filter(selector$filter, multiple = multiple)
 

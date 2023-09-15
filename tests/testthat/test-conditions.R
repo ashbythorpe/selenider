@@ -19,8 +19,8 @@ test_that("Conditions work", {
   expect_true(is_displayed(s(".buttons")))
   expect_false(is_hidden(s(".buttons")))
 
-  enabled_button <- html_elements(s(".buttons"), "button")[[1]]
-  disabled_button <- html_elements(s(".buttons"), "button")[[2]]
+  enabled_button <- find_elements(s(".buttons"), "button")[[1]]
+  disabled_button <- find_elements(s(".buttons"), "button")[[2]]
 
   expect_true(is_enabled(enabled_button))
   expect_false(is_disabled(enabled_button))
@@ -32,9 +32,9 @@ test_that("Conditions work", {
   expect_false(has_name(s(".toggleable"), "biv"))
 
   # To get the text in an element in selenium, the element must be visible.
-  click(s("#toggle_div"))
+  elem_click(s("#toggle_div"))
 
-  element <- html_element(s(".toggleable"), "p")
+  element <- find_element(s(".toggleable"), "p")
 
   expect_true(has_text(element, "Hello!"))
   expect_true(has_text(element, "ell"))
@@ -43,18 +43,18 @@ test_that("Conditions work", {
   expect_true(has_exact_text(element, "Hello!"))
   expect_false(has_exact_text(element, "ell"))
 
-  buttons <- html_children(s(".buttons"))
+  buttons <- elem_children(s(".buttons"))
   expect_true(has_attr(buttons[[1]], "disabled", NA))
 
   expect_false(has_attr(buttons[[1]], "disabled", ""))
   expect_false(has_attr(buttons[[2]], "disabled", "Something"))
 
-  click(s("#toggle_div"))
+  elem_click(s("#toggle_div"))
 
   expect_true(attr_contains(s(".toggleable"), "style", "display"))
   expect_false(attr_contains(s(".toggleable"), "style", "color"))
 
-  submit_button <- html_element(s(".actions-form"), "input[type='submit']")
+  submit_button <- find_element(s(".actions-form"), "input[type='submit']")
 
   expect_true(has_value(submit_button, "Submit"))
 

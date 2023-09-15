@@ -229,6 +229,6 @@ selenider_cleanup()
 result of \code{\link[=get_session]{get_session()}}, which is why \code{\link[withr:defer]{withr::deferred_run()}} is preferred.
 \item \code{\link[=local_session]{local_session()}} and \code{\link[=with_session]{with_session()}} to manually set the local session
 object (and \code{\link[=get_session]{get_session()}} to get it).
-\item \code{\link[=open_url]{open_url()}}, \code{\link[=s]{s()}} and \code{\link[=html_elements]{html_elements()}} to get started once you have created a session.
+\item \code{\link[=open_url]{open_url()}}, \code{\link[=s]{s()}} and \code{\link[=find_elements]{find_elements()}} to get started once you have created a session.
 }
 }

@@ -7,14 +7,13 @@
 #' is to avoid situations where the DOM changes after an element
 #' has been collected, resulting in errors and unreliable behaviour.
 #'
-#' These functions force an element to be collected and stored, making
-#' it eager rather than lazy. This is useful when you are operating on
-#' the same element multiple times, since only collecting the element
+#' `elem_cache()` forces an element or collection of elements to be collected
+#' and stored, making it eager rather than lazy. This is useful when you are
+#' operating on the same element multiple times, since only collecting the element
 #' once will improve performance. However, you must be sure that the element
 #' will not change on the page while you are using it.
 #'
-#' @param x For `cache_element()`, a `selenider_element` object. For `cache_elements()`,
-#'   a `selenider_elements` object.
+#' @param x A `selenider_element`/`selenider_elements` object.
 #' @param timeout How long to wait for the element(s) to exist while collecting them.
 #'
 #' @details
@@ -24,21 +23,21 @@
 #' For example, consider the following code:
 #' ``` r
 #' s(".class1") |>
-#'   html_parent() |>
-#'   cache_element() |>
-#'   html_element(".class2")
+#'   elem_parent() |>
+#'   elem_cache() |>
+#'   find_element(".class2")
 #' ```
 #'
 #' In this example, the parent of the element with class ".class1" will be cached,
 #' but the child element with class ".class2" will not.
 #'
 #' @returns
-#' The same type as `x`. The result of `cache_element()`/`cache_elements()` can be used
+#' The same type as `x`. The result of `elem_cache()` can be used
 #' as a normal `selenider_element`/`selenider_elements` object.
 #'
 #' @seealso
-#' * [html_element()] and [html_elements()] to select elements.
-#' * [element_list()] and [html_flatmap()] if you want to iterate over an element collection.
+#' * [find_element()] and [find_elements()] to select elements.
+#' * [element_list()] and [elem_flatmap()] if you want to iterate over an element collection.
 #'
 #' @examplesIf selenider_available(online = FALSE)
 #' html <- "
@@ -52,28 +51,28 @@
 #'
 #' # Selecting this button may be slow, since we are using relative XPath selectors.
 #' button <- s("#specifictext") |>
-#'   html_siblings() |>
-#'   html_find(has_name("button"))
+#'   elem_siblings() |>
+#'   elem_find(has_name("button"))
 #'
 #' # But we need to click the button 10 times!
 #' # Normally, this would involve fetching the button from the DOM 10 times
 #' click_button_10_times <- function(x) {
-#'   lapply(1:10, \(unnused) click(x))
+#'   lapply(1:10, \(unnused) elem_click(x))
 #'   invisible(NULL)
 #' }
 #'
-#' # But with cache_element(), the button will only be fetched once
-#' cached_button <- cache_element(button)
+#' # But with elem_cache(), the button will only be fetched once
+#' cached_button <- elem_cache(button)
 #'
 #' click_button_10_times(cached_button)
 #'
 #' # But the cached button is less reliable if the DOM is changing
 #' execute_js_fn("x => { x.outerHTML = '<button></button>'; }", button)
 #'
-#' try(click(cached_button, timeout = 0.1))
+#' try(elem_click(cached_button, timeout = 0.1))
 #'
 #' # But the non-cached version works
-#' click(button)
+#' elem_click(button)
 #'
 #' \dontshow{
 #' # Clean up all connections and invalidate default chromote object
@@ -81,12 +80,20 @@
 #' }
 #'
 #' @export
-cache_element <- function(x, timeout = NULL) {
-  check_class(x, "selenider_element")
+elem_cache <- function(x, timeout = NULL) {
+  check_class(x, c("selenider_element", "selenider_elements"))
   check_number_decimal(timeout, allow_null = TRUE)
 
   timeout <- get_timeout(timeout, x$timeout)
 
+  if (inherits(x, "selenider_element")) {
+    cache_element(x, timeout)
+  } else {
+    cache_elements(x, timeout)
+  }
+}
+
+cache_element <- function(x, timeout = NULL) {
   element <- get_element_for_property(
     x,
     action = "cache {.arg x}",
@@ -101,15 +108,7 @@ cache_element <- function(x, timeout = NULL) {
   x
 }
 
-#' @rdname cache_element
-#'
-#' @export
 cache_elements <- function(x, timeout = NULL) {
-  check_class(x, "selenider_elements")
-  check_number_decimal(timeout, allow_null = TRUE)
-
-  timeout <- get_timeout(timeout, x$timeout)
-
   elements <- get_elements_for_property(
     x,
     action = "cache the elements in {.arg x}",

@@ -132,8 +132,8 @@ stop_no_conditions <- function(call = rlang::caller_env()) {
   cli::cli_abort(c(
     "No conditions were specified.",
     "i" = "Try specifying a condition.",
-    "x" = "Instead of: {.code html_expect(element)}",
-    "v" = "Try: {.code html_expect(element, is_present)}"
+    "x" = "Instead of: {.code elem_expect(element)}",
+    "v" = "Try: {.code elem_expect(element, is_present)}"
   ), class = "selenider_error_no_conditions", call = call)
 }
 

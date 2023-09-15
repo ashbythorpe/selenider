@@ -1,7 +1,7 @@
 #' Are two elements equivalent?
 #'
 #' Checks if two `selenider_element` objects point to the
-#' same element on the page. `html_equal()` is equivalent to
+#' same element on the page. `elem_equal()` is equivalent to
 #' using `==`, but allows you to specify a timeout value if
 #' needed.
 #'
@@ -12,7 +12,7 @@
 #' `TRUE` or `FALSE`.
 #'
 #' @seealso
-#' * [html_filter()] and [html_find()] for filtering collection of elements.
+#' * [elem_filter()] and [elem_find()] for filtering collection of elements.
 #'
 #' @examplesIf selenider_available(online = FALSE)
 #' html <- "
@@ -28,14 +28,14 @@
 #'
 #' has_p_child <- function(x) {
 #'   x |>
-#'     html_children() |> # Direct children
-#'     html_filter(has_name("p")) |>
+#'     elem_children() |> # Direct children
+#'     elem_filter(has_name("p")) |>
 #'     has_at_least(1)
 #' }
 #'
 #' ss("div") |>
-#'   html_find(has_p_child) |>
-#'   html_equal(s(".second")) # TRUE
+#'   elem_find(has_p_child) |>
+#'   elem_equal(s(".second")) # TRUE
 #'
 #' \dontshow{
 #' # Clean up all connections and invalidate default chromote object
@@ -43,12 +43,12 @@
 #' }
 #'
 #' @export
-html_equal <- function(x, y, timeout = NULL) {
+elem_equal <- function(x, y, timeout = NULL) {
   check_class(x, "selenider_element")
   check_class(y, "selenider_element")
 
   timeout <- get_timeout(timeout, x$timeout)
-  if (!html_wait_until(is_present(x), is_present(y), timeout = timeout)) {
+  if (!elem_wait_until(is_present(x), is_present(y), timeout = timeout)) {
     missing_arg <- if (is_present(x)) "y" else "x"
     stop_not_actionable(
       c(
@@ -72,11 +72,11 @@ html_equal <- function(x, y, timeout = NULL) {
   }
 }
 
-#' @rdname html_equal
+#' @rdname elem_equal
 #'
 #' @export
 `==.selenider_element` <- function(e1, e2) {
-  html_equal(e1, e2)
+  elem_equal(e1, e2)
 }
 
 selenium_equal <- function(x, y, driver) {

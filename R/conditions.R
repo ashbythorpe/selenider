@@ -7,7 +7,7 @@
 #' 
 #' @details
 #' These functions do not implement a retry mechanism, and only test a condition
-#' once. Use [html_expect()] or [html_wait_until()] to use these conditions in
+#' once. Use [elem_expect()] or [elem_wait_until()] to use these conditions in
 #' tests.
 #' 
 #' @returns 
@@ -555,7 +555,7 @@ is_covered <- function(x) {
 #'
 #' @details
 #' These functions do not implement a retry mechanism, and only test a condition
-#' once. Use [html_expect()] or [html_wait_until()] to use these conditions in
+#' once. Use [elem_expect()] or [elem_wait_until()] to use these conditions in
 #' tests.
 #'
 #' @returns A boolean value: `TRUE` or `FALSE`
@@ -606,7 +606,7 @@ has_at_least <- function(x, n) {
   check_number_whole(n, min = 0)
 
   x <- tryCatch(
-    cache_elements(x),
+    elem_cache(x),
     error = function(e) stop_absent_parent_element()
   )
 

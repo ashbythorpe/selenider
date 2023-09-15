@@ -11,7 +11,7 @@ get_actual_elements(x, timeout = NULL)
 }
 \arguments{
 \item{x}{A \code{selenider_element} or \code{selenider_elements} object, produced by
-\code{\link[=html_element]{html_element()}} / \code{\link[=html_elements]{html_elements()}}.}
+\code{\link[=find_element]{find_element()}} / \code{\link[=find_elements]{find_elements()}}.}
 
 \item{timeout}{The timeout to use while asserting that the item exists. If
 NULL, the timeout of the \code{selenider_element} will be used.}
@@ -72,9 +72,9 @@ selenider_cleanup()
 }
 \seealso{
 \itemize{
-\item \code{\link[=s]{s()}}, \code{\link[=ss]{ss()}}, \code{\link[=html_element]{html_element()}} and \code{\link[=html_elements]{html_elements()}} to select selenider
+\item \code{\link[=s]{s()}}, \code{\link[=ss]{ss()}}, \code{\link[=find_element]{find_element()}} and \code{\link[=find_elements]{find_elements()}} to select selenider
 elements.
-\item \code{\link[=cache_element]{cache_element()}} and \code{\link[=cache_elements]{cache_elements()}} to cache these values.
+\item \code{\link[=elem_cache]{elem_cache()}} and \code{\link[=elem_cache]{elem_cache()}} to cache these values.
 \item The \href{https://chromedevtools.github.io/devtools-protocol/tot/}{Chrome Devtools Protocol documentation}
 for the operations that can be performed using a backend node id. Note that
 this requires the \link[chromote:ChromoteSession]{chromote::ChromoteSession} object, which can be retrieved using

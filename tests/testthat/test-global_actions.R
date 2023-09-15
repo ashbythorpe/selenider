@@ -39,13 +39,13 @@ test_that("Global actions work", {
 
   open_url("https://ashbythorpe.github.io/selenider/articles/test-site.html")
 
-  set_value(s(".actions-input"), "My text")
+  elem_set_value(s(".actions-input"), "My text")
 
-  html_expect(s("#text-output"), has_text("My text"))
+  elem_expect(s("#text-output"), has_text("My text"))
 
   reload()
 
-  html_expect(s("#text-output"), has_exact_text(""))
+  elem_expect(s("#text-output"), has_exact_text(""))
 
   file <- withr::local_tempfile(fileext = "png")
 

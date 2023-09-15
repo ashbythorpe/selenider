@@ -1,11 +1,11 @@
 #' Test one or more conditions on HTML elements
 #' 
 #' @description 
-#' `html_expect()` waits for a set of conditions to return TRUE. If, after a
+#' `elem_expect()` waits for a set of conditions to return TRUE. If, after a
 #' certain period of time (by default 4 seconds), this does not happen, an
 #' informative error is thrown. Otherwise, the original element is returned.
 #' 
-#' `html_wait_until()` does the same, but returns a logical value (whether or
+#' `elem_wait_until()` does the same, but returns a logical value (whether or
 #' not the test passed), allowing you to handle the failure case explicitly.
 #' 
 #' @param x A `selenider_element`/`selenider_elements` object, or a condition.
@@ -14,7 +14,7 @@
 #'   must all be `TRUE` for the test to pass.
 #' @param testthat Whether to treat the expectation as a `testthat` test. You 
 #'   *do not* need to explicitly provide this most of the time, since by default,
-#'   we can use [testthat::is_testing()] to figure out whether `html_expect()` is
+#'   we can use [testthat::is_testing()] to figure out whether `elem_expect()` is
 #'   being called from within a `testthat` test.
 #' @param timeout The number of seconds to wait for a condition to pass. If not
 #'   specified, the timeout used for `x` will be used, or the timeout of the
@@ -51,30 +51,30 @@
 #'   throwing an error.
 #' * `selenider` functions used inside conditions have their timeout, by
 #'   default, set to 0, ignoring the local timeout. This is important, since
-#'   `html_expect()` and `html_wait_until()` implement a retry mechanic
+#'   `elem_expect()` and `elem_wait_until()` implement a retry mechanic
 #'   manually. To override this default, manually specify a timeout.
 #'
-#' These two features allow you to use functions like [html_text()] to access
+#' These two features allow you to use functions like [elem_text()] to access
 #' properties of an element, without needing to worry about the errors that
 #' they throw or the timeouts that they use. See Examples for a few examples of a
 #' custom condition.
 #'
-#' These custom conditions can also be used with [html_filter()] and
-#' [html_find()].
+#' These custom conditions can also be used with [elem_filter()] and
+#' [elem_find()].
 #'
 #' @returns 
-#' `html_expect()` returns the element(s) `x`, or `NULL` if an element or
+#' `elem_expect()` returns the element(s) `x`, or `NULL` if an element or
 #' collection of elements was not given in `x`.
 #' 
-#' `html_wait_for()` returns a boolean flag: TRUE if the test passes, FALSE
+#' `elem_wait_for()` returns a boolean flag: TRUE if the test passes, FALSE
 #' otherwise.
 #' 
 #' @seealso 
 #' * [is_present()] and other conditions for predicates for HTML elements.
 #'   (If you scroll down to the *See also* section, you will find the rest).
-#' * [html_expect_all()] and [html_wait_until_all()] for an easy way to test a single
+#' * [elem_expect_all()] and [elem_wait_until_all()] for an easy way to test a single
 #'   condition on multiple elements.
-#' * [html_filter()] and [html_find()] to use conditions to filter elements.
+#' * [elem_filter()] and [elem_find()] to use conditions to filter elements.
 #' 
 #' @examplesIf selenider_available(online = FALSE)
 #' html <- "
@@ -90,45 +90,45 @@
 #' session <- minimal_selenider_session(html)
 #'
 #' s(".class1") |>
-#'   html_expect(is_present)
+#'   elem_expect(is_present)
 #'
 #' s("#enabled-button") |>
-#'   html_expect(is_visible, is_enabled)
+#'   elem_expect(is_visible, is_enabled)
 #' 
 #' s("#disabled-button") |>
-#'   html_expect(is_disabled)
+#'   elem_expect(is_disabled)
 #' 
 #' # Error: element is visible but not enabled
 #' s("#disabled-button") |>
-#'   html_expect(is_visible, is_enabled, timeout = 0.5) |>
+#'   elem_expect(is_visible, is_enabled, timeout = 0.5) |>
 #'   try() # Since this condition will fail
 #'
 #' s(".class2") |>
-#'   html_expect(!is_present, !is_in_dom, is_absent) # All 3 are equivalent
+#'   elem_expect(!is_present, !is_in_dom, is_absent) # All 3 are equivalent
 #'
 #' # All other conditions will error if the element does not exist
 #' s(".class2") |>
-#'   html_expect(is_invisible, timeout = 0.1) |>
+#'   elem_expect(is_invisible, timeout = 0.1) |>
 #'   try()
 #'
-#' # html_expect() returns the element, so can be used in chains
+#' # elem_expect() returns the element, so can be used in chains
 #' s("#enabled-button") |>
-#'   html_expect(is_visible && is_enabled) |>
-#'   click()
-#' # Note that click() will do this automatically
+#'   elem_expect(is_visible && is_enabled) |>
+#'   elem_click()
+#' # Note that elem_click() will do this automatically
 #'
 #' s("p") |>
-#'   html_expect(is_hidden, has_exact_text("Example text"))
+#'   elem_expect(is_hidden, has_exact_text("Example text"))
 #'
 #' # Or use an anonymous function
 #' s("p") |>
-#'   html_expect(\(elem) identical(html_text(elem), "Example text"))
+#'   elem_expect(\(elem) identical(elem_text(elem), "Example text"))
 #'
 #' # If your conditions are not specific to an element, you can omit the `x` argument
 #' elem_1 <- s(".class1")
 #' elem_2 <- s(".class2")
 #'
-#' html_expect(is_present(elem_1) || is_present(elem_2))
+#' elem_expect(is_present(elem_1) || is_present(elem_2))
 #' 
 #' # We can now use the conditions on their own to figure out which element exists
 #' if (is_present(elem_1)) {
@@ -137,31 +137,31 @@
 #'   print("Element 2 is visible")
 #' }
 #'
-#' # Use html_wait_until() to handle failures manually
+#' # Use elem_wait_until() to handle failures manually
 #' elem <- s(".class2")
-#' if (html_wait_until(elem, is_present)) {
-#'   click(elem)
+#' if (elem_wait_until(elem, is_present)) {
+#'   elem_click(elem)
 #' } else {
 #'   reload()
 #' }
 #'
 #' # Creating a custom condition is easiest with an anonymous function
 #' s("p") |>
-#'   html_expect(
+#'   elem_expect(
 #'     \(elem) elem |>
-#'       html_text() |>
+#'       elem_text() |>
 #'       grepl(pattern = "Example .*")
 #'   )
 #' 
 #' # Or create a function, to reuse the condition multiple times
 #' text_contains <- function(x, pattern) {
-#'   text <- html_text(x)
+#'   text <- elem_text(x)
 #'   
 #'   grepl(pattern, text)
 #' }
 #'
 #' s("p") |>
-#'   html_expect(text_contains("Example *"))
+#'   elem_expect(text_contains("Example *"))
 #'
 #' # If we want to continue on error, we need to use the "expect_error_continue" class
 #' # This involves making a custom error object
@@ -177,11 +177,11 @@
 #' }
 #'
 #' # This error will not be caught
-#' try(html_expect(stop("Uncaught error!")))
+#' try(elem_expect(stop("Uncaught error!")))
 #'
 #' # These will eventually throw an error, but will wait 0.5 seconds to do so.
-#' try(html_expect(error_condition(), timeout = 0.5))
-#' try(html_expect(error_condition_2(), timeout = 0.5))
+#' try(elem_expect(error_condition(), timeout = 0.5))
+#' try(elem_expect(error_condition_2(), timeout = 0.5))
 #'
 #' \dontshow{
 #' # Clean up all connections and invalidate default chromote object
@@ -189,7 +189,7 @@
 #' }
 #' 
 #' @export
-html_expect <- function(x, ..., testthat = NULL, timeout = NULL) {
+elem_expect <- function(x, ..., testthat = NULL, timeout = NULL) {
   x <- enquo(x)
   dots <- enquos(...)
 
@@ -199,7 +199,7 @@ html_expect <- function(x, ..., testthat = NULL, timeout = NULL) {
   if (is.null(testthat)) {
     testthat <- is_installed("testthat") && testthat::is_testing()
   } else if (testthat) {
-    check_installed("testthat", reason = "for `html_expect(testthat = TRUE)`.")
+    check_installed("testthat", reason = "for `elem_expect(testthat = TRUE)`.")
   }
   
   result <- eval_conditions(x, dots, timeout)
@@ -242,8 +242,8 @@ html_expect <- function(x, ..., testthat = NULL, timeout = NULL) {
 
 #' @export
 #'
-#' @rdname html_expect
-html_wait_until <- function(x, ..., timeout = NULL) {
+#' @rdname elem_expect
+elem_wait_until <- function(x, ..., timeout = NULL) {
   x <- enquo(x)
   dots <- enquos(...)
 
@@ -256,7 +256,7 @@ html_wait_until <- function(x, ..., timeout = NULL) {
 
 #' If a condition fails, throw an informative error
 #'
-#' Throw an informative error (or test failure) for a [html_expect()]
+#' Throw an informative error (or test failure) for a [elem_expect()]
 #' failure.
 #'
 #' @param x The element that conditions are evaluated on.
@@ -271,8 +271,8 @@ html_wait_until <- function(x, ..., timeout = NULL) {
 #' @param testthat Whether to create a testthat test failure instead of an error.
 #' @param call_name The name of the condition.
 #' @param negated_call_name The negated name of the condition.
-#' @param call_env The environment of the [html_expect()] call, to throw the error in.
-#' @param x_name Used by [html_expect_all()] to specify that a specific argument failed
+#' @param call_env The environment of the [elem_expect()] call, to throw the error in.
+#' @param x_name Used by [elem_expect_all()] to specify that a specific argument failed
 #'   (e.g. "x[[1]]").
 #'
 #' @noRd
@@ -318,8 +318,8 @@ diagnose_condition <- function(x,
         condition <- c(
           condition,
           "i" = "Did you forget to supply {.arg x}?",
-          "x" = "Instead of {.code html_expect({expr_print})}",
-          "v" = "Use: {.code html_expect(element, {expr_print})}"
+          "x" = "Instead of {.code elem_expect({expr_print})}",
+          "v" = "Use: {.code elem_expect(element, {expr_print})}"
         )
 
         stop_expect_error(condition, parent = parent, call = call_env)
@@ -340,7 +340,7 @@ diagnose_condition <- function(x,
   
   if (testthat) {
     # We have already checked that testthat is installed if `testthat` is `TRUE`.
-    html_expect_fail(condition, parent = parent, call = call_env, x = x, x_name = x_name)
+    elem_expect_fail(condition, parent = parent, call = call_env, x = x, x_name = x_name)
   } else {
     stop_expect_error(condition, parent = parent, call = call_env)
   }
@@ -414,7 +414,7 @@ diagnose_condition_call <- function(condition, x, call, call_name, original_env,
     }
 
     expected_name <- eval_tidy(get_call_arg(call, "name"), env = original_env)
-    actual_name <- get_or_null(x, html_name, timeout = 0)
+    actual_name <- get_or_null(x, elem_name, timeout = 0)
 
     if (is.null(actual_name)) {
       condition <- c(
@@ -434,7 +434,7 @@ diagnose_condition_call <- function(condition, x, call, call_name, original_env,
     }
 
     target_text <- eval_tidy(get_call_arg(call, "text"), env = original_env)
-    actual_text <- get_or_null(x, html_text, timeout = 0)
+    actual_text <- get_or_null(x, elem_text, timeout = 0)
 
     if (is.null(actual_text)) {
       condition <- c(
@@ -442,7 +442,7 @@ diagnose_condition_call <- function(condition, x, call, call_name, original_env,
         "i" = paste0("{.arg {x_name}} {negated_call_name} ", format_value(target_text), ".")
       )
     } else {
-      actual_text <- tryCatch(html_text(x, timeout = 0), error = function(e) NULL)
+      actual_text <- tryCatch(elem_text(x, timeout = 0), error = function(e) NULL)
 
       condition <- c(
         condition,
@@ -465,7 +465,7 @@ diagnose_condition_call <- function(condition, x, call, call_name, original_env,
 
     name <- eval_tidy(get_call_arg(call, "name"), env = original_env)
     expected_value <- eval_tidy(get_call_arg(call, "value"), env = original_env)
-    actual_value <- get_or_null(x, html_attr, name, timeout = 0)
+    actual_value <- get_or_null(x, elem_attr, name, timeout = 0)
     
     if (is.null(actual_value)) {
       condition <- c(
@@ -486,7 +486,7 @@ diagnose_condition_call <- function(condition, x, call, call_name, original_env,
 
     value <- eval_tidy(get_call_arg(call, "value"), env = original_env)
     expected_value <- eval_tidy(get_call_arg(call, "value"), env = original_env)
-    actual_value <- get_or_null(x, html_value, timeout = 0)
+    actual_value <- get_or_null(x, elem_value, timeout = 0)
     
     if (is.null(actual_value)) {
       condition <- c(
@@ -513,7 +513,7 @@ diagnose_condition_call <- function(condition, x, call, call_name, original_env,
 
     name <- eval_tidy(get_call_arg(call, "property"), env = original_env)
     expected_value <- eval_tidy(get_call_arg(call, "value"), env = original_env)
-    actual_value <- get_or_null(x, html_css_property, name, timeout = 0)
+    actual_value <- get_or_null(x, elem_css_property, name, timeout = 0)
     
     if (is.null(actual_value)) {
       condition <- c(
@@ -534,7 +534,7 @@ diagnose_condition_call <- function(condition, x, call, call_name, original_env,
 
     value <- eval_tidy(get_call_arg(call, "n"), env = original_env)
     elements <- if(value == 1) "element" else "elements"
-    actual_length <- get_or_null(x, html_size, timeout = 0)
+    actual_length <- get_or_null(x, elem_size, timeout = 0)
 
     cond <- switch(
       negated_call_name,
@@ -569,7 +569,7 @@ diagnose_condition_call <- function(condition, x, call, call_name, original_env,
       )
     }
   } else if (inherits(x, "selenider_elements")) {
-    l <- tryCatch(html_size(x, timeout = 0), selenider_error_absent_parent = function(e) NULL)
+    l <- tryCatch(elem_size(x, timeout = 0), selenider_error_absent_parent = function(e) NULL)
 
     if (is.null(l)) {
       condition <- c(

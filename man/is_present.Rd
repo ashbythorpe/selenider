@@ -24,7 +24,7 @@ while \code{is_missing()} and \code{is_absent()} checks the opposite.
 }
 \details{
 These functions do not implement a retry mechanism, and only test a condition
-once. Use \code{\link[=html_expect]{html_expect()}} or \code{\link[=html_wait_until]{html_wait_until()}} to use these conditions in
+once. Use \code{\link[=elem_expect]{elem_expect()}} or \code{\link[=elem_wait_until]{elem_wait_until()}} to use these conditions in
 tests.
 }
 \examples{

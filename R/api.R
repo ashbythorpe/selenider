@@ -4,10 +4,10 @@
 #' Both `s()` and `ss()` allow you to select elements without specifying a
 #' session object.
 #'
-#' `s()` selects a single element, being a shorthand for [html_element()]
+#' `s()` selects a single element, being a shorthand for [find_element()]
 #' on the current session.
 #'
-#' `ss()` selects multiple elements, being a shorthand for [html_elements()].
+#' `ss()` selects multiple elements, being a shorthand for [find_elements()].
 #'
 #' @param css A css selector.
 #' @param xpath An XPath.
@@ -26,7 +26,7 @@
 #' `ss()` returns a `selenider_elements` object.
 #'
 #' @seealso
-#' * [html_element()] and [html_elements()]
+#' * [find_element()] and [find_elements()]
 #' * [selenider_session()] to begin a session.
 #'
 #' @examplesIf selenider_available(online = FALSE)
@@ -44,17 +44,17 @@
 #' s("#id1")
 #'
 #' # This is the equivalent of:
-#' html_element(session, "id1")
+#' find_element(session, "id1")
 #'
 #' ss(".inner")
 #'
 #' # This is the equivalent of:
-#' html_element(session, ".inner")
+#' find_element(session, ".inner")
 #'
 #' # This provides a more concise way to begin a chain of selectors
 #' s("div") |>
-#'   html_element(".child") |>
-#'   html_element(".inner")
+#'   find_element(".child") |>
+#'   find_element(".inner")
 #'
 #' \dontshow{
 #' # Clean up all connections and invalidate default chromote object
@@ -70,7 +70,7 @@ s <- function(css = NULL,
               link_text = NULL) {
   session <- get_session(.env = caller_env())
 
-  html_element(session, css, xpath, id, class_name, name, link_text)
+  find_element(session, css, xpath, id, class_name, name, link_text)
 }
 
 #' @rdname s
@@ -84,5 +84,5 @@ ss <- function(css = NULL,
                link_text = NULL) {
   session <- get_session(.env = caller_env())
 
-  html_elements(session, css, xpath, id, class_name, name, link_text)
+  find_elements(session, css, xpath, id, class_name, name, link_text)
 }

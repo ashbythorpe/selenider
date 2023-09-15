@@ -4,7 +4,7 @@
 #' they all return TRUE within a timeout.
 #'
 #' @param x A quosure, the result of `enquo(x)` on the `x` argument
-#'   to e.g. [html_expect()]. This should either evaluate to a selenider
+#'   to e.g. [elem_expect()]. This should either evaluate to a selenider
 #'   element or a condition.
 #' @param dots A list of quosures, which contain the rest of the conditions.
 #' @param timeout The `timeout` argument to the parent timeout. This is not
@@ -74,7 +74,7 @@ eval_conditions <- function(x, dots, timeout) {
   )
 }
 
-# Variation of eval_conditions() for `html_expect_all()`
+# Variation of eval_conditions() for `elem_expect_all()`
 # Simpler since the x cannot be a condition
 eval_all_conditions <- function(x, dots, timeout) {
   timeout <- get_timeout(timeout, x$timeout)

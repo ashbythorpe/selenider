@@ -126,7 +126,7 @@
 #'   result of [get_session()], which is why [withr::deferred_run()] is preferred.
 #' * [local_session()] and [with_session()] to manually set the local session
 #'   object (and [get_session()] to get it).
-#' * [open_url()], [s()] and [html_elements()] to get started once you have created a session.
+#' * [open_url()], [s()] and [find_elements()] to get started once you have created a session.
 #'
 #' @returns
 #' A `selenider_session` object. Use `session$driver` to retrieve the driver object that controls the
