@@ -22,6 +22,9 @@
     <loc>https://ashbythorpe.github.io/selenider/articles/test_site.html</loc>
   </url>
   <url>
+    <loc>https://ashbythorpe.github.io/selenider/articles/unit-testing.html</loc>
+  </url>
+  <url>
     <loc>https://ashbythorpe.github.io/selenider/authors.html</loc>
   </url>
   <url>
@@ -143,6 +146,9 @@
   </url>
   <url>
     <loc>https://ashbythorpe.github.io/selenider/reference/open_url.html</loc>
+  </url>
+  <url>
+    <loc>https://ashbythorpe.github.io/selenider/reference/read_html.selenider_session.html</loc>
   </url>
   <url>
     <loc>https://ashbythorpe.github.io/selenider/reference/reload.html</loc>
