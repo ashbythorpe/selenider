@@ -1,0 +1,77 @@
+---
+title: "selenider and rvest"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{selenider and rvest}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+selenider can be a useful add-on to rvest, for when scraping data requires
+interaction with a website.
+
+rvest is very similar to selenider, but is designed for static webpages rather
+than interactive ones.
+
+```{r setup}
+library(selenider)
+library(rvest)
+```
+
+To start, let's open <https://www.r-project.org/>
+
+```{r}
+open_url("https://www.r-project.org/")
+```
+
+First, we will interact with the website with selenider. We would like
+to find the most recent post by R on Mastodon, and follow the link to the
+original post.
+
+```{r}
+s(".mt-timeline") |>
+  find_element("article") |>
+  elem_attr("data-location") |>
+  open_url()
+```
+
+Now, we would like to parse the text of the post using `rvest::html_text2()`.
+We can do this in two ways, either by locationg the element containing the post
+using selenider then parsing it using rvest, or by parsing the entire page using
+rvest and finding the element after. The two methods are very similar, since
+selenider and rvest use a very similar syntax, except rvest uses the `html_`
+prefix rather than the `elem_` prefix.
+
+We can convert between selenider elements and rvest (or more precisely, xml2)
+documents using [rvest::read_html()] or [xml2::read_html()].
+
+Note that when converting elements to rvest nodes, the element will be wrapped
+in a `<body>` tag.
+```{r}
+# First method
+rvest_element <- s(".columns-area") |>
+  find_element(".status__content") |>
+  read_html()
+
+rvest_element
+
+html_text2(rvest_element)
+```
+
+Reading the HTML of an entire page can be done using [get_page_source()].
+Note that `rvest::html_element()` is equivalent to [find_element()], but
+works only on static HTML.
+
+```{r}
+get_page_source() |>
+  html_element(".columns-area") |>
+  html_element(".status__content") |>
+  html_text2()
+```
