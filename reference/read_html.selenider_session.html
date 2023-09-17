@@ -31,6 +31,7 @@ the entire page, or on a selenider element to get the HTML of that element."><!-
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/test-site.html">test-site</a>
     <a class="dropdown-item" href="../articles/unit-testing.html">Unit testing</a>
+    <a class="dropdown-item" href="../articles/with-rvest.html">selenider and rvest</a>
   </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
@@ -122,10 +123,10 @@ in a <code>&lt;body&gt;</code> tag.</p>
 <span class="r-in"><span><span class="st">"</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="minimal_selenider_session.html">minimal_selenider_session</a></span><span class="op">(</span><span class="va">html</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpZ9Ij1H/file188e4b087950.html"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpwGl9pl/file18d1645057f7.html"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="http://xml2.r-lib.org/reference/read_xml.html" class="external-link">read_html</a></span><span class="op">(</span><span class="va">session</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session 2F1039E98267CC6D218E7D3A14BAE417 is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session 9D52A83D67B7C9F574CDCBB792D8D4A3 is closed.</span>
 <span class="r-in"><span><span class="fu"><a href="http://xml2.r-lib.org/reference/read_xml.html" class="external-link">read_html</a></span><span class="op">(</span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"div"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {html_document}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;html&gt;</span>
