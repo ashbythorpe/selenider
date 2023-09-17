@@ -27,9 +27,10 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/test-site.html">test-site</a>
     <a class="dropdown-item" href="../articles/unit-testing.html">Unit testing</a>
     <a class="dropdown-item" href="../articles/with-rvest.html">selenider and rvest</a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="../articles/index.html">More articles...</a>
   </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
@@ -52,9 +53,35 @@
     </div>
 
     <div class="section level2">
-      <h2 id="all-functions">All functions<a class="anchor" aria-label="anchor" href="#all-functions"></a></h2>
+      <h2 id="start-a-session">Start a session<a class="anchor" aria-label="anchor" href="#start-a-session"></a></h2>
       
       
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="selenider_session.html">selenider_session()</a></code> <code><a href="selenider_session.html">create_chromote_session()</a></code> <code><a href="selenider_session.html">create_selenium_server()</a></code> <code><a href="selenider_session.html">create_selenium_client()</a></code> 
+        </dt>
+        <dd>Start a session</dd>
+      </dl><dl><dt>
+          
+          <code><a href="close_session.html">close_session()</a></code> 
+        </dt>
+        <dd>Close a session object</dd>
+      </dl><dl><dt>
+          
+          <code><a href="get_session.html">get_session()</a></code> <code><a href="get_session.html">local_session()</a></code> <code><a href="get_session.html">with_session()</a></code> 
+        </dt>
+        <dd>Get or set the local selenider session</dd>
+      </dl></div><div class="section level2">
+      <h2 id="global-actions">Global Actions<a class="anchor" aria-label="anchor" href="#global-actions"></a></h2>
+      
+      <p class="section-desc"></p><p>Actions on the entire page</p>
 
       
     </div><div id="" class="section level2">
@@ -69,104 +96,45 @@
         <dd>Move back or forward in browsing history</dd>
       </dl><dl><dt>
           
-          <code><a href="close_session.html">close_session()</a></code> 
-        </dt>
-        <dd>Close a session object</dd>
-      </dl><dl><dt>
-          
-          <code><a href="elem_ancestors.html">elem_ancestors()</a></code> <code><a href="elem_ancestors.html">elem_parent()</a></code> <code><a href="elem_ancestors.html">elem_siblings()</a></code> <code><a href="elem_ancestors.html">elem_children()</a></code> <code><a href="elem_ancestors.html">elem_descendants()</a></code> 
-        </dt>
-        <dd>Get the DOM family of an element</dd>
-      </dl><dl><dt>
-          
-          <code><a href="elem_attr.html">elem_attr()</a></code> <code><a href="elem_attr.html">elem_attrs()</a></code> <code><a href="elem_attr.html">elem_value()</a></code> 
-        </dt>
-        <dd>Get element attribute</dd>
-      </dl><dl><dt>
-          
-          <code><a href="elem_cache.html">elem_cache()</a></code> 
-        </dt>
-        <dd>Force an element to be collected and stored</dd>
-      </dl><dl><dt>
-          
-          <code><a href="elem_click.html">elem_click()</a></code> <code><a href="elem_click.html">elem_double_click()</a></code> <code><a href="elem_click.html">elem_right_click()</a></code> 
-        </dt>
-        <dd>Click an element</dd>
-      </dl><dl><dt>
-          
-          <code><a href="elem_css_property.html">elem_css_property()</a></code> 
-        </dt>
-        <dd>Get a CSS property of an element</dd>
-      </dl><dl><dt>
-          
-          <code><a href="elem_equal.html">elem_equal()</a></code> <code><a href="elem_equal.html">`==`(<i>&lt;selenider_element&gt;</i>)</a></code> 
-        </dt>
-        <dd>Are two elements equivalent?</dd>
-      </dl><dl><dt>
-          
-          <code><a href="elem_expect.html">elem_expect()</a></code> <code><a href="elem_expect.html">elem_wait_until()</a></code> 
-        </dt>
-        <dd>Test one or more conditions on HTML elements</dd>
-      </dl><dl><dt>
-          
-          <code><a href="elem_expect_all.html">elem_expect_all()</a></code> <code><a href="elem_expect_all.html">elem_wait_until_all()</a></code> 
-        </dt>
-        <dd>Test conditions on multiple elements</dd>
-      </dl><dl><dt>
-          
-          <code><a href="elem_filter.html">elem_filter()</a></code> <code><a href="elem_filter.html">elem_find()</a></code> <code><a href="elem_filter.html">`[`(<i>&lt;selenider_elements&gt;</i>)</a></code> <code><a href="elem_filter.html">`[[`(<i>&lt;selenider_elements&gt;</i>)</a></code> 
-        </dt>
-        <dd>Extract a subset of HTML elements</dd>
-      </dl><dl><dt>
-          
-          <code><a href="elem_flatmap.html">elem_flatmap()</a></code> <code><a href="elem_flatmap.html">as.list(<i>&lt;selenider_elements&gt;</i>)</a></code> <code><a href="elem_flatmap.html">element_list()</a></code> 
-        </dt>
-        <dd>Iterate over an element collection</dd>
-      </dl><dl><dt>
-          
-          <code><a href="elem_flatten.html">elem_flatten()</a></code> <code><a href="elem_flatten.html">c(<i>&lt;selenider_element&gt;</i>)</a></code> <code><a href="elem_flatten.html">c(<i>&lt;selenider_elements&gt;</i>)</a></code> 
-        </dt>
-        <dd>Combine multiple HTML elements</dd>
-      </dl><dl><dt>
-          
-          <code><a href="elem_hover.html">elem_hover()</a></code> 
-        </dt>
-        <dd>Hover over an element</dd>
-      </dl><dl><dt>
-          
-          <code><a href="elem_name.html">elem_name()</a></code> 
-        </dt>
-        <dd>Get tag name of an element</dd>
-      </dl><dl><dt>
-          
-          <code><a href="elem_scroll_to.html">elem_scroll_to()</a></code> 
-        </dt>
-        <dd>Scroll to an element</dd>
-      </dl><dl><dt>
-          
-          <code><a href="elem_set_value.html">elem_set_value()</a></code> <code><a href="elem_set_value.html">elem_send_keys()</a></code> <code><a href="elem_set_value.html">elem_clear_value()</a></code> 
-        </dt>
-        <dd>Set the value of an input</dd>
-      </dl><dl><dt>
-          
-          <code><a href="elem_size.html">elem_size()</a></code> <code><a href="elem_size.html">length(<i>&lt;selenider_elements&gt;</i>)</a></code> 
-        </dt>
-        <dd>Get the number of elements in a collection</dd>
-      </dl><dl><dt>
-          
-          <code><a href="elem_submit.html">elem_submit()</a></code> 
-        </dt>
-        <dd>Submit an element</dd>
-      </dl><dl><dt>
-          
-          <code><a href="elem_text.html">elem_text()</a></code> 
-        </dt>
-        <dd>Get element text</dd>
-      </dl><dl><dt>
-          
           <code><a href="execute_js_fn.html">execute_js_fn()</a></code> <code><a href="execute_js_fn.html">execute_js_expr()</a></code> 
         </dt>
         <dd>Execute a JavaScript function</dd>
+      </dl><dl><dt>
+          
+          <code><a href="get_page_source.html">get_page_source()</a></code> 
+        </dt>
+        <dd>Read the HTML of a session</dd>
+      </dl><dl><dt>
+          
+          <code><a href="open_url.html">open_url()</a></code> 
+        </dt>
+        <dd>Open a URL</dd>
+      </dl><dl><dt>
+          
+          <code><a href="reload.html">reload()</a></code> <code><a href="reload.html">refresh()</a></code> 
+        </dt>
+        <dd>Reload the current page</dd>
+      </dl><dl><dt>
+          
+          <code><a href="take_screenshot.html">take_screenshot()</a></code> 
+        </dt>
+        <dd>Take a screenshot of the current page</dd>
+      </dl></div><div class="section level2">
+      <h2 id="selecting-elements">Selecting elements<a class="anchor" aria-label="anchor" href="#selecting-elements"></a></h2>
+      
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="s.html">s()</a></code> <code><a href="s.html">ss()</a></code> 
+        </dt>
+        <dd>Quickly select HTML elements</dd>
       </dl><dl><dt>
           
           <code><a href="find_element.html">find_element()</a></code> 
@@ -179,20 +147,129 @@
         <dd>Get multiple HTML elements</dd>
       </dl><dl><dt>
           
-          <code><a href="get_actual_element.html">get_actual_element()</a></code> <code><a href="get_actual_element.html">get_actual_elements()</a></code> 
+          <code><a href="elem_ancestors.html">elem_ancestors()</a></code> <code><a href="elem_ancestors.html">elem_parent()</a></code> <code><a href="elem_ancestors.html">elem_siblings()</a></code> <code><a href="elem_ancestors.html">elem_children()</a></code> <code><a href="elem_ancestors.html">elem_descendants()</a></code> 
         </dt>
-        <dd>Get the element associated with a selenider element</dd>
+        <dd>Get the DOM family of an element</dd>
       </dl><dl><dt>
           
-          <code><a href="get_page_source.html">get_page_source()</a></code> 
+          <code><a href="elem_filter.html">elem_filter()</a></code> <code><a href="elem_filter.html">elem_find()</a></code> <code><a href="elem_filter.html">`[`(<i>&lt;selenider_elements&gt;</i>)</a></code> <code><a href="elem_filter.html">`[[`(<i>&lt;selenider_elements&gt;</i>)</a></code> 
         </dt>
-        <dd>Read the HTML of a session</dd>
+        <dd>Extract a subset of HTML elements</dd>
+      </dl></div><div class="section level2">
+      <h2 id="properties">Properties<a class="anchor" aria-label="anchor" href="#properties"></a></h2>
+      
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="elem_attr.html">elem_attr()</a></code> <code><a href="elem_attr.html">elem_attrs()</a></code> <code><a href="elem_attr.html">elem_value()</a></code> 
+        </dt>
+        <dd>Get element attribute</dd>
       </dl><dl><dt>
           
-          <code><a href="get_session.html">get_session()</a></code> <code><a href="get_session.html">local_session()</a></code> <code><a href="get_session.html">with_session()</a></code> 
+          <code><a href="elem_css_property.html">elem_css_property()</a></code> 
         </dt>
-        <dd>Get or set the local selenider session</dd>
+        <dd>Get a CSS property of an element</dd>
       </dl><dl><dt>
+          
+          <code><a href="elem_name.html">elem_name()</a></code> 
+        </dt>
+        <dd>Get tag name of an element</dd>
+      </dl><dl><dt>
+          
+          <code><a href="elem_size.html">elem_size()</a></code> <code><a href="elem_size.html">length(<i>&lt;selenider_elements&gt;</i>)</a></code> 
+        </dt>
+        <dd>Get the number of elements in a collection</dd>
+      </dl><dl><dt>
+          
+          <code><a href="elem_text.html">elem_text()</a></code> 
+        </dt>
+        <dd>Get element text</dd>
+      </dl><dl><dt>
+          
+          <code><a href="elem_equal.html">elem_equal()</a></code> <code><a href="elem_equal.html">`==`(<i>&lt;selenider_element&gt;</i>)</a></code> 
+        </dt>
+        <dd>Are two elements equivalent?</dd>
+      </dl></div><div class="section level2">
+      <h2 id="actions">Actions<a class="anchor" aria-label="anchor" href="#actions"></a></h2>
+      
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="elem_click.html">elem_click()</a></code> <code><a href="elem_click.html">elem_double_click()</a></code> <code><a href="elem_click.html">elem_right_click()</a></code> 
+        </dt>
+        <dd>Click an element</dd>
+      </dl><dl><dt>
+          
+          <code><a href="elem_hover.html">elem_hover()</a></code> 
+        </dt>
+        <dd>Hover over an element</dd>
+      </dl><dl><dt>
+          
+          <code><a href="elem_scroll_to.html">elem_scroll_to()</a></code> 
+        </dt>
+        <dd>Scroll to an element</dd>
+      </dl><dl><dt>
+          
+          <code><a href="elem_set_value.html">elem_set_value()</a></code> <code><a href="elem_set_value.html">elem_send_keys()</a></code> <code><a href="elem_set_value.html">elem_clear_value()</a></code> 
+        </dt>
+        <dd>Set the value of an input</dd>
+      </dl><dl><dt>
+          
+          <code><a href="elem_submit.html">elem_submit()</a></code> 
+        </dt>
+        <dd>Submit an element</dd>
+      </dl><dl><dt>
+          
+          <code><a href="keys.html">keys</a></code> 
+        </dt>
+        <dd>Special keys</dd>
+      </dl></div><div class="section level2">
+      <h2 id="expectations">Expectations<a class="anchor" aria-label="anchor" href="#expectations"></a></h2>
+      
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="elem_expect.html">elem_expect()</a></code> <code><a href="elem_expect.html">elem_wait_until()</a></code> 
+        </dt>
+        <dd>Test one or more conditions on HTML elements</dd>
+      </dl><dl><dt>
+          
+          <code><a href="elem_expect_all.html">elem_expect_all()</a></code> <code><a href="elem_expect_all.html">elem_wait_until_all()</a></code> 
+        </dt>
+        <dd>Test conditions on multiple elements</dd>
+      </dl></div><div class="section level2">
+      <h2 id="conditions">Conditions<a class="anchor" aria-label="anchor" href="#conditions"></a></h2>
+      
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
           
           <code><a href="has_attr.html">has_attr()</a></code> <code><a href="has_attr.html">attr_contains()</a></code> <code><a href="has_attr.html">has_value()</a></code> 
         </dt>
@@ -232,21 +309,43 @@
           <code><a href="is_visible.html">is_visible()</a></code> <code><a href="is_visible.html">is_displayed()</a></code> <code><a href="is_visible.html">is_hidden()</a></code> <code><a href="is_visible.html">is_invisible()</a></code> 
         </dt>
         <dd>Is an element visible?</dd>
+      </dl></div><div class="section level2">
+      <h2 id="working-with-element-collections">Working with element collections<a class="anchor" aria-label="anchor" href="#working-with-element-collections"></a></h2>
+      
+      <p class="section-desc"></p><p>Combine, modify and iterate over groups of HTML elements</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="elem_flatten.html">elem_flatten()</a></code> <code><a href="elem_flatten.html">c(<i>&lt;selenider_element&gt;</i>)</a></code> <code><a href="elem_flatten.html">c(<i>&lt;selenider_elements&gt;</i>)</a></code> 
+        </dt>
+        <dd>Combine multiple HTML elements</dd>
       </dl><dl><dt>
           
-          <code><a href="keys.html">keys</a></code> 
+          <code><a href="as.list.selenider_elements.html">as.list(<i>&lt;selenider_elements&gt;</i>)</a></code> <code><a href="as.list.selenider_elements.html">element_list()</a></code> <code><a href="as.list.selenider_elements.html">elem_flatmap()</a></code> 
         </dt>
-        <dd>Special keys</dd>
-      </dl><dl><dt>
+        <dd>Iterate over an element collection</dd>
+      </dl></div><div class="section level2">
+      <h2 id="other-functions">Other functions<a class="anchor" aria-label="anchor" href="#other-functions"></a></h2>
+      
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
           
-          <code><a href="minimal_selenider_session.html">minimal_selenider_session()</a></code> 
+          <code><a href="elem_cache.html">elem_cache()</a></code> 
         </dt>
-        <dd>Create a session with custom HTML</dd>
-      </dl><dl><dt>
-          
-          <code><a href="open_url.html">open_url()</a></code> 
-        </dt>
-        <dd>Open a URL</dd>
+        <dd>Force an element to be collected and stored</dd>
       </dl><dl><dt>
           
           <code><a href="read_html.selenider_session.html">read_html.selenider_session()</a></code> <code><a href="read_html.selenider_session.html">read_html.selenider_element()</a></code> 
@@ -254,36 +353,38 @@
         <dd>Read a live HTML document</dd>
       </dl><dl><dt>
           
-          <code><a href="reload.html">reload()</a></code> <code><a href="reload.html">refresh()</a></code> 
+          <code><a href="get_actual_element.html">get_actual_element()</a></code> <code><a href="get_actual_element.html">get_actual_elements()</a></code> 
         </dt>
-        <dd>Reload the current page</dd>
+        <dd>Get the element associated with a selenider element</dd>
       </dl><dl><dt>
           
-          <code><a href="s.html">s()</a></code> <code><a href="s.html">ss()</a></code> 
+          <code><a href="minimal_selenider_session.html">minimal_selenider_session()</a></code> 
         </dt>
-        <dd>Quickly select HTML elements</dd>
-      </dl><dl><dt>
-          
-          <code><a href="selenider-config.html">selenider-config</a></code> 
-        </dt>
-        <dd>Selenider options</dd>
+        <dd>Create a session with custom HTML</dd>
       </dl><dl><dt>
           
           <code><a href="selenider_available.html">selenider_available()</a></code> <code><a href="selenider_available.html">skip_if_selenider_unavailable()</a></code> 
         </dt>
         <dd>Check if selenider can be used</dd>
-      </dl><dl><dt>
+      </dl></div><div class="section level2">
+      <h2 id="configuration">Configuration<a class="anchor" aria-label="anchor" href="#configuration"></a></h2>
+      
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
           
-          <code><a href="selenider_session.html">selenider_session()</a></code> <code><a href="selenider_session.html">create_chromote_session()</a></code> <code><a href="selenider_session.html">create_selenium_server()</a></code> <code><a href="selenider_session.html">create_selenium_client()</a></code> 
+          <code><a href="selenider-config.html">selenider-config</a></code> 
         </dt>
-        <dd>Start a session</dd>
-      </dl><dl><dt>
-          
-          <code><a href="take_screenshot.html">take_screenshot()</a></code> 
-        </dt>
-        <dd>Take a screenshot of the current page</dd>
+        <dd>Selenider options</dd>
       </dl></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">

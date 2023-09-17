@@ -34,6 +34,9 @@
     <loc>https://ashbythorpe.github.io/selenider/index.html</loc>
   </url>
   <url>
+    <loc>https://ashbythorpe.github.io/selenider/reference/as.list.selenider_elements.html</loc>
+  </url>
+  <url>
     <loc>https://ashbythorpe.github.io/selenider/reference/as_pretty_dt.html</loc>
   </url>
   <url>
@@ -68,9 +71,6 @@
   </url>
   <url>
     <loc>https://ashbythorpe.github.io/selenider/reference/elem_filter.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/elem_flatmap.html</loc>
   </url>
   <url>
     <loc>https://ashbythorpe.github.io/selenider/reference/elem_flatten.html</loc>

@@ -29,9 +29,10 @@ open before finishing."><!-- mathjax --><script src="https://cdnjs.cloudflare.co
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/test-site.html">test-site</a>
     <a class="dropdown-item" href="../articles/unit-testing.html">Unit testing</a>
     <a class="dropdown-item" href="../articles/with-rvest.html">selenider and rvest</a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="../articles/index.html">More articles...</a>
   </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
@@ -87,6 +88,7 @@ session object (the result of <code><a href="get_session.html">get_session()</a>
     <div class="dont-index"><p>Other global actions: 
 <code><a href="back.html">back</a>()</code>,
 <code><a href="execute_js_fn.html">execute_js_fn</a>()</code>,
+<code><a href="get_page_source.html">get_page_source</a>()</code>,
 <code><a href="reload.html">reload</a>()</code>,
 <code><a href="take_screenshot.html">take_screenshot</a>()</code></p></div>
     </div>
@@ -99,7 +101,7 @@ session object (the result of <code><a href="get_session.html">get_session()</a>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Or:</span></span></span>
 <span class="r-in"><span><span class="fu">open_url</span><span class="op">(</span>session <span class="op">=</span> <span class="va">session</span>, <span class="st">"https://r-project.org"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in private$register_event_listener("Page.loadEventFired", callback_,     timeout_):</span> Session 919D31FDA53B75567EFD8A98F622CEB1 is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in private$register_event_listener("Page.loadEventFired", callback_,     timeout_):</span> Session 36345AFD07CAE85E295FF8BB36701B16 is closed.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># \dontshow{</span></span></span>
 <span class="r-in"><span><span class="co"># Clean up all connections and invalidate default chromote object</span></span></span>
