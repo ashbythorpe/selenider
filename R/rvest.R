@@ -13,7 +13,7 @@
 #'
 #' @returns
 #' `read_html()` returns an XML document. Note that HTML will always be wrapped
-#' in a `<body>` tag.
+#' in a `<html>` and `<body>` tag, if it isn't already.
 #'
 #' @examplesIf selenider_available(online = FALSE)
 #' library(rvest)
@@ -39,7 +39,7 @@ read_html.selenider_session <- function(x, encoding = "", ..., options = c("RECO
   driver <- get_driver(x)
 
   if (uses_selenium(driver)) {
-    unpack_list(driver$client$getPageSource())
+    x <- unpack_list(driver$getPageSource())
   } else {
     document <- driver$DOM$getDocument()
     root <- document$root$nodeId
@@ -68,16 +68,16 @@ read_html.selenider_element <- function(x, encoding = "", timeout = NULL, outer 
 
   if (outer) {
     if (uses_selenium(driver)) {
-      x <- driver$executeScript("
+      x <- unpack_list(driver$executeScript("
         let element = arguments[0];
         let html = element.outerHTML;
         return html;
-      ", list(element))
+      ", list(element)))
     } else {
       x <- driver$DOM$getOuterHTML(backendNodeId = element)$outerHTML
     }
   } else {
-    x <- execute_js_fn_on("x => x.innerHTML", element, driver = driver)
+    x <- unpack_list(execute_js_fn_on("x => x.innerHTML", element, driver = driver))
   }
 
   NextMethod()

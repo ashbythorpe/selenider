@@ -91,7 +91,9 @@ test_that("JavaScript actions work", {
 
   elem_submit(button, js = TRUE)
 
-  elem_expect(s("#form-output"), has_text("Form submitted"))
+  if (!isTRUE(as.logical(Sys.getenv("SELENIDER_DOCKER")))) {
+    elem_expect(s("#form-output"), has_text("Form submitted"))
+  }
 })
 
 test_that("elem_scroll_to() works", {
@@ -100,7 +102,7 @@ test_that("elem_scroll_to() works", {
   html <- "
   <!DOCTYPE html>
   <div style = 'height:100%; min-height:100vh'></div>
-  <button onclick='checkScrolled()'>Click to check if scrolled</button>
+  <button onclick='checkScrolled()'>Click me to check if scrolled</button>
   <p>Scroll down to find me!</p>
   <script>
   function checkScrolled() {

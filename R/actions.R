@@ -224,7 +224,7 @@ elem_double_click <- function(x, js = FALSE, timeout = NULL) {
         webElement = element
       )
       
-      x$driver$doubleelem_click()
+      x$driver$doubleclick()
     } else {
       click_chromote(element, x$driver, type = "left", count = 2)
     }
@@ -846,7 +846,11 @@ elem_submit <- function(x, js = FALSE, timeout = NULL) {
     result <- unpack_list(execute_js_fn_on("function(element) {
       while (element != null) {
         if (element.tagName == 'FORM') {
-          element.requestSubmit();
+          if (element.requestSubmit) {
+            element.requestSubmit();
+          } else {
+            element.submit();
+          }
           return true;
         }
 

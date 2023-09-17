@@ -31,6 +31,7 @@ Suggests:
     rmarkdown,
     RSelenium,
     rvest,
+    shiny,
     shinytest2,
     showimage,
     testthat (>= 3.0.0),
