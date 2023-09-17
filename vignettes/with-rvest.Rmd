@@ -21,8 +21,8 @@ rvest is very similar to selenider, but is designed for static webpages rather
 than interactive ones.
 
 ```{r setup}
-library(selenider)
 library(rvest)
+library(selenider)
 ```
 
 To start, let's open <https://www.r-project.org/>
@@ -50,7 +50,7 @@ selenider and rvest use a very similar syntax, except rvest uses the `html_`
 prefix rather than the `elem_` prefix.
 
 We can convert between selenider elements and rvest (or more precisely, xml2)
-documents using [rvest::read_html()] or [xml2::read_html()].
+documents using `rvest::read_html()` or `xml2::read_html()`.
 
 Note that when converting elements to rvest nodes, the element will be wrapped
 in a `<body>` tag.
@@ -65,8 +65,8 @@ rvest_element
 html_text2(rvest_element)
 ```
 
-Reading the HTML of an entire page can be done using [get_page_source()].
-Note that `rvest::html_element()` is equivalent to [find_element()], but
+Reading the HTML of an entire page can be done using `get_page_source()`.
+Note that `rvest::html_element()` is equivalent to `find_element()`, but
 works only on static HTML.
 
 ```{r}

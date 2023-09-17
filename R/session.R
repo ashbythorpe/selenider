@@ -61,9 +61,9 @@
 #' Custom driver objects are good if you want more low-level control over the underlying
 #' functions that create the webdrivers that actually control the browser. However, it is
 #' recommended to use the selenider functions (e.g. `create_selenium_client()`) over 
-#' `wdman::selenium()` for better error messages and more reliable behaviour.
-#'
-#' # TODO: Add vignette references when available
+#' `wdman::selenium()` for better error messages and more reliable behaviour. See
+#' `vignette("unit-testing", package = "selenider") for more information on using
+#' selenider with docker/Github Actions.
 #'
 #' ## Chromote
 #' Supplying a custom [chromote::ChromoteSession] object can allow you to manage the
