@@ -13,8 +13,8 @@ selenider_element/selenider_elements object itself. The result will
 then be flattened into a single selenider_elements object. The benefit
 of this over traditional iteration techniques is that the laziness of the
 elements will be maintained, and nothing will be fetched from the DOM.
-This function is experimental, and won't work if .f uses html_flatten()
-(or nested html_flatmap()).
+This function is experimental, and won't work if .f uses elem_flatten()
+(or nested elem_flatmap()).
 elem_flatmap() works by executing .f on a mock element, then recording the
 results in x. This means that no matter the length of x, .f is only evaluated
 once, and during the elem_flatmap() call. For this reason, .f should not invoke
@@ -51,8 +51,8 @@ selenider_element/selenider_elements object itself. The result will
 then be flattened into a single selenider_elements object. The benefit
 of this over traditional iteration techniques is that the laziness of the
 elements will be maintained, and nothing will be fetched from the DOM.
-This function is experimental, and won't work if .f uses html_flatten()
-(or nested html_flatmap()).
+This function is experimental, and won't work if .f uses elem_flatten()
+(or nested elem_flatmap()).
 elem_flatmap() works by executing .f on a mock element, then recording the
 results in x. This means that no matter the length of x, .f is only evaluated
 once, and during the elem_flatmap() call. For this reason, .f should not invoke
@@ -145,8 +145,8 @@ a <code>selenider_elements</code> object, provided that the function returns a
 then be flattened into a single <code>selenider_elements</code> object. The benefit
 of this over traditional iteration techniques is that the laziness of the
 elements will be maintained, and nothing will be fetched from the DOM.
-This function is experimental, and won't work if <code>.f</code> uses <code>html_flatten()</code>
-(or nested <code>html_flatmap()</code>).</p>
+This function is experimental, and won't work if <code>.f</code> uses <code><a href="elem_flatten.html">elem_flatten()</a></code>
+(or nested <code>elem_flatmap()</code>).</p>
 <p><code>elem_flatmap()</code> works by executing <code>.f</code> on a mock element, then recording the
 results in <code>x</code>. This means that no matter the length of <code>x</code>, <code>.f</code> is only evaluated
 once, and during the <code>elem_flatmap()</code> call. For this reason, <code>.f</code> should not invoke
@@ -232,7 +232,7 @@ into a single object.</p></li>
 <span class="r-in"><span><span class="st">"</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="minimal_selenider_session.html">minimal_selenider_session</a></span><span class="op">(</span><span class="va">html</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpjFoAkV/file189060e024af.html"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpN0Rtct/file188e5cad6786.html"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">divs</span> <span class="op">&lt;-</span> <span class="fu"><a href="s.html">ss</a></span><span class="op">(</span><span class="st">"div"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -251,11 +251,11 @@ into a single object.</p></li>
 <span class="r-in"><span><span class="kw">for</span> <span class="op">(</span><span class="va">elem</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">p_tags</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="elem_text.html">elem_text</a></span><span class="op">(</span><span class="va">elem</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session 3219A07F3245756F0318DF50EFFCECDA is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session 6AB8319E23D6DF39315415EEE6E70386 is closed.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Or:</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">p_tags</span><span class="op">)</span>, <span class="va">elem_text</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session 3219A07F3245756F0318DF50EFFCECDA is closed.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session 6AB8319E23D6DF39315415EEE6E70386 is closed.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># \dontshow{</span></span></span>
 <span class="r-in"><span><span class="co"># Clean up all connections and invalidate default chromote object</span></span></span>
