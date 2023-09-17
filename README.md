@@ -129,4 +129,9 @@ s("dl") |>
 #> [1] "https://cran.ma.imperial.ac.uk/"
 ```
 
-<!-- TODO: Link to vignettes -->
+## Vignettes
+
+Get started with selenider, and learn the basics:
+`vignette("selenider")`. Use selenider with testthat, shinytest2 and
+Github Actions: `vignette("unit-testing", package = "selenider")`. Use
+selenider with rvest: `vignette("with-rvest", package = "selenider")`.
