@@ -262,6 +262,8 @@ take_screenshot <- function(file = NULL, view = FALSE, session = NULL) {
 #'
 #' @returns An XML document.
 #'
+#' @family global actions
+#'
 #' @examplesIf selenider_available(online = FALSE)
 #' html <- "
 #' <p>Example text</p>

@@ -78,6 +78,7 @@ selenider_cleanup()
 \seealso{
 Other global actions: 
 \code{\link{back}()},
+\code{\link{get_page_source}()},
 \code{\link{open_url}()},
 \code{\link{reload}()},
 \code{\link{take_screenshot}()}

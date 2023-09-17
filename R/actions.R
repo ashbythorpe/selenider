@@ -198,8 +198,6 @@ elem_double_click <- function(x, js = FALSE, timeout = NULL) {
         const event = new MouseEvent('dblclick');
         x.dispatchEvent(event)
       } else {
-        x.click();
-        x.click();
         const event = document.createEvent('mouseevents');
         event.initEvent('dblclick', true, true);
         x.dispatchEvent(event);

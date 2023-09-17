@@ -1,6 +1,15 @@
 #' Iterate over an element collection
 #'
 #' @description
+#' `r lifecycle::badge("experimental")`
+#'
+#' `as.list()` transforms a `selenider_elements` object into a list of
+#' `selenider_element` objects. The result can then be used in for loops and
+#' higher order functions like [lapply()]/[purrr::map()] (whereas a `selenider_element`
+#' object cannot).a  This function is stable.
+#'
+#' `element_list()` is the underlying function called by `element_list()`.
+#'
 #' Use `elem_flatmap()` when you want to select further sub-elements
 #' *for each* element of a collection.
 #'
@@ -10,18 +19,13 @@
 #' then be flattened into a single `selenider_elements` object. The benefit
 #' of this over traditional iteration techniques is that the laziness of the
 #' elements will be maintained, and nothing will be fetched from the DOM.
-#'
-#' `as.list()` transforms a `selenider_elements` object into a list of
-#' `selenider_element` objects. The result can then be used in for loops and
-#' higher order functions like [lapply()]/[purrr::map()] (whereas a `selenider_element`
-#' object cannot).
-#'
-#' `element_list()` is the underlying function called by `element_list()`.
+#' This function is experimental, and won't work if `.f` uses [html_flatten()]
+#' (or nested `html_flatmap()`).
 #'
 #' @param x A `selenider_elements` object.
+#' @param timeout How long to wait for `x` to exist while computing its length.
 #' @param .f A function to apply to each element of `x`.
 #' @param ... Passed into `.f`.
-#' @param timeout How long to wait for `x` to exist while computing its length.
 #'
 #' @description
 #' `elem_flatmap()` works by executing `.f` on a mock element, then recording the
@@ -103,6 +107,26 @@
 #' }
 #'
 #' @export
+as.list.selenider_elements <- function(x, timeout = NULL, ...) {
+  element_list(x)
+}
+
+#' @rdname as.list.selenider_elements
+#'
+#' @export
+element_list <- function(x, timeout = NULL) {
+  check_class(x, "selenider_elements")
+
+  timeout <- get_timeout(timeout, x$timeout)
+
+  size <- elem_size(x, timeout = timeout)
+
+  lapply(seq_len(size), function(i) x[[i]])
+}
+
+#' @rdname as.list.selenider_elements
+#'
+#' @export
 elem_flatmap <- function(x, .f, ...) {
   check_class(x, "selenider_elements")
 
@@ -161,24 +185,4 @@ new_flatmap_selector <- function(x, selectors, class) {
   class(res) <- c("selenider_flatmap_selector", "selenider_selector")
 
   res
-}
-
-#' @rdname elem_flatmap
-#'
-#' @export
-as.list.selenider_elements <- function(x, timeout = NULL, ...) {
-  element_list(x)
-}
-
-#' @rdname elem_flatmap
-#'
-#' @export
-element_list <- function(x, timeout = NULL) {
-  check_class(x, "selenider_elements")
-
-  timeout <- get_timeout(timeout, x$timeout)
-
-  size <- elem_size(x, timeout = timeout)
-
-  lapply(seq_len(size), function(i) x[[i]])
 }

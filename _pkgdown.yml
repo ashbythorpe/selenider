@@ -2,3 +2,62 @@ url: https://ashbythorpe.github.io/selenider/
 template:
   bootstrap: 5
 
+reference:
+- title: Start a session
+- contents:
+  - selenider_session
+  - close_session
+  - get_session
+- title: Global Actions
+  desc: Actions on the entire page
+- contents:
+  - has_concept("global actions")
+- title: Selecting elements
+- desc: Specifying the paths to HTML elements
+- contents:
+  - s
+  - find_element
+  - find_elements
+  - elem_ancestors
+  - elem_find
+- title: Properties
+- contents:
+  - has_concept("properties")
+  - elem_equal
+- title: Actions
+- contents:
+  - has_concept("actions")
+  - keys
+- title: Expectations
+- contents:
+  - elem_expect
+  - elem_expect_all
+- title: Conditions
+- contents:
+  - has_concept("conditions")
+- title: Working with element collections
+  desc: Combine, modify and iterate over groups of HTML elements
+- contents:
+  - elem_flatten
+  - as.list.selenider_elements
+- title: Other functions
+- contents:
+  - elem_cache
+  - read_html.selenider_session
+  - get_actual_element
+  - minimal_selenider_session
+  - selenider_available
+- title: Configuration
+- contents:
+  - selenider-config
+
+articles:
+- title: Articles
+  navbar: ~
+  contents:
+  - unit-testing
+  - with-rvest
+- title: Testing selenider
+  desc: An article used to test selenider
+  contents:
+  - articles/test-site

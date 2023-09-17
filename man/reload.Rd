@@ -37,6 +37,7 @@ selenider_cleanup()
 Other global actions: 
 \code{\link{back}()},
 \code{\link{execute_js_fn}()},
+\code{\link{get_page_source}()},
 \code{\link{open_url}()},
 \code{\link{take_screenshot}()}
 }

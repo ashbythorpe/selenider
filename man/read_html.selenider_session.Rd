@@ -34,7 +34,7 @@ outer (including the element itself) HTML of \code{x}.}
 }
 \value{
 \code{read_html()} returns an XML document. Note that HTML will always be wrapped
-in a \verb{<body>} tag.
+in a \verb{<html>} and \verb{<body>} tag, if it isn't already.
 }
 \description{
 \code{\link[xml2:read_xml]{xml2::read_html()}} can be used on a selenider session to read the HTML of

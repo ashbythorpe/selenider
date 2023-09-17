@@ -113,6 +113,10 @@ on_ci <- function() {
   isTRUE(as.logical(Sys.getenv("CI", "false")))
 }
 
+is_testing <- function() {
+  rlang::is_installed("testthat") && testthat::is_testing()
+}
+
 elem_common <- function(x, driver) {
   compare_selenium <- function(x, y) selenium_equal(x, y, driver)
   comparison_function <- if (uses_selenium(driver)) compare_selenium else `==`
