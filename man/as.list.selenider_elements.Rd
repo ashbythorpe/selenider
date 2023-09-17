@@ -44,8 +44,8 @@ a \code{selenider_elements} object, provided that the function returns a
 then be flattened into a single \code{selenider_elements} object. The benefit
 of this over traditional iteration techniques is that the laziness of the
 elements will be maintained, and nothing will be fetched from the DOM.
-This function is experimental, and won't work if \code{.f} uses \code{\link[=html_flatten]{html_flatten()}}
-(or nested \code{html_flatmap()}).
+This function is experimental, and won't work if \code{.f} uses \code{\link[=elem_flatten]{elem_flatten()}}
+(or nested \code{elem_flatmap()}).
 
 \code{elem_flatmap()} works by executing \code{.f} on a mock element, then recording the
 results in \code{x}. This means that no matter the length of \code{x}, \code{.f} is only evaluated

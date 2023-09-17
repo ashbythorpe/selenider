@@ -19,8 +19,8 @@
 #' then be flattened into a single `selenider_elements` object. The benefit
 #' of this over traditional iteration techniques is that the laziness of the
 #' elements will be maintained, and nothing will be fetched from the DOM.
-#' This function is experimental, and won't work if `.f` uses [html_flatten()]
-#' (or nested `html_flatmap()`).
+#' This function is experimental, and won't work if `.f` uses [elem_flatten()]
+#' (or nested `elem_flatmap()`).
 #'
 #' @param x A `selenider_elements` object.
 #' @param timeout How long to wait for `x` to exist while computing its length.
