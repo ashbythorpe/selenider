@@ -1,3 +1,3 @@
-# selenider (development version)
+# selenider 0.1.0
 
 * Initial CRAN submission.
