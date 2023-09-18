@@ -78,7 +78,7 @@ recommended to use an element list just after it is created, to make sure the
 list is an accurate representation of the DOM when it is being used.
 }
 \examples{
-\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <div id='div1'>
   <p>Text 1</p>

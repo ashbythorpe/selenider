@@ -40,7 +40,7 @@ Get an attribute of a \code{selenider_element} object.
 \code{elem_value()} returns the 'value' attribute.
 }
 \examples{
-\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <a class='link' href='https://r-project.org'>R</a>
 <input type='number' value='0'>

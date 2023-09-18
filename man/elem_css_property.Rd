@@ -23,7 +23,7 @@ for example, widths and heights will be returned in pixels, and
 colors will be returned as an RGB value.
 }
 \examples{
-\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <p style='visibility:hidden; color:red;'>Text</p>
 "

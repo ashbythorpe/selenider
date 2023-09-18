@@ -11,7 +11,7 @@
 #'
 #' @family global actions
 #'
-#' @examplesIf selenider_available()
+#' @examplesIf selenider::selenider_available()
 #' session <- selenider_session()
 #'
 #' open_url("https://r-project.org")
@@ -63,7 +63,7 @@ open_url <- function(url, session = NULL) {
 #'
 #' @family global actions
 #'
-#' @examplesIf selenider_available()
+#' @examplesIf selenider::selenider_available()
 #' session <- selenider_session()
 #'
 #' open_url("https://r-project.org")
@@ -152,7 +152,7 @@ forward <- function(session = NULL) {
 #'
 #' @family global actions
 #'
-#' @examplesIf selenider_available()
+#' @examplesIf selenider::selenider_available()
 #' session <- selenider_session()
 #'
 #' open_url("https://r-project.org")
@@ -204,7 +204,7 @@ refresh <- reload
 #'
 #' @family global actions
 #'
-#' @examplesIf selenider_available()
+#' @examplesIf selenider::selenider_available()
 #' session <- selenider_session()
 #'
 #' open_url("https://www.google.com")
@@ -264,7 +264,7 @@ take_screenshot <- function(file = NULL, view = FALSE, session = NULL) {
 #'
 #' @family global actions
 #'
-#' @examplesIf selenider_available(online = FALSE)
+#' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
 #' <p>Example text</p>
 #' "

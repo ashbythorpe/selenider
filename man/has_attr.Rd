@@ -32,7 +32,7 @@ A boolean value: TRUE or FALSE.
 element's value matches a string or number.
 }
 \examples{
-\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <input class='myclass' value='1.0' data-customattr='Custom attribute text'></p>
 "

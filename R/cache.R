@@ -39,7 +39,7 @@
 #' * [find_element()] and [find_elements()] to select elements.
 #' * [element_list()] and [elem_flatmap()] if you want to iterate over an element collection.
 #'
-#' @examplesIf selenider_available(online = FALSE)
+#' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
 #' <div>
 #' <p id='specifictext'></p>

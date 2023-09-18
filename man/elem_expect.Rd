@@ -85,7 +85,7 @@ These custom conditions can also be used with \code{\link[=elem_filter]{elem_fil
 }
 
 \examples{
-\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <div class='class1'>
 <button id='disabled-button' disabled>Disabled</button>

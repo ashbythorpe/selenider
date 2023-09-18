@@ -44,7 +44,7 @@ In this example, the parent of the element with class ".class1" will be cached,
 but the child element with class ".class2" will not.
 }
 \examples{
-\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <div>
 <p id='specifictext'></p>

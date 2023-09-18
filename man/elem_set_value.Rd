@@ -39,7 +39,7 @@ Note that when using chromote as a backend, these do not work on Mac OS.}
 existing content.
 }
 \examples{
-\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <input type='text' oninput='recordChange(event)' onkeypress='return checkEnter(event);'>
 <p></p>

@@ -20,7 +20,7 @@ Navigate the browser to specified URL, waiting until the page is considered
 open before finishing.
 }
 \examples{
-\dontshow{if (selenider_available()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (selenider::selenider_available()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 session <- selenider_session()
 
 open_url("https://r-project.org")

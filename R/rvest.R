@@ -15,7 +15,7 @@
 #' `read_html()` returns an XML document. Note that HTML will always be wrapped
 #' in a `<html>` and `<body>` tag, if it isn't already.
 #'
-#' @examplesIf selenider_available(online = FALSE)
+#' @examplesIf selenider::selenider_available(online = FALSE)
 #' library(rvest)
 #'
 #' html <- "

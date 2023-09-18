@@ -33,7 +33,7 @@ element two times in a short period of time, while \code{elem_right_click()} rig
 clicks on an element, opening its context menu.
 }
 \examples{
-\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <button onclick = hidetext() oncontextmenu = showtext()></button>
 <p id = 'texttohide'>Hello!</p>

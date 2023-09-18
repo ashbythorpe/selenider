@@ -40,7 +40,7 @@
 #'
 #' @family global actions
 #'
-#' @examplesIf selenider_available(online = FALSE)
+#' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
 #' <button class='mybutton'>Click me</button>
 #' "

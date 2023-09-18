@@ -48,7 +48,7 @@ All functions except \code{elem_children()} and \code{elem_descendants()} use XP
 so may be slow, especially when using \code{chromote} as a backend.
 }
 \examples{
-\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <html>
 <body>

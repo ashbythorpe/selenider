@@ -64,7 +64,7 @@ the easiest to read. Use \code{"tag_name"} to select by tag name, \code{".class"
 by class, and \code{"#id"} to select by id.
 }
 \examples{
-\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <div class='class1'>
   <div id='id1'>

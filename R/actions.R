@@ -16,7 +16,7 @@
 #' 
 #' @returns `x`, invisibly
 #'
-#' @examplesIf selenider_available(online = FALSE)
+#' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
 #' <button onclick = hidetext() oncontextmenu = showtext()></button>
 #' <p id = 'texttohide'>Hello!</p>
@@ -331,7 +331,7 @@ elem_right_click <- function(x, js = FALSE, timeout = NULL) {
 #'
 #' @family actions
 #'
-#' @examplesIf selenider_available(online = FALSE)
+#' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
 #' <button onmouseover = settext()> </button>
 #' <p class = 'text'></p>
@@ -440,7 +440,7 @@ hover_chromote <- function(element, driver) {
 #' 
 #' @returns `x`, invisibly
 #'
-#' @examplesIf selenider_available(online = FALSE)
+#' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
 #' <input type='text' oninput='recordChange(event)' onkeypress='return checkEnter(event);'>
 #' <p></p>
@@ -705,7 +705,7 @@ format_timeout_for_error <- function(x) {
 #'
 #' @family actions
 #'
-#' @examplesIf selenider_available(online = FALSE)
+#' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
 #' <div style = 'height:100%; min-height:100vh'></div>
 #' <button onclick='checkScrolled()'></button>
@@ -797,7 +797,7 @@ elem_scroll_to <- function(x, js = FALSE, timeout = NULL) {
 #'
 #' @family actions
 #'
-#' @examplesIf selenider_available(online = FALSE)
+#' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
 #' <form>
 #' <input type='submit'>

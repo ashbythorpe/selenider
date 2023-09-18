@@ -114,10 +114,9 @@ supported by selenider. See \code{\link[=get_actual_element]{get_actual_element(
 Custom driver objects are good if you want more low-level control over the underlying
 functions that create the webdrivers that actually control the browser. However, it is
 recommended to use the selenider functions (e.g. \code{create_selenium_client()}) over
-\code{wdman::selenium()} for better error messages and more reliable behaviour.
-}
-
-\section{TODO: Add vignette references when available}{
+\code{wdman::selenium()} for better error messages and more reliable behaviour. See
+`vignette("unit-testing", package = "selenider") for more information on using
+selenider with docker/Github Actions.
 \subsection{Chromote}{
 
 Supplying a custom \link[chromote:ChromoteSession]{chromote::ChromoteSession} object can allow you to manage the
@@ -178,27 +177,18 @@ matched correctly.
 }
 
 \examples{
-\dontshow{if (selenider_available()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (selenider::selenider_available()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
 session_1 <- selenider_session(timeout = 10)
 # session_1 is the local session here
 
 get_session() # Returns session 1
 
-\dontshow{
-# Clean up all connections and invalidate default chromote object
-selenider_cleanup()
-}
-
 my_function <- function() {
   session_2 <- selenider_session()
 
   # In here, session_2 is the local session
   get_session()
-  \dontshow{
-  # Clean up all connections and invalidate default chromote object
-  selenider_cleanup()
-  }
 } # When the function finishes executing, the session is closed
 
 my_function() # Returns `session_2`

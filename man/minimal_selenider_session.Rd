@@ -26,7 +26,7 @@ The function works by combining \code{html} and \code{js} into a single string, 
 writing this to a temporary file (and opening it in the session's browser).
 }
 \examples{
-\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 session <- minimal_selenider_session("<p>Example</p>")
 
 \dontshow{

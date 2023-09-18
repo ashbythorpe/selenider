@@ -13,3 +13,4 @@
 ^doc$
 ^Meta$
 ^codemeta\.json$
+^cran-comments\.md$

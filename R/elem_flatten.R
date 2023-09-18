@@ -15,7 +15,7 @@
 #' * [elem_flatmap()] and [as.list.selenider_elements()] to iterate over element
 #'   collections.
 #'
-#' @examplesIf selenider_available(online = FALSE)
+#' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
 #' <div id='id1'></div>
 #' <div class='.class2'></div>

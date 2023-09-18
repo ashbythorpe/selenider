@@ -33,7 +33,7 @@ once. Use \code{\link[=elem_expect]{elem_expect()}} or \code{\link[=elem_wait_un
 tests.
 }
 \examples{
-\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <div class='div1'></div>
 <div class='div2'></div>

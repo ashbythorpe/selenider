@@ -41,7 +41,7 @@ in a \verb{<html>} and \verb{<body>} tag, if it isn't already.
 the entire page, or on a selenider element to get the HTML of that element.
 }
 \examples{
-\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 library(rvest)
 
 html <- "

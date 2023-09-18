@@ -23,7 +23,7 @@ the element is a \if{html}{\out{<form>}} element, which it then submits. If such
 an element does not exist, an error is thrown.
 }
 \examples{
-\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <form>
 <input type='submit'>

@@ -78,26 +78,10 @@ reset_session <- function(session, old_session, close) {
 #' [selenider_session()], which calls `local_session()` unless otherwise
 #' specified.
 #' 
-#' @examplesIf selenider_available(online = FALSE)
-#' # Since we don't want to open a bunch of sessions for no reason,
-#' # we create a custom session object (that is just an empty list).
-#' mock_session <- function() {
-#'   structure(
-#'     list(),
-#'     class = c("selenider_session")
-#'   )
-#' }
-#'
-#' # Create a custom print method for our custom session
-#' vctrs::s3_register(
-#'   "base::print",
-#'   "selenider_session",
-#'   function(x, ...) cat("A selenider session\n")
-#' )
-#'
+#' @examplesIf selenider::selenider_available(online = FALSE)
 #' # Don't set the local session, since we want to do it manually.
-#' session_1 <- mock_session()
-#' session_2 <- mock_session()
+#' session_1 <- selenider_session(local = FALSE)
+#' session_2 <- selenider_session(local = FALSE)
 #' 
 #' get_session(create = FALSE) # NULL
 #' 

@@ -8,7 +8,7 @@
 #' @returns
 #' A string
 #'
-#' @examplesIf selenider_available(online = FALSE)
+#' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
 #' <div class='mydiv'></div>
 #' "
@@ -54,7 +54,7 @@ elem_name <- function(x, timeout = NULL) {
 #'
 #' @family properties
 #'
-#' @examplesIf selenider_available(online = FALSE)
+#' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
 #' <p>Example text</p>
 #' "
@@ -120,7 +120,7 @@ chromote_get_text <- function(x, driver) {
 #'
 #' @family properties
 #'
-#' @examplesIf selenider_available(online = FALSE)
+#' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
 #' <a class='link' href='https://r-project.org'>R</a>
 #' <input type='number' value='0'>
@@ -286,7 +286,7 @@ elem_value <- function(x, ptype = character(), timeout = NULL) {
 #'
 #' @family properties
 #'
-#' @examplesIf selenider_available(online = FALSE)
+#' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
 #' <p style='visibility:hidden; color:red;'>Text</p>
 #' "
@@ -378,7 +378,7 @@ chromote_get_css_property <- function(x, name, default, driver) {
 #'
 #' @family properties
 #' 
-#' @examplesIf selenider_available(online = FALSE)
+#' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
 #' <div></div>
 #' <div></div>

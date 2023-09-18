@@ -21,7 +21,7 @@ Check that the CSS property (e.g. \code{"background-color"}) of an element match
 a value.
 }
 \examples{
-\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <div style='display:none;'></div>
 "

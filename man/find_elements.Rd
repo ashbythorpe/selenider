@@ -60,7 +60,7 @@ If more than one method is used to select an element (e.g. \code{css} and
 \code{xpath}), the first element which satisfies every condition will be found.
 }
 \examples{
-\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <div id='outer-div'>
   <div>

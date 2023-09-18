@@ -21,7 +21,7 @@ Move the mouse over to an HTML element and hover over it, without actually
 clicking or interacting with it.
 }
 \examples{
-\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <button onmouseover = settext()> </button>
 <p class = 'text'></p>

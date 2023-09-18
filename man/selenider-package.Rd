@@ -4,9 +4,9 @@
 \name{selenider-package}
 \alias{selenider}
 \alias{selenider-package}
-\title{selenider: Concise, lazy and asynchronous wrapper for 'RSelenium'}
+\title{selenider: Concise, Lazy and Reliable Wrapper for 'chromote' and 'RSelenium'}
 \description{
-A wrapper for 'RSelenium' that is much easier to use.
+A user-friendly wrapper for web automation, using either 'chromote' or 'RSelenium'. Provides a simple and consistent API to make web scraping and testing scripts easy to write and understand. Elements are lazy, and automatically wait for the website to be valid, resulting in reliable and reproducible code, with no visible impact on the experience of the programmer.
 }
 \seealso{
 Useful links:
@@ -18,7 +18,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Ashby Thorpe \email{ashbythorpe@gmail.com} (\href{https://orcid.org/0000-0003-3106-099X}{ORCID})
+\strong{Maintainer}: Ashby Thorpe \email{ashbythorpe@gmail.com} (\href{https://orcid.org/0000-0003-3106-099X}{ORCID}) [copyright holder]
 
 }
 \keyword{internal}

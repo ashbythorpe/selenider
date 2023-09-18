@@ -57,7 +57,7 @@ elem_expect_all(x, is_present)
 However, the second example will give a more detailed error message on failure.
 }
 \examples{
-\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <div id='div1'>Content 1</div>
 <div id='div2'>Content 2</div>

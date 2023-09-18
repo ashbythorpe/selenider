@@ -35,7 +35,7 @@
 #' * [is_present()] and other conditions for predicates for HTML elements.
 #'   (If you scroll down to the *See also* section, you will find the rest).
 #'
-#' @examplesIf selenider_available(online = FALSE)
+#' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
 #' <button disabled>Button 1</button>
 #' <button>Button 2</button>

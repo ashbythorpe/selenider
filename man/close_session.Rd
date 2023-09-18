@@ -19,7 +19,7 @@ This will be done automatically if the session is set as the local session
 (which happens by default).
 }
 \examples{
-\dontshow{if (selenider_available()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (selenider::selenider_available()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 session <- selenider_session(local = FALSE)
 
 close_session(session)

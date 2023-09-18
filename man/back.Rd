@@ -24,7 +24,7 @@ page in your browsing history.
 browsing history.
 }
 \examples{
-\dontshow{if (selenider_available()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (selenider::selenider_available()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 session <- selenider_session()
 
 open_url("https://r-project.org")

@@ -14,7 +14,7 @@
 #' @seealso
 #' * [elem_filter()] and [elem_find()] for filtering collection of elements.
 #'
-#' @examplesIf selenider_available(online = FALSE)
+#' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
 #' <div></div>
 #' <div class='second'>

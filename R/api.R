@@ -29,7 +29,7 @@
 #' * [find_element()] and [find_elements()]
 #' * [selenider_session()] to begin a session.
 #'
-#' @examplesIf selenider_available(online = FALSE)
+#' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
 #' <div>
 #' <p id='id1' class='inner'></p>

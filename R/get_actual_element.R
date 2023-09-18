@@ -31,7 +31,7 @@
 #' * The documentation for [RSelenium::webElement()] to see the things you can
 #'   do with a webElement.
 #'
-#' @examplesIf selenider_available(online = FALSE)
+#' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
 #' <div>
 #' <p>Text</p>

@@ -47,7 +47,7 @@
 #' * [is_present()] and other conditions for predicates for HTML elements.
 #'   (If you scroll down to the *See also* section, you will find the rest).
 #'
-#' @examplesIf selenider_available(online = FALSE)
+#' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
 #' <div id='div1'>Content 1</div>
 #' <div id='div2'>Content 2</div>

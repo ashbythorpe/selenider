@@ -54,9 +54,11 @@ code that is easy to read and easy to write:
 
 ## Installation
 
-You can install the development version of selenider like so:
-
 ``` r
+# Install selenider from CRAN
+install.packages("selenider")
+
+# Or the development version from Github
 # install.packages("remotes")
 remotes::install_github("ashbythorpe/selenider")
 ```
@@ -116,4 +118,4 @@ s("dl") |>
 ## Vignettes
 Get started with selenider, and learn the basics: `vignette("selenider")`.
 Use selenider with testthat, shinytest2 and Github Actions: `vignette("unit-testing", package = "selenider")`.
-Use selenider with rvest: `vignette("with-rvest", package = "selenider")`.
+Use selenider with rvest: `vignette("with-rvest", package = "selenider")`

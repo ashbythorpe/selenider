@@ -55,7 +55,7 @@ objects, while more complex objects will not. These elements are not lazy (see
 still on the page.
 }
 \examples{
-\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <button class='mybutton'>Click me</button>
 "

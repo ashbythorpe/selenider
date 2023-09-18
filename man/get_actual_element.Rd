@@ -33,7 +33,7 @@ to exist in the DOM.
 of \link[RSelenium:webElement-class]{RSelenium::webElement} objects.
 }
 \examples{
-\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <div>
 <p>Text</p>

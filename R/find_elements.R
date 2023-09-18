@@ -28,7 +28,7 @@
 #'   in the DOM.
 #' * [elem_filter()] and [elem_find()] for filtering element collections.
 #' 
-#' @examplesIf selenider_available(online = FALSE)
+#' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
 #' <div id='outer-div'>
 #'   <div>

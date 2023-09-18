@@ -49,7 +49,7 @@ lazy, meaning that the elements are not fetched and filtered until they are need
 Conditions can be functions or function calls (see \code{\link[=elem_expect]{elem_expect()}} for more details).
 }
 \examples{
-\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <button disabled>Button 1</button>
 <button>Button 2</button>

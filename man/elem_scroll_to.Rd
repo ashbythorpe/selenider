@@ -20,7 +20,7 @@ elem_scroll_to(x, js = FALSE, timeout = NULL)
 Scrolls to an HTML element.
 }
 \examples{
-\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <div style = 'height:100\%; min-height:100vh'></div>
 <button onclick='checkScrolled()'></button>

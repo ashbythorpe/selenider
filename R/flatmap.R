@@ -65,7 +65,7 @@
 #'   into a single object.
 #' * [elem_filter()] and [elem_find()] to filter element collections using a condition.
 #'
-#' @examplesIf selenider_available(online = FALSE)
+#' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
 #' <div id='div1'>
 #'   <p>Text 1</p>

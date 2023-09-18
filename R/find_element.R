@@ -29,7 +29,7 @@
 #' * [find_elements()] to select multiple elements.
 #' * [selenider_session()] to begin a session.
 #'
-#' @examplesIf selenider_available(online = FALSE)
+#' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
 #' <div class='class1'>
 #'   <div id='id1'>

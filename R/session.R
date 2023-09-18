@@ -132,27 +132,18 @@
 #' A `selenider_session` object. Use `session$driver` to retrieve the driver object that controls the
 #' browser.
 #'
-#' @examplesIf selenider_available()
+#' @examplesIf selenider::selenider_available()
 #'
 #' session_1 <- selenider_session(timeout = 10)
 #' # session_1 is the local session here
 #'
 #' get_session() # Returns session 1
 #'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
-#'
 #' my_function <- function() {
 #'   session_2 <- selenider_session()
 #'
 #'   # In here, session_2 is the local session
 #'   get_session()
-#'   \dontshow{
-#'   # Clean up all connections and invalidate default chromote object
-#'   selenider_cleanup()
-#'   }
 #' } # When the function finishes executing, the session is closed
 #'
 #' my_function() # Returns `session_2`
@@ -517,7 +508,7 @@ find_port_from_logs <- function(x) {
 #'
 #' @seealso [selenider_session()]
 #' 
-#' @examplesIf selenider_available()
+#' @examplesIf selenider::selenider_available()
 #' session <- selenider_session(local = FALSE)
 #'
 #' close_session(session)

@@ -16,7 +16,7 @@
 #'
 #' @seealso [selenider_session()]
 #'
-#' @examplesIf selenider_available(online = FALSE)
+#' @examplesIf selenider::selenider_available(online = FALSE)
 #' session <- minimal_selenider_session("<p>Example</p>")
 #'
 #' \dontshow{

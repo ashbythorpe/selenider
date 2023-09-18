@@ -15,7 +15,7 @@
 #' 
 #' @family conditions
 #' 
-#' @examplesIf selenider_available(online = FALSE)
+#' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
 #' <p class='class1'></p>
 #' "
@@ -64,7 +64,7 @@ is_absent <- function(x) !is_present(x)
 #' 
 #' @family conditions
 #' 
-#' @examplesIf selenider_available(online = FALSE)
+#' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
 #' <div style='visibility:hidden;'>Content 1</div>
 #' <div style='display:none'>Content 2</div>
@@ -132,7 +132,7 @@ is_invisible <- is_hidden
 #' 
 #' @family conditions
 #' 
-#' @examplesIf selenider_available(online = FALSE)
+#' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
 #' <button></button>
 #' <button disabled></button>
@@ -186,7 +186,7 @@ is_disabled <- function(x) !is_enabled(x)
 #'
 #' @family conditions
 #'
-#' @examplesIf selenider_available(online = FALSE)
+#' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
 #' <div id='mydiv'></div>
 #' "
@@ -233,7 +233,7 @@ has_name <- function(x, name) {
 #' 
 #' @family conditions
 #' 
-#' @examplesIf selenider_available(online = FALSE)
+#' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
 #' <p>Example text</p>
 #' <p class='empty'></p>
@@ -317,7 +317,7 @@ has_exact_text <- function(x, text) {
 #'
 #' @returns A boolean value: TRUE or FALSE.
 #'
-#' @examplesIf selenider_available(online = FALSE)
+#' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
 #' <input class='myclass' value='1.0' data-customattr='Custom attribute text'></p>
 #' "
@@ -459,7 +459,7 @@ has_value <- function(x, value) {
 #'
 #' @returns A boolean value: TRUE or FALSE.
 #'
-#' @examplesIf selenider_available(online = FALSE)
+#' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
 #' <div style='display:none;'></div>
 #' "
@@ -562,7 +562,7 @@ is_covered <- function(x) {
 #'
 #' @family conditions
 #'
-#' @examplesIf selenider_available(online = FALSE)
+#' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
 #' <div class='div1'></div>
 #' <div class='div2'></div>

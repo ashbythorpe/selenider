@@ -76,7 +76,7 @@
 #'   condition on multiple elements.
 #' * [elem_filter()] and [elem_find()] to use conditions to filter elements.
 #' 
-#' @examplesIf selenider_available(online = FALSE)
+#' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
 #' <div class='class1'>
 #' <button id='disabled-button' disabled>Disabled</button>

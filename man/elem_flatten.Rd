@@ -27,7 +27,7 @@ thing, but \code{elem_flatten()} works when given a list of \code{selenider_elem
 objects.
 }
 \examples{
-\dontshow{if (selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 html <- "
 <div id='id1'></div>
 <div class='.class2'></div>
