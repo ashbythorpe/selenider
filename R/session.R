@@ -2,7 +2,7 @@
 #'
 #' @description
 #' Begin a session in selenider, setting it as the local session unless otherwise
-#' specified, allowing the session to be accessed globally in the environement
+#' specified, allowing the session to be accessed globally in the environment
 #' where it was defined.
 #'
 #' `create_chromote_session()`, `create_selenium_client()` and `create_selenium_server()`

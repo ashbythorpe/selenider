@@ -20,7 +20,7 @@ A string, or \code{NA} if the property does not exist.
 Get a CSS property of an element (e.g. \code{"background-color"}).
 Specifically, the \emph{computed} style is returned, meaning that,
 for example, widths and heights will be returned in pixels, and
-colors will be returned as an RGB value.
+colours will be returned as an RGB value.
 }
 \examples{
 \dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
@@ -34,7 +34,7 @@ s("p") |>
   elem_css_property("visibility")
 
 s("p") |>
-  elem_css_property("color")
+  elem_css_property("colour")
 
 \dontshow{
 # Clean up all connections and invalidate default chromote object

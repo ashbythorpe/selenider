@@ -95,7 +95,7 @@ browser.
 }
 \description{
 Begin a session in selenider, setting it as the local session unless otherwise
-specified, allowing the session to be accessed globally in the environement
+specified, allowing the session to be accessed globally in the environment
 where it was defined.
 
 \code{create_chromote_session()}, \code{create_selenium_client()} and \code{create_selenium_server()}

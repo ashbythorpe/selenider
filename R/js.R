@@ -10,7 +10,7 @@
 #' using "return".
 #'
 #' These functions are experimental because their names and parameters are liable to
-#' change. Additonally, their behaviour can be inconsistent between different session types
+#' change. Additionally, their behaviour can be inconsistent between different session types
 #' (chromote and selenium) and different browsers.
 #'
 #' @param fn A string defining the function.

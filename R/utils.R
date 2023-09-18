@@ -105,9 +105,11 @@ is_cran_check <- function() {
   if (isTRUE(as.logical(Sys.getenv("NOT_CRAN", "false")))) {
     FALSE
   } else {
-    Sys.getenv("_R_CHECK_PACKAGE_NAME_", "") != ""
+    is_check()
   }
 }
+
+is_check <- function() Sys.getenv("_R_CHECK_PACKAGE_NAME_", "") != ""
 
 on_ci <- function() {
   isTRUE(as.logical(Sys.getenv("CI", "false")))
@@ -240,7 +242,7 @@ is_mac <- function() Sys.info()[['sysname']] == 'Darwin'
 
 is_linux <- function() Sys.info()[['sysname']] == 'Linux'
 
-#' Cleanup after an example
+#' Clean up after an example
 #'
 #' Clean up after a selenider example, making sure all deferred events are run.
 #'
@@ -252,7 +254,9 @@ is_linux <- function() Sys.info()[['sysname']] == 'Linux'
 #'
 #' @export
 selenider_cleanup <- function(env = rlang::caller_env()) { # nocov start
-  Sys.setenv("_R_CHECK_CONNECTIONS_LEFT_OPEN_" = "FALSE")
+  if (is_check()) {
+    Sys.setenv("_R_CHECK_CONNECTIONS_LEFT_OPEN_" = "FALSE")
+  }
   try_fetch(withr::deferred_run(env), error = function(e) rlang::abort(c("Error in withr::deferred_run()"), parent = e))
   return(invisible())
 } # nocov end

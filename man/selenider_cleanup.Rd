@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{selenider_cleanup}
 \alias{selenider_cleanup}
-\title{Cleanup after an example}
+\title{Clean up after an example}
 \usage{
 selenider_cleanup(env = rlang::caller_env())
 }

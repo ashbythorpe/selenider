@@ -276,7 +276,7 @@ elem_value <- function(x, ptype = character(), timeout = NULL) {
 #' Get a CSS property of an element (e.g. `"background-color"`).
 #' Specifically, the *computed* style is returned, meaning that,
 #' for example, widths and heights will be returned in pixels, and
-#' colors will be returned as an RGB value.
+#' colours will be returned as an RGB value.
 #'
 #' @param x A `selenider_element` object.
 #' @param name The name of the CSS property to get.

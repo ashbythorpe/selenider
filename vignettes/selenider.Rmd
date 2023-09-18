@@ -86,7 +86,7 @@ header <- s("#rStudioHeader")
 header
 ```
 
-For example, an xpath can be used instead. XPaths can be useful for more complex selectors, and are
+For example, an XPath can be used instead. XPaths can be useful for more complex selectors, and are
 not limited to selecting from the ancestors of the current element. However, they can be difficult
 to read.
 

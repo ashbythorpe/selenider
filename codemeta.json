@@ -2,13 +2,13 @@
   "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
   "identifier": "selenider",
-  "description": "A wrapper for 'RSelenium' that is much easier to use.",
-  "name": "selenider: Concise, lazy and asynchronous wrapper for 'RSelenium'",
+  "description": "A user-friendly wrapper for web automation, using either 'chromote' or 'RSelenium'. Provides a simple and consistent API to make web scraping and testing scripts easy to write and understand. Elements are lazy, and automatically wait for the website to be valid, resulting in reliable and reproducible code, with no visible impact on the experience of the programmer.",
+  "name": "selenider: Concise, Lazy and Reliable Wrapper for 'chromote' and 'RSelenium'",
   "relatedLink": "https://ashbythorpe.github.io/selenider/",
   "codeRepository": "https://github.com/ashbythorpe/selenider",
   "issueTracker": "https://github.com/ashbythorpe/selenider/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.0.0.9000",
+  "version": "0.1.0",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -16,6 +16,15 @@
   },
   "runtimePlatform": "R version 4.3.1 (2023-06-16)",
   "author": [
+    {
+      "@type": "Person",
+      "givenName": "Ashby",
+      "familyName": "Thorpe",
+      "email": "ashbythorpe@gmail.com",
+      "@id": "https://orcid.org/0000-0003-3106-099X"
+    }
+  ],
+  "copyrightHolder": [
     {
       "@type": "Person",
       "givenName": "Ashby",
@@ -315,7 +324,8 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "485.126KB",
+  "fileSize": "486.36KB",
+  "releaseNotes": "https://github.com/ashbythorpe/selenider/blob/master/NEWS.md",
   "readme": "https://github.com/ashbythorpe/selenider/blob/main/README.md",
   "contIntegration": ["https://github.com/ashbythorpe/selenider/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/ashbythorpe/selenider?branch=main"],
   "keywords": ["r", "web-scraping"]

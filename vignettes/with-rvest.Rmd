@@ -49,7 +49,7 @@ s(".mt-timeline") |>
 ```
 
 Now, we would like to parse the text of the post using `rvest::html_text2()`.
-We can do this in two ways, either by locationg the element containing the post
+We can do this in two ways, either by locating the element containing the post
 using selenider then parsing it using rvest, or by parsing the entire page using
 rvest and finding the element after. The two methods are very similar, since
 selenider and rvest use a very similar syntax, except rvest uses the `html_`

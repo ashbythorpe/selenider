@@ -47,3 +47,4 @@ Depends:
 Config/Needs/website: rmarkdown
 LazyData: true
 VignetteBuilder: knitr
+Language: en-GB
