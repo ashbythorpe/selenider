@@ -786,7 +786,7 @@ elem_scroll_to <- function(x, js = FALSE, timeout = NULL) {
 #'
 #' If an element is an ancestor of a form, submits the form.
 #' Works by walking up the DOM, checking each ancestor element until
-#' the element is a <form> element, which it then submits. If such
+#' the element is a `<form>` element, which it then submits. If such
 #' an element does not exist, an error is thrown.
 #'
 #' @param x A `selenider_element` object.

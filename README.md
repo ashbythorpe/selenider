@@ -53,13 +53,15 @@ concise yet expressive code that is easy to read and easy to write:
   simple but extensible syntax and informative error messages.
 - selenider is compatible with automated testing frameworks like
   [testthat](https://testthat.r-lib.org) and
-  [shinytest2](https://shinytest2.r-lib.org/).
+  [shinytest2](https://rstudio.github.io/shinytest2/).
 
 ## Installation
 
-You can install the development version of selenider like so:
-
 ``` r
+# Install selenider from CRAN
+install.packages("selenider")
+
+# Or the development version from Github
 # install.packages("remotes")
 remotes::install_github("ashbythorpe/selenider")
 ```
@@ -134,4 +136,4 @@ s("dl") |>
 Get started with selenider, and learn the basics:
 `vignette("selenider")`. Use selenider with testthat, shinytest2 and
 Github Actions: `vignette("unit-testing", package = "selenider")`. Use
-selenider with rvest: `vignette("with-rvest", package = "selenider")`.
+selenider with rvest: `vignette("with-rvest", package = "selenider")`

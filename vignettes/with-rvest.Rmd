@@ -8,10 +8,16 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
+available <- selenider::selenider_available()
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  eval = available
 )
+```
+
+```{r, eval = !available, include = FALSE}
+message("Selenider is not available")
 ```
 
 selenider can be a useful add-on to rvest, for when scraping data requires

@@ -15,10 +15,4 @@ Nothing
 \description{
 Clean up after a selenider example, making sure all deferred events are run.
 }
-\examples{
-\dontrun{
-selenider_cleanup()
-}
-
-}
 \keyword{internal}

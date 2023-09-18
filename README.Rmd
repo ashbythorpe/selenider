@@ -5,13 +5,18 @@ output: github_document
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
+available <- selenider::selenider_available()
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
-  out.width = "100%" # ,
-  # eval = selenider::selenider_available()
+  out.width = "100%",
+  eval = available
 )
+```
+
+```{r, eval = !available, include = FALSE}
+message("Selenider is not available")
 ```
 
 # selenider
@@ -50,7 +55,7 @@ code that is easy to read and easy to write:
   tested and operated on in a single pipeline.
 * `elem_expect()` is a powerful way to specify test expectations, with a simple but extensible syntax
   and informative error messages.
-* selenider is compatible with automated testing frameworks like [testthat](https://testthat.r-lib.org) and [shinytest2](https://shinytest2.r-lib.org/).
+* selenider is compatible with automated testing frameworks like [testthat](https://testthat.r-lib.org) and [shinytest2](https://rstudio.github.io/shinytest2/).
 
 ## Installation
 

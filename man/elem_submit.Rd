@@ -19,7 +19,7 @@ elem_submit(x, js = FALSE, timeout = NULL)
 \description{
 If an element is an ancestor of a form, submits the form.
 Works by walking up the DOM, checking each ancestor element until
-the element is a \if{html}{\out{<form>}} element, which it then submits. If such
+the element is a \verb{<form>} element, which it then submits. If such
 an element does not exist, an error is thrown.
 }
 \examples{
