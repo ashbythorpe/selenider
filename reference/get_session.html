@@ -51,6 +51,9 @@ finishes executing."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/a
     <a class="dropdown-item" href="../articles/index.html">More articles...</a>
   </div>
 </li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
+</li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -154,60 +157,38 @@ specified.</p></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Since we don't want to open a bunch of sessions for no reason,</span></span></span>
-<span class="r-in"><span><span class="co"># we create a custom session object (that is just an empty list).</span></span></span>
-<span class="r-in"><span><span class="va">mock_session</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/structure.html" class="external-link">structure</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    class <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"selenider_session"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Create a custom print method for our custom session</span></span></span>
-<span class="r-in"><span><span class="fu">vctrs</span><span class="fu">::</span><span class="fu"><a href="https://vctrs.r-lib.org/reference/s3_register.html" class="external-link">s3_register</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="st">"base::print"</span>,</span></span>
-<span class="r-in"><span>  <span class="st">"selenider_session"</span>,</span></span>
-<span class="r-in"><span>  <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"A selenider session\n"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Don't set the local session, since we want to do it manually.</span></span></span>
-<span class="r-in"><span><span class="va">session_1</span> <span class="op">&lt;-</span> <span class="fu">mock_session</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">session_2</span> <span class="op">&lt;-</span> <span class="fu">mock_session</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">get_session</span><span class="op">(</span>create <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="co"># NULL</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> A selenider session</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">local_session</span><span class="op">(</span><span class="va">session_1</span>, close <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">get_session</span><span class="op">(</span>create <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> A selenider session</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/defer.html" class="external-link">deferred_run</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">get_session</span><span class="op">(</span>create <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="co"># NULL</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> A selenider session</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># By default, the local session is only set inside the function that it is</span></span></span>
-<span class="r-in"><span><span class="co"># called.</span></span></span>
-<span class="r-in"><span><span class="co"># If we want to set the local session outside the scope of a function, we</span></span></span>
-<span class="r-in"><span><span class="co"># need to use the `.local_envir` argument.</span></span></span>
-<span class="r-in"><span><span class="va">set_my_session</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">env</span> <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/stack.html" class="external-link">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="co"># caller_env() is the environment where the function is called.</span></span></span>
-<span class="r-in"><span>  <span class="fu">local_session</span><span class="op">(</span><span class="va">session_1</span>, .local_envir <span class="op">=</span> <span class="va">env</span>, close <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">set_my_session</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">with_session</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="va">session_2</span>,</span></span>
-<span class="r-in"><span>  <span class="op">{</span><span class="fu">get_session</span><span class="op">(</span>create <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">}</span>,</span></span>
-<span class="r-in"><span>  close <span class="op">=</span> <span class="cn">FALSE</span></span></span>
-<span class="r-in"><span><span class="op">)</span> <span class="co"># session_2</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> A selenider session</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">get_session</span><span class="op">(</span>create <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="co"># session_1</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> A selenider session</span>
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># Don't set the local session, since we want to do it manually.</span></span>
+<span><span class="va">session_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="selenider_session.html">selenider_session</a></span><span class="op">(</span>local <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">session_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="selenider_session.html">selenider_session</a></span><span class="op">(</span>local <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">get_session</span><span class="op">(</span>create <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="co"># NULL</span></span>
+<span></span>
+<span><span class="fu">local_session</span><span class="op">(</span><span class="va">session_1</span>, close <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">get_session</span><span class="op">(</span>create <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/defer.html" class="external-link">deferred_run</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">get_session</span><span class="op">(</span>create <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="co"># NULL</span></span>
+<span></span>
+<span><span class="co"># By default, the local session is only set inside the function that it is</span></span>
+<span><span class="co"># called.</span></span>
+<span><span class="co"># If we want to set the local session outside the scope of a function, we</span></span>
+<span><span class="co"># need to use the `.local_envir` argument.</span></span>
+<span><span class="va">set_my_session</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">env</span> <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/stack.html" class="external-link">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co"># caller_env() is the environment where the function is called.</span></span>
+<span>  <span class="fu">local_session</span><span class="op">(</span><span class="va">session_1</span>, .local_envir <span class="op">=</span> <span class="va">env</span>, close <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">set_my_session</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">with_session</span><span class="op">(</span></span>
+<span>  <span class="va">session_2</span>,</span>
+<span>  <span class="op">{</span><span class="fu">get_session</span><span class="op">(</span>create <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">}</span>,</span>
+<span>  close <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span> <span class="co"># session_2</span></span>
+<span></span>
+<span><span class="fu">get_session</span><span class="op">(</span>create <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="co"># session_1</span></span></code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>

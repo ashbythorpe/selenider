@@ -41,6 +41,9 @@ not the test passed), allowing you to handle the failure case explicitly."><!-- 
     <a class="dropdown-item" href="../articles/index.html">More articles...</a>
   </div>
 </li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
+</li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -161,185 +164,116 @@ condition on multiple elements.</p></li>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">html</span> <span class="op">&lt;-</span> <span class="st">"</span></span></span>
-<span class="r-in"><span><span class="st">&lt;div class='class1'&gt;</span></span></span>
-<span class="r-in"><span><span class="st">&lt;button id='disabled-button' disabled&gt;Disabled&lt;/button&gt;</span></span></span>
-<span class="r-in"><span><span class="st">&lt;p style='visibility:hidden;'&gt;Example text&lt;/p&gt;</span></span></span>
-<span class="r-in"><span><span class="st">&lt;button id='enabled-button'&gt;Enabled&lt;/button&gt;</span></span></span>
-<span class="r-in"><span><span class="st">&lt;/div&gt;</span></span></span>
-<span class="r-in"><span><span class="st"></span></span></span>
-<span class="r-in"><span><span class="st">&lt;div class='class3'&gt;</span></span></span>
-<span class="r-in"><span><span class="st">&lt;/div&gt;</span></span></span>
-<span class="r-in"><span><span class="st">"</span></span></span>
-<span class="r-in"><span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="minimal_selenider_session.html">minimal_selenider_session</a></span><span class="op">(</span><span class="va">html</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpKhAdus/file18855c5ab0a0.html"</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class1"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">elem_expect</span><span class="op">(</span><span class="va">is_present</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in elem_expect(s(".class1"), is_present):</span> Condition failed after waiting for 4 seconds:</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> `is_present`</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `x` is not present.</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"#enabled-button"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">elem_expect</span><span class="op">(</span><span class="va">is_visible</span>, <span class="va">is_enabled</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in elem_expect(s("#enabled-button"), is_visible, is_enabled):</span> Condition failed after waiting for 4 seconds:</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> `is_visible`</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `x` is not visible.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `is_visible()`:</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> `x` does not exist in the DOM.</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"#disabled-button"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">elem_expect</span><span class="op">(</span><span class="va">is_disabled</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in elem_expect(s("#disabled-button"), is_disabled):</span> Condition failed after waiting for 4 seconds:</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> `is_disabled`</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `x` is enabled.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `is_enabled()`:</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> `x` does not exist in the DOM.</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Error: element is visible but not enabled</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"#disabled-button"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">elem_expect</span><span class="op">(</span><span class="va">is_visible</span>, <span class="va">is_enabled</span>, timeout <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Since this condition will fail</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in elem_expect(s("#disabled-button"), is_visible, is_enabled, timeout = 0.5) : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Condition failed after waiting for 0.5 seconds:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> `is_visible`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `x` is not visible.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `is_visible()`:</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> `x` does not exist in the DOM.</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class2"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">elem_expect</span><span class="op">(</span><span class="op">!</span><span class="va">is_present</span>, <span class="op">!</span><span class="va">is_in_dom</span>, <span class="va">is_absent</span><span class="op">)</span> <span class="co"># All 3 are equivalent</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># All other conditions will error if the element does not exist</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class2"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">elem_expect</span><span class="op">(</span><span class="va">is_invisible</span>, timeout <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in elem_expect(s(".class2"), is_invisible, timeout = 0.1) : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Condition failed after waiting for 0.1 seconds:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> `is_invisible`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `x` is visible.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `is_visible()`:</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> `x` does not exist in the DOM.</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># elem_expect() returns the element, so can be used in chains</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"#enabled-button"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">elem_expect</span><span class="op">(</span><span class="va">is_visible</span> <span class="op">&amp;&amp;</span> <span class="va">is_enabled</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="elem_click.html">elem_click</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in elem_expect(s("#enabled-button"), is_visible &amp;&amp; is_enabled):</span> Condition failed after waiting for 4 seconds:</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> `is_visible &amp;&amp; is_enabled`</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `x` does not exist, which may have caused the condition to fail.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `is_visible()`:</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> `x` does not exist in the DOM.</span>
-<span class="r-in"><span><span class="co"># Note that elem_click() will do this automatically</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"p"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">elem_expect</span><span class="op">(</span><span class="va">is_hidden</span>, <span class="fu"><a href="has_text.html">has_exact_text</a></span><span class="op">(</span><span class="st">"Example text"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in elem_expect(s("p"), is_hidden, has_exact_text("Example text")):</span> Condition failed after waiting for 4 seconds:</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> `is_hidden`</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `x` is displayed.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `is_visible()`:</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> `x` does not exist in the DOM.</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Or use an anonymous function</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"p"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">elem_expect</span><span class="op">(</span>\<span class="op">(</span><span class="va">elem</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="elem_text.html">elem_text</a></span><span class="op">(</span><span class="va">elem</span><span class="op">)</span>, <span class="st">"Example text"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in elem_expect(s("p"), function(elem) identical(elem_text(elem),     "Example text")):</span> Condition failed after waiting for 4 seconds:</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> `function(elem) identical(elem_text(elem), "Example text")`</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `x` does not exist, which may have caused the condition to fail.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `elem_text()`:</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> To get the text inside `x`, it must exist.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `x` was not present.</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># If your conditions are not specific to an element, you can omit the `x` argument</span></span></span>
-<span class="r-in"><span><span class="va">elem_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class1"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">elem_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class2"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">elem_expect</span><span class="op">(</span><span class="fu"><a href="is_present.html">is_present</a></span><span class="op">(</span><span class="va">elem_1</span><span class="op">)</span> <span class="op">||</span> <span class="fu"><a href="is_present.html">is_present</a></span><span class="op">(</span><span class="va">elem_2</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in elem_expect(is_present(elem_1) || is_present(elem_2)):</span> Condition failed after waiting for 4 seconds:</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> `is_present(elem_1) || is_present(elem_2)`</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># We can now use the conditions on their own to figure out which element exists</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="is_present.html">is_present</a></span><span class="op">(</span><span class="va">elem_1</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="st">"Element 1 is visible"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="st">"Element 2 is visible"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Element 2 is visible"</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Use elem_wait_until() to handle failures manually</span></span></span>
-<span class="r-in"><span><span class="va">elem</span> <span class="op">&lt;-</span> <span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class2"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu">elem_wait_until</span><span class="op">(</span><span class="va">elem</span>, <span class="va">is_present</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="elem_click.html">elem_click</a></span><span class="op">(</span><span class="va">elem</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="reload.html">reload</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Creating a custom condition is easiest with an anonymous function</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"p"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">elem_expect</span><span class="op">(</span></span></span>
-<span class="r-in"><span>    \<span class="op">(</span><span class="va">elem</span><span class="op">)</span> <span class="va">elem</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>      <span class="fu"><a href="elem_text.html">elem_text</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"Example .*"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in elem_expect(s("p"), function(elem) grepl(elem_text(elem), pattern = "Example .*")):</span> Condition failed after waiting for 4 seconds:</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> `function(elem) grepl(elem_text(elem), pattern = "Example .*")`</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `x` does not exist, which may have caused the condition to fail.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `elem_text()`:</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> To get the text inside `x`, it must exist.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `x` was not present.</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Or create a function, to reuse the condition multiple times</span></span></span>
-<span class="r-in"><span><span class="va">text_contains</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">pattern</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="va">text</span> <span class="op">&lt;-</span> <span class="fu"><a href="elem_text.html">elem_text</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  </span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="va">pattern</span>, <span class="va">text</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"p"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">elem_expect</span><span class="op">(</span><span class="fu">text_contains</span><span class="op">(</span><span class="st">"Example *"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in elem_expect(s("p"), text_contains("Example *")):</span> Condition failed after waiting for 4 seconds:</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> `text_contains("Example *")`</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `x` does not exist, which may have caused the condition to fail.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `elem_text()`:</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> To get the text inside `x`, it must exist.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `x` was not present.</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># If we want to continue on error, we need to use the "expect_error_continue" class</span></span></span>
-<span class="r-in"><span><span class="co"># This involves making a custom error object</span></span></span>
-<span class="r-in"><span><span class="va">error_condition</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="va">my_condition</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>message <span class="op">=</span> <span class="st">"Custom error!"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">my_condition</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"expect_error_continue"</span>, <span class="st">"error"</span>, <span class="st">"condition"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="va">my_condition</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># This is much easier with rlang::abort() / cli::cli_abort():</span></span></span>
-<span class="r-in"><span><span class="va">error_condition_2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/abort.html" class="external-link">abort</a></span><span class="op">(</span><span class="st">"Custom error!"</span>, class <span class="op">=</span> <span class="st">"expect_error_continue"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># This error will not be caught</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">elem_expect</span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"Uncaught error!"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in eval_tidy(x, data = data_mask) : Uncaught error!</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># These will eventually throw an error, but will wait 0.5 seconds to do so.</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">elem_expect</span><span class="op">(</span><span class="fu">error_condition</span><span class="op">(</span><span class="op">)</span>, timeout <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in elem_expect(error_condition(), timeout = 0.5) : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Condition failed after waiting for 0.5 seconds:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> `error_condition()`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error:</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Custom error!</span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">elem_expect</span><span class="op">(</span><span class="fu">error_condition_2</span><span class="op">(</span><span class="op">)</span>, timeout <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in elem_expect(error_condition_2(), timeout = 0.5) : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Condition failed after waiting for 0.5 seconds:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> `error_condition_2()`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `error_condition_2()`:</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Custom error!</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># \dontshow{</span></span></span>
-<span class="r-in"><span><span class="co"># Clean up all connections and invalidate default chromote object</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="selenider_cleanup.html">selenider_cleanup</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="va">html</span> <span class="op">&lt;-</span> <span class="st">"</span></span>
+<span><span class="st">&lt;div class='class1'&gt;</span></span>
+<span><span class="st">&lt;button id='disabled-button' disabled&gt;Disabled&lt;/button&gt;</span></span>
+<span><span class="st">&lt;p style='visibility:hidden;'&gt;Example text&lt;/p&gt;</span></span>
+<span><span class="st">&lt;button id='enabled-button'&gt;Enabled&lt;/button&gt;</span></span>
+<span><span class="st">&lt;/div&gt;</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">&lt;div class='class3'&gt;</span></span>
+<span><span class="st">&lt;/div&gt;</span></span>
+<span><span class="st">"</span></span>
+<span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="minimal_selenider_session.html">minimal_selenider_session</a></span><span class="op">(</span><span class="va">html</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class1"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">elem_expect</span><span class="op">(</span><span class="va">is_present</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"#enabled-button"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">elem_expect</span><span class="op">(</span><span class="va">is_visible</span>, <span class="va">is_enabled</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"#disabled-button"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">elem_expect</span><span class="op">(</span><span class="va">is_disabled</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Error: element is visible but not enabled</span></span>
+<span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"#disabled-button"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">elem_expect</span><span class="op">(</span><span class="va">is_visible</span>, <span class="va">is_enabled</span>, timeout <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Since this condition will fail</span></span>
+<span></span>
+<span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class2"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">elem_expect</span><span class="op">(</span><span class="op">!</span><span class="va">is_present</span>, <span class="op">!</span><span class="va">is_in_dom</span>, <span class="va">is_absent</span><span class="op">)</span> <span class="co"># All 3 are equivalent</span></span>
+<span></span>
+<span><span class="co"># All other conditions will error if the element does not exist</span></span>
+<span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class2"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">elem_expect</span><span class="op">(</span><span class="va">is_invisible</span>, timeout <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># elem_expect() returns the element, so can be used in chains</span></span>
+<span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"#enabled-button"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">elem_expect</span><span class="op">(</span><span class="va">is_visible</span> <span class="op">&amp;&amp;</span> <span class="va">is_enabled</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="elem_click.html">elem_click</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co"># Note that elem_click() will do this automatically</span></span>
+<span></span>
+<span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"p"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">elem_expect</span><span class="op">(</span><span class="va">is_hidden</span>, <span class="fu"><a href="has_text.html">has_exact_text</a></span><span class="op">(</span><span class="st">"Example text"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Or use an anonymous function</span></span>
+<span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"p"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">elem_expect</span><span class="op">(</span>\<span class="op">(</span><span class="va">elem</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="elem_text.html">elem_text</a></span><span class="op">(</span><span class="va">elem</span><span class="op">)</span>, <span class="st">"Example text"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># If your conditions are not specific to an element, you can omit the `x` argument</span></span>
+<span><span class="va">elem_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class1"</span><span class="op">)</span></span>
+<span><span class="va">elem_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class2"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">elem_expect</span><span class="op">(</span><span class="fu"><a href="is_present.html">is_present</a></span><span class="op">(</span><span class="va">elem_1</span><span class="op">)</span> <span class="op">||</span> <span class="fu"><a href="is_present.html">is_present</a></span><span class="op">(</span><span class="va">elem_2</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># We can now use the conditions on their own to figure out which element exists</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="is_present.html">is_present</a></span><span class="op">(</span><span class="va">elem_1</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="st">"Element 1 is visible"</span><span class="op">)</span></span>
+<span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="st">"Element 2 is visible"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># Use elem_wait_until() to handle failures manually</span></span>
+<span><span class="va">elem</span> <span class="op">&lt;-</span> <span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class2"</span><span class="op">)</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="fu">elem_wait_until</span><span class="op">(</span><span class="va">elem</span>, <span class="va">is_present</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="elem_click.html">elem_click</a></span><span class="op">(</span><span class="va">elem</span><span class="op">)</span></span>
+<span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="reload.html">reload</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># Creating a custom condition is easiest with an anonymous function</span></span>
+<span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"p"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">elem_expect</span><span class="op">(</span></span>
+<span>    \<span class="op">(</span><span class="va">elem</span><span class="op">)</span> <span class="va">elem</span> <span class="op">|&gt;</span></span>
+<span>      <span class="fu"><a href="elem_text.html">elem_text</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"Example .*"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Or create a function, to reuse the condition multiple times</span></span>
+<span><span class="va">text_contains</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">pattern</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">text</span> <span class="op">&lt;-</span> <span class="fu"><a href="elem_text.html">elem_text</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="va">pattern</span>, <span class="va">text</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"p"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">elem_expect</span><span class="op">(</span><span class="fu">text_contains</span><span class="op">(</span><span class="st">"Example *"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># If we want to continue on error, we need to use the "expect_error_continue" class</span></span>
+<span><span class="co"># This involves making a custom error object</span></span>
+<span><span class="va">error_condition</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">my_condition</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>message <span class="op">=</span> <span class="st">"Custom error!"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">my_condition</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"expect_error_continue"</span>, <span class="st">"error"</span>, <span class="st">"condition"</span><span class="op">)</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="va">my_condition</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># This is much easier with rlang::abort() / cli::cli_abort():</span></span>
+<span><span class="va">error_condition_2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/abort.html" class="external-link">abort</a></span><span class="op">(</span><span class="st">"Custom error!"</span>, class <span class="op">=</span> <span class="st">"expect_error_continue"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># This error will not be caught</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">elem_expect</span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"Uncaught error!"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># These will eventually throw an error, but will wait 0.5 seconds to do so.</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">elem_expect</span><span class="op">(</span><span class="fu">error_condition</span><span class="op">(</span><span class="op">)</span>, timeout <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">elem_expect</span><span class="op">(</span><span class="fu">error_condition_2</span><span class="op">(</span><span class="op">)</span>, timeout <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># \dontshow{</span></span>
+<span><span class="co"># Clean up all connections and invalidate default chromote object</span></span>
+<span><span class="fu"><a href="selenider_cleanup.html">selenider_cleanup</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co"># }</span></span></code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>

@@ -43,6 +43,9 @@ can then be passed into the driver argument to selenider_session()."><!-- mathja
     <a class="dropdown-item" href="../articles/index.html">More articles...</a>
   </div>
 </li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
+</li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -197,12 +200,9 @@ supported by selenider. See <code><a href="get_actual_element.html">get_actual_e
     <p>Custom driver objects are good if you want more low-level control over the underlying
 functions that create the webdrivers that actually control the browser. However, it is
 recommended to use the selenider functions (e.g. <code>create_selenium_client()</code>) over
-<code><a href="https://docs.ropensci.org/wdman/reference/selenium.html" class="external-link">wdman::selenium()</a></code> for better error messages and more reliable behaviour.</p>
-    </div>
-    <div class="section level2">
-    <h2 id="todo-add-vignette-references-when-available">TODO: Add vignette references when available<a class="anchor" aria-label="anchor" href="#todo-add-vignette-references-when-available"></a></h2>
-    
-<div class="section">
+<code><a href="https://docs.ropensci.org/wdman/reference/selenium.html" class="external-link">wdman::selenium()</a></code> for better error messages and more reliable behaviour. See
+`vignette("unit-testing", package = "selenider") for more information on using
+selenider with docker/Github Actions.</p><div class="section">
 <h3 id="chromote">Chromote<a class="anchor" aria-label="anchor" href="#chromote"></a></h3>
 
 
@@ -268,51 +268,39 @@ object (and <code><a href="get_session.html">get_session()</a></code> to get it)
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">session_1</span> <span class="op">&lt;-</span> <span class="fu">selenider_session</span><span class="op">(</span>timeout <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># session_1 is the local session here</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="get_session.html">get_session</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Returns session 1</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> A selenider session</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># \dontshow{</span></span></span>
-<span class="r-in"><span><span class="co"># Clean up all connections and invalidate default chromote object</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="selenider_cleanup.html">selenider_cleanup</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">my_function</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="va">session_2</span> <span class="op">&lt;-</span> <span class="fu">selenider_session</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="co"># In here, session_2 is the local session</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="get_session.html">get_session</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="co"># \dontshow{</span></span></span>
-<span class="r-in"><span>  <span class="co"># Clean up all connections and invalidate default chromote object</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="selenider_cleanup.html">selenider_cleanup</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="co"># }</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># When the function finishes executing, the session is closed</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">my_function</span><span class="op">(</span><span class="op">)</span> <span class="co"># Returns `session_2`</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># If we want to use a session outside the scope of a function,</span></span></span>
-<span class="r-in"><span><span class="co"># we need to use the `.env` argument.</span></span></span>
-<span class="r-in"><span><span class="va">create_session</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">timeout</span> <span class="op">=</span> <span class="fl">10</span>, <span class="va">.env</span> <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/stack.html" class="external-link">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="co"># caller_env() is the environment where the function is called</span></span></span>
-<span class="r-in"><span>  <span class="fu">selenider_session</span><span class="op">(</span>timeout <span class="op">=</span> <span class="va">timeout</span>, .env <span class="op">=</span> <span class="va">.env</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">my_session</span> <span class="op">&lt;-</span> <span class="fu">create_session</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># We can now use this session outside the `create_session()` function</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="get_session.html">get_session</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> A selenider session</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># `my_session` will be closed automatically.</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># \dontshow{</span></span></span>
-<span class="r-in"><span><span class="co"># Clean up all connections and invalidate default chromote object</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="selenider_cleanup.html">selenider_cleanup</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span></span>
+<span><span class="va">session_1</span> <span class="op">&lt;-</span> <span class="fu">selenider_session</span><span class="op">(</span>timeout <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="co"># session_1 is the local session here</span></span>
+<span></span>
+<span><span class="fu"><a href="get_session.html">get_session</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Returns session 1</span></span>
+<span></span>
+<span><span class="va">my_function</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">session_2</span> <span class="op">&lt;-</span> <span class="fu">selenider_session</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># In here, session_2 is the local session</span></span>
+<span>  <span class="fu"><a href="get_session.html">get_session</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">}</span> <span class="co"># When the function finishes executing, the session is closed</span></span>
+<span></span>
+<span><span class="fu">my_function</span><span class="op">(</span><span class="op">)</span> <span class="co"># Returns `session_2`</span></span>
+<span></span>
+<span><span class="co"># If we want to use a session outside the scope of a function,</span></span>
+<span><span class="co"># we need to use the `.env` argument.</span></span>
+<span><span class="va">create_session</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">timeout</span> <span class="op">=</span> <span class="fl">10</span>, <span class="va">.env</span> <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/stack.html" class="external-link">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co"># caller_env() is the environment where the function is called</span></span>
+<span>  <span class="fu">selenider_session</span><span class="op">(</span>timeout <span class="op">=</span> <span class="va">timeout</span>, .env <span class="op">=</span> <span class="va">.env</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">my_session</span> <span class="op">&lt;-</span> <span class="fu">create_session</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># We can now use this session outside the `create_session()` function</span></span>
+<span><span class="fu"><a href="get_session.html">get_session</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># `my_session` will be closed automatically.</span></span>
+<span></span>
+<span><span class="co"># \dontshow{</span></span>
+<span><span class="co"># Clean up all connections and invalidate default chromote object</span></span>
+<span><span class="fu"><a href="selenider_cleanup.html">selenider_cleanup</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co"># }</span></span></code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>

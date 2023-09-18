@@ -33,6 +33,9 @@
     <a class="dropdown-item" href="../articles/index.html">More articles...</a>
   </div>
 </li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
+</li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -94,48 +97,37 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">html</span> <span class="op">&lt;-</span> <span class="st">"</span></span></span>
-<span class="r-in"><span><span class="st">&lt;div style = 'height:100%; min-height:100vh'&gt;&lt;/div&gt;</span></span></span>
-<span class="r-in"><span><span class="st">&lt;button onclick='checkScrolled()'&gt;&lt;/button&gt;</span></span></span>
-<span class="r-in"><span><span class="st">&lt;p&gt;Scroll down to find me!&lt;/p&gt;</span></span></span>
-<span class="r-in"><span><span class="st">"</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">js</span> <span class="op">&lt;-</span> <span class="st">"</span></span></span>
-<span class="r-in"><span><span class="st">function checkScrolled() {</span></span></span>
-<span class="r-in"><span><span class="st">  let element = document.getElementsByTagName('p').item(0);</span></span></span>
-<span class="r-in"><span><span class="st">  let rect = element.getBoundingClientRect();</span></span></span>
-<span class="r-in"><span><span class="st">  // If paragraph is in view</span></span></span>
-<span class="r-in"><span><span class="st">  if (rect.bottom &lt;= (window.innerHeight || document.documentElement.clientHeight)) {</span></span></span>
-<span class="r-in"><span><span class="st">    element.innerText = 'You found me!';</span></span></span>
-<span class="r-in"><span><span class="st">  }</span></span></span>
-<span class="r-in"><span><span class="st">}</span></span></span>
-<span class="r-in"><span><span class="st">"</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="minimal_selenider_session.html">minimal_selenider_session</a></span><span class="op">(</span><span class="va">html</span>, js <span class="op">=</span> <span class="va">js</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpKhAdus/file18859fb042b.html"</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"p"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">elem_scroll_to</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in elem_scroll_to(s("p")):</span> To scroll to `x`, it must exist.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> After 4 seconds, `x` was not present.</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"button"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="elem_click.html">elem_click</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in elem_click(s("button")):</span> To click `x`, it must exist.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> After 4 seconds, `x` was not present.</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="elem_expect.html">elem_expect</a></span><span class="op">(</span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"p"</span><span class="op">)</span>, <span class="fu"><a href="has_text.html">has_text</a></span><span class="op">(</span><span class="st">"You found me!"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in elem_expect(s("p"), has_text("You found me!")):</span> Condition failed after waiting for 4 seconds:</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> `has_text("You found me!")`</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> `x` does not have text <span style="color: #0000BB;">"You found me!"</span>.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error in `has_text()`:</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> `x` does not exist in the DOM.</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># \dontshow{</span></span></span>
-<span class="r-in"><span><span class="co"># Clean up all connections and invalidate default chromote object</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="selenider_cleanup.html">selenider_cleanup</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="va">html</span> <span class="op">&lt;-</span> <span class="st">"</span></span>
+<span><span class="st">&lt;div style = 'height:100%; min-height:100vh'&gt;&lt;/div&gt;</span></span>
+<span><span class="st">&lt;button onclick='checkScrolled()'&gt;&lt;/button&gt;</span></span>
+<span><span class="st">&lt;p&gt;Scroll down to find me!&lt;/p&gt;</span></span>
+<span><span class="st">"</span></span>
+<span></span>
+<span><span class="va">js</span> <span class="op">&lt;-</span> <span class="st">"</span></span>
+<span><span class="st">function checkScrolled() {</span></span>
+<span><span class="st">  let element = document.getElementsByTagName('p').item(0);</span></span>
+<span><span class="st">  let rect = element.getBoundingClientRect();</span></span>
+<span><span class="st">  // If paragraph is in view</span></span>
+<span><span class="st">  if (rect.bottom &lt;= (window.innerHeight || document.documentElement.clientHeight)) {</span></span>
+<span><span class="st">    element.innerText = 'You found me!';</span></span>
+<span><span class="st">  }</span></span>
+<span><span class="st">}</span></span>
+<span><span class="st">"</span></span>
+<span></span>
+<span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="minimal_selenider_session.html">minimal_selenider_session</a></span><span class="op">(</span><span class="va">html</span>, js <span class="op">=</span> <span class="va">js</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"p"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">elem_scroll_to</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"button"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="elem_click.html">elem_click</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="elem_expect.html">elem_expect</a></span><span class="op">(</span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"p"</span><span class="op">)</span>, <span class="fu"><a href="has_text.html">has_text</a></span><span class="op">(</span><span class="st">"You found me!"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># \dontshow{</span></span>
+<span><span class="co"># Clean up all connections and invalidate default chromote object</span></span>
+<span><span class="fu"><a href="selenider_cleanup.html">selenider_cleanup</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co"># }</span></span></code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>

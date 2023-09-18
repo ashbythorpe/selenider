@@ -53,6 +53,9 @@ ancestor."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/m
     <a class="dropdown-item" href="../articles/index.html">More articles...</a>
   </div>
 </li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
+</li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -133,70 +136,63 @@ selectors).</p></li>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">html</span> <span class="op">&lt;-</span> <span class="st">"</span></span></span>
-<span class="r-in"><span><span class="st">&lt;html&gt;</span></span></span>
-<span class="r-in"><span><span class="st">&lt;body&gt;</span></span></span>
-<span class="r-in"><span><span class="st">  &lt;div&gt;</span></span></span>
-<span class="r-in"><span><span class="st">    &lt;div id='current'&gt;</span></span></span>
-<span class="r-in"><span><span class="st">      &lt;p&gt;&lt;/p&gt;</span></span></span>
-<span class="r-in"><span><span class="st">      &lt;div&gt;</span></span></span>
-<span class="r-in"><span><span class="st">        &lt;p&gt;&lt;/p&gt;</span></span></span>
-<span class="r-in"><span><span class="st">        &lt;br&gt;</span></span></span>
-<span class="r-in"><span><span class="st">      &lt;/div&gt;</span></span></span>
-<span class="r-in"><span><span class="st">    &lt;/div&gt;</span></span></span>
-<span class="r-in"><span><span class="st">    &lt;div&gt;&lt;/div&gt;</span></span></span>
-<span class="r-in"><span><span class="st">    &lt;p&gt;&lt;/p&gt;</span></span></span>
-<span class="r-in"><span><span class="st">  &lt;/div&gt;</span></span></span>
-<span class="r-in"><span><span class="st">&lt;/body&gt;</span></span></span>
-<span class="r-in"><span><span class="st">&lt;/html&gt;</span></span></span>
-<span class="r-in"><span><span class="st">"</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="minimal_selenider_session.html">minimal_selenider_session</a></span><span class="op">(</span><span class="va">html</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpKhAdus/file1885592671a0.html"</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">current</span> <span class="op">&lt;-</span> <span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"#current"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Get all the names of an element collection</span></span></span>
-<span class="r-in"><span><span class="va">elem_names</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="va">x</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">vapply</a></span><span class="op">(</span><span class="va">elem_name</span>, FUN.VALUE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">current</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">elem_ancestors</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="elem_expect.html">elem_expect</a></span><span class="op">(</span><span class="fu"><a href="has_length.html">has_length</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">elem_names</span><span class="op">(</span><span class="op">)</span> <span class="co"># html, div, body</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session 2526AFE5444AA6E5570897F842BFF3E4 is closed.</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">current</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">elem_parent</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="elem_name.html">elem_name</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># div</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session 2526AFE5444AA6E5570897F842BFF3E4 is closed.</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">current</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">elem_siblings</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="elem_expect.html">elem_expect</a></span><span class="op">(</span><span class="fu"><a href="has_length.html">has_length</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">elem_names</span><span class="op">(</span><span class="op">)</span> <span class="co"># div, p</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session 2526AFE5444AA6E5570897F842BFF3E4 is closed.</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">current</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">elem_children</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="elem_expect.html">elem_expect</a></span><span class="op">(</span><span class="fu"><a href="has_length.html">has_length</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">elem_names</span><span class="op">(</span><span class="op">)</span> <span class="co"># p, div</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session 2526AFE5444AA6E5570897F842BFF3E4 is closed.</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">current</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">elem_descendants</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="elem_expect.html">elem_expect</a></span><span class="op">(</span><span class="fu"><a href="has_length.html">has_length</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">elem_names</span><span class="op">(</span><span class="op">)</span> <span class="co"># p, div, p, br</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in self$send_command(msg, callback = callback_, error = error_,     timeout = timeout_):</span> Session 2526AFE5444AA6E5570897F842BFF3E4 is closed.</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># \dontshow{</span></span></span>
-<span class="r-in"><span><span class="co"># Clean up all connections and invalidate default chromote object</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="selenider_cleanup.html">selenider_cleanup</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="va">html</span> <span class="op">&lt;-</span> <span class="st">"</span></span>
+<span><span class="st">&lt;html&gt;</span></span>
+<span><span class="st">&lt;body&gt;</span></span>
+<span><span class="st">  &lt;div&gt;</span></span>
+<span><span class="st">    &lt;div id='current'&gt;</span></span>
+<span><span class="st">      &lt;p&gt;&lt;/p&gt;</span></span>
+<span><span class="st">      &lt;div&gt;</span></span>
+<span><span class="st">        &lt;p&gt;&lt;/p&gt;</span></span>
+<span><span class="st">        &lt;br&gt;</span></span>
+<span><span class="st">      &lt;/div&gt;</span></span>
+<span><span class="st">    &lt;/div&gt;</span></span>
+<span><span class="st">    &lt;div&gt;&lt;/div&gt;</span></span>
+<span><span class="st">    &lt;p&gt;&lt;/p&gt;</span></span>
+<span><span class="st">  &lt;/div&gt;</span></span>
+<span><span class="st">&lt;/body&gt;</span></span>
+<span><span class="st">&lt;/html&gt;</span></span>
+<span><span class="st">"</span></span>
+<span></span>
+<span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="minimal_selenider_session.html">minimal_selenider_session</a></span><span class="op">(</span><span class="va">html</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">current</span> <span class="op">&lt;-</span> <span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"#current"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Get all the names of an element collection</span></span>
+<span><span class="va">elem_names</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">x</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">vapply</a></span><span class="op">(</span><span class="va">elem_name</span>, FUN.VALUE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">current</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">elem_ancestors</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="elem_expect.html">elem_expect</a></span><span class="op">(</span><span class="fu"><a href="has_length.html">has_length</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">elem_names</span><span class="op">(</span><span class="op">)</span> <span class="co"># html, div, body</span></span>
+<span></span>
+<span><span class="va">current</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">elem_parent</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="elem_name.html">elem_name</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># div</span></span>
+<span></span>
+<span><span class="va">current</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">elem_siblings</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="elem_expect.html">elem_expect</a></span><span class="op">(</span><span class="fu"><a href="has_length.html">has_length</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">elem_names</span><span class="op">(</span><span class="op">)</span> <span class="co"># div, p</span></span>
+<span></span>
+<span><span class="va">current</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">elem_children</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="elem_expect.html">elem_expect</a></span><span class="op">(</span><span class="fu"><a href="has_length.html">has_length</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">elem_names</span><span class="op">(</span><span class="op">)</span> <span class="co"># p, div</span></span>
+<span></span>
+<span><span class="va">current</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">elem_descendants</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="elem_expect.html">elem_expect</a></span><span class="op">(</span><span class="fu"><a href="has_length.html">has_length</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">elem_names</span><span class="op">(</span><span class="op">)</span> <span class="co"># p, div, p, br</span></span>
+<span></span>
+<span><span class="co"># \dontshow{</span></span>
+<span><span class="co"># Clean up all connections and invalidate default chromote object</span></span>
+<span><span class="fu"><a href="selenider_cleanup.html">selenider_cleanup</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co"># }</span></span></code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>

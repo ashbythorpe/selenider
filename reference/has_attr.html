@@ -39,6 +39,9 @@ element's value matches a string or number."><!-- mathjax --><script src="https:
     <a class="dropdown-item" href="../articles/index.html">More articles...</a>
   </div>
 </li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
+</li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -112,29 +115,23 @@ a string.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">html</span> <span class="op">&lt;-</span> <span class="st">"</span></span></span>
-<span class="r-in"><span><span class="st">&lt;input class='myclass' value='1.0' data-customattr='Custom attribute text'&gt;&lt;/p&gt;</span></span></span>
-<span class="r-in"><span><span class="st">"</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="minimal_selenider_session.html">minimal_selenider_session</a></span><span class="op">(</span><span class="va">html</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpKhAdus/file1885431e9aae.html"</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">has_attr</span><span class="op">(</span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"input"</span><span class="op">)</span>, <span class="st">"class"</span>, <span class="st">"myclass"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in has_attr(s("input"), "class", "myclass"):</span> `x` does not exist in the DOM.</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">has_attr</span><span class="op">(</span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"input"</span><span class="op">)</span>, <span class="st">"value"</span>, <span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in has_attr(s("input"), "value", 1):</span> `x` does not exist in the DOM.</span>
-<span class="r-in"><span><span class="fu">has_value</span><span class="op">(</span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"input"</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in has_value(s("input"), 1):</span> `x` does not exist in the DOM.</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">attr_contains</span><span class="op">(</span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"input"</span><span class="op">)</span>, <span class="st">"data-customattr"</span>, <span class="st">"Custom attribute"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in attr_contains(s("input"), "data-customattr", "Custom attribute"):</span> `x` does not exist in the DOM.</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># \dontshow{</span></span></span>
-<span class="r-in"><span><span class="co"># Clean up all connections and invalidate default chromote object</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="selenider_cleanup.html">selenider_cleanup</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="va">html</span> <span class="op">&lt;-</span> <span class="st">"</span></span>
+<span><span class="st">&lt;input class='myclass' value='1.0' data-customattr='Custom attribute text'&gt;&lt;/p&gt;</span></span>
+<span><span class="st">"</span></span>
+<span></span>
+<span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="minimal_selenider_session.html">minimal_selenider_session</a></span><span class="op">(</span><span class="va">html</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">has_attr</span><span class="op">(</span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"input"</span><span class="op">)</span>, <span class="st">"class"</span>, <span class="st">"myclass"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">has_attr</span><span class="op">(</span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"input"</span><span class="op">)</span>, <span class="st">"value"</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu">has_value</span><span class="op">(</span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"input"</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">attr_contains</span><span class="op">(</span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"input"</span><span class="op">)</span>, <span class="st">"data-customattr"</span>, <span class="st">"Custom attribute"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># \dontshow{</span></span>
+<span><span class="co"># Clean up all connections and invalidate default chromote object</span></span>
+<span><span class="fu"><a href="selenider_cleanup.html">selenider_cleanup</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co"># }</span></span></code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
