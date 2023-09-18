@@ -2,7 +2,7 @@
 % Please edit documentation in R/properties.R
 \name{elem_text}
 \alias{elem_text}
-\title{Get element text}
+\title{Get the text inside an element}
 \usage{
 elem_text(x, timeout = NULL)
 }
@@ -12,7 +12,7 @@ elem_text(x, timeout = NULL)
 \item{timeout}{The time to wait for \code{x} to exist.}
 }
 \value{
-A string
+A string.
 }
 \description{
 Get the inner text of a \code{selenider_element} object.

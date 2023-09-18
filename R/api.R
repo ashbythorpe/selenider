@@ -1,4 +1,4 @@
-#' Quickly select HTML elements
+#' Select HTML elements
 #'
 #' @description
 #' Both `s()` and `ss()` allow you to select elements without specifying a

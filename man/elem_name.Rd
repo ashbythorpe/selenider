@@ -2,7 +2,7 @@
 % Please edit documentation in R/properties.R
 \name{elem_name}
 \alias{elem_name}
-\title{Get tag name of an element}
+\title{Get the tag name of an element}
 \usage{
 elem_name(x, timeout = NULL)
 }
@@ -12,7 +12,7 @@ elem_name(x, timeout = NULL)
 \item{timeout}{The time to wait for \code{x} to exist.}
 }
 \value{
-A string
+A string.
 }
 \description{
 Get the tag name (e.g. \code{"p"} for a \verb{<p>} tag) of a \code{selenider_element} object.

@@ -27,7 +27,7 @@ element) instead of a specific element.}
 Note that when using chromote as a backend, these do not work on Mac OS.}
 }
 \value{
-\code{x}, invisibly
+\code{x}, invisibly.
 }
 \description{
 \code{elem_set_value()} sets the value of an HTML input element to a string.

@@ -200,7 +200,7 @@ refresh <- reload
 #' @inheritParams back
 #'
 #' @returns
-#' The session object, invisibly.
+#' `file`, if it is not `NULL`. Otherwise, the session object is returned, invisibly.
 #'
 #' @family global actions
 #'
@@ -250,7 +250,11 @@ take_screenshot <- function(file = NULL, view = FALSE, session = NULL) {
     session$driver$screenshot(file, show = view)
   }
 
-  invisible(session)
+  if (!is.null(file)) {
+    file
+  } else {
+    invisible(session)
+  }
 }
 
 #' Read the HTML of a session

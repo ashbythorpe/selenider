@@ -22,7 +22,7 @@ RSelenium does not seem to work (so JavaScript is used instead).}
 \item{timeout}{How long to wait for the element to exist.}
 }
 \value{
-\code{x}, invisibly
+\code{x}, invisibly.
 }
 \description{
 Clicks on an HTML element, either by simulating a mouse click or by triggering

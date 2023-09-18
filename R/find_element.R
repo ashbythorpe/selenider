@@ -1,4 +1,4 @@
-#' Get a single HTML element
+#' Find a single HTML child element
 #'
 #' Find the first HTML element using a CSS selector, an XPath, or a variety
 #' of other methods.

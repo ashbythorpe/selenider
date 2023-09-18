@@ -17,7 +17,7 @@ get_actual_elements(x, timeout = NULL)
 NULL, the timeout of the \code{selenider_element} will be used.}
 }
 \value{
-An integer (backendNodeId), or an\link[RSelenium:webElement-class]{RSelenium::webElement} object.
+An integer (backendNodeId), or an \link[RSelenium:webElement-class]{RSelenium::webElement} object.
 \code{get_actual_elements()} returns a list of such objects.
 }
 \description{
@@ -30,7 +30,8 @@ backendNodeId or \link[RSelenium:webElement-class]{RSelenium::webElement} object
 to exist in the DOM.
 
 \code{get_actual_elements()} turns a \code{selenider_elements} object into a list
-of \link[RSelenium:webElement-class]{RSelenium::webElement} objects.
+of \link[RSelenium:webElement-class]{RSelenium::webElement} objects, waiting for any parent objects to
+exist in the DOM.
 }
 \examples{
 \dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

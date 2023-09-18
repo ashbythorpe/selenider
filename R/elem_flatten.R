@@ -12,8 +12,7 @@
 #' @returns A `selenider_elements` object.
 #'
 #' @seealso
-#' * [elem_flatmap()] and [as.list.selenider_elements()] to iterate over element
-#'   collections.
+#' * [as.list.selenider_elements()] to iterate over element collections.
 #'
 #' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "

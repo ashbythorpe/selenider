@@ -14,7 +14,7 @@ elem_submit(x, js = FALSE, timeout = NULL)
 \item{timeout}{How long to wait for the element to exist.}
 }
 \value{
-\code{x}, invisibly
+\code{x}, invisibly.
 }
 \description{
 If an element is an ancestor of a form, submits the form.

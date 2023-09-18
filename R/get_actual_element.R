@@ -10,14 +10,15 @@
 #' to exist in the DOM.
 #'
 #' `get_actual_elements()` turns a `selenider_elements` object into a list
-#' of [RSelenium::webElement] objects.
+#' of [RSelenium::webElement] objects, waiting for any parent objects to
+#' exist in the DOM.
 #'
 #' @param x A `selenider_element` or `selenider_elements` object, produced by
 #'   [find_element()] / [find_elements()].
 #' @param timeout The timeout to use while asserting that the item exists. If
 #'   NULL, the timeout of the `selenider_element` will be used.
 #'
-#' @returns An integer (backendNodeId), or an[RSelenium::webElement] object.
+#' @returns An integer (backendNodeId), or an [RSelenium::webElement] object.
 #' `get_actual_elements()` returns a list of such objects.
 #'
 #' @seealso

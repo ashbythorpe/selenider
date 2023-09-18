@@ -1,4 +1,4 @@
-#' Get tag name of an element
+#' Get the tag name of an element
 #'
 #' Get the tag name (e.g. `"p"` for a `<p>` tag) of a `selenider_element` object.
 #'
@@ -6,7 +6,7 @@
 #' @param timeout The time to wait for `x` to exist.
 #'
 #' @returns
-#' A string
+#' A string.
 #'
 #' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
@@ -44,13 +44,13 @@ elem_name <- function(x, timeout = NULL) {
   }
 }
 
-#' Get element text
+#' Get the text inside an element
 #'
 #' Get the inner text of a `selenider_element` object.
 #'
 #' @inheritParams elem_name
 #'
-#' @returns A string
+#' @returns A string.
 #'
 #' @family properties
 #'
@@ -95,7 +95,7 @@ chromote_get_text <- function(x, driver) {
   }", chromote_object_id(backend_id = x, driver = driver))$result$value
 }
 
-#' Get element attribute
+#' Get attributes of an element
 #'
 #' @description
 #' Get an attribute of a `selenider_element` object.
@@ -114,9 +114,10 @@ chromote_get_text <- function(x, driver) {
 #'   or decimal number. By default, the value is returned as a string.
 #' @param timeout The time to wait for `x` to exist.
 #'
-#' @returns `elem_attr()` returns a character vector of length 1. `elem_attrs()`
-#'   returns a named list of strings. The return value of `elem_value()` has the
-#'   same type as `ptype` and length 1.
+#' @returns 
+#' `elem_attr()` returns a character vector of length 1. `elem_attrs()`
+#' returns a named list of strings. The return value of `elem_value()` has the
+#' same type as `ptype` and length 1.
 #'
 #' @family properties
 #'

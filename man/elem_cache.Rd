@@ -12,7 +12,7 @@ elem_cache(x, timeout = NULL)
 \item{timeout}{How long to wait for the element(s) to exist while collecting them.}
 }
 \value{
-The same type as \code{x}. The result of \code{elem_cache()} can be used
+A modified version of \code{x}. The result of \code{elem_cache()} can be used
 as a normal \code{selenider_element}/\code{selenider_elements} object.
 }
 \description{

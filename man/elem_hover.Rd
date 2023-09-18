@@ -14,7 +14,7 @@ elem_hover(x, js = FALSE, timeout = NULL)
 \item{timeout}{How long to wait for the element to exist.}
 }
 \value{
-\code{x}, invisibly
+\code{x}, invisibly.
 }
 \description{
 Move the mouse over to an HTML element and hover over it, without actually

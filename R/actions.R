@@ -14,7 +14,7 @@
 #'   RSelenium does not seem to work (so JavaScript is used instead).
 #' @param timeout How long to wait for the element to exist.
 #' 
-#' @returns `x`, invisibly
+#' @returns `x`, invisibly.
 #'
 #' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
@@ -327,7 +327,7 @@ elem_right_click <- function(x, js = FALSE, timeout = NULL) {
 #' @param js Whether to hover the element using JavaScript.
 #' @param timeout How long to wait for the element to exist.
 #'
-#' @returns `x`, invisibly
+#' @returns `x`, invisibly.
 #'
 #' @family actions
 #'
@@ -438,7 +438,7 @@ hover_chromote <- function(element, driver) {
 #' @param text A string to set the value of the input element to.
 #' @param timeout How long to wait for the element to exist.
 #' 
-#' @returns `x`, invisibly
+#' @returns `x`, invisibly.
 #'
 #' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
@@ -701,7 +701,7 @@ format_timeout_for_error <- function(x) {
 #' @param js Whether to scroll to the element using JavaScript.
 #' @param timeout How long to wait for the element to exist.
 #'
-#' @returns `x`, invisibly
+#' @returns `x`, invisibly.
 #'
 #' @family actions
 #'
@@ -793,7 +793,7 @@ elem_scroll_to <- function(x, js = FALSE, timeout = NULL) {
 #' @param js Whether to submit the form using JavaScript.
 #' @param timeout How long to wait for the element to exist.
 #'
-#' @returns `x`, invisibly
+#' @returns `x`, invisibly.
 #'
 #' @family actions
 #'

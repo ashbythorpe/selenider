@@ -147,6 +147,7 @@ selenider elements are *lazy*, meaning that when you specify the path to an elem
 elements, they are not actually located in the DOM until you *do* something with them.
 
 There are three types of functions that force an element to be collected:
+
 * actions (e.g. `elem_click()`)
 * properties (e.g. `elem_text()`)
 * conditions (e.g. `is_visible()`)

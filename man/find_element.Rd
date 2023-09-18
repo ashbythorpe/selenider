@@ -4,7 +4,7 @@
 \alias{find_element}
 \alias{find_element.selenider_session}
 \alias{find_element.selenider_element}
-\title{Get a single HTML element}
+\title{Find a single HTML child element}
 \usage{
 find_element(x, ...)
 

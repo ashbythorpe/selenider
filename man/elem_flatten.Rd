@@ -76,7 +76,6 @@ selenider_cleanup()
 }
 \seealso{
 \itemize{
-\item \code{\link[=elem_flatmap]{elem_flatmap()}} and \code{\link[=as.list.selenider_elements]{as.list.selenider_elements()}} to iterate over element
-collections.
+\item \code{\link[=as.list.selenider_elements]{as.list.selenider_elements()}} to iterate over element collections.
 }
 }

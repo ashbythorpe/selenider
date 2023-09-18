@@ -14,7 +14,7 @@ elem_scroll_to(x, js = FALSE, timeout = NULL)
 \item{timeout}{How long to wait for the element to exist.}
 }
 \value{
-\code{x}, invisibly
+\code{x}, invisibly.
 }
 \description{
 Scrolls to an HTML element.

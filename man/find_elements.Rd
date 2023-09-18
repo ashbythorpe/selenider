@@ -4,7 +4,7 @@
 \alias{find_elements}
 \alias{find_elements.selenider_session}
 \alias{find_elements.selenider_element}
-\title{Get multiple HTML elements}
+\title{Find multiple HTML child elements}
 \usage{
 find_elements(x, ...)
 

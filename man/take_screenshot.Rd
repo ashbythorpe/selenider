@@ -16,7 +16,7 @@ take_screenshot(file = NULL, view = FALSE, session = NULL)
 session object (the result of \code{\link[=get_session]{get_session()}}) is used.}
 }
 \value{
-The session object, invisibly.
+\code{file}, if it is not \code{NULL}. Otherwise, the session object is returned, invisibly.
 }
 \description{
 Take a screenshot of the current session state, saving this image to a file.

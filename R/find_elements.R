@@ -1,4 +1,4 @@
-#' Get multiple HTML elements
+#' Find multiple HTML child elements
 #' 
 #' Find every available HTML element using a CSS selector, an XPath, or a 
 #' variety of other methods.

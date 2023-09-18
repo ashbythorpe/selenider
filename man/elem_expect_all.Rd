@@ -27,8 +27,7 @@ specified, the timeout used for \code{x} will be used, or the timeout of the
 local session if an element is not given.}
 }
 \value{
-\code{elem_expect_all()} returns the elements \code{x}, or \code{NULL} if an element or
-collection of elements was not given in \code{x}.
+\code{elem_expect_all()} returns \code{x}, invisibly.
 
 \code{elem_wait_until_all()} returns a boolean flag: TRUE if the test passes, FALSE
 otherwise.

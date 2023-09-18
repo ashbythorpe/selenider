@@ -36,8 +36,7 @@
 #' However, the second example will give a more detailed error message on failure.
 #'
 #' @returns
-#' `elem_expect_all()` returns the elements `x`, or `NULL` if an element or
-#' collection of elements was not given in `x`.
+#' `elem_expect_all()` returns `x`, invisibly.
 #'
 #' `elem_wait_until_all()` returns a boolean flag: TRUE if the test passes, FALSE
 #' otherwise.

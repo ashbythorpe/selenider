@@ -3,7 +3,7 @@
 \name{s}
 \alias{s}
 \alias{ss}
-\title{Quickly select HTML elements}
+\title{Select HTML elements}
 \usage{
 s(
   css = NULL,

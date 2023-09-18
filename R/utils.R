@@ -248,6 +248,13 @@ is_linux <- function() Sys.info()[['sysname']] == 'Linux'
 #'
 #' @keywords internal
 #'
+#' @returns Nothing
+#'
+#' @examples
+#' \dontrun{
+#' selenider_cleanup()
+#' }
+#'
 #' @export
 selenider_cleanup <- function(env = rlang::caller_env()) { # nocov start
   Sys.setenv("_R_CHECK_CONNECTIONS_LEFT_OPEN_" = "FALSE")

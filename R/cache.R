@@ -32,7 +32,7 @@
 #' but the child element with class ".class2" will not.
 #'
 #' @returns
-#' The same type as `x`. The result of `elem_cache()` can be used
+#' A modified version of `x`. The result of `elem_cache()` can be used
 #' as a normal `selenider_element`/`selenider_elements` object.
 #'
 #' @seealso
