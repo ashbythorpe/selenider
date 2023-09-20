@@ -1,0 +1,187 @@
+---
+output: rmarkdown::html_vignette
+title: "Unit testing"
+vignette: >
+  %\VignetteIndexEntry{Unit testing}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+available <- selenider::selenider_available()
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = available
+)
+```
+
+```{r, eval = !available, include = FALSE}
+message("Selenider is not available")
+```
+
+selenider is compatible with unit testing frameworks like `testthat` and `shinytest2`.
+In this vignette, we will explore how to write unit tests with selenider, and we
+will briefly describe how to automate your tests using Github Actions.
+
+```{r setup}
+library(selenider)
+library(testthat)
+```
+
+## Using selenider with testthat
+
+Tests contained within `testthat::test_that()` are self-contained, having no impact
+on other tests. selenider is no exception: selenider sessions, when created inside
+a `testthat::test_that()` block, will be closed automatically when the test
+finishes running.
+
+Remember, as always, to use the `.env` argument when wrapping `selenider_session()`
+in another function.
+
+`elem_expect()` also has additional features inside `testhat::test_that()`.
+When it succeeds, it will call `testthat::succeed()`, and when it fails, it will use
+`testthat::fail()` instead of throwing an error. This allows tests to continue
+running even if `elem_expect()` fails.
+
+```{r error = TRUE}
+test_that("My test", {
+  # session will be opened here...
+  open_url("https://www.r-project.org/")
+
+  s(".random-class") |>
+    elem_expect(is_present)
+}) # and closed here!
+```
+
+## Using selenider with shinytest2
+
+Since shinytest2 uses chromote as a backend, it can be used with selenider. selenider
+can be used to add more robust UI testing to shinytest2, replacing unreliable uses of 
+`AppDriver$expect_screenshot()`.
+
+shinytest2 does have a few UI expectations (`AppDriver$expect_text()`, 
+`AppDriver$expect_html()` and `AppDriver$expect_js()`), but these do not include the
+same laziness and implicit waiting that selenider provides, making them a bit less 
+reliable.
+
+``` {r setup2}
+library(shiny)
+library(shinytest2)
+```
+
+Let's create a simple shiny app, consisting of a `shiny::actionButton()` and 
+`shiny:: conditionalPanel()`. The panel is shown if the button has been
+clicked an odd number of times, and hidden otherwise.
+
+We would like to test that the server-side processing of the button input is
+done correctly, which we can do using shinytest2. However, we would also like
+to check that the panel is visible at the correct times, which we cannot do
+with shinytest2, and so we will use selenider instead.
+
+``` {r}
+shiny_app <- shinyApp(
+  ui = fluidPage(
+    actionButton("button", label = "Click me!"),
+    conditionalPanel(
+      condition = "(input.button % 2) == 1",
+      p("Button has been clicked an odd number of times.")
+    ) |>
+      tagAppendAttributes(id = "condpanel")
+  ),
+  server = function(input, output) {
+    even <- reactive((input$button %% 2) == 0)
+    exportTestValues(even = { even() })
+  }
+)
+```
+
+To start a selenider session using an existing `shinytest2::AppDriver` object,
+supply it to the `driver` argument of `selenider_session()`:
+`session <- selenider_session(driver = <AppDriver>)`
+
+``` {r}
+test_that("App works", {
+  app <- AppDriver$new(shiny_app)
+
+  session <- selenider_session(driver = app)
+
+  s("#condpanel") |>
+    elem_expect(is_invisible)
+
+  app$click("button")
+
+  app$expect_values(export = "even")
+  s("#condpanel") |>
+    elem_expect(is_visible)
+
+  app$click("button")
+
+  app$expect_values(export = "even")
+  s("#condpanel") |>
+    elem_expect(is_invisible)
+})
+```
+
+Note the difference in styles: while in selenider you must specify tests explicitly,
+shinytest2 uses a snapshot-based approach (specifying the value that you want to
+test and omitting the value that you expect it to be). There are advantages and
+disadvantages to this approach: the tests are generally easier to create and update,
+but a little harder to debug.
+
+If you want to use a snapshot-based style, you can do it manually, e.g.:
+``` r
+expect_snapshot(is_visible(s("#condpanel")))
+```
+
+However, note that the tests will no longer wait a certain period of time for the
+value to be correct, since the test is unaware of what the correct value is.
+
+## Using selenider with Github Actions
+
+The complexity of using selenider with Github Actions depends on the backend that you use.
+
+If you would like to use chromote as your backend, you shouldn't need to make any special
+additions to your workflow files, and can safely use something like [r-lib's R CMD CHECK
+action](https://github.com/r-lib/actions/tree/v2-branch/examples#standard-ci-workflow).
+This is because chromote only requires chrome to be installed, which is already the case
+on Github's machines.
+
+Using RSelenium as your backend is more complicated. Installing RSelenium can be complicated,
+so for a reliable workflow, we recommend using docker. Unfortunately, RSelenium currently
+only supports rather old docker images. We currently use RSelenium version 3.141.0. Note
+that some of the following advice also applies if you want to use Selenium and docker
+manually.
+
+To use docker in a Github Action yaml file, add the following lines (changing the ports and
+browser if wanted/needed):
+``` yaml
+services:
+  selenium:
+    image: selenium/standalone-firefox:3.141.0
+    ports:
+      - 4444:4444
+```
+
+This will download Firefox and start a Selenium server on port 4444. Automating a browser
+with Selenium consists of two parts: the server and the client. By default, 
+`selenider_session()` tries to setup both, but we can stop this from happening by using
+the `create_selenium_client()` function, and passing the result into the `driver` argument
+to `selenider_session()`.
+
+``` r
+session <- selenider_session(
+  "selenium",
+  browser = "firefox"
+  driver = create_selenium_client(
+    port = 4444
+  )
+)
+```
+
+The session can then by used as usual. selenider will no longer be able to close the selenium
+server, but this should be done automatically in the Github Action.
+
+For more information, see how we setup our Github Actions workflow for selenium:
+<https://github.com/ashbythorpe/selenider/blob/main/.github/workflows/R-CMD-check-selenium.yaml>
+<https://github.com/ashbythorpe/selenider/blob/main/tests/testthat/helper-session.R>
