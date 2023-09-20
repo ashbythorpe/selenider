@@ -34,7 +34,7 @@ s("p") |>
   elem_css_property("visibility")
 
 s("p") |>
-  elem_css_property("colour")
+  elem_css_property("color")
 
 \dontshow{
 # Clean up all connections and invalidate default chromote object
