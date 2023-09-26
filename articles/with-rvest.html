@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">selenider</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -111,9 +111,9 @@ to the original post.</p>
 <span>  <span class="fu"><a href="../reference/open_url.html">open_url</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Now, we would like to parse the text of the post using
 <code><a href="https://rvest.tidyverse.org/reference/html_text.html" class="external-link">rvest::html_text2()</a></code>. We can do this in two ways, either by
-locationg the element containing the post using selenider then parsing
-it using rvest, or by parsing the entire page using rvest and finding
-the element after. The two methods are very similar, since selenider and
+locating the element containing the post using selenider then parsing it
+using rvest, or by parsing the entire page using rvest and finding the
+element after. The two methods are very similar, since selenider and
 rvest use a very similar syntax, except rvest uses the
 <code>html_</code> prefix rather than the <code>elem_</code> prefix.</p>
 <p>We can convert between selenider elements and rvest (or more

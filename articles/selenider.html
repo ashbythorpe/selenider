@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">selenider</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -151,7 +151,7 @@ are used, but other options are available.</p>
 <span><span class="va">header</span></span>
 <span><span class="co">#&gt; A selenider element selecting:</span></span>
 <span><span class="co">#&gt; The first element with css selector <span style="color: #0000BB;">"#rStudioHeader"</span>.</span></span></code></pre></div>
-<p>For example, an xpath can be used instead. XPaths can be useful for
+<p>For example, an XPath can be used instead. XPaths can be useful for
 more complex selectors, and are not limited to selecting from the
 ancestors of the current element. However, they can be difficult to
 read.</p>
@@ -240,9 +240,12 @@ functions use the same interface as <code><a href="../reference/elem_expect.html
 the path to an element or group of elements, they are not actually
 located in the DOM until you <em>do</em> something with them.</p>
 <p>There are three types of functions that force an element to be
-collected: * actions (e.g. <code><a href="../reference/elem_click.html">elem_click()</a></code>) * properties
-(e.g. <code><a href="../reference/elem_text.html">elem_text()</a></code>) * conditions
-(e.g. <code><a href="../reference/is_visible.html">is_visible()</a></code>)</p>
+collected:</p>
+<ul>
+<li>actions (e.g. <code><a href="../reference/elem_click.html">elem_click()</a></code>)</li>
+<li>properties (e.g. <code><a href="../reference/elem_text.html">elem_text()</a></code>)</li>
+<li>conditions (e.g. <code><a href="../reference/is_visible.html">is_visible()</a></code>)</li>
+</ul>
 <p>Most functions that act on elements use the <code>elem_</code>
 prefix.</p>
 </div>

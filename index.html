@@ -34,7 +34,7 @@
     
     <a class="navbar-brand me-2" href="index.html">selenider</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -98,14 +98,17 @@
 <li>All functions are designed for use with the pipe operator (<code>|&gt;</code> or <code>%&gt;%</code>); elements can be selected, tested and operated on in a single pipeline.</li>
 <li>
 <code><a href="reference/elem_expect.html">elem_expect()</a></code> is a powerful way to specify test expectations, with a simple but extensible syntax and informative error messages.</li>
-<li>selenider is compatible with automated testing frameworks like <a href="https://testthat.r-lib.org" class="external-link">testthat</a> and <a href="https://shinytest2.r-lib.org/" class="external-link">shinytest2</a>.</li>
+<li>selenider is compatible with automated testing frameworks like <a href="https://testthat.r-lib.org" class="external-link">testthat</a> and <a href="https://rstudio.github.io/shinytest2/" class="external-link">shinytest2</a>.</li>
 </ul>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the development version of selenider like so:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
+<code class="sourceCode R"><span><span class="co"># Install selenider from CRAN</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"selenider"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Or the development version from Github</span></span>
+<span><span class="co"># install.packages("remotes")</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ashbythorpe/selenider"</span><span class="op">)</span></span></code></pre></div>
 <p>Additionally, you must install <a href="https://rstudio.github.io/chromote/" class="external-link">chromote</a> or <a href="https://docs.ropensci.org/RSelenium/" class="external-link">RSelenium</a>. We recommend chromote, as it is quicker and easier to get up and running.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -155,7 +158,7 @@
 <div class="section level2">
 <h2 id="vignettes">Vignettes<a class="anchor" aria-label="anchor" href="#vignettes"></a>
 </h2>
-<p>Get started with selenider, and learn the basics: <code><a href="articles/selenider.html">vignette("selenider")</a></code>. Use selenider with testthat, shinytest2 and Github Actions: <code><a href="articles/unit-testing.html">vignette("unit-testing", package = "selenider")</a></code>. Use selenider with rvest: <code><a href="articles/with-rvest.html">vignette("with-rvest", package = "selenider")</a></code>.</p>
+<p>Get started with selenider, and learn the basics: <code><a href="articles/selenider.html">vignette("selenider")</a></code>. Use selenider with testthat, shinytest2 and Github Actions: <code><a href="articles/unit-testing.html">vignette("unit-testing", package = "selenider")</a></code>. Use selenider with rvest: <code><a href="articles/with-rvest.html">vignette("with-rvest", package = "selenider")</a></code></p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
