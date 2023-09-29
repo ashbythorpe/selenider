@@ -124,11 +124,6 @@ s("dl") |>
       find_element("a") |>
       elem_attr("href")
   )
-#> [[1]]
-#> [1] "https://www.stats.bris.ac.uk/R/"
-#> 
-#> [[2]]
-#> [1] "https://cran.ma.imperial.ac.uk/"
 ```
 
 ## Vignettes
