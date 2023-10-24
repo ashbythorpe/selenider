@@ -237,7 +237,7 @@ take_screenshot <- function(file = NULL, view = FALSE, session = NULL) {
   }
 
   if (is.null(file)) {
-    file <- withr::local_tempfile(fileext = "png")
+    file <- withr::local_tempfile(fileext = ".png")
   }
 
   if (uses_selenium(session$driver)) {
