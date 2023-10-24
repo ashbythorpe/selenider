@@ -1,19 +1,3 @@
-current_url <- function(session = NULL) {
-  if (is.null(session)) {
-    session <- get_session()
-  }
-
-  driver <- session$driver
-
-  if (uses_selenium(driver)) {
-    unpack_list(driver$client$getCurrentUrl())
-  } else {
-    history <- driver$Page$getNavigationHistory()
-    current_page <- history$entries[[history$currentIndex + 1]]
-    current_page$url
-  }
-}
-
 test_that("Global actions work", {
   session <- selenider_test_session()
 

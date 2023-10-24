@@ -176,7 +176,7 @@ reload <- function(session = NULL) {
 
   if (uses_selenium(session$driver)) {
     driver$client$refresh()
-} else {
+  } else {
     promise <- driver$Page$loadEventFired(wait_ = FALSE)
     session$driver$Page$reload(wait_ = FALSE)
     driver$wait_for(promise)
@@ -294,7 +294,6 @@ get_page_source <- function(session = NULL, ...) {
 
   if (uses_selenium(driver)) {
     page_source <- unpack_list(driver$client$getPageSource())
-
   } else {
     document <- driver$DOM$getDocument()
     root <- document$root$nodeId
@@ -302,4 +301,43 @@ get_page_source <- function(session = NULL, ...) {
   }
 
   xml2::read_html(page_source, ...)
+}
+
+#' Get the URL of the current page
+#'
+#' Get the full URL of the current page.
+#'
+#' @param session Optionally, a `selenider_session` object.
+#'
+#' @returns A string: the current URL.
+#'
+#' @family global actions
+#'
+#' @examplesIf selenider::selenider_available()
+#' session <- selenider_session()
+#'
+#' open_url("https://r-project.org")
+#'
+#' current_url()
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
+#'
+#' @export
+current_url <- function(session = NULL) {
+  if (is.null(session)) {
+    session <- get_session()
+  }
+
+  driver <- session$driver
+
+  if (uses_selenium(driver)) {
+    unpack_list(driver$client$getCurrentUrl())
+  } else {
+    history <- driver$Page$getNavigationHistory()
+    current_page <- history$entries[[history$currentIndex + 1]]
+    current_page$url
+  }
 }
