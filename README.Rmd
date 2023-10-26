@@ -121,6 +121,7 @@ s("dl") |>
 ```
 
 ## Vignettes
-Get started with selenider, and learn the basics: `vignette("selenider")`.
-Use selenider with testthat, shinytest2 and Github Actions: `vignette("unit-testing", package = "selenider")`.
-Use selenider with rvest: `vignette("with-rvest", package = "selenider")`
+
+* Get started with selenider, and learn the basics: `vignette("selenider")`.
+* Use selenider with testthat, shinytest2 and Github Actions: `vignette("unit-testing", package = "selenider")`.
+* Use selenider with rvest: `vignette("with-rvest", package = "selenider")`
