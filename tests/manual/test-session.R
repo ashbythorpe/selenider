@@ -17,7 +17,7 @@ test_that("Creating sessions using RSelenium works", {
   session <- selenider_session("selenium", browser = "firefox")
 
   expect_true(is_selenium_server(session$driver$server))
-  expect_true(is_selenium_client(session$driver$client))
+  expect_true(is_selenium_client(session$driver))
   expect_equal(session$session, "selenium")
 
   withr::deferred_run()
@@ -29,7 +29,7 @@ test_that("Creating sessions using RSelenium works", {
   expect_equal(find_port_from_server(server), 4444L)
 
   expect_true(is_selenium_server(session$driver$server))
-  expect_true(is_selenium_client(session$driver$client))
+  expect_true(is_selenium_client(session$driver))
   expect_equal(session$session, "selenium")
 
   withr::deferred_run()
@@ -39,7 +39,7 @@ test_that("Creating sessions using RSelenium works", {
   session <- selenider_session(browser = "firefox", driver = list(server = server))
 
   expect_true(is_selenium_server(session$driver$server))
-  expect_true(is_selenium_client(session$driver$client))
+  expect_true(is_selenium_client(session$driver))
   expect_equal(session$session, "selenium")
 
   withr::deferred_run()
@@ -49,7 +49,7 @@ test_that("Creating sessions using RSelenium works", {
   session <- selenider_session(browser = "firefox", driver = list(server))
 
   expect_true(is_selenium_server(session$driver$server))
-  expect_true(is_selenium_client(session$driver$client))
+  expect_true(is_selenium_client(session$driver))
   expect_equal(session$session, "selenium")
 
   withr::deferred_run()
@@ -60,7 +60,7 @@ test_that("Creating sessions using RSelenium works", {
   session <- selenider_session(driver = list(client, server))
 
   expect_true(is_selenium_server(session$driver$server))
-  expect_true(is_selenium_client(session$driver$client))
+  expect_true(is_selenium_client(session$driver))
   expect_equal(session$session, "selenium")
 
   withr::deferred_run()
@@ -71,7 +71,7 @@ test_that("Creating sessions using RSelenium works", {
   session <- selenider_session(driver = list(client = client, server = server))
 
   expect_true(is_selenium_server(session$driver$server))
-  expect_true(is_selenium_client(session$driver$client))
+  expect_true(is_selenium_client(session$driver))
   expect_equal(session$session, "selenium")
 
   withr::deferred_run()
@@ -82,7 +82,7 @@ test_that("Creating sessions using RSelenium works", {
   session <- selenider_session(driver = list(client))
 
   expect_null(session$driver$server)
-  expect_true(is_selenium_client(session$driver$client))
+  expect_true(is_selenium_client(session$driver))
   expect_equal(session$session, "selenium")
 
   withr::deferred_run()

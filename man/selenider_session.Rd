@@ -105,7 +105,7 @@ can then be passed into the \code{driver} argument to \code{selenider_session()}
 \section{Structure of a selenider session}{
 A \code{selenider_session} object is an S3 list, meaning its properties can be accessed using \code{$}.
 Most notably, using \code{session$driver} allows access to the driver object which actually controls
-the browser. If you are using Selenium, use \code{session$driver$client} to access the \code{remoteDriver}
+the browser. If you are using Selenium, use \code{session$driver} to access the \code{remoteDriver}
 object. These objects are useful if you want to do something with the driver that is not directly
 supported by selenider. See \code{\link[=get_actual_element]{get_actual_element()}} for some examples of this.
 }

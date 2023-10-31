@@ -65,10 +65,10 @@ elem_equal <- function(x, y, timeout = NULL) {
   element_x <- get_element(x)
   element_y <- get_element(y)
 
-  if (uses_selenium(x$driver)) {
-    selenium_equal(element_x, element_y, driver = x$driver)
-  } else {
+  if (x$session == "chromote") {
     element_x == element_y
+  } else {
+    selenium_equal(element_x, element_y, driver = x$driver)
   }
 }
 
@@ -80,5 +80,9 @@ elem_equal <- function(x, y, timeout = NULL) {
 }
 
 selenium_equal <- function(x, y, driver) {
+  driver$execute_script("return arguments[0].isSameNode(arguments[1])", x, y)
+}
+
+rselenium_equal <- function(x, y, driver) {
   driver$executeScript("return arguments[0].isSameNode(arguments[1])", list(x, y))[[1]]
 }

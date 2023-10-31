@@ -126,6 +126,7 @@ elem_combine <- function(elements) {
   selector <- new_flattened_selector(elements)
 
   res <- list(
+    session = elements[[1]]$session,
     driver = driver,
     driver_id = elements[[1]]$driver_id,
     element = NULL,

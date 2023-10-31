@@ -35,12 +35,12 @@ open_url <- function(url, session = NULL) {
 
   driver <- session$driver
 
-  if (uses_selenium(session$driver)) {
-    driver$client$navigate(url)
-  } else {
+  if (session$session == "chromote") {
     promise <- driver$Page$loadEventFired(wait_ = FALSE)
     driver$Page$navigate(url, wait_ = FALSE)
     driver$wait_for(promise)
+  } else {
+    driver$navigate(url)
   }
 
   invisible(session)
@@ -55,7 +55,7 @@ open_url <- function(url, session = NULL) {
 #' `forward()` reverses the action of `back()`, going to the next page in your
 #' browsing history.
 #'
-#' @param session A `selenider_session object. If not specified, the global
+#' @param session A `selenider_session` object. If not specified, the global
 #'   session object (the result of [get_session()]) is used.
 #'
 #' @returns
@@ -89,9 +89,7 @@ back <- function(session = NULL) {
 
   driver <- session$driver
 
-  if (uses_selenium(session$driver)) {
-    driver$client$goBack()
-  } else {
+  if (session$session == "chromote") {
     navigation_history <- driver$Page$getNavigationHistory()
     index <- navigation_history$currentIndex + 1
     history <- navigation_history$entries
@@ -104,6 +102,10 @@ back <- function(session = NULL) {
     } else {
       warn_history_page_not_found(next_page = FALSE)
     }
+  } else if (session$session == "selenium") {
+    driver$back()
+  } else {
+    driver$goBack()
   }
 
   invisible(session)
@@ -121,9 +123,7 @@ forward <- function(session = NULL) {
 
   driver <- session$driver
 
-  if (uses_selenium(session$driver)) {
-    driver$client$goForward()
-  } else {
+  if (session$session == "chromote") {
     navigation_history <- driver$Page$getNavigationHistory()
     index <- navigation_history$currentIndex + 1
     history <- navigation_history$entries
@@ -136,6 +136,10 @@ forward <- function(session = NULL) {
     } else {
       warn_history_page_not_found(next_page = TRUE)
     }
+  } else if (session$session == "selenium") {
+    driver$forward()
+  } else {
+    driver$goForward()
   }
 
   invisible(session)
@@ -174,12 +178,12 @@ reload <- function(session = NULL) {
 
   driver <- session$driver
 
-  if (uses_selenium(session$driver)) {
-    driver$client$refresh()
-  } else {
+  if (session$session == "chromote") {
     promise <- driver$Page$loadEventFired(wait_ = FALSE)
     session$driver$Page$reload(wait_ = FALSE)
     driver$wait_for(promise)
+  } else {
+    driver$refresh()
   }
 
   invisible(session)
@@ -240,14 +244,22 @@ take_screenshot <- function(file = NULL, view = FALSE, session = NULL) {
     file <- withr::local_tempfile(fileext = ".png")
   }
 
-  if (uses_selenium(session$driver)) {
-    session$driver$client$screenshot(file = file)
+  if (session$session == "chromote") {
+    session$driver$screenshot(file, show = view)
+  } else if (session$session == "selenium") {
+    result <- session$driver$screenshot()
+
+    writeBin(jsonlite::base64_dec(result), file)
 
     if (view) {
       showimage::show_image(file)
     }
   } else {
-    session$driver$screenshot(file, show = view)
+    session$driver$screenshot(file = file)
+
+    if (view) {
+      showimage::show_image(file)
+    }
   }
 
   if (!is.null(file)) {
@@ -292,12 +304,14 @@ get_page_source <- function(session = NULL, ...) {
 
   driver <- session$driver
 
-  if (uses_selenium(driver)) {
-    page_source <- unpack_list(driver$client$getPageSource())
-  } else {
+  if (session$session == "chromote") {
     document <- driver$DOM$getDocument()
     root <- document$root$nodeId
     page_source <- driver$DOM$getOuterHTML(root)$outerHTML
+  } else if (session$session == "selenium") {
+    page_source <- driver$get_page_source()
+  } else {
+    page_source <- unpack_list(driver$getPageSource())
   }
 
   xml2::read_html(page_source, ...)
@@ -333,11 +347,13 @@ current_url <- function(session = NULL) {
 
   driver <- session$driver
 
-  if (uses_selenium(driver)) {
-    unpack_list(driver$client$getCurrentUrl())
-  } else {
+  if (session$session == "chromote") {
     history <- driver$Page$getNavigationHistory()
     current_page <- history$entries[[history$currentIndex + 1]]
     current_page$url
+  } else if (session$session == "selenium") {
+    driver$current_url()
+  } else {
+    unpack_list(driver$getCurrentUrl())
   }
 }

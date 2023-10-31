@@ -36,11 +36,13 @@ elem_name <- function(x, timeout = NULL) {
     timeout = timeout,
   )
 
-  if (uses_selenium(x$driver)) {
-    unpack_list(element$getElementTagName())
-  } else {
+  if (x$session == "chromote") {
     driver <- x$driver
     tolower(driver$DOM$describeNode(backendNodeId = element)$node$nodeName)
+  } else if (x$session == "selenium") {
+    element$get_tag_name()
+  } else {
+    unpack_list(element$getElementTagName())
   }
 }
 
@@ -81,11 +83,13 @@ elem_text <- function(x, timeout = NULL) {
     timeout = timeout,
   )
 
-  if (uses_selenium(x$driver)) {
-    unpack_list(element$getElementText())
-  } else {
+  if (x$session == "chromote") {
     driver <- x$driver
     chromote_get_text(element, driver = driver)
+  } else if (x$session == "selenium") {
+    element$get_text()
+  } else {
+    unpack_list(element$getElementText())
   }
 }
 
@@ -114,7 +118,7 @@ chromote_get_text <- function(x, driver) {
 #'   or decimal number. By default, the value is returned as a string.
 #' @param timeout The time to wait for `x` to exist.
 #'
-#' @returns 
+#' @returns
 #' `elem_attr()` returns a character vector of length 1. `elem_attrs()`
 #' returns a named list of strings. The return value of `elem_value()` has the
 #' same type as `ptype` and length 1.
@@ -144,7 +148,7 @@ chromote_get_text <- function(x, driver) {
 #' }
 #'
 #' @export
-elem_attr <- function(x, name, default = NA_character_, timeout = NULL) {
+elem_attr <- function(x, name, default = NULL, timeout = NULL) {
   check_string(name)
   check_number_decimal(timeout, allow_null = TRUE)
 
@@ -156,18 +160,16 @@ elem_attr <- function(x, name, default = NA_character_, timeout = NULL) {
     timeout = timeout
   )
 
-  if (uses_selenium(x$driver)) {
-    result <- element$getElementAttribute(name)
-
-    if (length(result) == 0) {
-      default
-    } else {
-      result[[1]]
-    }
-  } else {
+  result <- if (x$session == "chromote") {
     driver <- x$driver
     chromote_get_attribute(element, name, default, driver = driver)
+  } else if (x$session == "selenium") {
+    element$get_attribute(name)
+  } else {
+    unpack_list(element$getElementAttribute(name))
   }
+
+  if (identical(result, "")) NULL else result
 }
 
 chromote_get_attribute <- function(x, name, default, driver) {
@@ -215,18 +217,18 @@ elem_attrs <- function(x, timeout = NULL) {
     timeout = timeout
   )
 
-  if (uses_selenium(x$driver)) {
-    x$driver$executeScript("
-      let element = arguments[0];
+  driver <- x$driver
+
+  if (x$session == "chromote") {
+    chromote_get_attributes(element, driver = driver)
+  } else {
+    execute_js_fn_on("function(x) {
       let attributes = {};
-      for (let i = 0; i < element.attributes.length; i++) {
-        attributes[element.attributes[i].name] = element.attributes[i].value;
+      for (let i = 0; i < x.attributes.length; i++) {
+        attributes[x.attributes[i].name] = x.attributes[i].value;
       }
       return attributes;
-    ", list(element))
-  } else {
-    driver <- x$driver
-    chromote_get_attributes(element, driver = driver)
+    }", element, session = x$session, driver = driver)
   }
 }
 
@@ -245,30 +247,30 @@ elem_value <- function(x, ptype = character(), timeout = NULL) {
     timeout = timeout
   )
 
-  if (uses_selenium(x$driver)) {
-    result <- unpack_list(element$getElementAttribute("value"))
-
-    if (is.null(result) || identical(result, "")) {
-      vctrs::vec_cast(NA, ptype)
-    } else {
-      if (is.numeric(ptype)) {
-        result <- suppressWarnings(as.numeric(result))
-      }
-
-      vctrs::vec_cast(result, ptype)
-    }
-  } else {
+  result <- if (x$session == "chromote") {
     driver <- x$driver
-    result <- chromote_get_attribute(element, "value", NA, driver = driver)
-
-    if (is.integer(ptype)) {
-      return(suppressWarnings(as.integer(result)))
-    } else if (is.double(ptype)) {
-      return(suppressWarnings(as.double(result)))
-    }
-
-    vctrs::vec_cast(result, ptype)
+    chromote_get_attribute(element, "value", NULL, driver = driver)
+  } else if (x$session == "selenium") {
+    element$get_attribute("value")
+  } else {
+    unpack_list(element$getElementAttribute("value"))
   }
+
+  if (identical(result, "") || length(result) == 0) {
+    NULL
+  } else {
+    convert_value(result, ptype)
+  }
+}
+
+convert_value <- function(x, ptype) {
+  if (is.integer(ptype)) {
+    return(suppressWarnings(as.integer(x)))
+  } else if (is.double(ptype)) {
+    return(suppressWarnings(as.double(x)))
+  }
+
+  vctrs::vec_cast(x, ptype)
 }
 
 #' Get a CSS property of an element
@@ -283,7 +285,7 @@ elem_value <- function(x, ptype = character(), timeout = NULL) {
 #' @param timeout The time to wait for `x` to exist.
 #'
 #' @returns
-#' A string, or `NA` if the property does not exist.
+#' A string, or `NULL` if the property does not exist.
 #'
 #' @family properties
 #'
@@ -319,18 +321,16 @@ elem_css_property <- function(x, name, timeout = NULL) {
     timeout = timeout
   )
 
-  if (uses_selenium(x$driver)) {
-    result <- element$getElementValueOfCssProperty(name)
-
-    if (length(result) == 0) {
-      NA_character_
-    } else {
-      result[[1]]
-    }
-  } else {
+  result <- if (x$session == "chromote") {
     driver <- x$driver
-    chromote_get_css_property(element, name, NA_character_, driver = driver)
+    chromote_get_css_property(element, name, NULL, driver = driver)
+  } else if (x$session == "selenium") {
+    element$get_css_value(name)
+  } else {
+    unpack_list(element$getElementValueOfCssProperty(name))
   }
+
+  if (identical(result, "")) NULL else result
 }
 
 chromote_get_css_property <- function(x, name, default, driver) {
@@ -364,21 +364,21 @@ chromote_get_css_property <- function(x, name, default, driver) {
 }
 
 #' Get the number of elements in a collection
-#' 
+#'
 #' @description
-#' Get the number of elements in a HTML element collection, waiting for the 
+#' Get the number of elements in a HTML element collection, waiting for the
 #' parent elements (if any) to exist before returning a value.
-#' 
+#'
 #' `length()` and `elem_size()` can be used interchangeably, the only
 #' difference being that `elem_size()` allows you to specify a timeout.
-#' 
+#'
 #' @param x A `selenider_elements` object.
 #' @param timeout The time to wait for the parent of `x` (if any) to exist.
-#' 
+#'
 #' @returns An integer representing the number of elements in the collection.
 #'
 #' @family properties
-#' 
+#'
 #' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
 #' <div></div>
@@ -387,7 +387,7 @@ chromote_get_css_property <- function(x, name, default, driver) {
 #' <div></div>
 #' "
 #' session <- minimal_selenider_session(html)
-#' 
+#'
 #' ss("div") |>
 #'   length()
 #'
@@ -395,7 +395,7 @@ chromote_get_css_property <- function(x, name, default, driver) {
 #' # Clean up all connections and invalidate default chromote object
 #' selenider_cleanup()
 #' }
-#' 
+#'
 #' @export
 elem_size <- function(x, timeout = NULL) {
   timeout <- get_timeout(timeout, x$timeout)
@@ -410,7 +410,7 @@ elem_size <- function(x, timeout = NULL) {
 }
 
 #' @rdname elem_size
-#' 
+#'
 #' @export
 length.selenider_elements <- function(x) {
   elem_size(x)
@@ -447,3 +447,4 @@ get_elements_for_property <- function(x, action, timeout, call = rlang::caller_e
 
   elements
 }
+

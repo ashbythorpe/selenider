@@ -32,11 +32,27 @@ find_actual_element <- function(x, using, value, driver) {
         }
       }
     )
+  } else if (inherits_any(x, c("SeleniumSession", "WebElement"))) {
+    if (!using %in% c("css selector", "xpath", "tag name", "link text")) {
+      value <- selector_to_css(using, value)
+      using <- "css selector"
+    }
+
+    try_fetch(
+      x$find_element(using = using, value = value),
+      error = function(cnd) {
+        if (grepl("No such element", cnd$message, fixed = TRUE)) {
+          NULL
+        } else {
+          zap()
+        }
+      }
+    )
   } else if (inherits(x, "ChromoteSession")) {
     if (using == "xpath") {
       return(use_xpath_chromote(value, x, NULL))
     }
-    
+
     selector <- selector_to_css(using, value)
     document <- x$DOM$getDocument()
 
@@ -87,17 +103,24 @@ find_actual_element <- function(x, using, value, driver) {
 find_actual_elements <- function(x, using, value, driver) {
   if (inherits_any(x, c("webElement", "mock_element"))) {
     x$findChildElements(using = using, value = value)
-  } else if(inherits_any(x, c("remoteDriver", "mock_client"))) {
+  } else if (inherits_any(x, c("remoteDriver", "mock_client"))) {
     x$findElements(using = using, value = value)
   } else if (inherits(x, "ChromoteSession")) {
     if (using == "xpath") {
       return(use_xpath_chromote(value, x, NULL, multiple = TRUE))
     }
-    
+
     selector <- selector_to_css(using, value)
     document <- x$DOM$getDocument()
     node_ids <- x$DOM$querySelectorAll(document$root$nodeId, selector)$nodeIds
     lapply(node_ids, chromote_backend_id, driver = x)
+  } else if (inherits_any(x, c("SeleniumSession", "WebElement"))) {
+    if (!using %in% c("css selector", "xpath", "tag name", "link text")) {
+      value <- selector_to_css(using, value)
+      using <- "css selector"
+    }
+
+    x$find_elements(using = using, value = value)
   } else if (is.numeric(x)) {
     if (using == "xpath") {
       return(use_xpath_chromote(value, x, driver, multiple = TRUE))
@@ -127,12 +150,12 @@ selector_to_css <- function(using, value) {
 #' @noRd
 use_xpath_chromote <- function(xpath, element, driver, multiple = FALSE) {
   xpath <- escape_single_quotes(xpath)
-  if(multiple) {
+  if (multiple) {
     if (is.null(driver)) {
       driver <- element
       array_object_id <- driver$Runtime$evaluate(paste0("(() => {
         let xpath = document.evaluate('", xpath, "', document, null, 5, null);
-        
+
         let nodes = [];
         for (let node = xpath.iterateNext(); node; node = xpath.iterateNext()) {
           nodes.push(node);
@@ -192,4 +215,3 @@ use_xpath_chromote <- function(xpath, element, driver, multiple = FALSE) {
     }
   }
 }
-

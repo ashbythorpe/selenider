@@ -44,7 +44,7 @@ test_that("Conditions work", {
   expect_false(has_exact_text(element, "ell"))
 
   buttons <- elem_children(s(".buttons"))
-  expect_true(has_attr(buttons[[1]], "disabled", NA))
+  expect_true(has_attr(buttons[[1]], "disabled", NULL))
 
   expect_false(has_attr(buttons[[1]], "disabled", ""))
   expect_false(has_attr(buttons[[2]], "disabled", "Something"))

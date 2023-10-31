@@ -86,7 +86,7 @@ elem_filter <- function(x, ...) {
   }
 
   exprs <- enquos(...)
-  arg_names <- lapply(c("a1", "a2", "a3"), function(x) make_elem_name(exprs, x))
+  arg_names <- lapply(c("a1", "a2", "a3", "a4"), function(x) make_elem_name(exprs, x))
   elem_name <- make_elem_name(exprs)
   elem_expr <- filter_elem_name(elem_name, arg_names)
   calls <- lapply(exprs, parse_condition, elem_expr)
@@ -95,7 +95,7 @@ elem_filter <- function(x, ...) {
     condition_to_function,
     calls,
     exprs,
-    MoreArgs = list(elem_name = elem_name, arg_names = arg_names, driver = x$driver, driver_id = x$driver_id, timeout = x$timeout),
+    MoreArgs = list(elem_name = elem_name, arg_names = arg_names, session = x$session, driver = x$driver, driver_id = x$driver_id, timeout = x$timeout),
     SIMPLIFY = FALSE
   )
 
@@ -178,7 +178,7 @@ check_subscript_vctrs <- function(i, call = rlang::caller_env()) {
 
   check_number_whole(i)
   i <- vctrs::vec_cast(i, integer())
-  
+
   if (i == 0) {
     stop_subscript_0()
   }
@@ -242,9 +242,9 @@ add_numeric_filter <- function(x, i, call = rlang::caller_env(), max_subscript_e
   x
 }
 
-condition_to_function <- function(x, original_call, elem_name, arg_names, driver, driver_id, timeout) {
-  extra_data <- list(driver, driver_id, timeout, webelement_to_element = webelement_to_element, webelements_to_elements = webelements_to_elements)
-  names(extra_data)[1:3] <- arg_names
+condition_to_function <- function(x, original_call, elem_name, arg_names, session, driver, driver_id, timeout) {
+  extra_data <- list(session, driver, driver_id, timeout, webelement_to_element = webelement_to_element, webelements_to_elements = webelements_to_elements)
+  names(extra_data)[1:4] <- arg_names
 
   args <- pairlist2(x = )
   names(args) <- elem_name
@@ -261,12 +261,13 @@ condition_to_function <- function(x, original_call, elem_name, arg_names, driver
 }
 
 filter_elem_name <- function(elem_name, arg_names) {
-  args <- paste(elem_name, arg_names[[1]], arg_names[[2]], arg_names[[3]], sep = ", ")
+  args <- paste(elem_name, arg_names[[1]], arg_names[[2]], arg_names[[3]], arg_names[[4]], sep = ", ")
   paste0("webelement_to_element(", args, ")")
 }
 
-webelement_to_element <- function(x, driver, driver_id, timeout) {
+webelement_to_element <- function(x, session, driver, driver_id, timeout) {
   res <- list(
+    session = session,
     driver = driver,
     driver_id = driver_id,
     element = x,
