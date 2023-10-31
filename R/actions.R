@@ -518,6 +518,8 @@ elem_set_value <- function(x, text, timeout = NULL) {
     chromote_clear(element, driver = x$driver)
     chromote_send_chars(text, driver = x$driver)
   }
+
+  invisible(x)
 }
 
 chromote_clear <- function(x, driver) {
