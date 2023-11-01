@@ -501,7 +501,7 @@ has_css_property <- function(x, property, value) {
 
   result <- if (x$session == "chromote") {
     driver <- x$driver
-    chromote_get_css_property(element, "value", NULL, driver = driver)
+    chromote_get_css_property(element, property, NULL, driver = driver)
   } else if (x$session == "selenium") {
     element$get_css_value(property)
   } else {
@@ -630,4 +630,3 @@ has_at_least <- function(x, n) {
 
   is_present(x[[n]])
 }
-

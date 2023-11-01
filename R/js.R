@@ -317,7 +317,7 @@ parse_chromote_expr <- function(expr, args, driver = NULL, driver_id = NULL, tim
     expr = final_expr,
     first_element = first_element,
     other_elements = rest,
-    arguments = args,
+    arguments = args
   )
 }
 
@@ -532,4 +532,3 @@ parse_selenium_expr <- function(expr, args, fn = FALSE, driver, timeout, driver_
     args = final_args
   )
 }
-

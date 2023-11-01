@@ -398,6 +398,9 @@ create_selenium_server <- function(browser,
 
 #' @rdname selenider_session
 #'
+#' @param host The host on which the Selenium server is running. This is
+#'   usually your local machine (`"localhost"`), but can be an IP address.
+#'
 #' @export
 create_selenium_client <- function(browser, port = 4444L, host = "localhost", ...) {
   res <- rlang::try_fetch(
@@ -442,7 +445,7 @@ create_selenium_client <- function(browser, port = 4444L, host = "localhost", ..
 #' @param ... Other arguments to pass to RSelenium.
 #'
 #' @returns An [RSelenium::remoteDriver] object. This can be passed into
-#'   [selenider_session()] in place of a [selenium$SeleniumSession] object.
+#'   [selenider_session()] in place of a [selenium::SeleniumSession] object.
 #'
 #' @export
 create_rselenium_client <- function(browser, port = 4444L, ...) {
@@ -457,7 +460,7 @@ create_rselenium_client <- function(browser, port = 4444L, ...) {
       driver$getStatus(),
       error = function(e) {
         if (count >= 5) {
-          stop_connect_selenium_server(count, error = e, driver = driver)
+          stop_connect_rselenium_server(count, error = e, driver = driver)
         }
         NULL
       }
@@ -465,7 +468,7 @@ create_rselenium_client <- function(browser, port = 4444L, ...) {
 
     if (is.null(res) || !isTRUE(res$ready)) {
       if (count >= 5) {
-        stop_connect_selenium_server(count, res = res, driver = driver)
+        stop_connect_rselenium_server(count, res = res, driver = driver)
       }
 
       count <- count + 1L
@@ -478,7 +481,7 @@ create_rselenium_client <- function(browser, port = 4444L, ...) {
   try_fetch(
     driver$open(silent = TRUE),
     error = function(e) {
-      stop_selenium_client(e, browser, driver = driver)
+      stop_selenium_client(e, driver = driver)
     }
   )
 
@@ -698,4 +701,3 @@ print.selenider_session <- function(x, ..., .time = NULL) {
     ))
   })
 }
-
