@@ -415,17 +415,37 @@ create_selenium_client <- function(browser, port = 4444L, host = "localhost", ..
     }
   )
 
+  opts <- if (browser == "chrome" && !"capabilities" %in% ...names()) {
+    list(`goog:chromeOptions` = list(
+      args = list(
+        "remote-debugging-port=9222"
+      )
+    ))
+  } else {
+    NULL
+  }
+
   if (!res) {
     stop_connect_selenium_server(timeout = 20)
   }
 
   rlang::try_fetch(
-    selenium::SeleniumSession$new(
-      browser = browser,
-      port = port,
-      host = host,
-      ...
-    ),
+    if (!is.null(opts)) {
+      selenium::SeleniumSession$new(
+        browser = browser,
+        port = port,
+        host = host,
+        capabilities = opts,
+        ...
+      )
+    } else {
+      selenium::SeleniumSession$new(
+        browser = browser,
+        port = port,
+        host = host,
+        ...
+      )
+    },
     error = function(e) {
       stop_selenium_session(e)
     }

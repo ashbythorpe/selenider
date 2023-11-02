@@ -187,7 +187,7 @@ stop_connect_selenium_server <- function(timeout = NULL, error = NULL, call = rl
 stop_selenium_session <- function(error, call = rlang::caller_env()) {
   cli::cli_abort(c(
     "A Selenium session could not be started"
-  ), class = "selenider_error_selenium_session", parent = error)
+  ), class = "selenider_error_selenium_session", parent = error, call = call)
 }
 
 stop_connect_rselenium_server <- function(count, error = NULL, res = NULL, driver = NULL, call = rlang::caller_env()) {
