@@ -1,0 +1,34 @@
+<h1>Site automation tests</h1>
+
+<p>
+The following button toggles a paragraph:
+</p>
+<button id="toggle_div">Toggle div</button>
+
+<div class="toggleable">
+<p>Hello!</p>
+</div>
+
+<br><p>
+Enabled/disabled buttons:
+</p>
+
+<div class="buttons">
+<button>Enabled</button>
+<button disabled>Disabled</button>
+</div>
+
+<br>
+
+<form class="actions-form">
+  <div class="actions-test">
+    <button type="button" class="actions-button">Test button</button>
+    <p id="button-output"></p>
+    <input type="text" class="actions-input">
+    <p id="text-output"></p>
+    <input type="submit" value="Submit">
+  </div>
+</form>
+<p id="form-output" style="color: red;"></p>
+
+<br><script src="test_site.js"></script>
