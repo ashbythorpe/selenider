@@ -555,6 +555,8 @@ elem_set_value <- function(x, text, timeout = NULL) {
     element$clearElement()
     element$sendKeysToElement(list(text))
   }
+
+  invisible(x)
 }
 
 chromote_clear <- function(x, driver) {

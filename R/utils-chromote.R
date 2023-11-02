@@ -34,8 +34,8 @@ chromote_get_xy <- function(node_id = NULL, backend_id = NULL, driver) {
     driver$DOM$getBoxModel(backendNodeId = backend_id)$model$content
   }
 
-  x <- (coords[[1]] + coords[[3]]) / 2
-  y <- (coords[[2]] + coords[[6]]) / 2
+  x <- mean(range(unlist(coords[seq(1, 7, 2)])))
+  y <- mean(range(unlist(coords[seq(2, 8, 2)])))
   list(x = x, y = y)
 }
 
