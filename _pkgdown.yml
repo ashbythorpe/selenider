@@ -2,6 +2,9 @@ url: https://ashbythorpe.github.io/selenider/
 template:
   bootstrap: 5
 
+development:
+  mode: auto
+
 reference:
 - title: Start a session
 - contents:
