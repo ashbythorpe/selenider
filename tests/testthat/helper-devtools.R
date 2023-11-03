@@ -29,7 +29,6 @@ test_selenider <- function(x,
     # Avoid explicit dependency on devtools
     cli::cli_alert_info("Running tests using rselenium and Chrome")
     withr::with_envvar(c(
-    withr::with_envvar(c(
       "SELENIDER_SESSION" = "rselenium",
       "SELENIDER_BROWSER" = "chrome"
     ), rlang::ns_env("devtools")$test())
