@@ -840,7 +840,7 @@ elem_scroll_to <- function(x, js = FALSE, timeout = NULL) {
   timeout <- get_timeout(timeout, x$timeout)
 
   # Firefox does not allow you to scroll to an element if not in view.
-  if (js || (x$session != "chromote" && c(x$driver$browserName, x$driver$browser) == "firefox")) {
+  if (js || x$session == "chromote" || c(x$driver$browserName, x$driver$browser) == "firefox") {
     element <- get_element_for_action(
       x,
       action = "scroll to {.arg x} using JavaScript",
@@ -850,7 +850,13 @@ elem_scroll_to <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("be enabled")
     )
 
-    execute_js_fn_on("x => x.scrollIntoView()", element, session = x$session, driver = x$driver)
+    execute_js_fn_on("function(x) {
+      x.scrollIntoView({
+        block: 'center',
+        inline: 'center',
+        behaviour: 'instant',
+      })
+    }", element, session = x$session, driver = x$driver)
   } else {
     element <- get_element_for_action(
       x,
@@ -861,9 +867,7 @@ elem_scroll_to <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("be visible")
     )
 
-    if (x$session == "chromote") {
-      chromote_scroll_into_view(backend_id = element, driver = x$driver)
-    } else if (x$session == "selenium") {
+    if (x$session == "selenium") {
       actions <- selenium::actions_stream(
         selenium::actions_scroll(
           x = 0,

@@ -97,9 +97,10 @@ test_that("JavaScript actions work", {
 })
 
 test_that("elem_scroll_to() works", {
-  if (Sys.getenv("SELENIDER_BROWSER") == "firefox") {
-    skip("Local files don't work on Firefox")
+  if (on_ci() && Sys.getenv("SELENIDER_SESSION") == "selenium") {
+    skip("Selenium scroll tests don't work on Github Actions")
   }
+
   session <- selenider_test_session()
 
   html <- "
