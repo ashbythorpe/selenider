@@ -1,19 +1,19 @@
 #' Click an element
-#' 
+#'
 #' @description
-#' Clicks on an HTML element, either by simulating a mouse click or by triggering 
+#' Clicks on an HTML element, either by simulating a mouse click or by triggering
 #' the element's "click" event.
-#' 
+#'
 #' `elem_click()` left clicks on the element, `elem_double_click()` left clicks on the
 #' element two times in a short period of time, while `elem_right_click()` right
 #' clicks on an element, opening its context menu.
-#' 
+#'
 #' @param x A `selenider_element` object.
 #' @param js Whether to click the element using JavaScript. For `elem_right_click()`,
 #'   this is ignored if Selenium is being used, since right clicking using
-#'   RSelenium does not seem to work (so JavaScript is used instead).
+#'   selenium does not seem to work (so JavaScript is used instead).
 #' @param timeout How long to wait for the element to exist.
-#' 
+#'
 #' @returns `x`, invisibly.
 #'
 #' @examplesIf selenider::selenider_available(online = FALSE)
@@ -33,7 +33,7 @@
 #' "
 #'
 #' session <- minimal_selenider_session(html, js = js)
-#' 
+#'
 #' elem_expect(s("p"), is_visible)
 #'
 #' s("button") |>
@@ -60,7 +60,7 @@ elem_click <- function(x, js = FALSE, timeout = NULL) {
   check_number_decimal(timeout, allow_null = TRUE)
 
   timeout <- get_timeout(timeout, x$timeout)
-  
+
   if (js) {
     element <- get_element_for_action(
       x,
@@ -95,7 +95,7 @@ elem_click <- function(x, js = FALSE, timeout = NULL) {
         event.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
         x.dispatchEvent(event);
       }
-    }", element, driver = x$driver)
+    }", element, session = x$session, driver = x$driver)
   } else {
     element <- get_element_for_action(
       x,
@@ -106,15 +106,17 @@ elem_click <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("be visible and enabled")
     )
 
-    if (uses_selenium(x$driver)) {
-      left_click_selenium(element, x)
-    } else {
+    if (x$session == "chromote") {
       promise <- x$driver$Page$loadEventFired(wait_ = FALSE)$catch(function(e) NULL)
       click_chromote(element, driver = x$driver)
       name <- x$driver$DOM$describeNode(backendNodeId = element)$node$nodeName
       if (identical(name, "A")) {
         x$driver$wait_for(promise)
       }
+    } else if (x$session == "selenium") {
+      element$click()
+    } else {
+      left_click_selenium(element, x)
     }
   }
 
@@ -123,16 +125,19 @@ elem_click <- function(x, js = FALSE, timeout = NULL) {
 
 left_click_selenium <- function(element, x) {
   if (x$driver$browserName == "internet explorer" && identical(element$getElementTagName(), "checkbox")) {
-    try({
-      x$driver$executeScript(
-        "arguments[0].focus();",
-        list(element$findChildElement("tag", "input"))
-      )
+    try(
+      {
+        x$driver$executeScript(
+          "arguments[0].focus();",
+          list(element$findChildElement("tag", "input"))
+        )
 
-      element$findChildElement("tag", "input")$clickElement()
-      return()
-    }, silent = TRUE)
-  } 
+        element$findChildElement("tag", "input")$clickElement()
+        return()
+      },
+      silent = TRUE
+    )
+  }
 
   if (x$driver$browserName == "internet explorer") {
     size <- element$getElementSize()
@@ -174,7 +179,7 @@ capture_mouse_press_error <- function(expr) {
 }
 
 #' @rdname elem_click
-#' 
+#'
 #' @export
 elem_double_click <- function(x, js = FALSE, timeout = NULL) {
   check_class(x, "selenider_element")
@@ -182,7 +187,7 @@ elem_double_click <- function(x, js = FALSE, timeout = NULL) {
   check_number_decimal(timeout, allow_null = TRUE)
 
   timeout <- get_timeout(timeout, x$timeout)
-  
+
   if (js) {
     element <- get_element_for_action(
       x,
@@ -192,7 +197,7 @@ elem_double_click <- function(x, js = FALSE, timeout = NULL) {
       failure_messages = c("was not enabled"),
       conditions_text = c("be enabled")
     )
-    
+
     execute_js_fn_on("function(x) {
       if (window.MouseEvent) {
         const event = new MouseEvent('dblclick');
@@ -202,7 +207,7 @@ elem_double_click <- function(x, js = FALSE, timeout = NULL) {
         event.initEvent('dblclick', true, true);
         x.dispatchEvent(event);
       }
-    }", element, driver = x$driver)
+    }", element, session = x$session, driver = x$driver)
   } else {
     element <- get_element_for_action(
       x,
@@ -212,8 +217,25 @@ elem_double_click <- function(x, js = FALSE, timeout = NULL) {
       failure_messages = c("was not visible", "was not enabled"),
       conditions_text = c("be visible and enabled")
     )
-    
-    if (uses_selenium(x$driver)) {
+
+    if (x$session == "chromote") {
+      click_chromote(element, x$driver, type = "left", count = 2)
+    } else if (x$session == "selenium") {
+      actions <- selenium::actions_stream(
+        selenium::actions_mousemove(
+          x = 0,
+          y = 0,
+          origin = element
+        ),
+        selenium::actions_mousedown(),
+        selenium::actions_mouseup(),
+        selenium::actions_pause(0.1),
+        selenium::actions_mousedown(),
+        selenium::actions_mouseup()
+      )
+
+      x$driver$perform_actions(actions)
+    } else {
       size <- element$getElementSize()
 
       x$driver$mouseMoveToLocation(
@@ -221,18 +243,16 @@ elem_double_click <- function(x, js = FALSE, timeout = NULL) {
         y = round(size$height / 3),
         webElement = element
       )
-      
+
       x$driver$doubleclick()
-    } else {
-      click_chromote(element, x$driver, type = "left", count = 2)
     }
   }
-  
+
   invisible(x)
 }
 
 #' @rdname elem_click
-#' 
+#'
 #' @export
 elem_right_click <- function(x, js = FALSE, timeout = NULL) {
   check_class(x, "selenider_element")
@@ -240,8 +260,8 @@ elem_right_click <- function(x, js = FALSE, timeout = NULL) {
   check_number_decimal(timeout, allow_null = TRUE)
 
   timeout <- get_timeout(timeout, x$timeout)
-  
-  if (js || uses_selenium(x$driver)) {
+
+  if (js || x$session == "rselenium") {
     element <- get_element_for_action(
       x,
       action = "right click {.arg x} using javascript",
@@ -250,7 +270,7 @@ elem_right_click <- function(x, js = FALSE, timeout = NULL) {
       failure_messages = c("was not enabled"),
       conditions_text = c("be enabled")
     )
-    
+
     execute_js_fn_on("function(x) {
       if (window.MouseEvent) {
         const ev1 = new MouseEvent('mousedown', {
@@ -289,7 +309,7 @@ elem_right_click <- function(x, js = FALSE, timeout = NULL) {
         event.initEvent('contextmenu', true, true);
         x.dispatchEvent(event);
       }
-    }", element, driver = x$driver)
+    }", element, session = x$session, driver = x$driver)
   } else {
     element <- get_element_for_action(
       x,
@@ -300,26 +320,28 @@ elem_right_click <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("be visible and enabled")
     )
 
-    if (uses_selenium(x$driver)) {
-      size <- element$getElementSize()
-
-      x$driver$mouseMoveToLocation(
-        x = round(size$width / 3),
-        y = round(size$height / 3),
-        webElement = element
-      )
-      
-      x$driver$elem_click(2)
-    } else {
+    if (x$session == "chromote") {
       click_chromote(element, x$driver, type = "right")
+    } else {
+      actions <- selenium::actions_stream(
+        selenium::actions_mousemove(
+          x = 0,
+          y = 0,
+          origin = element
+        ),
+        selenium::actions_mousedown(button = "right"),
+        selenium::actions_mouseup(button = "right")
+      )
+
+      x$driver$perform_actions(actions)
     }
   }
-  
+
   invisible(x)
 }
 
 #' Hover over an element
-#' 
+#'
 #' Move the mouse over to an HTML element and hover over it, without actually
 #' clicking or interacting with it.
 #'
@@ -356,7 +378,7 @@ elem_right_click <- function(x, js = FALSE, timeout = NULL) {
 #' # Clean up all connections and invalidate default chromote object
 #' selenider_cleanup()
 #' }
-#' 
+#'
 #' @export
 elem_hover <- function(x, js = FALSE, timeout = NULL) {
   check_class(x, "selenider_element")
@@ -386,7 +408,7 @@ elem_hover <- function(x, js = FALSE, timeout = NULL) {
         event.initEvent('mouseover', true, true);
         x.dispatchEvent(event);
       }
-    }", element, driver = x$driver)
+    }", element, session = x$session, driver = x$driver)
   } else {
     element <- get_element_for_action(
       x,
@@ -396,8 +418,20 @@ elem_hover <- function(x, js = FALSE, timeout = NULL) {
       failure_messages = c("was not visible", "was not enabled"),
       conditions_text = c("be visible and enabled")
     )
-    
-    if (uses_selenium(x$driver)) {
+
+    if (x$session == "chromote") {
+      hover_chromote(element, driver = x$driver)
+    } else if (x$session == "selenium") {
+      actions <- selenium::actions_stream(
+        selenium::actions_mousemove(
+          x = 0,
+          y = 0,
+          origin = element
+        )
+      )
+
+      x$driver$perform_actions(actions)
+    } else {
       size <- element$getElementSize()
 
       x$driver$mouseMoveToLocation(
@@ -405,8 +439,6 @@ elem_hover <- function(x, js = FALSE, timeout = NULL) {
         y = round(size$height / 3),
         webElement = element
       )
-    } else {
-      hover_chromote(element, driver = x$driver)
     }
   }
 
@@ -437,7 +469,7 @@ hover_chromote <- function(element, driver) {
 #'   element) instead of a specific element.
 #' @param text A string to set the value of the input element to.
 #' @param timeout How long to wait for the element to exist.
-#' 
+#'
 #' @returns `x`, invisibly.
 #'
 #' @examplesIf selenider::selenider_available(online = FALSE)
@@ -474,7 +506,7 @@ hover_chromote <- function(element, driver) {
 #' elem_clear_value(input)
 #'
 #' elem_expect(s("p"), has_exact_text(""))
-#' 
+#'
 #' elem_send_keys(input, keys$enter)
 #'
 #' elem_expect(s("p"), has_text("Enter pressed!"))
@@ -508,15 +540,20 @@ elem_set_value <- function(x, text, timeout = NULL) {
 
   execute_js_fn_on(
     paste0("x => x.setAttribute('value','", text, "')"),
-    element, driver = x$driver
+    element,
+    session = x$session,
+    driver = x$driver
   )
-  
-  if (uses_selenium(x$driver)) {
-    element$clearElement()
-    element$sendKeysToElement(list(text))
-  } else {
+
+  if (x$session == "chromote") {
     chromote_clear(element, driver = x$driver)
     chromote_send_chars(text, driver = x$driver)
+  } else if (x$session == "selenium") {
+    element$clear()
+    element$send_keys(text)
+  } else {
+    element$clearElement()
+    element$sendKeysToElement(list(text))
   }
 
   invisible(x)
@@ -530,7 +567,7 @@ chromote_clear <- function(x, driver) {
 
     chromote_press(driver, modifiers = 2, key = "a", code = "KeyA", windowsVirtualKeyCode = 65)
   }
-  chromote_press(driver, windowsVirtualKeyCode = 8, code = "Backspace", key = "Backspace") 
+  chromote_press(driver, windowsVirtualKeyCode = 8, code = "Backspace", key = "Backspace")
 }
 
 chromote_send_chars <- function(x, driver) {
@@ -542,11 +579,11 @@ chromote_send_chars <- function(x, driver) {
 }
 
 #' @rdname elem_set_value
-#' 
+#'
 #' @param ... A set of inputs to send to `x`.
 #' @param modifiers A character vector; one or more of "shift", "ctrl"/"control", "alt", and "command"/meta".
 #'   Note that when using chromote as a backend, these do not work on Mac OS.
-#' 
+#'
 #' @export
 elem_send_keys <- function(x, ..., modifiers = NULL, timeout = NULL) {
   check_class(x, c("selenider_element", "selenider_session"), allow_null = TRUE)
@@ -584,8 +621,69 @@ elem_send_keys <- function(x, ..., modifiers = NULL, timeout = NULL) {
     NULL
   }
 
-  if (uses_selenium(x$driver)) {
+  if (x$session == "chromote") {
+    chromote_send_keys(element, x$driver, keys, modifiers)
+  } else if (x$session == "selenium") {
     rlang::check_installed("RSelenium")
+
+    keys <- lapply(keys, function(x) {
+      if (inherits(x, "selenider_key")) {
+        get_rselenium_key(x)
+      } else {
+        x
+      }
+    })
+
+    if (inherits(element, "selenider_session")) {
+      keys <- c(
+        selenium::keys$shift["shift" %in% modifiers],
+        selenium::keys$control[any(c("control", "ctrl") %in% modifiers)],
+        selenium::keys$alt["alt" %in% modifiers],
+        selenium::keys$command_meta[any(c("command", "meta") %in% modifiers)],
+        keys
+      )
+
+      x$driver$send_keys(!!!keys)
+    } else {
+      modifiers <- c(
+        selenium::keys$shift["shift" %in% modifiers],
+        selenium::keys$control[any(c("control", "ctrl") %in% modifiers)],
+        selenium::keys$alt["alt" %in% modifiers],
+        selenium::keys$command_meta[any(c("command", "meta") %in% modifiers)]
+      )
+
+      keys <- unlist(lapply(keys, function(x) strsplit(x, split = NULL)[[1]]))
+
+      actions <- vector("list", length = (length(keys) + length(modifiers)) * 2)
+      index <- 1
+
+      for (modifier in modifiers) {
+        actions[[index]] <- selenium::actions_press(modifier)
+        actions[[length(actions) - index + 1]] <- selenium::actions_release(modifier)
+        index <- index + 1
+      }
+
+      for (key in keys) {
+        actions[[index]] <- selenium::actions_press(key)
+        actions[[index + 1]] <- selenium::actions_release(key)
+        index <- index + 2
+      }
+
+      actions <- selenium::actions_stream(!!!actions)
+
+      x$driver$perform_actions(actions)
+    }
+  } else {
+    rlang::check_installed("RSelenium")
+
+    keys <- lapply(keys, function(x) {
+      if (inherits(x, "selenider_key")) {
+        get_selenium_key(x)
+      } else {
+        x
+      }
+    })
+
     keys <- c(
       RSelenium::selKeys$shift["shift" %in% modifiers],
       RSelenium::selKeys$control[any(c("control", "ctrl") %in% modifiers)],
@@ -595,12 +693,10 @@ elem_send_keys <- function(x, ..., modifiers = NULL, timeout = NULL) {
     )
 
     if (inherits(element, "selenider_session")) {
-      element$driver$client$sendKeysToActiveElement(keys)
+      x$driver$sendKeysToActiveElement(keys)
     } else {
-      element$sendKeysToElement(keys)
+      x$sendKeysToElement(keys)
     }
-  } else {
-    chromote_send_keys(element, x$driver, keys, modifiers)
   }
 
   invisible(x)
@@ -651,7 +747,7 @@ get_numeric_modifier <- function(modifiers) {
   if (length(modifiers) == 0) {
     return(0L)
   }
-  
+
   modifiers <- vapply(modifiers, tolower, FUN.VALUE = character(1))
 
   1L * ("alt" %in% modifiers) + 2L * any(c("ctrl", "control") %in% modifiers) +
@@ -676,23 +772,18 @@ elem_clear_value <- function(x, timeout = NULL) {
     failure_messages = c("was not enabled"),
     conditions_text = c("be enabled")
   )
-  
-  if (uses_selenium(x$driver)) {
+
+  if (x$session == "chromote") {
+    chromote_clear(element, x$driver)
+  } else if (x$session == "selenium") {
+    element$clear()
+    element$send_keys(" ", selenium::keys$backspace)
+  } else {
     element$clearElement()
     element$sendKeysToElement(list(" ", RSelenium::selKeys$backspace))
-  } else {
-    chromote_clear(element, x$driver)
   }
 
   invisible(x)
-}
-
-format_timeout_for_error <- function(x) {
-  if (x == 0) {
-    ""
-  } else {
-    paste("After", x, "seconds, ")
-  }
 }
 
 #' Scroll to an element
@@ -749,7 +840,7 @@ elem_scroll_to <- function(x, js = FALSE, timeout = NULL) {
   timeout <- get_timeout(timeout, x$timeout)
 
   # Firefox does not allow you to scroll to an element if not in view.
-  if (js || (uses_selenium(x$driver) && x$driver$browserName == "firefox")) {
+  if (js || x$session == "chromote" || c(x$driver$browserName, x$driver$browser) == "firefox") {
     element <- get_element_for_action(
       x,
       action = "scroll to {.arg x} using JavaScript",
@@ -759,7 +850,13 @@ elem_scroll_to <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("be enabled")
     )
 
-    execute_js_fn_on("x => x.scrollIntoView()", element, driver = x$driver)
+    execute_js_fn_on("function(x) {
+      x.scrollIntoView({
+        block: 'center',
+        inline: 'center',
+        behaviour: 'instant',
+      })
+    }", element, session = x$session, driver = x$driver)
   } else {
     element <- get_element_for_action(
       x,
@@ -769,15 +866,23 @@ elem_scroll_to <- function(x, js = FALSE, timeout = NULL) {
       failure_messages = c("was not visible"),
       conditions_text = c("be visible")
     )
-    
-    if (uses_selenium(x$driver)) {
-      size <- element$getElementSize()
 
+    if (x$session == "selenium") {
+      actions <- selenium::actions_stream(
+        selenium::actions_scroll(
+          x = 0,
+          y = 0,
+          delta_x = 0,
+          delta_y = 0,
+          origin = element
+        )
+      )
+
+      x$driver$perform_actions(actions)
+    } else {
       x$driver$mouseMoveToLocation(
         webElement = element
       )
-    } else {
-      chromote_scroll_into_view(backend_id = element, driver = x$driver)
     }
   }
 
@@ -809,7 +914,7 @@ elem_scroll_to <- function(x, js = FALSE, timeout = NULL) {
 #' "
 #'
 #' session <- minimal_selenider_session(html)
-#' 
+#'
 #' elem_submit(s("input"))
 #' elem_submit(s("p"))
 #'
@@ -833,7 +938,7 @@ elem_submit <- function(x, js = FALSE, timeout = NULL) {
     has_at_least(elem_filter(elem_ancestors(x), has_name("form")), 1)
   }
 
-  if (js || !uses_selenium(x$driver)) {
+  if (js || x$session != "rselenium") {
     element <- get_element_for_action(
       x,
       action = "submit {.arg x} using JavaScript",
@@ -843,7 +948,7 @@ elem_submit <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("have a form element as its ancestor")
     )
 
-    result <- unpack_list(execute_js_fn_on("function(element) {
+    result <- execute_js_fn_on("function(element) {
       while (element != null) {
         if (element.tagName == 'FORM') {
           if (element.requestSubmit) {
@@ -857,7 +962,7 @@ elem_submit <- function(x, js = FALSE, timeout = NULL) {
         element = element.parentElement;
       }
       return false;
-    }", element, driver = x$driver))
+    }", element, session = x$session, driver = x$driver)
 
     if (!result) {
       # Shouldn't happen
@@ -888,7 +993,7 @@ get_element_for_action <- function(x,
                                    failure_messages,
                                    conditions_text,
                                    call = rlang::caller_env()) {
-  meets_condition <- 
+  meets_condition <-
     inject(elem_wait_until(
       x,
       is_present,
@@ -905,7 +1010,7 @@ get_element_for_action <- function(x,
 
     for (n in seq_along(conditions)) {
       condition <- conditions[[n]]
-      
+
       if (!condition(x)) {
         stop_not_actionable(c(
           paste0("To ", action, ", it must ", conditions_text, "."),
@@ -925,4 +1030,12 @@ get_element_for_action <- function(x,
   }
 
   element
+}
+
+format_timeout_for_error <- function(x) {
+  if (x == 0) {
+    ""
+  } else {
+    paste("After", x, "seconds, ")
+  }
 }

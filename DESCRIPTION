@@ -35,6 +35,7 @@ Suggests:
     rmarkdown,
     RSelenium,
     rvest,
+    selenium (>= 0.1.2.9000),
     shiny,
     shinytest2,
     showimage,
@@ -48,3 +49,5 @@ Config/Needs/website: rmarkdown
 LazyData: true
 VignetteBuilder: knitr
 Language: en-GB
+Remotes: 
+    selenium=ashbythorpe/selenium-r

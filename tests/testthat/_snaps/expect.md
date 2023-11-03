@@ -188,7 +188,7 @@
       ! Condition failed after waiting for 0.1 seconds:
       `has_attr("disabled", "")`
       i `x`'s "disabled" attribute is not "".
-      i Actual value: `NA`.
+      i Actual value: `NULL`.
 
 ---
 

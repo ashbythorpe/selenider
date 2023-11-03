@@ -42,7 +42,7 @@ If \code{session} is \code{"chromote"}, we also check:
 
 If \code{session} is \code{"selenium"}, we check:
 \itemize{
-\item Whether \code{RSelenium} is installed.
+\item Whether \code{selenium} is installed.
 \item Whether we can find a valid browser that is supported by \code{RSelenium}.
 }
 }

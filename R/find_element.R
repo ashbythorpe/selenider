@@ -114,7 +114,8 @@ find_element.selenider_element <- function(x,
 
 new_selenider_element <- function(session, selector) {
   res <- list(
-    driver = get_driver(session),
+    session = session$session,
+    driver = session$driver,
     driver_id = session$id,
     element = NULL,
     timeout = session$timeout,
@@ -125,10 +126,6 @@ new_selenider_element <- function(session, selector) {
   class(res) <- "selenider_element"
 
   res
-}
-
-get_driver <- function(session) {
-  if (inherits(session$driver, "ChromoteSession")) session$driver else session$driver$client
 }
 
 #' @export
@@ -165,3 +162,4 @@ format_element <- function(x, ...) {
 print.selenider_element <- function(x, ...) {
   cat(format(x, ...), sep = "\n")
 }
+

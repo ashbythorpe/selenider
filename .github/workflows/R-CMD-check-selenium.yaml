@@ -12,18 +12,24 @@ jobs:
   R-CMD-check:
     runs-on: ubuntu-latest
 
-    name: ${{ matrix.browser }}
+    name: ${{ matrix.browser }} - ${{ matrix.config.os }} (${{ matrix.config.r }})
 
     strategy:
       fail-fast: false
       matrix:
+        config:
+          - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
+          - {os: ubuntu-latest,   r: 'release'}
+          - {os: ubuntu-latest,   r: 'oldrel-1'}
         browser: [chrome, firefox]
 
     services:
       selenium:
-        image: selenium/standalone-${{ matrix.browser }}:3.141.0
+        image: selenium/standalone-${{ matrix.browser }}:4.15.0-20231102
         ports:
           - 4444:4444
+        options: >-
+          --shm-size="2g"
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}

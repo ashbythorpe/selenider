@@ -84,7 +84,7 @@ ss("div")
 session |>
   find_element("#outer-div") |>
   find_elements("p")
-  
+
 # The above can be shortened to:
 s("#outer-div") |>
   find_elements("p")

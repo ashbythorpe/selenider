@@ -416,7 +416,7 @@ diagnose_condition_call <- function(condition, x, call, call_name, original_env,
     expected_name <- eval_tidy(get_call_arg(call, "name"), env = original_env)
     actual_name <- get_or_null(x, elem_name, timeout = 0)
 
-    if (is.null(actual_name)) {
+    if (is.null(actual_name) && !is_in_dom(x)) {
       condition <- c(
         condition,
         "i" = paste0("{.arg {x_name}} {negated_call_name} ", format_value(expected_name), ".")
@@ -436,7 +436,7 @@ diagnose_condition_call <- function(condition, x, call, call_name, original_env,
     target_text <- eval_tidy(get_call_arg(call, "text"), env = original_env)
     actual_text <- get_or_null(x, elem_text, timeout = 0)
 
-    if (is.null(actual_text)) {
+    if (is.null(actual_text) && !is_in_dom(x)) {
       condition <- c(
         condition,
         "i" = paste0("{.arg {x_name}} {negated_call_name} ", format_value(target_text), ".")
@@ -467,7 +467,7 @@ diagnose_condition_call <- function(condition, x, call, call_name, original_env,
     expected_value <- eval_tidy(get_call_arg(call, "value"), env = original_env)
     actual_value <- get_or_null(x, elem_attr, name, timeout = 0)
     
-    if (is.null(actual_value)) {
+    if (is.null(actual_value) && !is_in_dom(x)) {
       condition <- c(
         condition,
         "i" = paste0("{.arg {x_name}}'s ", format_value(name), " attribute {negated_call_name} ", format_value(expected_value), ".")
@@ -488,7 +488,7 @@ diagnose_condition_call <- function(condition, x, call, call_name, original_env,
     expected_value <- eval_tidy(get_call_arg(call, "value"), env = original_env)
     actual_value <- get_or_null(x, elem_value, timeout = 0)
     
-    if (is.null(actual_value)) {
+    if (is.null(actual_value) && !is_in_dom(x)) {
       condition <- c(
         condition,
         "i" = paste0("{.arg {x_name}} {negated_call_name} ", format_value(expected_value), ".")
@@ -515,7 +515,7 @@ diagnose_condition_call <- function(condition, x, call, call_name, original_env,
     expected_value <- eval_tidy(get_call_arg(call, "value"), env = original_env)
     actual_value <- get_or_null(x, elem_css_property, name, timeout = 0)
     
-    if (is.null(actual_value)) {
+    if (is.null(actual_value) && !is_in_dom(x)) {
       condition <- c(
         condition,
         "i" = paste0("{.arg {x_name}}'s ", format_value(name), " CSS property {negated_call_name} ", format_value(expected_value), ".")
@@ -544,7 +544,7 @@ diagnose_condition_call <- function(condition, x, call, call_name, original_env,
       "does not have at least" = paste("contains less than", value, elements),
     )
 
-    if (is.null(actual_length)) {
+    if (is.null(actual_length) && !is_in_dom(x)) {
       condition <- c(
         condition,
         "i" = paste0("{.arg {x_name}} ", cond, ".")
@@ -624,7 +624,7 @@ negate_call_name <- function(x) {
 
 get_or_null <- function(x, .f, ...) {
   if (is.null(x)) {
-    NULL
+    rlang::zap()
   } else {
     tryCatch(.f(x, ...), error = function(e) NULL)
   }

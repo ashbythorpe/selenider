@@ -46,18 +46,18 @@ automatically when the script finishes running.
 One thing to remember is that if you start a session inside a function, it will be closed
 automatically when the function finishes running. If you want to use the session outside the
 function, you need to use the `.env` argument. For example, let's say we want a wrapper
-function around `selenider_session()` that always uses RSelenium:
+function around `selenider_session()` that always uses selenium:
 
 ```{r}
 # Bad (unless you only need to use the session inside the function)
 my_selenider_session <- function(...) {
-  selenider_session("RSelenium", ...)
+  selenider_session("selenium", ...)
   # The session will be closed here
 }
 
 # Good - the session will be open in the caller environment/function
 my_selenider_session <- function(..., .env = rlang::caller_env()) {
-  selenider_session("RSelenium", ..., .env = .env)
+  selenider_session("selenium", ..., .env = .env)
 }
 ```
 

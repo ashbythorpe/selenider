@@ -69,11 +69,63 @@ execute_js_fn <- function(fn, ..., .timeout = NULL, .session = NULL, .debug = FA
   driver <- info$driver
   driver_id <- info$driver_id
   timeout <- info$timeout
+  session <- info$session
 
-  if (uses_selenium(driver)) {
-    execute_selenium_expr(fn, args, fn = TRUE, driver = driver, timeout = timeout, driver_id = driver_id, .debug = .debug)
+  if (session == "chromote") {
+    expr_result <- parse_chromote_expr(
+      fn,
+      args,
+      fn = TRUE,
+      driver = driver,
+      timeout = timeout,
+      driver_id = driver_id,
+      .debug = .debug
+    )
+
+    expr <- expr_result$expr
+    first_element <- expr_result$first_element
+    other_elements <- expr_result$other_elements
+    arguments <- expr_result$arguments
+
+    result <- if (length(other_elements) == 0) {
+      driver$Runtime$callFunctionOn(
+        expr,
+        objectId = first_element,
+        returnByValue = FALSE
+      )
+    } else {
+      driver$Runtime$callFunctionOn(
+        expr,
+        objectId = first_element,
+        arguments = other_elements,
+        returnByValue = FALSE
+      )
+    }
+
+    parse_chromote_result(result, session, driver, driver_id, timeout)
   } else {
-    chromote_execute_js_fn(fn, args, .driver = driver, .driver_id = driver_id, .timeout = timeout, .debug = .debug)
+    expr_result <- parse_selenium_expr(
+      fn,
+      args,
+      fn = TRUE,
+      driver = driver,
+      timeout = timeout,
+      driver_id = driver_id,
+      .debug = .debug
+    )
+
+    expr <- expr_result$expr
+    arguments <- expr_result$args
+
+    if (session == "selenium") {
+      result <- driver$execute_script(expr, !!!arguments)
+
+      parse_selenium_result(result, session, driver, driver_id, timeout)
+    } else {
+      result <- driver$executeScript(expr, arguments)
+
+      parse_rselenium_result(result, session, driver, driver_id, timeout)
+    }
   }
 }
 
@@ -91,48 +143,100 @@ execute_js_expr <- function(expr, ..., .timeout = NULL, .session = NULL, .debug 
   driver <- info$driver
   driver_id <- info$driver_id
   timeout <- info$timeout
+  session <- info$session
 
-  if (uses_selenium(driver)) {
-    execute_selenium_expr(expr, args, fn = FALSE, driver = driver, timeout = timeout, driver_id = driver_id, .debug = .debug)
+  if (session == "chromote") {
+    expr_result <- parse_chromote_expr(
+      expr,
+      args,
+      fn = FALSE,
+      driver = driver,
+      timeout = timeout,
+      driver_id = driver_id,
+      .debug = .debug
+    )
+
+    expr <- expr_result$expr
+    first_element <- expr_result$first_element
+    other_elements <- expr_result$other_elements
+    arguments <- expr_result$arguments
+
+    result <- if (length(other_elements) == 0) {
+      driver$Runtime$callFunctionOn(
+        expr,
+        objectId = first_element,
+        returnByValue = FALSE
+      )
+    } else {
+      driver$Runtime$callFunctionOn(
+        expr,
+        objectId = first_element,
+        arguments = other_elements,
+        returnByValue = FALSE
+      )
+    }
+
+    parse_chromote_result(result, session, driver, driver_id, timeout)
   } else {
-    chromote_execute_js_fn(expr, args, .driver = driver, .driver_id = driver_id, .timeout = timeout, fn = FALSE, .debug = .debug)
+    expr_result <- parse_selenium_expr(
+      expr,
+      args,
+      fn = FALSE,
+      driver = driver,
+      timeout = timeout,
+      driver_id = driver_id,
+      .debug = .debug
+    )
+
+    expr <- expr_result$expr
+    arguments <- expr_result$args
+
+    if (session == "selenium") {
+      result <- driver$execute_script(expr, !!!arguments)
+
+      parse_selenium_result(result, session, driver, driver_id, timeout)
+    } else {
+      result <- driver$executeScript(expr, arguments)
+
+      parse_rselenium_result(result, session, driver, driver_id, timeout)
+    }
   }
 }
 
-get_info_from_args <- function(args, .session, .timeout) {
+get_info_from_args <- function(args, session, timeout) {
   driver <- NULL
   for (arg in args) {
     if (inherits_any(arg, c("selenider_element", "selenider_elements"))) {
       driver <- arg$driver
       driver_id <- arg$driver_id
       arg_timeout <- arg$timeout
+      session_name <- arg$session
       break
     }
   }
 
   if (is.null(driver)) {
-    if (is.null(.session)) {
-      .session <- get_session()
-    }
-    driver <- .session$driver
-    if (uses_selenium(driver)) {
-      driver <- driver$client
+    if (is.null(session)) {
+      session <- get_session()
     }
 
-    driver_id <- .session$driver_id
-    arg_timeout <- .session$timeout
+    driver <- session$driver
+    driver_id <- session$driver_id
+    arg_timeout <- session$timeout
+    session_name <- session$session
   }
 
-  timeout <- get_timeout(.timeout, arg_timeout)
+  timeout <- get_timeout(timeout, arg_timeout)
 
   list(
     driver = driver,
     driver_id = driver_id,
-    timeout = timeout
+    timeout = timeout,
+    session = session_name
   )
 }
 
-chromote_execute_js_fn <- function(expr, args, .driver = NULL, .driver_id = NULL, .timeout = NULL, fn = TRUE, .debug = FALSE) {
+parse_chromote_expr <- function(expr, args, driver = NULL, driver_id = NULL, timeout = NULL, fn = TRUE, .debug = FALSE) {
   rlang::check_installed("jsonlite")
 
   arg_n <- 0
@@ -163,7 +267,7 @@ chromote_execute_js_fn <- function(expr, args, .driver = NULL, .driver_id = NULL
     }
   }
 
-  outer_fn_expr <- if(arg_n <= 1) {
+  outer_fn_expr <- if (arg_n <= 1) {
     "function() {"
   } else {
     paste0("function(", paste0("arg_", seq_len(arg_n - 1), collapse = ","), ") {")
@@ -198,7 +302,7 @@ chromote_execute_js_fn <- function(expr, args, .driver = NULL, .driver_id = NULL
 
   first_element <- if (length(element_args) == 0) {
     # Create a mock object that is not actually used.
-    chromote_object_id(chromote_root_id(.driver), driver = .driver)
+    chromote_object_id(chromote_root_id(driver), driver = driver)
   } else {
     element_args[[1]]
   }
@@ -209,12 +313,15 @@ chromote_execute_js_fn <- function(expr, args, .driver = NULL, .driver_id = NULL
     print(final_expr)
   }
 
-  result <- if (length(rest) == 0) {
-    .driver$Runtime$callFunctionOn(final_expr, objectId = first_element, returnByValue = FALSE)
-  } else {
-    .driver$Runtime$callFunctionOn(final_expr, objectId = first_element, arguments = rest, returnByValue = FALSE)
-  }
+  list(
+    expr = final_expr,
+    first_element = first_element,
+    other_elements = rest,
+    arguments = args
+  )
+}
 
+parse_chromote_result <- function(result, session, driver, driver_id, timeout) {
   if (!is.null(result$exceptionDetails)) {
     details <- if (is.null(result$exceptionDetails$exception$description)) {
       result$exceptionDetails$text
@@ -224,32 +331,42 @@ chromote_execute_js_fn <- function(expr, args, .driver = NULL, .driver_id = NULL
     stop_js_error(details)
   } else {
     if (identical(result$result$subtype, "node")) {
-      id <- chromote_backend_id(object_id = result$result$objectId, driver = .driver)
-      new_js_node(id, .driver, .driver_id, .timeout)
+      id <- chromote_backend_id(object_id = result$result$objectId, driver = driver)
+      new_js_node(id, session, driver, driver_id, timeout)
     } else if (identical(result$result$subtype, "array")) {
       object_id <- result$result$objectId
-      l <- .driver$Runtime$callFunctionOn("function() { return this.length; }", objectId = object_id)$result$value
+      l <- driver$Runtime$callFunctionOn("function() { return this.length; }", objectId = object_id)$result$value
       if (l == 0) {
         return(list())
       }
 
       ids <- vector("list", length = l)
       for (i in seq_len(l)) {
-        res_i <- .driver$Runtime$callFunctionOn(paste0("function() { return this[", i - 1, "]; }"), objectId = object_id, returnByValue = FALSE)
+        res_i <- driver$Runtime$callFunctionOn(paste0("function() { return this[", i - 1, "]; }"), objectId = object_id, returnByValue = FALSE)
         if (!identical(res_i$result$subtype, "node")) {
-          return(get_objectid_value(object_id, driver = .driver))
+          return(get_objectid_value(object_id, driver = driver))
         }
-        ids[[i]] <- chromote_backend_id(object_id = res_i$result$objectId, driver = .driver)
+        ids[[i]] <- chromote_backend_id(object_id = res_i$result$objectId, driver = driver)
       }
 
-      new_js_nodes(ids, .driver, .driver_id, .timeout)
+      new_js_nodes(ids, session, driver, driver_id, timeout)
     } else {
       if (is.null(result$objectId)) {
         result$result$value
       } else {
-        get_objectid_value(result$result$objectId, driver = .driver)
+        get_objectid_value(result$result$objectId, driver = driver)
       }
     }
+  }
+}
+
+parse_selenium_result <- function(x, session, driver, driver_id, timeout) {
+  if (inherits(x, "WebElement")) {
+    new_js_node(x, session, driver, driver_id, timeout)
+  } else if (is.list(x) && every(x, function(x) inherits(x, "WebElement"))) {
+    new_js_nodes(x, session, driver, driver_id, timeout)
+  } else {
+    x
   }
 }
 
@@ -269,8 +386,9 @@ is_selenider_element <- function(x) inherits(x, "selenider_element")
 
 is_selenider_elements <- function(x) inherits(x, "selenider_elements")
 
-new_js_node <- function(x, driver, driver_id, timeout) {
+new_js_node <- function(x, session, driver, driver_id, timeout) {
   res <- list(
+    session = session,
     driver = driver,
     driver_id = driver_id,
     element = x,
@@ -284,8 +402,9 @@ new_js_node <- function(x, driver, driver_id, timeout) {
   res
 }
 
-new_js_nodes <- function(x, driver, driver_id, timeout) {
+new_js_nodes <- function(x, session, driver, driver_id, timeout) {
   res <- list(
+    session = session,
     driver = driver,
     driver_id = driver_id,
     element = x,
@@ -307,16 +426,16 @@ new_js_selector <- function() {
   res
 }
 
-parse_selenium_result <- function(x, driver, driver_id, timeout) {
+parse_rselenium_result <- function(x, session, driver, driver_id, timeout) {
   if (is_selenium_element(x)) {
-    new_js_node(as_webelement(x, driver), driver, driver_id, timeout)
+    new_js_node(as_webelement(x, driver), session, driver, driver_id, timeout)
   } else if (inherits(x, "webElement")) {
-    new_js_node(x, driver, driver_id, timeout)
+    new_js_node(x, session, driver, driver_id, timeout)
   } else if (is.list(x)) {
     if (length(x) == 0) {
       return(NULL)
     } else if (length(x) == 1 && inherits(x[[1]], "webElement")) {
-      return(new_js_node(x[[1]], driver, driver_id, timeout))
+      return(new_js_node(x[[1]], session, driver, driver_id, timeout))
     }
 
     ret <- TRUE
@@ -335,7 +454,7 @@ parse_selenium_result <- function(x, driver, driver_id, timeout) {
     }
 
     if (ret) {
-      new_js_nodes(res, driver, driver_id, timeout)
+      new_js_nodes(res, session, driver, driver_id, timeout)
     } else {
       unpack_list(x)
     }
@@ -353,10 +472,11 @@ as_webelement <- function(x, driver) {
   RSelenium::webElement$new(as.character(x))$import(driver$export("remoteDriver"))
 }
 
-execute_selenium_expr <- function(expr, args, fn = FALSE, driver, timeout, driver_id, .debug = FALSE) {
+parse_selenium_expr <- function(expr, args, fn = FALSE, driver, timeout, driver_id, .debug = FALSE) {
   n <- 0
   expr_body <- ""
   final_args <- list()
+
   for (i in seq_along(args)) {
     arg <- args[[i]]
     if (is_selenider_element(arg)) {
@@ -407,7 +527,8 @@ execute_selenium_expr <- function(expr, args, fn = FALSE, driver, timeout, drive
 
   final_args <- if (length(final_args) == 0) list("") else final_args
 
-  result <- driver$executeScript(final_expr, args = final_args)
-
-  parse_selenium_result(result, driver, driver_id, timeout)
+  list(
+    expr = final_expr,
+    args = final_args
+  )
 }

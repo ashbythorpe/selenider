@@ -10,7 +10,7 @@ back(session = NULL)
 forward(session = NULL)
 }
 \arguments{
-\item{session}{A `selenider_session object. If not specified, the global
+\item{session}{A \code{selenider_session} object. If not specified, the global
 session object (the result of \code{\link[=get_session]{get_session()}}) is used.}
 }
 \value{

@@ -44,7 +44,7 @@ get_with_timeout <- function(timeout, .f, ...) {
 #'
 #' If `session` is `"selenium"`, we check:
 #'
-#' * Whether `RSelenium` is installed.
+#' * Whether `selenium` is installed.
 #' * Whether we can find a valid browser that is supported by `RSelenium`.
 #'
 #' @returns
@@ -80,14 +80,16 @@ selenider_available <- function(session = c("chromote", "selenium"), online = TR
   }
 
   if (session == "chromote") {
-    is_installed("chromote") && tryCatch(
-      {
-        !is.null(suppressMessages(chromote::find_chrome()))
-      },
-      error = function(e) FALSE
-    )
+    Sys.getenv("SELENIDER_SESSION") %in% c("", "chromote") &&
+      is_installed("chromote") &&
+      tryCatch(
+        {
+          !is.null(suppressMessages(chromote::find_chrome()))
+        },
+        error = function(e) FALSE
+      )
   } else {
-    rlang::is_installed("RSelenium") &&
+    rlang::is_installed("selenium") &&
       !is.null(find_browser_and_version()$browser)
   }
 }
@@ -121,18 +123,43 @@ is_testing <- function() {
   rlang::is_installed("testthat") && testthat::is_testing()
 }
 
+is_r6 <- function(x) inherits(x, "R6")
+
 elem_common <- function(x, driver) {
-  compare_selenium <- function(x, y) selenium_equal(x, y, driver)
-  comparison_function <- if (uses_selenium(driver)) compare_selenium else `==`
+  comparison_function <- get_comparison_function(driver)
 
   lazy_intersect_by(x, comparison_function)
 }
 
 elem_unique <- function(x, driver) {
-  compare_selenium <- function(x, y) selenium_equal(x, y, driver)
-  comparison_function <- if (uses_selenium(driver)) compare_selenium else `==`
+  comparison_function <- get_comparison_function(driver)
 
   lazy_unique(x, comparison_function)
+}
+
+get_comparison_function <- function(driver) {
+  compare_selenium <- function(x, y) selenium_equal(x, y, driver)
+  compare_rselenium <- function(x, y) rselenium_equal(x, y, driver)
+
+  if (uses_chromote(driver)) {
+    `==`
+  } else if (uses_selenium(driver)) {
+    compare_selenium
+  } else {
+    compare_rselenium
+  }
+}
+
+`%||%` <- function(x, y) {
+  if (is.null(x)) {
+    y
+  } else {
+    x
+  }
+}
+
+every <- function(x, .f) {
+  all(vapply(x, .f, FUN.VALUE = logical(1)))
 }
 
 # Adapted from scales::ordinal()
@@ -211,20 +238,32 @@ format_value <- function(x) {
 }
 
 is_multiple_elements <- function(x) {
-  !(inherits_any(x, c("webElement", "remoteDriver", "mock_element", "mock_client", "ChromoteSession")) || (is.numeric(x) && length(x) == 1))
+  !(inherits_any(x, c("webElement", "remoteDriver", "mock_element", "mock_client", "ChromoteSession", "WebElement", "SeleniumSession")) || (is.numeric(x) && length(x) == 1))
 }
 
 uses_selenium <- function(x) {
-  inherits_any(x, c("remoteDriver", "mock_client")) || (!is.null(x$client) && inherits_any(x$client, c("remoteDriver", "mock_client")))
+  inherits(x, "SeleniumSession") || (!is.null(x$client) && inherits(x$client, "SeleniumSession"))
 }
 
-execute_js_fn_on <- function(fn, x, driver) {
-  if (uses_selenium(driver)) {
-    script <- paste0("let fn = ", fn, ";", "return fn(arguments[0]);")
-    driver$executeScript(script, list(x))
-  } else {
+uses_rselenium <- function(x) {
+  inherits(x, "remoteDriver") || (!is.null(x$client) && inherits(x$client, "remoteDriver"))
+}
+
+uses_chromote <- function(x) {
+  inherits(x, "ChromoteSession")
+}
+
+execute_js_fn_on <- function(fn, x, session, driver) {
+  if (session == "chromote") {
     script <- paste0("function() { return (", fn, ")(this) }")
     driver$Runtime$callFunctionOn(script, chromote_object_id(backend_id = x, driver = driver))$result$value
+  } else {
+    script <- paste0("let fn = ", fn, ";", "return fn(arguments[0]);")
+    if (session == "selenium") {
+      driver$execute_script(script, x)
+    } else {
+      driver$executeScript(script, list(x))
+    }
   }
 }
 

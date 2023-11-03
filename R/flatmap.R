@@ -131,6 +131,7 @@ elem_flatmap <- function(x, .f, ...) {
   check_class(x, "selenider_elements")
 
   mock_element <- list(
+    session = x$session,
     driver = x$driver,
     driver_id = x$driver_id,
     element = NULL,
@@ -160,6 +161,7 @@ elem_flatmap <- function(x, .f, ...) {
   selector <- new_flatmap_selector(x, selectors, class(fn_result))
 
   res <- list(
+    session = x$session,
     driver = x$driver,
     driver_id = x$driver_id,
     element = NULL,

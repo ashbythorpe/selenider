@@ -14,7 +14,7 @@ elem_css_property(x, name, timeout = NULL)
 \item{timeout}{The time to wait for \code{x} to exist.}
 }
 \value{
-A string, or \code{NA} if the property does not exist.
+A string, or \code{NULL} if the property does not exist.
 }
 \description{
 Get a CSS property of an element (e.g. \code{"background-color"}).

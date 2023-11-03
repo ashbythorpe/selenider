@@ -5,7 +5,7 @@ print.selenider_key <- function(x, ...) {
 }
 
 #' Special keys
-#' 
+#'
 #' List of special keys, for use with [elem_send_keys()].
 #'
 #' @format
@@ -15,10 +15,44 @@ print.selenider_key <- function(x, ...) {
 #' keys$backspace
 "keys"
 
-get_selenider_key <- function(x) {
+get_selenium_key <- function(x) {
+  rlang::check_installed("selenium")
+  switch(x,
+    BACKSPACE = selenium::keys$backspace,
+    TAB = selenium::keys$tab,
+    RETURN = selenium::keys$return,
+    ENTER = selenium::keys$enter,
+    SHIFT = selenium::keys$shift,
+    CTRL = selenium::keys$control,
+    ALT = selenium::keys$alt,
+    ESC = selenium::keys$esc,
+    SPACE = selenium::keys$space,
+    UP = selenium::keys$up,
+    DOWN = selenium::keys$down,
+    LEFT = selenium::keys$left,
+    RIGHT = selenium::keys$right,
+    INSERT = selenium::keys$insert,
+    F1 = selenium::keys$f1,
+    F2 = selenium::keys$f2,
+    F3 = selenium::keys$f3,
+    F4 = selenium::keys$f4,
+    F5 = selenium::keys$f5,
+    F6 = selenium::keys$f6,
+    F7 = selenium::keys$f7,
+    F8 = selenium::keys$f8,
+    F9 = selenium::keys$f9,
+    F10 = selenium::keys$f10,
+    F11 = selenium::keys$f11,
+    F12 = selenium::keys$f12,
+    COMMAND = selenium::keys$command,
+    META = selenium::keys$meta,
+    stop("Key not found")
+  )
+}
+
+get_rselenium_key <- function(x) {
   rlang::check_installed("RSelenium")
-  switch(
-    x,
+  switch(x,
     BACKSPACE = RSelenium::selKeys$backspace,
     TAB = RSelenium::selKeys$tab,
     RETURN = RSelenium::selKeys$return,
@@ -53,8 +87,7 @@ get_selenider_key <- function(x) {
 
 # Given a selenider_key, get the description of the key.
 get_chromote_key <- function(x) {
-  switch(
-    x,
+  switch(x,
     BACKSPACE = list(windowsVirtualKeyCode = 8, code = "Backspace", key = "Backspace"),
     TAB = list(windowsVirtualKeyCode = 9, code = "Tab", key = "Tab"),
     RETURN = list(windowsVirtualKeyCode = 13, code = "Enter", key = "Enter", text = "\r"),

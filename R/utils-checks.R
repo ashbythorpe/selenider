@@ -13,7 +13,8 @@ check_class <- function(x, cls, ..., allow_null = FALSE, arg = rlang::caller_arg
 }
 
 is_selenium_server <- function(x) {
-  is.list(x) && all(c("process", "log", "stop") %in% names(x))
+  inherits(x, "process") ||
+    (is.list(x) && all(c("process", "log", "stop") %in% names(x)))
 }
 
 check_selenium_server <- function(x, call = rlang::caller_env()) {
@@ -27,14 +28,14 @@ check_selenium_server <- function(x, call = rlang::caller_env()) {
 }
 
 is_selenium_client <- function(x) {
-  inherits(x, "remoteDriver")
+  inherits_any(x, c("SeleniumSession", "remoteDriver"))
 }
 
 check_selenium_client <- function(x, call = rlang::caller_env()) {
   if (!is_selenium_client(x)) {
     cli::cli_abort(c(
-      "{.code driver$client} must be a {.cls remoteDriver} object",
-      "i" = "This can be the result of {.fun selenider::create_selenium_client} or {.fun RSelenium::rsDriver}."
+      "{.code driver$client} must be a {.cls SeleniumSession} object",
+      "i" = "This can be the result of {.fun selenider::create_selenium_client} or {.fun selenium::SeleniumSession$new}."
     ), class = "selenider_error_invalid_client", call = call)
   }
   x

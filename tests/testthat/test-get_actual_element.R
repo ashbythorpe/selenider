@@ -7,10 +7,13 @@ test_that("get_actual_element() works", {
 
   actual_element <- get_actual_element(element)
 
-  if (uses_selenium(session$driver)) {
-    expect_s4_class(actual_element, "webElement")
-  } else {
+  if (session$session == "chromote") {
     expect_type(actual_element, "integer")
+  } else if (session$session == "selenium") {
+    expect_true(is_r6(actual_element))
+    expect_s3_class(actual_element, "WebElement")
+  } else {
+    expect_s4_class(actual_element, "webElement")
   }
 })
 
@@ -23,10 +26,12 @@ test_that("get_actual_elements() works", {
 
   actual_elements <- get_actual_elements(elements)
 
-  expect_type(actual_elements, "list")
-  if (uses_selenium(session$driver)) {
-    expect_s4_class(actual_elements[[1]], "webElement")
-  } else {
+  if (session$session == "chromote") {
     expect_type(actual_elements[[1]], "integer")
+  } else if (session$session == "selenium") {
+    expect_true(is_r6(actual_elements[[1]]))
+    expect_s3_class(actual_elements[[1]], "WebElement")
+  } else {
+    expect_s4_class(actual_elements[[1]], "webElement")
   }
 })

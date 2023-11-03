@@ -6,7 +6,7 @@
 \alias{elem_value}
 \title{Get attributes of an element}
 \usage{
-elem_attr(x, name, default = NA_character_, timeout = NULL)
+elem_attr(x, name, default = NULL, timeout = NULL)
 
 elem_attrs(x, timeout = NULL)
 

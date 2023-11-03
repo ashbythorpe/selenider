@@ -12,6 +12,7 @@ selenider_session(
   browser = getOption("selenider.browser"),
   view = FALSE,
   timeout = 4,
+  selenium_manager = TRUE,
   driver = NULL,
   local = TRUE,
   quiet = TRUE,
@@ -23,25 +24,27 @@ create_chromote_session(...)
 create_selenium_server(
   browser,
   version = "latest",
-  port = 4567L,
+  driver_version = "latest",
+  port = 4444L,
   quiet = TRUE,
+  selenium_manager = TRUE,
   ...
 )
 
-create_selenium_client(browser, port = 4567L, ...)
+create_selenium_client(browser, port = 4444L, host = "localhost", ...)
 }
 \arguments{
-\item{session}{The package to use as a backend: either "chromote" or
-"selenium". By default, chromote is used, since this tends to be
-faster and more reliable. Change the default value using the
+\item{session}{The package to use as a backend: either "chromote",
+"selenium" or "rselenium". By default, chromote is used, since this tends
+to be faster and more reliable. Change the default value using the
 \code{selenider.session} option.}
 
 \item{browser}{The name of the browser to run the session in; one of
-"chrome", "firefox", "phantomjs" or "internet explorer" (only on
-Windows). IF \code{NULL}, the function will try to work out which browser
-you have installed. If we are using chromote, this option is ignored,
-since chromote only works on Chrome. Change the default value of this
-parameter using the \code{selenider.browser} option.}
+"chrome", "firefox", "edge", "safari", or another valid browser name.
+If \code{NULL}, the function will try to work out which browser you have
+installed. If we are using chromote, this option is ignored, since
+chromote only works on Chrome. Change the default value of this parameter
+using the \code{selenider.browser} option.}
 
 \item{view}{Whether to open the browser and view it, for visual testing.
 This is ignored if session is "selenium", since selenium drivers cannot
@@ -49,28 +52,37 @@ be headless.}
 
 \item{timeout}{The default time to wait when collecting an element.}
 
+\item{selenium_manager}{If \code{TRUE}, we use \code{\link[selenium:selenium_server]{selenium::selenium_server()}} to
+start the server, relying on Selenium Manager to download the necessary
+browser drivers. If \code{FALSE}, \code{\link[wdman:selenium]{wdman::selenium()}} is used to start the
+server, which will try to download the drivers automatically. This is not
+used by default because it is less reliable (especially on Chrome), and
+does not support Microsoft Edge.}
+
 \item{driver}{A driver object to use instead of creating one manually. This
 can be one of:
 \itemize{
 \item A \link[chromote:ChromoteSession]{chromote::ChromoteSession} object (the result of \code{create_chromote_session()}).
 \item A \link[shinytest2:AppDriver]{shinytest2::AppDriver} object.
-\item An \code{\link[RSelenium:remoteDriver-class]{RSelenium::remoteDriver()}} object (the result of \code{create_selenium_client()}).
+\item An \link[selenium:SeleniumSession]{selenium::SeleniumSession} object (the result of \code{create_selenium_client()}).
 \item A Selenium server object (the result of \code{\link[wdman:selenium]{wdman::selenium()}}, or
 \code{create_selenium_server()}). In this case, the client object will be created using
 the server object.
-\item A list/environment containing the \code{\link[RSelenium:remoteDriver-class]{RSelenium::remoteDriver()}} object, the Selenium
-server object, or both.
+\item A list/environment containing the \link[selenium:SeleniumSession]{selenium::SeleniumSession} object,
+the Selenium server object, or both.
+\item An \code{\link[RSelenium:remoteDriver-class]{RSelenium::remoteDriver()}} object (see \code{\link[=create_rselenium_client]{create_rselenium_client()}})
+can be used instead of a \link[selenium:SeleniumSession]{selenium::SeleniumSession} object.
 See Details for more information about providing a custom driver object.
 }}
 
 \item{local}{Whether to set the session as the local session object,
 using \code{\link[=local_session]{local_session()}}.}
 
-\item{quiet}{Whether to let \code{\link[RSelenium:rsDriver]{RSelenium::rsDriver()}} display messages. By
+\item{quiet}{Whether to let \code{\link[wdman:selenium]{wdman::selenium()}} display messages. By
 default, this output is suppressed, as it is not usually useful. Chromote
 does not display any output when creating a session.}
 
-\item{.env}{Passed into \code{\link[=local_session]{local_session()}} function, to define the
+\item{.env}{Passed into \code{\link[=local_session]{local_session()}}, to define the
 environment in which the session is used. Change this if you want to
 create the session inside a function and then use it outside the
 function.}
@@ -79,15 +91,22 @@ function.}
 \itemize{
 \item For \code{create_chromote_session()}, these are passed into
 \code{\link[chromote:ChromoteSession]{chromote::ChromoteSession$new()}}.
-\item For \code{create_selenium_server()}, these are passed into \code{\link[wdman:selenium]{wdman::selenium()}}.
-\item For \code{create_selenium_server()}, these are passed into \code{\link[RSelenium:remoteDriver-class]{RSelenium::remoteDriver()}}.
+\item For \code{create_selenium_server()}, these are passed into
+\code{\link[selenium:SeleniumSession]{selenium::SeleniumSession$new()}}, or
+\code{\link[wdman:selenium]{wdman::selenium()}} if \code{selenium_manager} is \code{FALSE}.
 }}
 
-\item{version}{The version of the webdriver (chromedriver, geckodriver, etc.)
-to use. You should only need to change this if Chrome is being used, as the
-version of the driver depends on the version of Chrome.}
+\item{version}{The version of Selenium Server to run.}
+
+\item{driver_version}{The version of the webdriver (chromedriver,
+geckodriver, etc.) to use. You only need to change this if
+\code{selenium_manager} is \code{FALSE} and Chrome is being used, as the
+version of the driver depends on the version of the Chrome browser.}
 
 \item{port}{The port to run Selenium on.}
+
+\item{host}{The host on which the Selenium server is running. This is
+usually your local machine (\code{"localhost"}), but can be an IP address.}
 }
 \value{
 A \code{selenider_session} object. Use \code{session$driver} to retrieve the driver object that controls the
@@ -105,7 +124,7 @@ can then be passed into the \code{driver} argument to \code{selenider_session()}
 \section{Structure of a selenider session}{
 A \code{selenider_session} object is an S3 list, meaning its properties can be accessed using \code{$}.
 Most notably, using \code{session$driver} allows access to the driver object which actually controls
-the browser. If you are using Selenium, use \code{session$driver$client} to access the \code{remoteDriver}
+the browser. If you are using Selenium, use \code{session$driver} to access the \code{remoteDriver}
 object. These objects are useful if you want to do something with the driver that is not directly
 supported by selenider. See \code{\link[=get_actual_element]{get_actual_element()}} for some examples of this.
 }
@@ -149,7 +168,7 @@ session <- selenider_session(
 }\if{html}{\out{</div>}}
 }
 
-\subsection{RSelenium}{
+\subsection{selenium}{
 
 If you want to manually create both the client and the server, you can
 do the equivalent of the following:
@@ -163,12 +182,12 @@ do the equivalent of the following:
 }\if{html}{\out{</div>}}
 
 However, it can sometimes be useful to omit the server, for example when you are running
-the Selenium server using Docker. In this case, you need to make sure the ip and port are
+the Selenium server using Docker. In this case, you need to make sure the host and port are
 matched correctly.
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{session <- selenider_session(
   driver = create_selenium_client(
-    remoteServerAddr = "<IP ADDRESS>",
+    host = "<IP ADDRESS>",
     port = 1234L
   )
 )

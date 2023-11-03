@@ -160,7 +160,7 @@ stop_default_browser <- function(call = rlang::caller_env()) {
 
 stop_no_dependencies <- function(call = rlang::caller_env()) {
   cli::cli_abort(c(
-    "One of {.pkg chromote} or {.pkg RSelenium} must be installed to use {.pkg selenider}."
+    "One of {.pkg chromote} or {.pkg selenium} must be installed to use {.pkg selenider}."
   ), class = "selenider_error_dependencies", call = call)
 }
 
@@ -178,20 +178,32 @@ stop_selenium_server <- function(error, licence = NULL, call = rlang::caller_env
   }
 }
 
-stop_connect_selenium_server <- function(count, error = NULL, res = NULL, driver = NULL, call = rlang::caller_env()) {
+stop_connect_selenium_server <- function(timeout = NULL, error = NULL, call = rlang::caller_env()) {
+  cli::cli_abort(c(
+    paste0("We could not connect to a Selenium Server instance after {timeout} seconds.")
+  ), class = "selenider_error_selenium_server", parent = error, call = call)
+}
+
+stop_selenium_session <- function(error, call = rlang::caller_env()) {
+  cli::cli_abort(c(
+    "A Selenium session could not be started"
+  ), class = "selenider_error_selenium_session", parent = error, call = call)
+}
+
+stop_connect_rselenium_server <- function(count, error = NULL, res = NULL, driver = NULL, call = rlang::caller_env()) {
   if (!is.null(error)) {
     cli::cli_abort(c(
       "We could not determine whether the server was successfully started after {count} attempts."
-    ), class = "selenider_error_server_started", parent = error, call = call, driver = driver)
+    ), class = "selenider_error_rselenium_server", parent = error, call = call, driver = driver)
   } else if (is.list(res) && length(res) == 0) {
     cli::cli_abort(c(
       "We could not determine whether the server was successfully started after {count} attempts.",
       "{.code driver$getStatus()} is an empty list."
-    ), class = "selenider_error_server_started", call = call, driver = driver)
+    ), class = "selenider_error_rselenium_server", call = call, driver = driver)
   } else {
     cli::cli_abort(c(
       "We could not determine whether the server was successfully started after {count} attempts."
-    ), class = "selenider_error_server_started", call = call, driver = driver)
+    ), class = "selenider_error_rselenium_server", call = call, driver = driver)
   }
 }
 
@@ -213,7 +225,7 @@ stop_invalid_driver <- function(x, is_list = FALSE, call = rlang::caller_env()) 
       call = call
     )
   } else {
-    cls <- c("ChromoteSession", "AppDriver", "remoteDriver")
+    cls <- c("ChromoteSession", "AppDriver", "SeleniumSession")
     what <- cli::format_inline("A {.cls {cls}} object, a list or an environment")
     stop_input_type(x, what, call = call, class = "selenider_error_invalid_driver")
   }
@@ -312,7 +324,7 @@ stop_null_screenshot_file <- function(call = rlang::caller_env()) {
 warn_default_port <- function(call = rlang::caller_env()) {
   cli::cli_warn(c(
     "Could not find port number from server object.",
-    "i" = "Using default port {.val {4567L}}"
+    "i" = "Using default port {.val {4444L}}"
   ), class = "selenider_warning_default_port", call = call)
 }
 

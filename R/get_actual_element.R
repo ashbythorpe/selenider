@@ -2,15 +2,15 @@
 #'
 #' @description
 #' Turn a lazy selenium element or element collection into a backendNodeId (chromote)
-#' or an [RSelenium::webElement]. Use this to perform certain actions on the
+#' or an [selenium::WebElement]. Use this to perform certain actions on the
 #' element that are not implemented in selenider.
 #'
 #' `get_actual_element()` turns a `selenider_element` object into a single
-#' backendNodeId or [RSelenium::webElement] object. The function will wait for the object
+#' backendNodeId or [selenium::WebElement] object. The function will wait for the object
 #' to exist in the DOM.
 #'
 #' `get_actual_elements()` turns a `selenider_elements` object into a list
-#' of [RSelenium::webElement] objects, waiting for any parent objects to
+#' of [selenium::WebElement] objects, waiting for any parent objects to
 #' exist in the DOM.
 #'
 #' @param x A `selenider_element` or `selenider_elements` object, produced by
@@ -18,7 +18,7 @@
 #' @param timeout The timeout to use while asserting that the item exists. If
 #'   NULL, the timeout of the `selenider_element` will be used.
 #'
-#' @returns An integer (backendNodeId), or an [RSelenium::webElement] object.
+#' @returns An integer (backendNodeId), or a [selenium::WebElement] object.
 #' `get_actual_elements()` returns a list of such objects.
 #'
 #' @seealso
@@ -29,7 +29,7 @@
 #'   for the operations that can be performed using a backend node id. Note that
 #'   this requires the [chromote::ChromoteSession] object, which can be retrieved using
 #'   `<selenider_session>$driver`.
-#' * The documentation for [RSelenium::webElement()] to see the things you can
+#' * The documentation for [selenium::WebElement()] to see the things you can
 #'   do with a webElement.
 #'
 #' @examplesIf selenider::selenider_available(online = FALSE)
@@ -60,7 +60,7 @@
 #' if (inherits(driver, "ChromoteSession")) {
 #'   driver$DOM$describeNode(backendNodeId = elems[[1]])
 #' } else {
-#'   elems[[1]]$describeElement()
+#'   elems[[1]]$get_rect()
 #' }
 #'
 #' \dontshow{

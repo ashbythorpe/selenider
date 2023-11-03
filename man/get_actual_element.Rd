@@ -17,20 +17,20 @@ get_actual_elements(x, timeout = NULL)
 NULL, the timeout of the \code{selenider_element} will be used.}
 }
 \value{
-An integer (backendNodeId), or an \link[RSelenium:webElement-class]{RSelenium::webElement} object.
+An integer (backendNodeId), or a \link[selenium:WebElement]{selenium::WebElement} object.
 \code{get_actual_elements()} returns a list of such objects.
 }
 \description{
 Turn a lazy selenium element or element collection into a backendNodeId (chromote)
-or an \link[RSelenium:webElement-class]{RSelenium::webElement}. Use this to perform certain actions on the
+or an \link[selenium:WebElement]{selenium::WebElement}. Use this to perform certain actions on the
 element that are not implemented in selenider.
 
 \code{get_actual_element()} turns a \code{selenider_element} object into a single
-backendNodeId or \link[RSelenium:webElement-class]{RSelenium::webElement} object. The function will wait for the object
+backendNodeId or \link[selenium:WebElement]{selenium::WebElement} object. The function will wait for the object
 to exist in the DOM.
 
 \code{get_actual_elements()} turns a \code{selenider_elements} object into a list
-of \link[RSelenium:webElement-class]{RSelenium::webElement} objects, waiting for any parent objects to
+of \link[selenium:WebElement]{selenium::WebElement} objects, waiting for any parent objects to
 exist in the DOM.
 }
 \examples{
@@ -62,7 +62,7 @@ elems <- ss("p") |>
 if (inherits(driver, "ChromoteSession")) {
   driver$DOM$describeNode(backendNodeId = elems[[1]])
 } else {
-  elems[[1]]$describeElement()
+  elems[[1]]$get_rect()
 }
 
 \dontshow{
@@ -80,7 +80,7 @@ elements.
 for the operations that can be performed using a backend node id. Note that
 this requires the \link[chromote:ChromoteSession]{chromote::ChromoteSession} object, which can be retrieved using
 \verb{<selenider_session>$driver}.
-\item The documentation for \code{\link[RSelenium:webElement-class]{RSelenium::webElement()}} to see the things you can
+\item The documentation for \code{\link[selenium:WebElement]{selenium::WebElement()}} to see the things you can
 do with a webElement.
 }
 }
