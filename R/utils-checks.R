@@ -13,7 +13,8 @@ check_class <- function(x, cls, ..., allow_null = FALSE, arg = rlang::caller_arg
 }
 
 is_selenium_server <- function(x) {
-  is.list(x) && all(c("process", "log", "stop") %in% names(x))
+  inherits(x, "process") ||
+    (is.list(x) && all(c("process", "log", "stop") %in% names(x)))
 }
 
 check_selenium_server <- function(x, call = rlang::caller_env()) {

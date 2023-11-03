@@ -368,7 +368,7 @@ create_selenium_server <- function(browser,
       selenium_manager = version == "latest" || numeric_version(version) >= "4.9.0",
       interactive = FALSE,
       temp = FALSE,
-      extra_args = c(...)
+      extra_args = c("-p", as.character(port), ...)
     )
   } else {
     try_fetch(
@@ -604,15 +604,19 @@ check_supplied_driver <- function(x, browser = NULL, call = rlang::caller_env())
 }
 
 find_port_from_server <- function(x, call = rlang::caller_env()) {
-  log <- x$log()
+  if (inherits(x, "process")) {
+    port <- get_with_timeout(10, find_port_selenium, x)
+  } else {
+    log <- x$log()
 
-  port <- find_port_from_logs(log$stderr)
+    port <- find_port_from_logs(log$stderr, pattern = "port ([0-9]+)")
 
-  if (is.na(port)) {
-    port <- find_port_from_logs(log$stdout)
+    if (is.na(port)) {
+      port <- find_port_from_logs(log$stdout, pattern = "port ([0-9]+)")
+    }
   }
 
-  if (is.na(port)) {
+  if (is.null(port) || is.na(port)) {
     warn_default_port(call = call)
     port <- 4444L
   }
@@ -620,9 +624,14 @@ find_port_from_server <- function(x, call = rlang::caller_env()) {
   port
 }
 
-find_port_from_logs <- function(x) {
-  matches <- regmatches(x, regexec("port ([0-9]+)", x))
-  port_matches <- stats::na.omit(unlist(lapply(matches, function(x) x[2])))
+find_port_selenium <- function(x) {
+  result <- find_port_from_logs(x$read_output())
+  if (is.na(result)) NULL else result
+}
+
+find_port_from_logs <- function(x, pattern = "http://(:?[0-9]+\\.)*[0-9]+:([0-9]+)") {
+  matches <- regmatches(x, regexec(pattern, x))
+  port_matches <- stats::na.omit(unlist(lapply(matches, function(x) x[length(x)])))
   numeric_ports <- suppressWarnings(as.integer(port_matches))
   stats::na.omit(numeric_ports)[1]
 }

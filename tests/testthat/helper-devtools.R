@@ -1,13 +1,19 @@
 # Runs tests using a variety of backends:
 # Requires RSelenium, chromote, Chrome and Firefox to be installed
 test_selenider <- function(x,
+                           manual = TRUE,
                            selenium_chrome = TRUE,
                            selenium_firefox = TRUE,
-                           rselenium_chrome = TRUE,
-                           rselenium_firefox = TRUE,
                            chromote = TRUE,
                            chromote_view = TRUE,
-                           manual = TRUE) {
+                           rselenium_firefox = TRUE) {
+  if (manual) {
+    cli::cli_alert_info("Running manual tests")
+    withr::with_envvar(c(
+      "NOT_CRAN" = "true"
+    ), testthat::test_dir("tests/manual"))
+  }
+
   if (selenium_chrome) {
     # Avoid explicit dependency on devtools
     cli::cli_alert_info("Running tests using Selenium and Chrome")
@@ -21,23 +27,6 @@ test_selenider <- function(x,
     cli::cli_alert_info("Running tests using Selenium and Firefox")
     withr::with_envvar(c(
       "SELENIDER_SESSION" = "selenium",
-      "SELENIDER_BROWSER" = "firefox"
-    ), rlang::ns_env("devtools")$test())
-  }
-
-  if (rselenium_chrome) {
-    # Avoid explicit dependency on devtools
-    cli::cli_alert_info("Running tests using rselenium and Chrome")
-    withr::with_envvar(c(
-      "SELENIDER_SESSION" = "rselenium",
-      "SELENIDER_BROWSER" = "chrome"
-    ), rlang::ns_env("devtools")$test())
-  }
-
-  if (rselenium_firefox) {
-    cli::cli_alert_info("Running tests using Selenium and Firefox")
-    withr::with_envvar(c(
-      "SELENIDER_SESSION" = "rselenium",
       "SELENIDER_BROWSER" = "firefox"
     ), rlang::ns_env("devtools")$test())
   }
@@ -59,10 +48,11 @@ test_selenider <- function(x,
     ), rlang::ns_env("devtools")$test())
   }
 
-  if (manual) {
-    cli::cli_alert_info("Running manual tests")
+  if (rselenium_firefox) {
+    cli::cli_alert_info("Running tests using Selenium and Firefox")
     withr::with_envvar(c(
-      "NOT_CRAN" = "true"
-    ), testthat::test_dir("tests/manual"))
+      "SELENIDER_SESSION" = "rselenium",
+      "SELENIDER_BROWSER" = "firefox"
+    ), rlang::ns_env("devtools")$test())
   }
 }
