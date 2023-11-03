@@ -27,7 +27,7 @@ get_with_timeout <- function(timeout, .f, ...) {
 #'
 #' @param session Which session we should check. `"chromote"` is used by default.
 #' @param online Whether we need to check for an internet connection.
-#' 
+#'
 #' @details
 #' Specifically, the following is checked:
 #'
@@ -36,7 +36,7 @@ get_with_timeout <- function(timeout, .f, ...) {
 #' * Whether we are on CRAN (using the `NOT_CRAN` environment variable). If we are,
 #'   the function returns `FALSE`.
 #' * Whether an internet connection is available (using [curl::nslookup()]).
-#' 
+#'
 #' If `session` is `"chromote"`, we also check:
 #'
 #' * Whether `chromote` is installed.
@@ -80,10 +80,12 @@ selenider_available <- function(session = c("chromote", "selenium"), online = TR
   }
 
   if (session == "chromote") {
-    is_installed("chromote") && tryCatch({
-      chromote::find_chrome()
-      TRUE
-    }, error = function(e) FALSE)
+    is_installed("chromote") && tryCatch(
+      {
+        !is.null(suppressMessages(chromote::find_chrome()))
+      },
+      error = function(e) FALSE
+    )
   } else {
     rlang::is_installed("RSelenium") &&
       !is.null(find_browser_and_version()$browser)
@@ -154,7 +156,7 @@ ordinal_numbers <- function(x) {
     th = "[0456789]$",
     th = "."
   )
-  
+
   out <- utils::stack(lapply(rules, grep, x = x, perl = TRUE))
   out <- out[!duplicated(out$values), ] # only first result should be considered
   res <- paste0(
@@ -168,16 +170,16 @@ ordinal_numbers <- function(x) {
 call_insert <- function(call, elem_name, quo = TRUE) {
   if (quo) {
     new_call <- call2(
-      as.list(quo_get_expr(call))[[1]], 
-      parse_expr(elem_name), 
+      as.list(quo_get_expr(call))[[1]],
+      parse_expr(elem_name),
       !!!call_args(call)
     )
 
     new_quosure(new_call, quo_get_env(call))
   } else {
     new_call <- call2(
-      as.list(call)[[1]], 
-      parse_expr(elem_name), 
+      as.list(call)[[1]],
+      parse_expr(elem_name),
       !!!call_args(call)
     )
 
@@ -238,9 +240,9 @@ unpack_list <- function(x) {
 
 is_windows <- function() .Platform$OS.type == "windows"
 
-is_mac <- function() Sys.info()[['sysname']] == 'Darwin'
+is_mac <- function() Sys.info()[["sysname"]] == "Darwin"
 
-is_linux <- function() Sys.info()[['sysname']] == 'Linux'
+is_linux <- function() Sys.info()[["sysname"]] == "Linux"
 
 #' Clean up after an example
 #'
