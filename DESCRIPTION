@@ -50,4 +50,4 @@ LazyData: true
 VignetteBuilder: knitr
 Language: en-GB
 Remotes: 
-    ashbythorpe/selenium-r
+    selenium=ashbythorpe/selenium-r
