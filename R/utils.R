@@ -82,8 +82,7 @@ selenider_available <- function(session = c("chromote", "selenium"), online = TR
   if (session == "chromote") {
     is_installed("chromote") && tryCatch(
       {
-        chromote::find_chrome()
-        TRUE
+        !is.null(suppressMessages(chromote::find_chrome()))
       },
       error = function(e) FALSE
     )

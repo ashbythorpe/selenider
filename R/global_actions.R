@@ -36,7 +36,7 @@ open_url <- function(url, session = NULL) {
   driver <- session$driver
 
   if (session$session == "chromote") {
-    promise <- driver$Page$loadEventFired(wait_ = FALSE)
+    promise <- driver$Page$loadEventFired(wait_ = FALSE, timeout_ = 60)
     driver$Page$navigate(url, wait_ = FALSE)
     driver$wait_for(promise)
   } else {
@@ -96,7 +96,7 @@ back <- function(session = NULL) {
     if (index > 1) {
       new_id <- history[[index - 1]]$id
 
-      promise <- driver$Page$loadEventFired(wait_ = FALSE)
+      promise <- driver$Page$loadEventFired(wait_ = FALSE, timeout_ = 60)
       driver$Page$navigateToHistoryEntry(new_id, wait_ = FALSE)
       driver$wait_for(promise)
     } else {
@@ -130,7 +130,7 @@ forward <- function(session = NULL) {
     if (index < length(history)) {
       new_id <- history[[index + 1]]$id
 
-      promise <- driver$Page$loadEventFired(wait_ = FALSE)
+      promise <- driver$Page$loadEventFired(wait_ = FALSE, timeout_ = 60)
       driver$Page$navigateToHistoryEntry(new_id, wait_ = FALSE)
       driver$wait_for(promise)
     } else {
@@ -179,7 +179,7 @@ reload <- function(session = NULL) {
   driver <- session$driver
 
   if (session$session == "chromote") {
-    promise <- driver$Page$loadEventFired(wait_ = FALSE)
+    promise <- driver$Page$loadEventFired(wait_ = FALSE, timeout_ = 60)
     session$driver$Page$reload(wait_ = FALSE)
     driver$wait_for(promise)
   } else {
