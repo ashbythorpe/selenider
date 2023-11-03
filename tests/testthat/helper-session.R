@@ -36,5 +36,9 @@ selenider_test_session <- function(x, .env = rlang::caller_env()) {
       server = create_selenium_server(browser, selenium_manager = FALSE),
       client = create_rselenium_client(browser)
     )
+
+    result <- selenider_session(driver = driver, .env = .env)
   }
+
+  result
 }
