@@ -44,7 +44,7 @@ get_with_timeout <- function(timeout, .f, ...) {
 #'
 #' If `session` is `"selenium"`, we check:
 #'
-#' * Whether `RSelenium` is installed.
+#' * Whether `selenium` is installed.
 #' * Whether we can find a valid browser that is supported by `RSelenium`.
 #'
 #' @returns
@@ -88,7 +88,7 @@ selenider_available <- function(session = c("chromote", "selenium"), online = TR
       error = function(e) FALSE
     )
   } else {
-    rlang::is_installed("RSelenium") &&
+    rlang::is_installed("selenium") &&
       !is.null(find_browser_and_version()$browser)
   }
 }
@@ -300,4 +300,3 @@ selenider_cleanup <- function(env = rlang::caller_env()) { # nocov start
   try_fetch(withr::deferred_run(env), error = function(e) rlang::abort(c("Error in withr::deferred_run()"), parent = e))
   return(invisible())
 } # nocov end
-

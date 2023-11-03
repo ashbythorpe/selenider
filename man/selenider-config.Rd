@@ -7,10 +7,9 @@
 \code{selenider} has a few options, allowing you to specify the session and browser to use
 without having to tell \code{\link[=selenider_session]{selenider_session()}} this information every time.
 \itemize{
-\item \code{selenider.session} - The package to use as a backend: either "chromote" or
-"selenium".
+\item \code{selenider.session} - The package to use as a backend: either "chromote",
+"selenium" or "rselenium".
 \item \code{selenider.browser} - The name of the browser to run the session in; one of
-"chrome", "firefox", "phantomjs" or "internet explorer" (only on
-Windows).
+"chrome", "firefox", "edge", "safari", or another valid browser name.
 }
 }

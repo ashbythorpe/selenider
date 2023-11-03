@@ -160,7 +160,7 @@ stop_default_browser <- function(call = rlang::caller_env()) {
 
 stop_no_dependencies <- function(call = rlang::caller_env()) {
   cli::cli_abort(c(
-    "One of {.pkg chromote} or {.pkg RSelenium} must be installed to use {.pkg selenider}."
+    "One of {.pkg chromote} or {.pkg selenium} must be installed to use {.pkg selenider}."
   ), class = "selenider_error_dependencies", call = call)
 }
 

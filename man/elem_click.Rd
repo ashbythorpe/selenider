@@ -17,7 +17,7 @@ elem_right_click(x, js = FALSE, timeout = NULL)
 
 \item{js}{Whether to click the element using JavaScript. For \code{elem_right_click()},
 this is ignored if Selenium is being used, since right clicking using
-RSelenium does not seem to work (so JavaScript is used instead).}
+selenium does not seem to work (so JavaScript is used instead).}
 
 \item{timeout}{How long to wait for the element to exist.}
 }

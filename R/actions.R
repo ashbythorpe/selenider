@@ -11,7 +11,7 @@
 #' @param x A `selenider_element` object.
 #' @param js Whether to click the element using JavaScript. For `elem_right_click()`,
 #'   this is ignored if Selenium is being used, since right clicking using
-#'   RSelenium does not seem to work (so JavaScript is used instead).
+#'   selenium does not seem to work (so JavaScript is used instead).
 #' @param timeout How long to wait for the element to exist.
 #'
 #' @returns `x`, invisibly.
