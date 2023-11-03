@@ -80,12 +80,14 @@ selenider_available <- function(session = c("chromote", "selenium"), online = TR
   }
 
   if (session == "chromote") {
-    is_installed("chromote") && tryCatch(
-      {
-        !is.null(suppressMessages(chromote::find_chrome()))
-      },
-      error = function(e) FALSE
-    )
+    Sys.getenv("SELENIDER_SESSION") %in% c("", "chromote") &&
+      is_installed("chromote") &&
+      tryCatch(
+        {
+          !is.null(suppressMessages(chromote::find_chrome()))
+        },
+        error = function(e) FALSE
+      )
   } else {
     rlang::is_installed("selenium") &&
       !is.null(find_browser_and_version()$browser)
