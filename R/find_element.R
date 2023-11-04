@@ -128,38 +128,38 @@ new_selenider_element <- function(session, selector) {
   res
 }
 
-#' @export
-format.selenider_element <- function(x, ...) {
-  cli::cli_format_method({
-    bullets <- format_element(x)
-    cli::cli_text("A selenider element selecting:")
-
-    if (length(bullets) == 1) {
-      cli::cli_text(bullets)
-    } else {
-      cli::cli_bullets(bullets)
-    }
-  })
-}
-
-format_element <- function(x, ...) {
-  selectors <- x$selectors
-
-  if (length(selectors) == 1) {
-    res <- format(selectors[[1]], first = TRUE, ...)
-    replace_names_bullets(res)
-  } else {
-    first <- format(selectors[[1]], first = TRUE, ...)
-
-    # Unlist since format can return a character vector of length >1
-    formatted <- unlist(lapply(selectors[-1], format, ...))
-
-    c(replace_names_bullets(first), replace_names_bullets(formatted))
-  }
-}
-
-#' @export
-print.selenider_element <- function(x, ...) {
-  cat(format(x, ...), sep = "\n")
-}
-
+# #' @export
+# format.selenider_element <- function(x, ...) {
+#   cli::cli_format_method({
+#     bullets <- format_element(x)
+#     cli::cli_text("A selenider element selecting:")
+#
+#     if (length(bullets) == 1) {
+#       cli::cli_text(bullets)
+#     } else {
+#       cli::cli_bullets(bullets)
+#     }
+#   })
+# }
+#
+# format_element <- function(x, ...) {
+#   selectors <- x$selectors
+#
+#   if (length(selectors) == 1) {
+#     res <- format(selectors[[1]], first = TRUE, ...)
+#     replace_names_bullets(res)
+#   } else {
+#     first <- format(selectors[[1]], first = TRUE, ...)
+#
+#     # Unlist since format can return a character vector of length >1
+#     formatted <- unlist(lapply(selectors[-1], format, ...))
+#
+#     c(replace_names_bullets(first), replace_names_bullets(formatted))
+#   }
+# }
+#
+# #' @export
+# print.selenider_element <- function(x, ...) {
+#   cat(format(x, ...), sep = "\n")
+# }
+#
