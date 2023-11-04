@@ -83,6 +83,7 @@ can then be passed into the <code>driver</code> argument to <code>selenider_sess
 <span>  browser <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"selenider.browser"</span><span class="op">)</span>,</span>
 <span>  view <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  timeout <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  selenium_manager <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  driver <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  local <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  quiet <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -94,30 +95,32 @@ can then be passed into the <code>driver</code> argument to <code>selenider_sess
 <span><span class="fu">create_selenium_server</span><span class="op">(</span></span>
 <span>  <span class="va">browser</span>,</span>
 <span>  version <span class="op">=</span> <span class="st">"latest"</span>,</span>
-<span>  port <span class="op">=</span> <span class="fl">4567L</span>,</span>
+<span>  driver_version <span class="op">=</span> <span class="st">"latest"</span>,</span>
+<span>  port <span class="op">=</span> <span class="fl">4444L</span>,</span>
 <span>  quiet <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  selenium_manager <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">create_selenium_client</span><span class="op">(</span><span class="va">browser</span>, port <span class="op">=</span> <span class="fl">4567L</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">create_selenium_client</span><span class="op">(</span><span class="va">browser</span>, port <span class="op">=</span> <span class="fl">4444L</span>, host <span class="op">=</span> <span class="st">"localhost"</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>session</dt>
-<dd><p>The package to use as a backend: either "chromote" or
-"selenium". By default, chromote is used, since this tends to be
-faster and more reliable. Change the default value using the
+<dd><p>The package to use as a backend: either "chromote",
+"selenium" or "rselenium". By default, chromote is used, since this tends
+to be faster and more reliable. Change the default value using the
 <code>selenider.session</code> option.</p></dd>
 
 
 <dt>browser</dt>
 <dd><p>The name of the browser to run the session in; one of
-"chrome", "firefox", "phantomjs" or "internet explorer" (only on
-Windows). IF <code>NULL</code>, the function will try to work out which browser
-you have installed. If we are using chromote, this option is ignored,
-since chromote only works on Chrome. Change the default value of this
-parameter using the <code>selenider.browser</code> option.</p></dd>
+"chrome", "firefox", "edge", "safari", or another valid browser name.
+If <code>NULL</code>, the function will try to work out which browser you have
+installed. If we are using chromote, this option is ignored, since
+chromote only works on Chrome. Change the default value of this parameter
+using the <code>selenider.browser</code> option.</p></dd>
 
 
 <dt>view</dt>
@@ -130,16 +133,27 @@ be headless.</p></dd>
 <dd><p>The default time to wait when collecting an element.</p></dd>
 
 
+<dt>selenium_manager</dt>
+<dd><p>If <code>TRUE</code>, we use <code><a href="https://ashbythorpe.github.io/selenium-r/reference/selenium_server.html" class="external-link">selenium::selenium_server()</a></code> to
+start the server, relying on Selenium Manager to download the necessary
+browser drivers. If <code>FALSE</code>, <code><a href="https://docs.ropensci.org/wdman/reference/selenium.html" class="external-link">wdman::selenium()</a></code> is used to start the
+server, which will try to download the drivers automatically. This is not
+used by default because it is less reliable (especially on Chrome), and
+does not support Microsoft Edge.</p></dd>
+
+
 <dt>driver</dt>
 <dd><p>A driver object to use instead of creating one manually. This
 can be one of:</p><ul><li><p>A <a href="http://rstudio.github.io/chromote/reference/ChromoteSession.html" class="external-link">chromote::ChromoteSession</a> object (the result of <code>create_chromote_session()</code>).</p></li>
 <li><p>A <a href="https://rstudio.github.io/shinytest2/reference/AppDriver.html" class="external-link">shinytest2::AppDriver</a> object.</p></li>
-<li><p>An <code><a href="https://docs.ropensci.org/RSelenium/reference/remoteDriver-class.html" class="external-link">RSelenium::remoteDriver()</a></code> object (the result of <code>create_selenium_client()</code>).</p></li>
+<li><p>An <a href="https://ashbythorpe.github.io/selenium-r/reference/SeleniumSession.html" class="external-link">selenium::SeleniumSession</a> object (the result of <code>create_selenium_client()</code>).</p></li>
 <li><p>A Selenium server object (the result of <code><a href="https://docs.ropensci.org/wdman/reference/selenium.html" class="external-link">wdman::selenium()</a></code>, or
 <code>create_selenium_server()</code>). In this case, the client object will be created using
 the server object.</p></li>
-<li><p>A list/environment containing the <code><a href="https://docs.ropensci.org/RSelenium/reference/remoteDriver-class.html" class="external-link">RSelenium::remoteDriver()</a></code> object, the Selenium
-server object, or both.
+<li><p>A list/environment containing the <a href="https://ashbythorpe.github.io/selenium-r/reference/SeleniumSession.html" class="external-link">selenium::SeleniumSession</a> object,
+the Selenium server object, or both.</p></li>
+<li><p>An <code><a href="https://docs.ropensci.org/RSelenium/reference/remoteDriver-class.html" class="external-link">RSelenium::remoteDriver()</a></code> object (see <code><a href="create_rselenium_client.html">create_rselenium_client()</a></code>)
+can be used instead of a <a href="https://ashbythorpe.github.io/selenium-r/reference/SeleniumSession.html" class="external-link">selenium::SeleniumSession</a> object.
 See Details for more information about providing a custom driver object.</p></li>
 </ul></dd>
 
@@ -150,13 +164,13 @@ using <code><a href="get_session.html">local_session()</a></code>.</p></dd>
 
 
 <dt>quiet</dt>
-<dd><p>Whether to let <code><a href="https://docs.ropensci.org/RSelenium/reference/rsDriver.html" class="external-link">RSelenium::rsDriver()</a></code> display messages. By
+<dd><p>Whether to let <code><a href="https://docs.ropensci.org/wdman/reference/selenium.html" class="external-link">wdman::selenium()</a></code> display messages. By
 default, this output is suppressed, as it is not usually useful. Chromote
 does not display any output when creating a session.</p></dd>
 
 
 <dt>.env</dt>
-<dd><p>Passed into <code><a href="get_session.html">local_session()</a></code> function, to define the
+<dd><p>Passed into <code><a href="get_session.html">local_session()</a></code>, to define the
 environment in which the session is used. Change this if you want to
 create the session inside a function and then use it outside the
 function.</p></dd>
@@ -165,19 +179,30 @@ function.</p></dd>
 <dt>...</dt>
 <dd><p>Arguments to finetune the creation of the specific driver.</p><ul><li><p>For <code>create_chromote_session()</code>, these are passed into
 <code><a href="http://rstudio.github.io/chromote/reference/ChromoteSession.html" class="external-link">chromote::ChromoteSession$new()</a></code>.</p></li>
-<li><p>For <code>create_selenium_server()</code>, these are passed into <code><a href="https://docs.ropensci.org/wdman/reference/selenium.html" class="external-link">wdman::selenium()</a></code>.</p></li>
-<li><p>For <code>create_selenium_server()</code>, these are passed into <code><a href="https://docs.ropensci.org/RSelenium/reference/remoteDriver-class.html" class="external-link">RSelenium::remoteDriver()</a></code>.</p></li>
+<li><p>For <code>create_selenium_server()</code>, these are passed into
+<code><a href="https://ashbythorpe.github.io/selenium-r/reference/SeleniumSession.html" class="external-link">selenium::SeleniumSession$new()</a></code>, or
+<code><a href="https://docs.ropensci.org/wdman/reference/selenium.html" class="external-link">wdman::selenium()</a></code> if <code>selenium_manager</code> is <code>FALSE</code>.</p></li>
 </ul></dd>
 
 
 <dt>version</dt>
-<dd><p>The version of the webdriver (chromedriver, geckodriver, etc.)
-to use. You should only need to change this if Chrome is being used, as the
-version of the driver depends on the version of Chrome.</p></dd>
+<dd><p>The version of Selenium Server to run.</p></dd>
+
+
+<dt>driver_version</dt>
+<dd><p>The version of the webdriver (chromedriver,
+geckodriver, etc.) to use. You only need to change this if
+<code>selenium_manager</code> is <code>FALSE</code> and Chrome is being used, as the
+version of the driver depends on the version of the Chrome browser.</p></dd>
 
 
 <dt>port</dt>
 <dd><p>The port to run Selenium on.</p></dd>
+
+
+<dt>host</dt>
+<dd><p>The host on which the Selenium server is running. This is
+usually your local machine (<code>"localhost"</code>), but can be an IP address.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -191,7 +216,7 @@ browser.</p>
     <h2 id="structure-of-a-selenider-session">Structure of a selenider session<a class="anchor" aria-label="anchor" href="#structure-of-a-selenider-session"></a></h2>
     <p>A <code>selenider_session</code> object is an S3 list, meaning its properties can be accessed using <code>$</code>.
 Most notably, using <code>session$driver</code> allows access to the driver object which actually controls
-the browser. If you are using Selenium, use <code>session$driver$client</code> to access the <code>remoteDriver</code>
+the browser. If you are using Selenium, use <code>session$driver</code> to access the <code>remoteDriver</code>
 object. These objects are useful if you want to do something with the driver that is not directly
 supported by selenider. See <code><a href="get_actual_element.html">get_actual_element()</a></code> for some examples of this.</p>
     </div>
@@ -232,7 +257,7 @@ shinytest2 to share a session:</p>
 </div>
 
 <div class="section">
-<h3 id="rselenium">RSelenium<a class="anchor" aria-label="anchor" href="#rselenium"></a></h3>
+<h3 id="selenium">selenium<a class="anchor" aria-label="anchor" href="#selenium"></a></h3>
 
 
 <p>If you want to manually create both the client and the server, you can
@@ -244,11 +269,11 @@ do the equivalent of the following:</p>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre><p></p></div>
 <p>However, it can sometimes be useful to omit the server, for example when you are running
-the Selenium server using Docker. In this case, you need to make sure the ip and port are
+the Selenium server using Docker. In this case, you need to make sure the host and port are
 matched correctly.</p>
 <p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>session <span class="ot">&lt;-</span> <span class="fu">selenider_session</span>(</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">driver =</span> <span class="fu">create_selenium_client</span>(</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">remoteServerAddr =</span> <span class="st">"&lt;IP ADDRESS&gt;"</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">host =</span> <span class="st">"&lt;IP ADDRESS&gt;"</span>,</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">port =</span> 1234L</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre><p></p></div>
