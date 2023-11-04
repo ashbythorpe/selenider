@@ -31,7 +31,7 @@ Programmers are forced to write verbose code, utilising inconsistent workarounds
 `Sys.sleep()` to wait for something to happen).
 
 selenider aims to make web testing and scraping in R much simpler, providing a wrapper for either [chromote](https://rstudio.github.io/chromote/)
-or [RSelenium](https://docs.ropensci.org/RSelenium/). It is inspired by Java's [Selenide](https://selenide.org/) and Python's [Selene](https://yashaka.github.io/selene/).
+or [selenium](https://ashbythorpe.github.io/selenium-r/). It is inspired by Java's [Selenide](https://selenide.org/) and Python's [Selene](https://yashaka.github.io/selene/).
 
 Code reliability and reproducibility are essential when writing R code. selenider provides features to
 make your scripts work every time they are run, without any extra code:
@@ -75,13 +75,13 @@ We recommend chromote, as it is quicker and easier to get up and running.
 install.packages("chromote")
 
 # Or:
-install.packages("RSelenium")
+install.packages("selenium")
 ```
 
 If you are using RSelenium, you must also have [Java](https://www.java.com/) installed.
 
 Finally, you must have a web browser installed. For chromote, [Google Chrome](https://www.google.com/chrome/) is
-required. For RSelenium, any browser can be used, but [Firefox](https://www.mozilla.org/firefox/new/) is recommended.
+required. For selenium, any browser can be used, but [Firefox](https://www.mozilla.org/firefox/new/) is recommended.
 
 ## Usage
 

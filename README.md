@@ -18,7 +18,7 @@ something to happen).
 selenider aims to make web testing and scraping in R much simpler,
 providing a wrapper for either
 [chromote](https://rstudio.github.io/chromote/) or
-[RSelenium](https://docs.ropensci.org/RSelenium/). It is inspired by
+[selenium](https://ashbythorpe.github.io/selenium-r/). It is inspired by
 Java’s [Selenide](https://selenide.org/) and Python’s
 [Selene](https://yashaka.github.io/selene/).
 
@@ -76,14 +76,14 @@ chromote, as it is quicker and easier to get up and running.
 install.packages("chromote")
 
 # Or:
-install.packages("RSelenium")
+install.packages("selenium")
 ```
 
 If you are using RSelenium, you must also have
 [Java](https://www.java.com/) installed.
 
 Finally, you must have a web browser installed. For chromote, [Google
-Chrome](https://www.google.com/chrome/) is required. For RSelenium, any
+Chrome](https://www.google.com/chrome/) is required. For selenium, any
 browser can be used, but [Firefox](https://www.mozilla.org/firefox/new/)
 is recommended.
 
@@ -124,11 +124,18 @@ s("dl") |>
       find_element("a") |>
       elem_attr("href")
   )
+#> [[1]]
+#> [1] "https://www.stats.bris.ac.uk/R/"
+#> 
+#> [[2]]
+#> [1] "https://cran.ma.imperial.ac.uk/"
 ```
 
 ## Vignettes
 
-Get started with selenider, and learn the basics:
-`vignette("selenider")`. Use selenider with testthat, shinytest2 and
-Github Actions: `vignette("unit-testing", package = "selenider")`. Use
-selenider with rvest: `vignette("with-rvest", package = "selenider")`
+- Get started with selenider, and learn the basics:
+  `vignette("selenider")`.
+- Use selenider with testthat, shinytest2 and Github Actions:
+  `vignette("unit-testing", package = "selenider")`.
+- Use selenider with rvest:
+  `vignette("with-rvest", package = "selenider")`
