@@ -78,7 +78,7 @@ read_html.selenider_element <- function(x, encoding = "", timeout = NULL, outer 
         driver = driver
       )
     }
-  } else if (x$session == "selenium") {
+  } else if (x$session != "rselenium") {
     x <- execute_js_fn_on(
       "x => x.innerHTML",
       element,
@@ -96,4 +96,3 @@ read_html.selenider_element <- function(x, encoding = "", timeout = NULL, outer 
 
   NextMethod()
 }
-
