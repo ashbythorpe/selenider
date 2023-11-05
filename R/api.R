@@ -14,8 +14,6 @@
 #' @param id The id of the element you want to select.
 #' @param class_name The class name of the element you want to select.
 #' @param name The name attribute of the element you want to select.
-#' @param link_text The link text of the link element that you would like to
-#'   select.
 #'
 #' @details
 #' Both functions allow the starting point for chains of selectors to be made
@@ -66,11 +64,10 @@ s <- function(css = NULL,
               xpath = NULL,
               id = NULL,
               class_name = NULL,
-              name = NULL,
-              link_text = NULL) {
+              name = NULL) {
   session <- get_session(.env = caller_env())
 
-  find_element(session, css, xpath, id, class_name, name, link_text)
+  find_element(session, css, xpath, id, class_name, name)
 }
 
 #' @rdname s
@@ -80,9 +77,8 @@ ss <- function(css = NULL,
                xpath = NULL,
                id = NULL,
                class_name = NULL,
-               name = NULL,
-               link_text = NULL) {
+               name = NULL) {
   session <- get_session(.env = caller_env())
 
-  find_elements(session, css, xpath, id, class_name, name, link_text)
+  find_elements(session, css, xpath, id, class_name, name)
 }

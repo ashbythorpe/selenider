@@ -9,8 +9,6 @@
 #' @param id The id of the element you want to select.
 #' @param class_name The class name of the element you want to select.
 #' @param name The name attribute of the element you want to select.
-#' @param link_text The link text of the link element that you would like to
-#'   select.
 #' @inheritParams rlang::args_dots_used
 #'
 #' @details
@@ -76,11 +74,10 @@ find_elements.selenider_session <- function(x,
                                             id = NULL,
                                             class_name = NULL,
                                             name = NULL,
-                                            link_text = NULL,
                                             ...) {
   check_dots_used()
 
-  selector <- new_selector(css, xpath, id, class_name, name, link_text, filter = list())
+  selector <- new_selector(css, xpath, id, class_name, name, filter = list())
 
   new_selenider_elements(x, selector)
 }
@@ -94,11 +91,10 @@ find_elements.selenider_element <- function(x,
                                             id = NULL,
                                             class_name = NULL,
                                             name = NULL,
-                                            link_text = NULL,
                                             ...) {
   check_dots_used()
 
-  selector <- new_selector(css, xpath, id, class_name, name, link_text, filter = list())
+  selector <- new_selector(css, xpath, id, class_name, name, filter = list())
 
   x$selectors <- append(x$selectors, list(selector))
 

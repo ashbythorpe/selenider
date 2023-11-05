@@ -5,23 +5,9 @@
 \alias{ss}
 \title{Select HTML elements}
 \usage{
-s(
-  css = NULL,
-  xpath = NULL,
-  id = NULL,
-  class_name = NULL,
-  name = NULL,
-  link_text = NULL
-)
+s(css = NULL, xpath = NULL, id = NULL, class_name = NULL, name = NULL)
 
-ss(
-  css = NULL,
-  xpath = NULL,
-  id = NULL,
-  class_name = NULL,
-  name = NULL,
-  link_text = NULL
-)
+ss(css = NULL, xpath = NULL, id = NULL, class_name = NULL, name = NULL)
 }
 \arguments{
 \item{css}{A css selector.}
@@ -33,9 +19,6 @@ ss(
 \item{class_name}{The class name of the element you want to select.}
 
 \item{name}{The name attribute of the element you want to select.}
-
-\item{link_text}{The link text of the link element that you would like to
-select.}
 }
 \value{
 \code{s()} returns a \code{selenider_element} object.

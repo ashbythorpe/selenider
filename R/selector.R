@@ -3,7 +3,6 @@ new_selector <- function(css,
                          id,
                          class_name,
                          name,
-                         link_text,
                          filter = list(1)) {
   args <- list(
     css = css,
@@ -11,11 +10,10 @@ new_selector <- function(css,
     id = id,
     class_name = class_name,
     name = name,
-    link_text = link_text,
     filter = filter,
     to_be_filtered = length(filter)
   )
-  
+
   args <- args[!vapply(args, is.null, logical(1))]
   args_without_filter <- args[!names(args) %in% c("filter", "to_be_filtered")]
 
@@ -28,9 +26,9 @@ new_selector <- function(css,
     name <- names(args_without_filter)[i]
     check_string(arg, allow_null = TRUE, arg = name, call = caller_env())
   }
-  
+
   class(args) <- "selenider_selector"
-  
+
   args
 }
 
@@ -63,24 +61,20 @@ use_selector <- function(selector, element, driver) {
 
   if (length(filter) == 1 && identical(filter[[1]], 1) && length(selector) == 1) {
     # If we are getting the first element, both CDP and Selenium have a shortcut for this
-    using <- switch(
-      names(selector),
+    using <- switch(names(selector),
       css = "css selector",
       class_name = "class name",
-      link_text = "link text",
       names(selector)
     )
-    
+
     res <- find_actual_element(element, using = using, value = selector[[1]], driver = driver)
 
     list(res)
   } else {
     element_list <- .mapply(function(name, value) {
-      using <- switch(
-        name,
+      using <- switch(name,
         css = "css selector",
         class_name = "class name",
-        link_text = "link text",
         name
       )
 
@@ -90,5 +84,3 @@ use_selector <- function(selector, element, driver) {
     elem_common(element_list, driver = driver)
   }
 }
-
-

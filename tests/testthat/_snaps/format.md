@@ -20,8 +20,7 @@
       print(element)
     Output
       A selenider element selecting:
-      The first element with css selector ".myclass", xpath ".//a", and link text
-      "Link".
+      The first element with css selector ".myclass", xpath ".//a", and name "name".
 
 ---
 
@@ -29,8 +28,8 @@
       print(element)
     Output
       A selenider element selecting:
-      * The first element with css selector ".myclass", xpath ".//a", and link text
-        "Link".
+      * The first element with css selector ".myclass", xpath ".//a", and name
+        "name".
       * The first child element with css selector ".myclass2".
 
 ---
@@ -39,8 +38,8 @@
       print(element)
     Output
       A selenider element selecting:
-      * The first element with css selector ".myclass", xpath ".//a", and link text
-        "Link".
+      * The first element with css selector ".myclass", xpath ".//a", and name
+        "name".
       * The first child element with css selector ".myclass2" and xpath ".//p".
 
 ---
@@ -67,7 +66,7 @@
       print(elements)
     Output
       A collection of selenider elements selecting:
-      The elements with css selector ".myclass", xpath ".//a", and link text "Link".
+      The elements with css selector ".myclass", xpath ".//a", and name "name".
 
 ---
 
@@ -75,8 +74,8 @@
       print(elements)
     Output
       A collection of selenider elements selecting:
-      * The first element with css selector ".myclass", xpath ".//a", and link text
-        "Link".
+      * The first element with css selector ".myclass", xpath ".//a", and name
+        "name".
       * The child elements with css selector ".myclass2" and xpath ".//p".
 
 ---

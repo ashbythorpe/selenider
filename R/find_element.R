@@ -9,8 +9,6 @@
 #' @param id The id of the element you want to select.
 #' @param class_name The class name of the element you want to select.
 #' @param name The name attribute of the element you want to select.
-#' @param link_text The link text of the link element that you would like to
-#'   select.
 #' @inheritParams rlang::args_dots_used
 #'
 #' @details
@@ -33,7 +31,7 @@
 #' html <- "
 #' <div class='class1'>
 #'   <div id='id1'>
-#'     <a href='https://r-project.org'>Click me!</a>
+#'     <p class='class2'>Example text</p>
 #'   </div>
 #'   <p>Example text</p>
 #' </div>
@@ -53,11 +51,12 @@
 #'
 #' s("div") |>
 #'   find_element(id = "id1") |>
-#'   find_element(link_text = "Click me!")
+#'   find_element(class_name = "class2")
 #'
-#' # Complex Xpath expressions are easier to read as chained CSS selectors.
 #' s("//div[contains(@class, 'class1')]/div/a")
 #'
+#' # Complex Xpath expressions are easier to read as chained CSS selectors.
+#' # This is equivalent to above
 #' s("div.class1") |>
 #'   find_element("div") |>
 #'   find_element("a")
@@ -81,11 +80,10 @@ find_element.selenider_session <- function(x,
                                            id = NULL,
                                            class_name = NULL,
                                            name = NULL,
-                                           link_text = NULL,
                                            ...) {
   check_dots_used()
 
-  selector <- new_selector(css, xpath, id, class_name, name, link_text)
+  selector <- new_selector(css, xpath, id, class_name, name)
 
   new_selenider_element(x, selector)
 }
@@ -99,11 +97,10 @@ find_element.selenider_element <- function(x,
                                            id = NULL,
                                            class_name = NULL,
                                            name = NULL,
-                                           link_text = NULL,
                                            ...) {
   check_dots_used()
 
-  selector <- new_selector(css, xpath, id, class_name, name, link_text)
+  selector <- new_selector(css, xpath, id, class_name, name)
 
   x$selectors <- append(x$selectors, list(selector))
 
@@ -162,4 +159,3 @@ format_element <- function(x, ...) {
 print.selenider_element <- function(x, ...) {
   cat(format(x, ...), sep = "\n")
 }
-
