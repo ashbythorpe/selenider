@@ -1,10 +1,70 @@
+#' Print a live HTML element
+#'
+#' @description
+#' Display an element or collection of elements by fetching the elements and
+#' displaying their HTML contents.
+#'
+#' `print_lazy()` allows an element to be printed without fetching it, by
+#' displaying a summary of the steps that will be taken to reach the element.
+#'
+#' @param x A `selenider_element` or `selenider_elements` object.
+#' @param width The maximum width of the output.
+#' @param ... Not used.
+#' @param n The maximum number of elements to print.
+#' @param timeout How long to wait for `x` to exist in order to print its HTML.
+#'
+#' @returns `x`, invisibly.
+#'
+#' @examplesIf selenider::selenider_available(online = FALSE)
+#' html <- "
+#' <div>
+#' <p>Text 1</p>
+#' <p>Text 2</p>
+#' <p>Text 3</p>
+#' <p>Text 4</p>
+#' </div>
+#' "
+#'
+#' session <- minimal_selenider_session(html)
+#'
+#' print(s("div"))
+#'
+#' print(ss("p"))
+#'
+#' print(ss("p"), n = 3)
+#'
+#' s("div") |>
+#'   find_elements("p") |>
+#'   elem_filter(has_text("Text 3")) |>
+#'   print_lazy()
+#'
+#' \dontshow{
+#' # Clean up all connections and invalidate default chromote object
+#' selenider_cleanup()
+#' }
+#'
 #' @export
+print.selenider_element <- function(x, width = getOption("width"), ..., timeout = NULL) {
+  cat(format(x, width = width, ..., timeout = timeout), sep = "\n")
+
+  invisible(x)
+}
+
+#' @rdname print.selenider_element
+#'
+#' @export
+print.selenider_elements <- function(x, width = getOption("width"), ..., n = 20, timeout = NULL) {
+  cat(format(x, width = width, ..., n = n, timeout = timeout), sep = "\n")
+
+  invisible(x)
+}
+
 format.selenider_element <- function(x, width = getOption("width"), ..., timeout = NULL) {
   timeout <- get_timeout(timeout, x$timeout)
 
   element <- get_element_for_property(
     x,
-    action = paste0("Print {.arg x}"),
+    action = paste0("print {.arg x}"),
     timeout = timeout
   )
 
@@ -26,11 +86,6 @@ format.selenider_element <- function(x, width = getOption("width"), ..., timeout
     "{ selenider_element }",
     out
   )
-}
-
-#' @export
-print.selenider_element <- function(x, width = getOption("width"), ..., timeout = NULL) {
-  cat(format(x, width = width, ..., timeout = timeout), sep = "\n")
 }
 
 #' @export
@@ -71,11 +126,6 @@ format.selenider_elements <- function(x, width = getOption("width"), ..., n = 20
     html,
     if (extra) "..."
   )
-}
-
-#' @export
-print.selenider_elements <- function(x, width = getOption("width"), ..., n = 20, timeout = NULL) {
-  cat(format(x, width = width, ..., n = n, timeout = timeout), sep = "\n")
 }
 
 outer_html <- function(x, session, driver) {

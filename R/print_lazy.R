@@ -1,11 +1,19 @@
+#' @rdname print.selenider_element
+#'
 #' @export
 print_lazy <- function(x, ...) {
   UseMethod("print_lazy")
+
+  invisible(x)
 }
 
+#' @rdname print.selenider_element
+#'
 #' @export
 print_lazy.selenider_element <- function(x, ...) {
   cat(format_lazy_selenider_element(x, ...), sep = "\n")
+
+  invisible(x)
 }
 
 #' @export
