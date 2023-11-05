@@ -1,7 +1,7 @@
-# Printing works for selenider elements
+# Lazy printing works for selenider elements
 
     Code
-      print(element)
+      print_lazy(element)
     Output
       A selenider element selecting:
       The first element with css selector ".myclass".
@@ -9,7 +9,7 @@
 ---
 
     Code
-      print(element)
+      print_lazy(element)
     Output
       A selenider element selecting:
       The first element with css selector ".myclass" and xpath ".//p".
@@ -17,7 +17,7 @@
 ---
 
     Code
-      print(element)
+      print_lazy(element)
     Output
       A selenider element selecting:
       The first element with css selector ".myclass", xpath ".//a", and name "name".
@@ -25,7 +25,7 @@
 ---
 
     Code
-      print(element)
+      print_lazy(element)
     Output
       A selenider element selecting:
       * The first element with css selector ".myclass", xpath ".//a", and name
@@ -35,7 +35,7 @@
 ---
 
     Code
-      print(element)
+      print_lazy(element)
     Output
       A selenider element selecting:
       * The first element with css selector ".myclass", xpath ".//a", and name
@@ -45,17 +45,17 @@
 ---
 
     Code
-      print(element)
+      print_lazy(element)
     Output
       A selenider element selecting:
       * The first element with css selector "a".
       * The first child element with css selector "b".
       * The first child element with css selector "c".
 
-# Printing works for selenider element collections
+# Lazy printing works for selenider element collections
 
     Code
-      print(elements)
+      print_lazy(elements)
     Output
       A collection of selenider elements selecting:
       The elements with css selector ".myclass".
@@ -63,7 +63,7 @@
 ---
 
     Code
-      print(elements)
+      print_lazy(elements)
     Output
       A collection of selenider elements selecting:
       The elements with css selector ".myclass", xpath ".//a", and name "name".
@@ -71,7 +71,7 @@
 ---
 
     Code
-      print(elements)
+      print_lazy(elements)
     Output
       A collection of selenider elements selecting:
       * The first element with css selector ".myclass", xpath ".//a", and name
@@ -81,17 +81,17 @@
 ---
 
     Code
-      print(elements)
+      print_lazy(elements)
     Output
       A collection of selenider elements selecting:
       * The first element with css selector "a".
       * The first child element with css selector "b".
       * The child elements with css selector "c".
 
-# Printing filters works
+# Lazy printing filters works
 
     Code
-      print(elements[[1]])
+      print_lazy(elements[[1]])
     Output
       A selenider element selecting:
       The first element with css selector ".myclass".
@@ -99,7 +99,7 @@
 ---
 
     Code
-      print(elements[[5]])
+      print_lazy(elements[[5]])
     Output
       A selenider element selecting:
       The 5th element with css selector ".myclass".
@@ -107,7 +107,7 @@
 ---
 
     Code
-      print(elements[5])
+      print_lazy(elements[5])
     Output
       A collection of selenider elements selecting:
       The 5th elements with css selector ".myclass".
@@ -115,7 +115,7 @@
 ---
 
     Code
-      print(elements[5:10])
+      print_lazy(elements[5:10])
     Output
       A collection of selenider elements selecting:
       The 5th, 6th, 7th, 8th, 9th, and 10th elements with css selector ".myclass".
@@ -123,7 +123,7 @@
 ---
 
     Code
-      print(elements[-4])
+      print_lazy(elements[-4])
     Output
       A collection of selenider elements selecting:
       All elements with css selector ".myclass" except the 4th.
@@ -131,7 +131,7 @@
 ---
 
     Code
-      print(elements[-seq_len(6)])
+      print_lazy(elements[-seq_len(6)])
     Output
       A collection of selenider elements selecting:
       All elements with css selector ".myclass" except the 1st, 2nd, 3rd, 4th, 5th,
@@ -140,7 +140,7 @@
 ---
 
     Code
-      print(elem_filter(elements, is_present))
+      print_lazy(elem_filter(elements, is_present))
     Output
       A collection of selenider elements selecting:
       * The elements with css selector ".myclass" matching the following condition:
@@ -149,7 +149,7 @@
 ---
 
     Code
-      print(elem_find(elements, is_present))
+      print_lazy(elem_find(elements, is_present))
     Output
       A selenider element selecting:
       * The first element with css selector ".myclass" matching the following
@@ -159,7 +159,7 @@
 ---
 
     Code
-      print(elem_filter(elements, is_present, is_enabled))
+      print_lazy(elem_filter(elements, is_present, is_enabled))
     Output
       A collection of selenider elements selecting:
       The elements with css selector ".myclass" matching a custom condition.
@@ -167,7 +167,7 @@
 ---
 
     Code
-      print(elem_find(elements, is_present, is_enabled))
+      print_lazy(elem_find(elements, is_present, is_enabled))
     Output
       A selenider element selecting:
       The first element with css selector ".myclass" matching a custom condition.
@@ -175,7 +175,7 @@
 ---
 
     Code
-      print(elem_filter(elements, is_present)[[4]])
+      print_lazy(elem_filter(elements, is_present)[[4]])
     Output
       A selenider element selecting:
       * The 4th element with css selector ".myclass" matching the following
@@ -185,7 +185,7 @@
 ---
 
     Code
-      print(elem_filter(elements, is_present)[2:6])
+      print_lazy(elem_filter(elements, is_present)[2:6])
     Output
       A collection of selenider elements selecting:
       * The 2nd, 3rd, 4th, 5th, and 6th elements with css selector ".myclass"
@@ -195,17 +195,17 @@
 ---
 
     Code
-      print(elem_filter(elements, is_present)[-3])
+      print_lazy(elem_filter(elements, is_present)[-3])
     Output
       A collection of selenider elements selecting:
       * All elements with css selector ".myclass" except the third matching the
         following condition:
         `is_present`
 
-# Printing DOM-relative selectors works
+# Lazy printing DOM-relative selectors works
 
     Code
-      print(elem_ancestors(element))
+      print_lazy(elem_ancestors(element))
     Output
       A collection of selenider elements selecting:
       * The first element with css selector ".class".
@@ -214,7 +214,7 @@
 ---
 
     Code
-      print(elem_ancestors(element)[[1]])
+      print_lazy(elem_ancestors(element)[[1]])
     Output
       A selenider element selecting:
       * The first element with css selector ".class".
@@ -223,7 +223,7 @@
 ---
 
     Code
-      print(elem_ancestors(element)[-1])
+      print_lazy(elem_ancestors(element)[-1])
     Output
       A collection of selenider elements selecting:
       * The first element with css selector ".class".
@@ -232,7 +232,7 @@
 ---
 
     Code
-      print(elem_parent(element))
+      print_lazy(elem_parent(element))
     Output
       A selenider element selecting:
       * The first element with css selector ".class".
@@ -241,7 +241,7 @@
 ---
 
     Code
-      print(elem_siblings(element))
+      print_lazy(elem_siblings(element))
     Output
       A collection of selenider elements selecting:
       * The first element with css selector ".class".
@@ -250,7 +250,7 @@
 ---
 
     Code
-      print(elem_siblings(element)[[1]])
+      print_lazy(elem_siblings(element)[[1]])
     Output
       A selenider element selecting:
       * The first element with css selector ".class".
@@ -259,7 +259,7 @@
 ---
 
     Code
-      print(elem_siblings(element)[-1])
+      print_lazy(elem_siblings(element)[-1])
     Output
       A collection of selenider elements selecting:
       * The first element with css selector ".class".
@@ -268,7 +268,7 @@
 ---
 
     Code
-      print(elem_children(element))
+      print_lazy(elem_children(element))
     Output
       A collection of selenider elements selecting:
       * The first element with css selector ".class".
@@ -277,7 +277,7 @@
 ---
 
     Code
-      print(elem_children(element)[[1]])
+      print_lazy(elem_children(element)[[1]])
     Output
       A selenider element selecting:
       * The first element with css selector ".class".
@@ -286,7 +286,7 @@
 ---
 
     Code
-      print(elem_children(element)[-1])
+      print_lazy(elem_children(element)[-1])
     Output
       A collection of selenider elements selecting:
       * The first element with css selector ".class".
@@ -295,7 +295,7 @@
 ---
 
     Code
-      print(elem_descendants(element))
+      print_lazy(elem_descendants(element))
     Output
       A collection of selenider elements selecting:
       * The first element with css selector ".class".
@@ -304,7 +304,7 @@
 ---
 
     Code
-      print(elem_descendants(element)[[1]])
+      print_lazy(elem_descendants(element)[[1]])
     Output
       A selenider element selecting:
       * The first element with css selector ".class".
@@ -313,16 +313,16 @@
 ---
 
     Code
-      print(elem_descendants(element)[-1])
+      print_lazy(elem_descendants(element)[-1])
     Output
       A collection of selenider elements selecting:
       * The first element with css selector ".class".
       * All descendants except the first.
 
-# Printing flattened objects works
+# Lazy printing flattened objects works
 
     Code
-      print(elements)
+      print_lazy(elements)
     Output
       A collection of selenider elements selecting:
       A combination of elements.
@@ -330,7 +330,7 @@
 ---
 
     Code
-      print(elements[[1]])
+      print_lazy(elements[[1]])
     Output
       A selenider element selecting:
       The first of a combination of elements.
@@ -338,7 +338,7 @@
 ---
 
     Code
-      print(elements[1:5])
+      print_lazy(elements[1:5])
     Output
       A collection of selenider elements selecting:
       The 1st, 2nd, 3rd, 4th, and 5th of a combination of elements.
@@ -346,7 +346,7 @@
 ---
 
     Code
-      print(elements[-3])
+      print_lazy(elements[-3])
     Output
       A collection of selenider elements selecting:
       All elements of a combination of elements except the third.
@@ -354,7 +354,7 @@
 ---
 
     Code
-      print(elem_filter(elements, is_present))
+      print_lazy(elem_filter(elements, is_present))
     Output
       A collection of selenider elements selecting:
       * The elements in a combination of elements that match the following condition:
@@ -363,7 +363,7 @@
 ---
 
     Code
-      print(elem_find(elements, is_present))
+      print_lazy(elem_find(elements, is_present))
     Output
       A selenider element selecting:
       * The first of a combination of elements matching the following condition:
@@ -372,15 +372,15 @@
 ---
 
     Code
-      print(elem_filter(elements, is_present, is_enabled))
+      print_lazy(elem_filter(elements, is_present, is_enabled))
     Output
       A collection of selenider elements selecting:
       The elements in a combination of elements that match a custom condition.
 
-# Printing results of elem_flatmap() works
+# Lazy printing results of elem_flatmap() works
 
     Code
-      print(elements)
+      print_lazy(elements)
     Output
       A collection of selenider elements selecting:
       * The elements with css selector ".class".
@@ -389,7 +389,7 @@
 ---
 
     Code
-      print(elements[[1]])
+      print_lazy(elements[[1]])
     Output
       A selenider element selecting:
       * The elements with css selector ".class".
@@ -399,7 +399,7 @@
 ---
 
     Code
-      print(elements[-1])
+      print_lazy(elements[-1])
     Output
       A collection of selenider elements selecting:
       * The elements with css selector ".class".
@@ -409,7 +409,7 @@
 ---
 
     Code
-      print(elem_filter(elements, is_visible))
+      print_lazy(elem_filter(elements, is_visible))
     Output
       A collection of selenider elements selecting:
       * The elements with css selector ".class".
@@ -420,7 +420,7 @@
 ---
 
     Code
-      print(elements)
+      print_lazy(elements)
     Output
       A collection of selenider elements selecting:
       * The elements with css selector ".class".
@@ -429,7 +429,7 @@
 ---
 
     Code
-      print(elements[[1]])
+      print_lazy(elements[[1]])
     Output
       A selenider element selecting:
       * The elements with css selector ".class".
@@ -438,7 +438,7 @@
 ---
 
     Code
-      print(elements[-seq_len(10)])
+      print_lazy(elements[-seq_len(10)])
     Output
       A collection of selenider elements selecting:
       * The elements with css selector ".class".
@@ -448,7 +448,7 @@
 ---
 
     Code
-      print(elem_find(elements, is_visible))
+      print_lazy(elem_find(elements, is_visible))
     Output
       A selenider element selecting:
       * The elements with css selector ".class".
@@ -458,7 +458,7 @@
 ---
 
     Code
-      print(elements)
+      print_lazy(elements)
     Output
       A collection of selenider elements selecting:
       * The elements with css selector ".class".
@@ -467,7 +467,7 @@
 ---
 
     Code
-      print(elements[[1]])
+      print_lazy(elements[[1]])
     Output
       A selenider element selecting:
       * The elements with css selector ".class".
@@ -477,7 +477,7 @@
 ---
 
     Code
-      print(elements[-1])
+      print_lazy(elements[-1])
     Output
       A collection of selenider elements selecting:
       * The elements with css selector ".class".
@@ -487,7 +487,7 @@
 ---
 
     Code
-      print(elem_filter(elements, is_visible))
+      print_lazy(elem_filter(elements, is_visible))
     Output
       A collection of selenider elements selecting:
       * The elements with css selector ".class".
@@ -498,7 +498,7 @@
 ---
 
     Code
-      print(elements)
+      print_lazy(elements)
     Output
       A collection of selenider elements selecting:
       * The elements with css selector ".class".
@@ -508,7 +508,7 @@
 ---
 
     Code
-      print(elements[[1]])
+      print_lazy(elements[[1]])
     Output
       A selenider element selecting:
       * The elements with css selector ".class".
@@ -519,7 +519,7 @@
 ---
 
     Code
-      print(elements[-1])
+      print_lazy(elements[-1])
     Output
       A collection of selenider elements selecting:
       * The elements with css selector ".class".
@@ -530,7 +530,7 @@
 ---
 
     Code
-      print(elem_filter(elements, is_visible))
+      print_lazy(elem_filter(elements, is_visible))
     Output
       A collection of selenider elements selecting:
       * The elements with css selector ".class".
@@ -542,7 +542,7 @@
 ---
 
     Code
-      print(elements)
+      print_lazy(elements)
     Output
       A collection of selenider elements selecting:
       * The elements with css selector ".class".
@@ -552,7 +552,7 @@
 ---
 
     Code
-      print(elements[[1]])
+      print_lazy(elements[[1]])
     Output
       A selenider element selecting:
       * The elements with css selector ".class".
@@ -563,7 +563,7 @@
 ---
 
     Code
-      print(elements[-seq_len(10)])
+      print_lazy(elements[-seq_len(10)])
     Output
       A collection of selenider elements selecting:
       * The elements with css selector ".class".
@@ -575,7 +575,7 @@
 ---
 
     Code
-      print(elem_find(elements, is_visible))
+      print_lazy(elem_find(elements, is_visible))
     Output
       A selenider element selecting:
       * The elements with css selector ".class".
@@ -584,10 +584,10 @@
       * The first element matching the following condition:
         `is_visible`
 
-# Printing works for results of JS expressions.
+# Lazy printing works for results of JS expressions.
 
     Code
-      print(js_element)
+      print_lazy(js_element)
     Output
       A selenider element selecting:
       The result of a JavaScript expression.
@@ -595,7 +595,7 @@
 ---
 
     Code
-      print(find_element(js_element, "p"))
+      print_lazy(find_element(js_element, "p"))
     Output
       A selenider element selecting:
       * The result of a JavaScript expression.
@@ -604,7 +604,7 @@
 ---
 
     Code
-      print(js_elements)
+      print_lazy(js_elements)
     Output
       A collection of selenider elements selecting:
       The results of a JavaScript expression.
@@ -612,7 +612,7 @@
 ---
 
     Code
-      print(js_elements[1:2])
+      print_lazy(js_elements[1:2])
     Output
       A collection of selenider elements selecting:
       The 1st and 2nd results of a JavaScript expression.
@@ -620,7 +620,7 @@
 ---
 
     Code
-      print(js_elements[[1]])
+      print_lazy(js_elements[[1]])
     Output
       A selenider element selecting:
       The first result of a JavaScript expression.
