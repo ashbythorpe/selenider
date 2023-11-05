@@ -49,6 +49,6 @@ minimal_selenider_session <- function(html, js = NULL, ..., .env = rlang::caller
   }
 
   session <- selenider_session(..., .env = .env)
-  open_url(paste0("data:text/html,", URLencode(html)), session = session)
+  open_url(paste0("data:text/html,", utils::URLencode(html)), session = session)
   session
 } # nocov end

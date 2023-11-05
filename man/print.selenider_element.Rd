@@ -5,6 +5,7 @@
 \alias{print.selenider_elements}
 \alias{print_lazy}
 \alias{print_lazy.selenider_element}
+\alias{print_lazy.selenider_elements}
 \title{Print a live HTML element}
 \usage{
 \method{print}{selenider_element}(x, width = getOption("width"), ..., timeout = NULL)
@@ -14,6 +15,8 @@
 print_lazy(x, ...)
 
 \method{print_lazy}{selenider_element}(x, ...)
+
+\method{print_lazy}{selenider_elements}(x, ...)
 }
 \arguments{
 \item{x}{A \code{selenider_element} or \code{selenider_elements} object.}

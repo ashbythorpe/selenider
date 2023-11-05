@@ -41,7 +41,7 @@ lazy_list <- function(x) {
     current_value = counter()
   )
 
-  class(res) <- "lazy_list"
+  class(res) <- c("lazy_list", "eager_list")
 
   res
 }
@@ -190,8 +190,6 @@ check_lazylist <- function(x) {
 #' @returns An `eager_list` object.
 #'
 #' @noRd
-#'
-#' @export
 eager_list <- function(x) {
   res <- list(
     current_value = counter(),
@@ -529,7 +527,11 @@ element_in_eager <- function(x, l, .f) {
 }
 
 length.lazy_list <- function(x) {
-  length(coro::collect(x$instance$get())) + x$current_value$get()
+  print(x$current_value$get())
+  result <- length(coro::collect(x$instance$get())) + x$current_value$get()
+  print(result)
+  x$current_value$set(result)
+  result
 }
 
 #' @exportS3Method as.list lazy_list

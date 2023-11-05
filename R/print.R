@@ -92,11 +92,11 @@ format.selenider_element <- function(x, width = getOption("width"), ..., timeout
 format.selenider_elements <- function(x, width = getOption("width"), ..., n = 20, timeout = NULL) {
   timeout <- get_timeout(timeout, x$timeout)
 
-  elements <- get_elements_for_property(
+  elements <- as.list(get_elements_for_property(
     x,
     action = paste0("Print {.arg x}"),
     timeout = timeout
-  )
+  ))
 
   length <- length(elements)
 
@@ -151,3 +151,4 @@ encode_with_width <- function(x, width) {
   x[truncate_encoded] <- paste(substr(x[truncate_encoded], 1L, width - 3L), "...")
   x
 }
+

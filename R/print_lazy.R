@@ -16,12 +16,13 @@ print_lazy.selenider_element <- function(x, ...) {
   invisible(x)
 }
 
+#' @rdname print.selenider_element
+#'
 #' @export
 print_lazy.selenider_elements <- function(x, ...) {
   cat(format_lazy_selenider_elements(x, ...), sep = "\n")
 }
 
-#' @export
 format_lazy_selenider_element <- function(x, ...) {
   cli::cli_format_method({
     bullets <- format_lazy_element(x)
@@ -51,7 +52,6 @@ format_lazy_element <- function(x, ...) {
   }
 }
 
-#' @export
 format_lazy_selenider_elements <- function(x, ...) {
   cli::cli_format_method({
     bullets <- format_lazy_elements(x)
