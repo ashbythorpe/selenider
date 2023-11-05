@@ -10,7 +10,17 @@ format.selenider_element <- function(x, width = getOption("width"), ..., timeout
 
   html <- outer_html(element, x$session, x$driver)
 
-  out <- encode_with_width(html, width)
+  match <- regmatches(html, regexec("^(<.*?>)(.*)(</.*?>)$", html))[[1]]
+
+  if (length(match) == 0 || identical(match[3], "")) {
+    out <- encode_with_width(html, width)
+  } else {
+    out <- c(
+      encode_with_width(match[2], width),
+      paste0("  ", encode_with_width(match[3], width - 2)),
+      match[4]
+    )
+  }
 
   out <- c(
     "{ selenider_element }",
@@ -56,7 +66,7 @@ format.selenider_elements <- function(x, width = getOption("width"), ..., n = 20
     html
   )
 
-  out <- c(
+  c(
     paste0("{ selenider_elements (", length, ") }"),
     html,
     if (extra) "..."

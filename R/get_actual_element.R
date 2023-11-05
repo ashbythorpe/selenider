@@ -198,7 +198,7 @@ filter_elements <- function(elements, filter, multiple = FALSE) {
       }
     } else {
       stopifnot(multiple)
-      elements[filter[[1]]]
+      get_items(elements, filter[[1]])
     }
   } else if (length(filter) == 1 && is_function(filter[[1]])) {
     stopifnot(multiple)
@@ -215,7 +215,7 @@ filter_elements <- function(elements, filter, multiple = FALSE) {
       if (is_function(f)) {
         elements <- lazy_filter(elements, f)
       } else {
-        elements <- elements[f]
+        elements <- get_items(elements, f)
       }
     }
 
@@ -225,7 +225,7 @@ filter_elements <- function(elements, filter, multiple = FALSE) {
       if (is_function(f)) {
         elements <- lazy_filter(elements, f)
       } else {
-        elements <- elements[f]
+        elements <- get_items(elements, f)
       }
     }
 
