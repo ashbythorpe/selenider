@@ -9,20 +9,21 @@ test_that("Printing works for selenider elements", {
 
   expect_snapshot(print(element))
 
-  element <- s(".myclass", xpath = ".//a", link_text = "Link")
+  element <- s(".myclass", xpath = ".//a", name = "name")
 
   expect_snapshot(print(element))
 
   element <- find_element(
-    s(".myclass", xpath = ".//a", link_text = "Link"),
+    s(".myclass", xpath = ".//a", name = "name"),
     ".myclass2"
   )
 
   expect_snapshot(print(element))
 
   element <- find_element(
-    s(".myclass", xpath = ".//a", link_text = "Link"),
-    ".myclass2", xpath = ".//p"
+    s(".myclass", xpath = ".//a", name = "name"),
+    ".myclass2",
+    xpath = ".//p"
   )
 
   expect_snapshot(print(element))
@@ -45,13 +46,14 @@ test_that("Printing works for selenider element collections", {
 
   expect_snapshot(print(elements))
 
-  elements <- ss(".myclass", xpath = ".//a", link_text = "Link")
+  elements <- ss(".myclass", xpath = ".//a", name = "name")
 
   expect_snapshot(print(elements))
 
   elements <- find_elements(
-    s(".myclass", xpath = ".//a", link_text = "Link"),
-    ".myclass2", xpath = ".//p"
+    s(".myclass", xpath = ".//a", name = "name"),
+    ".myclass2",
+    xpath = ".//p"
   )
 
   expect_snapshot(print(elements))
@@ -172,7 +174,7 @@ test_that("Printing results of elem_flatmap() works", {
 
   elements <- elem_flatmap(
     ss(".class"),
-    function(x)  elem_flatmap(elem_children(x), function(y) find_element(y, "p"))
+    function(x) elem_flatmap(elem_children(x), function(y) find_element(y, "p"))
   )
 
   expect_snapshot(print(elements))
@@ -187,7 +189,7 @@ test_that("Printing works for results of JS expressions.", {
   open_url("https://ashbythorpe.github.io/selenider/articles/test-site.html")
 
   js_element <- execute_js_fn("x => x", s(".toggleable"))
-  
+
   expect_snapshot(print(js_element))
   expect_snapshot(print(find_element(js_element, "p")))
 
