@@ -23,9 +23,14 @@ elem_expect_fail <- function(condition, parent, call, x, x_name, env = rlang::ca
   }
 
   if (!is.null(x)) {
+    formatted <- if (inherits(x, "selenider_element")) {
+      format_lazy_selenider_element(x)
+    } else {
+      format_lazy_selenider_elements(x)
+    }
     object_text <- paste0(
       "Where `", x_name, "` is:\n",
-      paste(format(x), collapse = "\n"),
+      paste(formatted, collapse = "\n"),
       "\n"
     )
 

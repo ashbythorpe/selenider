@@ -56,8 +56,8 @@ find_actual_element <- function(x, using, value, driver) {
     selector <- selector_to_css(using, value)
     document <- x$DOM$getDocument()
 
-    nodeId <- tryCatch(
-      x$DOM$querySelector(document$root$nodeId, value)$nodeId,
+    nodeId <- try_fetch(
+      x$DOM$querySelector(document$root$nodeId, selector)$nodeId,
       error = function(e) {
         if (grepl("Could not find node with given id", e$message, fixed = TRUE)) {
           0
@@ -77,8 +77,8 @@ find_actual_element <- function(x, using, value, driver) {
     }
 
     selector <- selector_to_css(using, value)
-    nodeId <- tryCatch(
-      driver$DOM$querySelector(chromote_node_id(backend_id = x, driver = driver), value)$nodeId,
+    nodeId <- try_fetch(
+      driver$DOM$querySelector(chromote_node_id(backend_id = x, driver = driver), selector)$nodeId,
       error = function(e) {
         if (grepl("Could not find node with given id", e$message, fixed = TRUE)) {
           0
@@ -208,7 +208,7 @@ use_xpath_chromote <- function(xpath, element, driver, multiple = FALSE) {
       }"), element_object_id)$result
     }
 
-    if (identical(result$subclass, "null")) {
+    if (identical(result$subtype, "null")) {
       NULL
     } else {
       chromote_backend_id(object_id = result$objectId, driver = driver)
