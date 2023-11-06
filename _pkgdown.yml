@@ -50,6 +50,7 @@ reference:
   - get_actual_element
   - minimal_selenider_session
   - selenider_available
+  - print.selenider_element
 - title: Configuration
 - contents:
   - selenider-config
