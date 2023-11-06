@@ -8,6 +8,8 @@
 [![R-CMD-check](https://github.com/ashbythorpe/selenider/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ashbythorpe/selenider/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/ashbythorpe/selenider/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ashbythorpe/selenider?branch=main)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/selenider)](https://CRAN.R-project.org/package=selenider)
 <!-- badges: end -->
 
 Traditionally, automating a web browser is often unreliable, especially
