@@ -161,7 +161,7 @@ by class, and <code>"#id"</code> to select by id.</p>
 <span>  <span class="fu">find_element</span><span class="op">(</span><span class="st">"div"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">session</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">find_element</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"div"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">find_element</span><span class="op">(</span><span class="st">"div"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">find_element</span><span class="op">(</span>xpath <span class="op">=</span> <span class="st">"./p"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"div"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -171,13 +171,13 @@ by class, and <code>"#id"</code> to select by id.</p>
 <span>  <span class="fu">find_element</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"id1"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">find_element</span><span class="op">(</span>class_name <span class="op">=</span> <span class="st">"class2"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"//div[contains(@class, 'class1')]/div/a"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span>xpath <span class="op">=</span> <span class="st">"//div[contains(@class, 'class1')]/div/p"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Complex Xpath expressions are easier to read as chained CSS selectors.</span></span>
 <span><span class="co"># This is equivalent to above</span></span>
 <span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"div.class1"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">find_element</span><span class="op">(</span><span class="st">"div"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">find_element</span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span></span>
+<span>  <span class="fu">find_element</span><span class="op">(</span><span class="st">"p"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># \dontshow{</span></span>
 <span><span class="co"># Clean up all connections and invalidate default chromote object</span></span>
