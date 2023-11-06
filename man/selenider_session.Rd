@@ -19,7 +19,7 @@ selenider_session(
   .env = rlang::caller_env()
 )
 
-create_chromote_session(...)
+create_chromote_session(parent = NULL, ...)
 
 create_selenium_server(
   browser,
@@ -86,6 +86,9 @@ does not display any output when creating a session.}
 environment in which the session is used. Change this if you want to
 create the session inside a function and then use it outside the
 function.}
+
+\item{parent}{The \link[chromote:Chromote]{chromote::Chromote} object to create the session from.
+Passed into \link[chromote:ChromoteSession]{chromote::ChromoteSession$new()}.}
 
 \item{...}{Arguments to finetune the creation of the specific driver.
 \itemize{
