@@ -42,7 +42,7 @@
 #' s("#id1")
 #'
 #' # This is the equivalent of:
-#' find_element(session, "id1")
+#' find_element(session, "#id1")
 #'
 #' ss(".inner")
 #'

@@ -48,10 +48,7 @@ minimal_selenider_session <- function(html, js = NULL, ..., .env = rlang::caller
     )
   }
 
-  file <- withr::local_tempfile(fileext = ".html", .local_envir = .env)
-  print(file)
-  writeLines(html, file(file))
   session <- selenider_session(..., .env = .env)
-  open_url(paste0("file://", file), session = session)
+  open_url(paste0("data:text/html,", utils::URLencode(html)), session = session)
   session
 } # nocov end

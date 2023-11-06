@@ -43,7 +43,7 @@
 #'   find_element("div")
 #'
 #' session |>
-#'   find_element(name = "div") |>
+#'   find_element("div") |>
 #'   find_element(xpath = "./p")
 #'
 #' s("div") |>
@@ -53,13 +53,13 @@
 #'   find_element(id = "id1") |>
 #'   find_element(class_name = "class2")
 #'
-#' s("//div[contains(@class, 'class1')]/div/a")
+#' s(xpath = "//div[contains(@class, 'class1')]/div/p")
 #'
 #' # Complex Xpath expressions are easier to read as chained CSS selectors.
 #' # This is equivalent to above
 #' s("div.class1") |>
 #'   find_element("div") |>
-#'   find_element("a")
+#'   find_element("p")
 #'
 #' \dontshow{
 #' # Clean up all connections and invalidate default chromote object
@@ -123,39 +123,4 @@ new_selenider_element <- function(session, selector) {
   class(res) <- "selenider_element"
 
   res
-}
-
-#' @export
-format.selenider_element <- function(x, ...) {
-  cli::cli_format_method({
-    bullets <- format_element(x)
-    cli::cli_text("A selenider element selecting:")
-
-    if (length(bullets) == 1) {
-      cli::cli_text(bullets)
-    } else {
-      cli::cli_bullets(bullets)
-    }
-  })
-}
-
-format_element <- function(x, ...) {
-  selectors <- x$selectors
-
-  if (length(selectors) == 1) {
-    res <- format(selectors[[1]], first = TRUE, ...)
-    replace_names_bullets(res)
-  } else {
-    first <- format(selectors[[1]], first = TRUE, ...)
-
-    # Unlist since format can return a character vector of length >1
-    formatted <- unlist(lapply(selectors[-1], format, ...))
-
-    c(replace_names_bullets(first), replace_names_bullets(formatted))
-  }
-}
-
-#' @export
-print.selenider_element <- function(x, ...) {
-  cat(format(x, ...), sep = "\n")
 }

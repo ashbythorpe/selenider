@@ -5,14 +5,9 @@
 \alias{read_html.selenider_element}
 \title{Read a live HTML document}
 \usage{
-read_html.selenider_session(
-  x,
-  encoding = "",
-  ...,
-  options = c("RECOVER", "NOERROR", "NOBLANKS")
-)
+\method{read_html}{selenider_session}(x, encoding = "", ..., options = c("RECOVER", "NOERROR", "NOBLANKS"))
 
-read_html.selenider_element(
+\method{read_html}{selenider_element}(
   x,
   encoding = "",
   timeout = NULL,

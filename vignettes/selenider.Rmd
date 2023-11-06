@@ -141,7 +141,7 @@ menu_items |>
 
 # Find the hex badges on the second row
 s(".hexBadges") |>
-  find_elements("a") |>
+  find_elements("img") |>
   elem_filter(
     \(x) substring(elem_attr(x, "class"), 1, 2) == "r2"
   )

@@ -75,7 +75,7 @@ session |>
   find_element("div")
 
 session |>
-  find_element(name = "div") |>
+  find_element("div") |>
   find_element(xpath = "./p")
 
 s("div") |>
@@ -85,13 +85,13 @@ s("div") |>
   find_element(id = "id1") |>
   find_element(class_name = "class2")
 
-s("//div[contains(@class, 'class1')]/div/a")
+s(xpath = "//div[contains(@class, 'class1')]/div/p")
 
 # Complex Xpath expressions are easier to read as chained CSS selectors.
 # This is equivalent to above
 s("div.class1") |>
   find_element("div") |>
-  find_element("a")
+  find_element("p")
 
 \dontshow{
 # Clean up all connections and invalidate default chromote object

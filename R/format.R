@@ -325,7 +325,7 @@ format_ordinal_flattened <- function(x, condition = ".") {
 }
 
 format_flatmap_selector <- function(selector, multiple = FALSE) {
-  first <- format_elements(selector$element)
+  first <- format_lazy_elements(selector$element)
 
   mock_selector <- list(filter = list(1))
 
@@ -348,7 +348,7 @@ format_flatmap_selector <- function(selector, multiple = FALSE) {
 
       class(mock_element) <- selector$resulting_class
       
-      mapped <- format_element(mock_element, inside_flatmap = TRUE, of = "each")[-1]
+      mapped <- format_lazy_element(mock_element, inside_flatmap = TRUE, of = "each")[-1]
 
       c(first, mapped, formatted_last)
     }
@@ -360,9 +360,9 @@ format_flatmap_selector <- function(selector, multiple = FALSE) {
     class(mock_element) <- selector$resulting_class
     
     mapped <- if ("selenider_elements" %in% selector$resulting_class) {
-      format_elements(mock_element, inside_flatmap = TRUE, of = "each")[-1]
+      format_lazy_elements(mock_element, inside_flatmap = TRUE, of = "each")[-1]
     } else {
-      format_element(mock_element, inside_flatmap = TRUE, of = "each")[-1]
+      format_lazy_element(mock_element, inside_flatmap = TRUE, of = "each")[-1]
     }
 
     final <- format_final_filter(selector$filter, multiple = multiple)
@@ -373,7 +373,7 @@ format_flatmap_selector <- function(selector, multiple = FALSE) {
 
 # For nested flatmap calls
 format_flatmap_selector_simple <- function(selector, multiple = FALSE, ...) {
-  first <- format_elements(selector$element, ...)
+  first <- format_lazy_elements(selector$element, ...)
 
   middle <- "A transformation of each element using `elem_flatmap()`."
 

@@ -58,7 +58,7 @@ html <- "
 "
 session <- minimal_selenider_session(html)
 
-elements <- ss("./*")
+elements <- ss("*")
 
 # Gives the same result as s()
 elements[[1]]
