@@ -527,9 +527,7 @@ element_in_eager <- function(x, l, .f) {
 }
 
 length.lazy_list <- function(x) {
-  print(x$current_value$get())
   result <- length(coro::collect(x$instance$get())) + x$current_value$get()
-  print(result)
   x$current_value$set(result)
   result
 }

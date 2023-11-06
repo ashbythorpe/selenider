@@ -9,5 +9,5 @@ test_that("Printing elements works", {
 
   expect_snapshot(print(elem_children(s(".actions-test")), width = 80))
 
-  expect_snapshot(print(ss("*"), width = 80))
+  expect_snapshot(print(elem_children(s(".actions-test")), width = 80, n = 3))
 })

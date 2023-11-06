@@ -135,7 +135,7 @@ outer_html <- function(x, session, driver) {
     execute_js_fn_on(
       "x => x.outerHTML",
       x,
-      session = x$session,
+      session = session,
       driver = driver
     )
   }
@@ -151,4 +151,3 @@ encode_with_width <- function(x, width) {
   x[truncate_encoded] <- paste(substr(x[truncate_encoded], 1L, width - 3L), "...")
   x
 }
-
