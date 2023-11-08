@@ -91,7 +91,9 @@ shiny_app <- shinyApp(
   ),
   server = function(input, output) {
     even <- reactive((input$button %% 2) == 0)
-    exportTestValues(even = { even() })
+    exportTestValues(even = {
+      even()
+    })
   }
 )
 ```
@@ -147,20 +149,19 @@ action](https://github.com/r-lib/actions/tree/v2-branch/examples#standard-ci-wor
 This is because chromote only requires chrome to be installed, which is already the case
 on Github's machines.
 
-Using RSelenium as your backend is more complicated. Installing RSelenium can be complicated,
-so for a reliable workflow, we recommend using docker. Unfortunately, RSelenium currently
-only supports rather old docker images. We currently use RSelenium version 3.141.0. Note
-that some of the following advice also applies if you want to use Selenium and docker
-manually.
-
-To use docker in a Github Action yaml file, add the following lines (changing the ports and
-browser if wanted/needed):
+If you want to use selenium with Github Actions, it is recommended to make use of docker.
+See <https://github.com/SeleniumHQ/docker-selenium> for more information.
+For example, the following lines in a Github Actions yaml file will start a selenium
+server (version 4.15.0), supporting Firefox, on port 4444. We recommend using the
+"shm-size" argument to make sure you don't run out of memory.
 ``` yaml
 services:
   selenium:
-    image: selenium/standalone-firefox:3.141.0
+    image: selenium/standalone-firefox:4.15.0-20231108
     ports:
       - 4444:4444
+    options: >-
+      --shm-size="2g"
 ```
 
 This will download Firefox and start a Selenium server on port 4444. Automating a browser
@@ -174,6 +175,7 @@ session <- selenider_session(
   "selenium",
   browser = "firefox"
   driver = create_selenium_client(
+    browser = "firefox",
     port = 4444
   )
 )
