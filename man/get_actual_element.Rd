@@ -52,8 +52,8 @@ driver <- session$driver
 
 if (inherits(driver, "ChromoteSession")) {
   driver$DOM$getBoxModel(backendNodeId = elem)
-} else {
-  elem$getElementLocation()
+} else if (inherits(elem, "WebElement")) {
+  elem$get_rect()
 }
 
 elems <- ss("p") |>
@@ -61,7 +61,7 @@ elems <- ss("p") |>
 
 if (inherits(driver, "ChromoteSession")) {
   driver$DOM$describeNode(backendNodeId = elems[[1]])
-} else {
+} else if (inherits(elems[[1]], "WebElement")) {
   elems[[1]]$get_rect()
 }
 

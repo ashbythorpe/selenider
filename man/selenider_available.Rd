@@ -5,7 +5,10 @@
 \alias{skip_if_selenider_unavailable}
 \title{Check if selenider can be used}
 \usage{
-selenider_available(session = c("chromote", "selenium"), online = TRUE)
+selenider_available(
+  session = c("chromote", "selenium", "rselenium"),
+  online = TRUE
+)
 
 skip_if_selenider_unavailable(session = c("chromote", "selenium"))
 }

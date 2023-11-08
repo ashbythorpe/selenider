@@ -80,7 +80,7 @@
 #' html <- "
 #' <div class='class1'>
 #' <button id='disabled-button' disabled>Disabled</button>
-#' <p style='visibility:hidden;'>Example text</p>
+#' <p>Example text</p>
 #' <button id='enabled-button'>Enabled</button>
 #' </div>
 #'
@@ -118,7 +118,7 @@
 #' # Note that elem_click() will do this automatically
 #'
 #' s("p") |>
-#'   elem_expect(is_hidden, has_exact_text("Example text"))
+#'   elem_expect(is_visible, has_exact_text("Example text"))
 #'
 #' # Or use an anonymous function
 #' s("p") |>

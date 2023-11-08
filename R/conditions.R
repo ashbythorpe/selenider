@@ -332,7 +332,7 @@ has_exact_text <- function(x, text) {
 #'
 #' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
-#' <input class='myclass' value='1.0' data-customattr='Custom attribute text'></p>
+#' <input class='myclass' value='1.0' data-customattr='Custom attribute text'>
 #' "
 #'
 #' session <- minimal_selenider_session(html)

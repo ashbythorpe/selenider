@@ -285,7 +285,7 @@ selenider_session <- function(session = getOption("selenider.session"),
         client = client
       )
 
-      if (new_server) {
+      if (selenium_manager && new_server) {
         set_default_selenium_object(driver)
       }
     }
@@ -725,7 +725,7 @@ print.selenider_session <- function(x, ..., .time = NULL) {
 
   timeout <- as_pretty_dt(prettyunits::pretty_sec(x$timeout))
 
-  browser_name <- if (x$session != "chromote") {
+  browser_name <- if (x$session == "chromote") {
     "Chrome"
   } else if (x$session == "selenium") {
     x$driver$browser

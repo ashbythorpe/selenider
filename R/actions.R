@@ -842,7 +842,7 @@ elem_scroll_to <- function(x, js = FALSE, timeout = NULL) {
   # Firefox does not allow you to scroll to an element if not in view.
   if (js || x$session == "chromote" ||
     (x$session == "selenium" && x$driver$browser == "firefox") ||
-    x$driver$browserName == "firefox") {
+    (x$session == "RSelenium" && x$driver$browserName == "firefox")) {
     element <- get_element_for_action(
       x,
       action = "scroll to {.arg x} using JavaScript",

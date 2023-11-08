@@ -63,12 +63,11 @@ Use \code{\link[withr:defer]{withr::deferred_run()}} to reset any local sessions
 \examples{
 \dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # Don't set the local session, since we want to do it manually.
-session_1 <- selenider_session(local = FALSE)
-session_2 <- selenider_session(local = FALSE)
+session <- selenider_session(local = FALSE)
 
 get_session(create = FALSE) # NULL
 
-local_session(session_1, close = FALSE)
+local_session(session, close = FALSE)
 
 get_session(create = FALSE)
 
@@ -82,18 +81,20 @@ get_session(create = FALSE) # NULL
 # need to use the `.local_envir` argument.
 set_my_session <- function(env = rlang::caller_env()) {
   # caller_env() is the environment where the function is called.
-  local_session(session_1, .local_envir = env, close = FALSE)
+  local_session(session, .local_envir = env, close = FALSE)
 }
 
 set_my_session()
 
 with_session(
-  session_2,
-  {get_session(create = FALSE)},
+  session,
+  {
+    get_session(create = FALSE)
+  },
   close = FALSE
-) # session_2
+)
 
-get_session(create = FALSE) # session_1
+get_session(create = FALSE)
 \dontshow{\}) # examplesIf}
 }
 \seealso{
