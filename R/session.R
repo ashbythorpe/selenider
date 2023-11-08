@@ -211,7 +211,7 @@ selenider_session <- function(session = getOption("selenider.session"),
         rlang::check_installed("wdman")
       }
     } else {
-      rlang::check_installed("rselenium")
+      rlang::check_installed("RSelenium")
       if (selenium_manager) {
         rlang::check_installed("selenium")
       } else {
@@ -250,8 +250,8 @@ selenider_session <- function(session = getOption("selenider.session"),
       if (view) {
         driver$view()
       }
-    } else if (session == "selenium") {
-      server <- if (has_default_selenium_object()) {
+    } else {
+      server <- if (selenium_manager && has_default_selenium_object()) {
         new_server <- FALSE
         default_selenium_object()
       } else {
@@ -692,29 +692,22 @@ close_session <- function(x = NULL) {
     try_fetch(
       x$driver$close(),
       error = function(e) {
-        if ("server" %in% names(x$driver)) {
-          x$server$kill()
-        }
         stop_close_session(e)
       }
     )
-
-    if ("server" %in% names(x$driver)) {
-      invisible(x$driver$kill())
-    }
   } else {
     try_fetch(
       x$driver$close(),
       error = function(e) {
-        if ("server" %in% names(x$driver)) {
-          x$driver$stop()
+        if (!is.null(x$server)) {
+          x$server$stop()
         }
         stop_close_session(e)
       }
     )
 
-    if ("server" %in% names(x$driver)) {
-      invisible(x$driver$stop())
+    if (!is.null(x$server)) {
+      invisible(x$server$stop())
     }
   }
 }
@@ -732,10 +725,15 @@ print.selenider_session <- function(x, ..., .time = NULL) {
 
   timeout <- as_pretty_dt(prettyunits::pretty_sec(x$timeout))
 
-  selenium <- x$session != "chromote"
+  browser_name <- if (x$session != "chromote") {
+    "Chrome"
+  } else if (x$session == "selenium") {
+    x$driver$browser
+  } else {
+    x$driver$browserName
+  }
 
-  browser_name <- if (selenium) x$driver$browser else "Chrome"
-  port <- if (selenium) x$driver$port else NA
+  port <- if (x$session != "chromote") x$driver$port else NA
 
   cli::cli({
     cli::cli_text("A selenider session object")

@@ -25,19 +25,23 @@ selenider_test_session <- function(x, .env = rlang::caller_env()) {
       },
       envir = .env
     )
-  } else if (docker) {
+  } else if (docker && session == "selenium") {
     client <- create_selenium_client(browser, port = port)
 
     result <- selenider_session(driver = client, .env = .env)
   } else if (session == "selenium") {
     result <- selenider_session(session, browser = browser, .env = .env)
-  } else if (session == "rselenium") {
-    driver <- list(
-      server = create_selenium_server(browser, selenium_manager = FALSE),
-      client = create_rselenium_client(browser)
-    )
+  } else if (docker && session == "rselenium") {
+    client <- create_rselenium_client(browser, port = port)
 
-    result <- selenider_session(driver = driver, .env = .env)
+    result <- selenider_session(driver = list(client = client), .env = .env)
+  } else {
+    result <- selenider_session(
+      "rselenium",
+      browser = browser,
+      selenium_manager = FALSE,
+      .env = .env
+    )
   }
 
   result

@@ -54,7 +54,7 @@ get_with_timeout <- function(timeout, .f, ...) {
 #' selenider_available()
 #'
 #' @export
-selenider_available <- function(session = c("chromote", "selenium"), online = TRUE) {
+selenider_available <- function(session = c("chromote", "selenium", "rselenium"), online = TRUE) {
   check_bool(online)
   session <- arg_match(session)
 
@@ -88,6 +88,9 @@ selenider_available <- function(session = c("chromote", "selenium"), online = TR
         },
         error = function(e) FALSE
       )
+  } else if (session == "selenium") {
+    rlang::is_installed("selenium") &&
+      !is.null(find_browser_and_version()$browser)
   } else {
     rlang::is_installed("selenium") &&
       !is.null(find_browser_and_version()$browser)
@@ -242,11 +245,11 @@ is_multiple_elements <- function(x) {
 }
 
 uses_selenium <- function(x) {
-  inherits(x, "SeleniumSession") || (!is.null(x$client) && inherits(x$client, "SeleniumSession"))
+  inherits(x, "SeleniumSession") || ("client" %in% names(x) && inherits(x$client, "SeleniumSession"))
 }
 
 uses_rselenium <- function(x) {
-  inherits(x, "remoteDriver") || (!is.null(x$client) && inherits(x$client, "remoteDriver"))
+  inherits(x, "remoteDriver") || ("client" %in% names(x) && inherits(x$client, "remoteDriver"))
 }
 
 uses_chromote <- function(x) {
@@ -262,7 +265,7 @@ execute_js_fn_on <- function(fn, x, session, driver) {
     if (session == "selenium") {
       driver$execute_script(script, x)
     } else {
-      driver$executeScript(script, list(x))
+      unpack_list(driver$executeScript(script, list(x)))
     }
   }
 }

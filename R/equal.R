@@ -67,8 +67,10 @@ elem_equal <- function(x, y, timeout = NULL) {
 
   if (x$session == "chromote") {
     element_x == element_y
-  } else {
+  } else if (x$session == "selenium") {
     selenium_equal(element_x, element_y, driver = x$driver)
+  } else {
+    rselenium_equal(element_x, element_y, driver = x$driver)
   }
 }
 

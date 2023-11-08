@@ -695,7 +695,7 @@ elem_send_keys <- function(x, ..., modifiers = NULL, timeout = NULL) {
     if (inherits(element, "selenider_session")) {
       x$driver$sendKeysToActiveElement(keys)
     } else {
-      x$sendKeysToElement(keys)
+      element$sendKeysToElement(keys)
     }
   }
 
@@ -840,7 +840,9 @@ elem_scroll_to <- function(x, js = FALSE, timeout = NULL) {
   timeout <- get_timeout(timeout, x$timeout)
 
   # Firefox does not allow you to scroll to an element if not in view.
-  if (js || x$session == "chromote" || c(x$driver$browserName, x$driver$browser) == "firefox") {
+  if (js || x$session == "chromote" ||
+    (x$session == "selenium" && x$driver$browser == "firefox") ||
+    x$driver$browserName == "firefox") {
     element <- get_element_for_action(
       x,
       action = "scroll to {.arg x} using JavaScript",

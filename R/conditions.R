@@ -440,7 +440,7 @@ has_value <- function(x, value) {
   } else if (x$session == "selenium") {
     element$get_attribute("value")
   } else {
-    unpack_list(element$getElementAttribute())
+    unpack_list(element$getElementAttribute("value"))
   }
 
   if (is.null(result) || result == "") {
