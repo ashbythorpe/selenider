@@ -891,6 +891,238 @@ elem_scroll_to <- function(x, js = FALSE, timeout = NULL) {
   invisible(x)
 }
 
+elem_select <- function(x,
+                        option = NULL,
+                        text = NULL,
+                        index = NULL,
+                        timeout = NULL,
+                        reset_other = TRUE) {
+  check_class(x, "selenider_element")
+  check_number_decimal(timeout, allow_null = TRUE)
+
+  timeout <- get_timeout(timeout, x$timeout)
+
+  is_correct_element <- function(x) {
+    elem_name(x) %in% c("option", "select")
+  }
+
+  element <- get_element_for_action(
+    x,
+    action = "select {.arg x}",
+    conditions = list(is_enabled, is_correct_element),
+    timeout = timeout,
+    failure_messages = c("was not enabled", "did not have the correct tag name"),
+    conditions_text = c("be enabled", "be a `<select>` or `<option>` element")
+  )
+
+  name <- if (x$session == "chromote") {
+    driver <- x$driver
+    tolower(driver$DOM$describeNode(backendNodeId = element)$node$nodeName)
+  } else if (x$session == "selenium") {
+    element$get_tag_name()
+  } else {
+    unpack_list(element$getElementTagName())
+  }
+
+  reset_other_json <- tolower(as.character(reset_other))
+
+  if (name == "option") {
+    if (!is.null(option) || !is.null(text) || !is.null(index)) {
+      stop("Cannot specify `option`, `value`, or `index` when selecting an option")
+    }
+
+    execute_js_fn_on("function(element) {
+      element.selected = true;
+
+      const selectElement = element.parentElement;
+
+      while (selectElement.tagName != 'SELECT') {
+        if (selectElement == null) {
+          return false;
+        }
+
+        selectElement = selectElement.parentElement;
+      }
+
+      if (selectElement.type == 'select-one') {
+        for (let i = 0; i < selectElement.options.length; i++) {
+          if (selectElement.options[i] == element) {
+            selectElement.selectedIndex = i;
+          } else if (", reset_other_json, ") {
+            selectElement.options[i].selected = false;
+          }
+        }
+      }
+
+      return true;
+    }", element, session = x$session, driver = x$driver)
+  } else {
+    if (is.null(option) && is.null(text) && is.null(index)) {
+      stop("Must specify `option`, `value`, or `index`")
+    }
+
+    if (is.character(option) && length(option) == 1) {
+      execute_js_fn_on(paste0("function(element) {
+        let selected = false;
+        for (let i = 0; i < element.options.length; i++) {
+          if (element.options[i].value == ", option, ") {
+            if (element.type == 'select-one') {
+              element.selectedIndex = i;
+              element.options[i].selected = true;
+              selected = true;
+            } else {
+              element.options[i].selected = true;
+              selected = true;
+            }
+          } else if (", reset_other_json, ") {
+            element.options[i].selected = false;
+          }
+        }
+
+        return selected;
+
+      }"), element, session = x$session, driver = x$driver)
+    } else if (is.character(option)) {
+      result <- execute_js_fn_on(paste0("function(element) {
+        const values = [", paste0("'", option, "'", collapse = ", "), "];
+        let selected = false;
+
+        if (element.type == 'select-one') {
+          return -1;
+        }
+
+        for (let i = 0; i < element.options.length; i++) {
+          if (values.includes(element.options[i].textContent)) {
+            element.options[i].selected = true;
+            selected = true;
+          } else if (", reset_other_json, ") {
+            element.options[i].selected = false;
+          }
+        }
+
+        if (selected) {
+          return 1;
+        } else {
+          return 0;
+        }
+      }"))
+
+      # TODO: Deal with result
+    } else if (!is.null(text) && length(text) == 1) {
+      execute_js_fn_on(paste0("function(element) {
+        let selected = false;
+
+        for (let i = 0; i < element.options.length; i++) {
+          if (element.options[i].textContent == ", text, ") {
+            if (element.type == 'select-one') {
+              element.options[i].selected = true;
+              element.selectedIndex = i;
+              selected = true;
+            } else {
+              element.options[i].selected = true;
+              selected = true;
+            }
+          } else if (", reset_other_json, ") {
+            element.options[i].selected = false;
+          }
+        }
+
+        return selected;
+      }"), element, session = x$session, driver = x$driver)
+    } else if (!is.null(text)) {
+      result <- execute_js_fn_on(paste0("function(element) {
+        const values = [", paste0("'", text, "'", collapse = ", "), "];
+        let selected = false;
+
+        if (element.type == 'select-one') {
+          return -1;
+        }
+ 
+        for (let i = 0; i < element.options.length; i++) {
+          if (values.includes(element.options[i].textContent)) {
+            element.options[i].selected = true;
+            selected = true;
+          } else if (", reset_other_json, ") {
+            element.options[i].selected = false;
+          }
+        }
+
+        if (selected) {
+          return 1;
+        } else {
+          return 0;
+        }
+      }"), element, session = x$session, driver = x$driver)
+    } else if (length(index) == 1) {
+      index <- index - 1
+
+      execute_js_fn_on(paste0("function(element) {
+        let selected = false;
+
+        if (", reset_other_json, ") {
+          for (let i = 0; i < element.options.length; i++) {
+            element.options[i].selected = false;
+          }
+        }
+ 
+        if (element.type == 'select-one') {
+          if (element.options.length > ", index, ") {
+            element.selectedIndex = ", index, ";
+            element.options[", index, "].selected = true;
+            return 1;
+          } else {
+            return -1;
+          }
+        } else {
+          if (element.options.length > ", index, ") {
+            element.options[", index, "].selected = true;
+            selected = true;
+          }
+        }
+ 
+        if (selected) {
+          return 1;
+        } else {
+          return 0;
+        }
+      }"), element, session = x$session, driver = x$driver)
+    } else if (!is.null(index)) {
+      length <- execute_js_fn_on("x => x.options.length", element, session = x$session, driver = x$driver)
+
+      result <- execute_js_fn_on(paste0("function(element) {
+        if (element.type == 'select-one') {
+          return -1;
+        }
+
+        if (", reset_other_json, ") {
+          for (let i = 0; i < element.options.length; i++) {
+            element.options[i].selected = false;
+          }
+        }
+        
+        const values = [", paste0(index, collapse = ", "), "];
+        let selected = false;
+        
+        let selected = false;
+        for (i of values) {
+          if (i >= 0 && i < ", length, ") {
+            element.options[i].selected = true;
+            selected = true;
+          }
+        }
+        
+        if (selected) {
+          return 1;
+        } else {
+          return 0;
+        }
+      }"), element, session = x$session, driver = x$driver)
+    } else {
+      stop("Must specify `option`, `value`, or `index`")
+    }
+  }
+}
+
 #' Submit an element
 #'
 #' If an element is an ancestor of a form, submits the form.
