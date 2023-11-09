@@ -247,14 +247,7 @@ elem_value <- function(x, ptype = character(), timeout = NULL) {
     timeout = timeout
   )
 
-  result <- if (x$session == "chromote") {
-    driver <- x$driver
-    chromote_get_attribute(element, "value", NULL, driver = driver)
-  } else if (x$session == "selenium") {
-    element$get_attribute("value")
-  } else {
-    unpack_list(element$getElementAttribute("value"))
-  }
+  result <- execute_js_fn_on("x => x.value", element, session = x$session, driver = x$driver)
 
   if (identical(result, "") || length(result) == 0) {
     NULL
@@ -447,4 +440,3 @@ get_elements_for_property <- function(x, action, timeout, call = rlang::caller_e
 
   elements
 }
-
