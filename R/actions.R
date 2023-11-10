@@ -1247,7 +1247,7 @@ get_element_for_action <- function(x,
 
       if (!condition(x)) {
         stop_not_actionable(c(
-          paste0("To ", action, ", it must ", conditions_text, "."),
+          paste0("To ", action, ", it must ", conditions_text[[n]], "."),
           "i" = paste0(format_timeout_for_error(timeout), "{.arg x} {failure_messages[[n]]}.")
         ), call = call)
       }
