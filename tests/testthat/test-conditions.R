@@ -51,7 +51,7 @@ test_that("Conditions work", {
 
   elem_click(s("#toggle_div"))
 
-  expect_true(attr_contains(s(".toggleable"), "style", "display"))
+  elem_expect(s(".toggleable"), attr_contains("style", "display"))
   expect_false(attr_contains(s(".toggleable"), "style", "color"))
 
   submit_button <- find_element(s(".actions-form"), "input[type='submit']")

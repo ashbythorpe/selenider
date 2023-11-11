@@ -165,7 +165,7 @@ is_enabled <- function(x) {
       driver <- x$driver
       driver$Runtime$callFunctionOn("function() {
         return !this.disabled
-        }", chromote_object_id(backend_id = element, driver = driver))$result$value
+      }", chromote_object_id(backend_id = element, driver = driver))$result$value
     } else if (x$session == "selenium") {
       element$is_enabled()
     } else {
@@ -216,14 +216,7 @@ has_name <- function(x, name) {
   element <- get_element(x)
 
   if (!is.null(element)) {
-    if (x$session == "chromote") {
-      driver <- x$driver
-      tolower(driver$DOM$describeNode(backendNodeId = element)$node$nodeName) == name
-    } else if (x$session == "selenium") {
-      element$get_tag_name() == name
-    } else {
-      unpack_list(element$getElementTagName()) == name
-    }
+    element_name(element, x$session, x$driver) == name
   } else {
     stop_absent_element()
   }
@@ -273,15 +266,7 @@ has_text <- function(x, text) {
   element <- get_element(x)
 
   if (!is.null(element)) {
-    if (x$session == "chromote") {
-      driver <- x$driver
-      actual <- chromote_get_text(element, driver = driver)
-      grepl(text, actual, fixed = TRUE)
-    } else if (x$session == "selenium") {
-      grepl(text, element$get_text(), fixed = TRUE)
-    } else {
-      grepl(text, unpack_list(element$getElementText()), fixed = TRUE)
-    }
+    grepl(text, element_text(element, x$session, x$driver), fixed = TRUE)
   } else {
     stop_absent_element()
   }
@@ -297,15 +282,7 @@ has_exact_text <- function(x, text) {
   element <- get_element(x)
 
   if (!is.null(element)) {
-    if (x$session == "chromote") {
-      driver <- x$driver
-      actual <- chromote_get_text(element, driver = driver)
-      identical(actual, text)
-    } else if (x$session == "selenium") {
-      identical(element$get_text(), text)
-    } else {
-      identical(unpack_list(element$getElementText()), text)
-    }
+    identical(element_text(element, x$session, x$driver), text)
   } else {
     stop_absent_element()
   }
@@ -363,16 +340,9 @@ has_attr <- function(x, name, value) {
     stop_absent_element()
   }
 
-  result <- if (x$session == "chromote") {
-    driver <- x$driver
-    chromote_get_attribute(element, name, NULL, driver = driver)
-  } else if (x$session == "selenium") {
-    element$get_attribute(name)
-  } else {
-    unpack_list(element$getElementAttribute(name))
-  }
+  result <- element_attribute(element, name, NULL, x$session, x$driver)
 
-  if (is.null(result) || result == "") {
+  if (is.null(result)) {
     is.null(value)
   } else {
     if (is.numeric(value)) {
@@ -403,14 +373,7 @@ attr_contains <- function(x, name, value) {
     stop_absent_element()
   }
 
-  result <- if (x$session == "chromote") {
-    driver <- x$driver
-    chromote_get_attribute(element, name, NULL, driver = driver)
-  } else if (x$session == "selenium") {
-    element$get_attribute(name)
-  } else {
-    unpack_list(element$getElementAttribute(name))
-  }
+  result <- element_attribute(element, name, NULL, x$session, x$driver)
 
   if (is.null(result)) {
     FALSE
@@ -434,16 +397,9 @@ has_value <- function(x, value) {
     stop_absent_element()
   }
 
-  result <- if (x$session == "chromote") {
-    driver <- x$driver
-    chromote_get_attribute(element, "value", NULL, driver = driver)
-  } else if (x$session == "selenium") {
-    element$get_attribute("value")
-  } else {
-    unpack_list(element$getElementAttribute("value"))
-  }
+  result <- element_value(element, x$session, x$driver)
 
-  if (is.null(result) || result == "") {
+  if (is.null(result)) {
     is.null(value)
   } else {
     if (is.numeric(value)) {
@@ -499,16 +455,9 @@ has_css_property <- function(x, property, value) {
     stop_absent_element()
   }
 
-  result <- if (x$session == "chromote") {
-    driver <- x$driver
-    chromote_get_css_property(element, property, NULL, driver = driver)
-  } else if (x$session == "selenium") {
-    element$get_css_value(property)
-  } else {
-    unpack_list(element$getElementValueOfCssProperty(property))
-  }
+  result <- element_css_property(element, property, x$session, x$driver)
 
-  if (is.null(result) || result == "") {
+  if (is.null(result)) {
     is.null(value)
   } else {
     result == value

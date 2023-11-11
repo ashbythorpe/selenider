@@ -36,13 +36,17 @@ elem_name <- function(x, timeout = NULL) {
     timeout = timeout,
   )
 
-  if (x$session == "chromote") {
-    driver <- x$driver
-    tolower(driver$DOM$describeNode(backendNodeId = element)$node$nodeName)
-  } else if (x$session == "selenium") {
-    element$get_tag_name()
+  element_name(element, x$session, x$driver)
+}
+
+element_name <- function(x, session, driver) {
+  if (session == "chromote") {
+    driver <- driver
+    tolower(driver$DOM$describeNode(backendNodeId = x)$node$nodeName)
+  } else if (session == "selenium") {
+    x$get_tag_name()
   } else {
-    unpack_list(element$getElementTagName())
+    unpack_list(x$getElementTagName())
   }
 }
 
@@ -83,13 +87,17 @@ elem_text <- function(x, timeout = NULL) {
     timeout = timeout,
   )
 
-  if (x$session == "chromote") {
-    driver <- x$driver
-    chromote_get_text(element, driver = driver)
-  } else if (x$session == "selenium") {
-    element$get_text()
+  element_text(element, x$session, x$driver)
+}
+
+element_text <- function(x, session, driver) {
+  if (session == "chromote") {
+    driver <- driver
+    chromote_get_text(x, driver = driver)
+  } else if (session == "selenium") {
+    x$get_text()
   } else {
-    unpack_list(element$getElementText())
+    unpack_list(x$getElementText())
   }
 }
 
@@ -160,16 +168,18 @@ elem_attr <- function(x, name, default = NULL, timeout = NULL) {
     timeout = timeout
   )
 
-  result <- if (x$session == "chromote") {
-    driver <- x$driver
-    chromote_get_attribute(element, name, default, driver = driver)
-  } else if (x$session == "selenium") {
-    element$get_attribute(name)
-  } else {
-    unpack_list(element$getElementAttribute(name))
-  }
+  element_attribute(element, name, default, x$session, x$driver)
+}
 
-  if (identical(result, "")) NULL else result
+element_attribute <- function(x, name, default, session, driver) {
+  if (session == "chromote") {
+    driver <- driver
+    chromote_get_attribute(x, name, default, driver = driver)
+  } else if (session == "selenium") {
+    x$get_attribute(name)
+  } else {
+    unpack_list(x$getElementAttribute(name))
+  }
 }
 
 chromote_get_attribute <- function(x, name, default, driver) {
@@ -217,10 +227,12 @@ elem_attrs <- function(x, timeout = NULL) {
     timeout = timeout
   )
 
-  driver <- x$driver
+  element_attributes(element, x$session, x$driver)
+}
 
-  if (x$session == "chromote") {
-    chromote_get_attributes(element, driver = driver)
+element_attributes <- function(x, session, driver) {
+  if (session == "chromote") {
+    chromote_get_attributes(x, driver = driver)
   } else {
     execute_js_fn_on("function(x) {
       let attributes = {};
@@ -228,7 +240,7 @@ elem_attrs <- function(x, timeout = NULL) {
         attributes[x.attributes[i].name] = x.attributes[i].value;
       }
       return attributes;
-    }", element, session = x$session, driver = driver)
+    }", x, session = session, driver = driver)
   }
 }
 
@@ -247,13 +259,17 @@ elem_value <- function(x, ptype = character(), timeout = NULL) {
     timeout = timeout
   )
 
-  result <- execute_js_fn_on("x => x.value", element, session = x$session, driver = x$driver)
+  result <- element_value(element, x$session, x$driver)
 
-  if (identical(result, "") || length(result) == 0) {
+  if (is.null(result)) {
     NULL
   } else {
     convert_value(result, ptype)
   }
+}
+
+element_value <- function(x, session, driver) {
+  execute_js_fn_on("x => x.value", x, session = session, driver = driver)
 }
 
 convert_value <- function(x, ptype) {
@@ -314,16 +330,18 @@ elem_css_property <- function(x, name, timeout = NULL) {
     timeout = timeout
   )
 
-  result <- if (x$session == "chromote") {
-    driver <- x$driver
-    chromote_get_css_property(element, name, NULL, driver = driver)
-  } else if (x$session == "selenium") {
-    element$get_css_value(name)
-  } else {
-    unpack_list(element$getElementValueOfCssProperty(name))
-  }
+  element_css_property(element, name, x$session, x$driver)
+}
 
-  if (identical(result, "")) NULL else result
+element_css_property <- function(x, name, session, driver) {
+  if (session == "chromote") {
+    driver <- driver
+    chromote_get_css_property(x, name, NULL, driver = driver)
+  } else if (session == "selenium") {
+    x$get_css_value(name)
+  } else {
+    unpack_list(x$getElementValueOfCssProperty(name))
+  }
 }
 
 chromote_get_css_property <- function(x, name, default, driver) {

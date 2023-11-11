@@ -14,7 +14,7 @@ test_that("selenider_element properties work", {
 
   expect_mapequal(elem_attrs(find_element(s(".actions-test"), "input")), list(type = "text", class = "actions-input"))
 
-  expect_null(elem_value(s(".actions-input")))
+  expect_equal(elem_value(s(".actions-input")), "")
 
   elem_set_value(s(".actions-input"), "Input")
 

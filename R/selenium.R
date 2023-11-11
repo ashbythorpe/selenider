@@ -1,5 +1,6 @@
 has_default_selenium_object <- function() {
-  !is.null(default_selenium_object())
+  !is.null(default_selenium_object()) &&
+    default_selenium_object()$is_alive()
 }
 
 default_selenium_object <- function() {

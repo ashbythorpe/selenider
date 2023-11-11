@@ -68,7 +68,7 @@ format.selenider_element <- function(x, width = getOption("width"), ..., timeout
     timeout = timeout
   )
 
-  html <- outer_html(element, x$session, x$driver)
+  html <- element_outer_html(element, x$session, x$driver)
 
   match <- regmatches(html, regexec("^(<.*?>)(.*)(</.*?>)$", html))[[1]]
 
@@ -108,7 +108,7 @@ format.selenider_elements <- function(x, width = getOption("width"), ..., n = 20
 
   html <- vapply(
     elements,
-    outer_html,
+    element_outer_html,
     character(1),
     session = x$session,
     driver = x$driver
@@ -128,7 +128,7 @@ format.selenider_elements <- function(x, width = getOption("width"), ..., n = 20
   )
 }
 
-outer_html <- function(x, session, driver) {
+element_outer_html <- function(x, session, driver) {
   html <- if (session == "chromote") {
     driver$DOM$getOuterHTML(backendNodeId = x)$outerHTML
   } else {

@@ -120,9 +120,7 @@ test_that("elem_scroll_to() works", {
   </script>
   "
 
-  file <- withr::local_tempfile(fileext = ".html")
-  writeLines(html, file(file))
-  open_url(paste0("file://", file))
+  open_url(paste0("data:text/html,", URLencode(html)))
 
   elem_scroll_to(s("p"))
 

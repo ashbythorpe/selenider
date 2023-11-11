@@ -286,7 +286,7 @@ selenider_session <- function(session = getOption("selenider.session"),
       )
 
       if (selenium_manager && new_server) {
-        set_default_selenium_object(driver)
+        set_default_selenium_object(server)
       }
     }
   } else {
@@ -339,8 +339,8 @@ create_chromote_session <- function(parent = NULL, ...) {
   rlang::check_installed("chromote")
 
   if (is.null(parent) &&
-    chromote::has_default_chromote_object() &&
-    !chromote::default_chromote_object()$get_browser()$get_process()$is_alive()) {
+        chromote::has_default_chromote_object() &&
+        !chromote::default_chromote_object()$get_browser()$get_process()$is_alive()) {
     reset_default_chromote_object()
   }
 
@@ -385,7 +385,6 @@ create_selenium_server <- function(browser,
       version = version,
       selenium_manager = version == "latest" || numeric_version(version) >= "4.9.0",
       interactive = FALSE,
-      temp = FALSE,
       extra_args = c("-p", as.character(port), ...)
     )
   } else {

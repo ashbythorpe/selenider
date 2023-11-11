@@ -71,31 +71,7 @@ elem_click <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("be enabled")
     )
 
-    execute_js_fn_on("function(x) {
-      if (window.MouseEvent) {
-        const ev1 = new MouseEvent('mousedown', {
-            bubbles: true,
-            cancelable: false,
-            view: window,
-            clientX: x.getBoundingClientRect().x,
-            clientY: x.getBoundingClientRect().y
-        });
-        x.dispatchEvent(ev1);
-        const ev2 = new MouseEvent('mouseup', {
-            bubbles: true,
-            cancelable: false,
-            view: window,
-            clientX: x.getBoundingClientRect().x,
-            clientY: x.getBoundingClientRect().y
-        });
-        x.dispatchEvent(ev2);
-      } else {
-        x.click();
-        const event = document.createEvent('MouseEvent');
-        event.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-        x.dispatchEvent(event);
-      }
-    }", element, session = x$session, driver = x$driver)
+    element_click_js(element, x$session, x$driver)
   } else {
     element <- get_element_for_action(
       x,
@@ -106,28 +82,60 @@ elem_click <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("be visible and enabled")
     )
 
-    if (x$session == "chromote") {
-      promise <- x$driver$Page$loadEventFired(wait_ = FALSE)$catch(function(e) NULL)
-      click_chromote(element, driver = x$driver)
-      name <- x$driver$DOM$describeNode(backendNodeId = element)$node$nodeName
-      if (identical(name, "A")) {
-        x$driver$wait_for(promise)
-      }
-    } else if (x$session == "selenium") {
-      element$click()
-    } else {
-      left_click_selenium(element, x)
-    }
+    element_click(element, x$session, x$driver)
   }
 
   invisible(x)
 }
 
-left_click_selenium <- function(element, x) {
-  if (x$driver$browserName == "internet explorer" && identical(element$getElementTagName(), "checkbox")) {
+element_click_js <- function(x, session, driver) {
+  execute_js_fn_on("function(x) {
+    if (window.MouseEvent) {
+      const ev1 = new MouseEvent('mousedown', {
+          bubbles: true,
+          cancelable: false,
+          view: window,
+          clientX: x.getBoundingClientRect().x,
+          clientY: x.getBoundingClientRect().y
+      });
+      x.dispatchEvent(ev1);
+      const ev2 = new MouseEvent('mouseup', {
+          bubbles: true,
+          cancelable: false,
+          view: window,
+          clientX: x.getBoundingClientRect().x,
+          clientY: x.getBoundingClientRect().y
+      });
+      x.dispatchEvent(ev2);
+    } else {
+      x.click();
+      const event = document.createEvent('MouseEvent');
+      event.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+      x.dispatchEvent(event);
+    }
+  }", x, session = session, driver = driver)
+}
+
+element_click <- function(x, session, driver) {
+  if (session == "chromote") {
+    promise <- driver$Page$loadEventFired(wait_ = FALSE)$catch(function(e) NULL)
+    click_chromote(x, driver = driver)
+    name <- driver$DOM$describeNode(backendNodeId = x)$node$nodeName
+    if (identical(name, "A")) {
+      driver$wait_for(promise)
+    }
+  } else if (session == "selenium") {
+    x$click()
+  } else {
+    left_click_selenium(x, driver)
+  }
+}
+
+left_click_selenium <- function(element, driver) {
+  if (driver$browserName == "internet explorer" && identical(element$getElementTagName(), "checkbox")) {
     try(
       {
-        x$driver$executeScript(
+        driver$executeScript(
           "arguments[0].focus();",
           list(element$findChildElement("tag", "input"))
         )
@@ -139,10 +147,10 @@ left_click_selenium <- function(element, x) {
     )
   }
 
-  if (x$driver$browserName == "internet explorer") {
+  if (driver$browserName == "internet explorer") {
     size <- element$getElementSize()
 
-    x$driver$mouseMoveToLocation(
+    driver$mouseMoveToLocation(
       x = round(size$width / 3),
       y = round(size$height / 3),
       webElement = element
@@ -198,16 +206,7 @@ elem_double_click <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("be enabled")
     )
 
-    execute_js_fn_on("function(x) {
-      if (window.MouseEvent) {
-        const event = new MouseEvent('dblclick');
-        x.dispatchEvent(event)
-      } else {
-        const event = document.createEvent('mouseevents');
-        event.initEvent('dblclick', true, true);
-        x.dispatchEvent(event);
-      }
-    }", element, session = x$session, driver = x$driver)
+    element_double_click_js(element, x$session, x$driver)
   } else {
     element <- get_element_for_action(
       x,
@@ -218,37 +217,54 @@ elem_double_click <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("be visible and enabled")
     )
 
-    if (x$session == "chromote") {
-      click_chromote(element, x$driver, type = "left", count = 2)
-    } else if (x$session == "selenium") {
-      actions <- selenium::actions_stream(
-        selenium::actions_mousemove(
-          x = 0,
-          y = 0,
-          origin = element
-        ),
-        selenium::actions_mousedown(),
-        selenium::actions_mouseup(),
-        selenium::actions_pause(0.1),
-        selenium::actions_mousedown(),
-        selenium::actions_mouseup()
-      )
-
-      x$driver$perform_actions(actions)
-    } else {
-      size <- element$getElementSize()
-
-      x$driver$mouseMoveToLocation(
-        x = round(size$width / 3),
-        y = round(size$height / 3),
-        webElement = element
-      )
-
-      x$driver$doubleclick()
-    }
+    element_double_click(element, x$session, x$driver)
   }
 
   invisible(x)
+}
+
+element_double_click_js <- function(x, session, driver) {
+  execute_js_fn_on("function(x) {
+    if (window.MouseEvent) {
+      const event = new MouseEvent('dblclick');
+      x.dispatchEvent(event)
+    } else {
+      const event = document.createEvent('mouseevents');
+      event.initEvent('dblclick', true, true);
+      x.dispatchEvent(event);
+    }
+  }", x, session = session, driver = driver)
+}
+
+element_double_click <- function(x, session, driver) {
+  if (session == "chromote") {
+    click_chromote(x, driver, type = "left", count = 2)
+  } else if (session == "selenium") {
+    actions <- selenium::actions_stream(
+      selenium::actions_mousemove(
+        x = 0,
+        y = 0,
+        origin = x
+      ),
+      selenium::actions_mousedown(),
+      selenium::actions_mouseup(),
+      selenium::actions_pause(0.1),
+      selenium::actions_mousedown(),
+      selenium::actions_mouseup()
+    )
+
+    driver$perform_actions(actions)
+  } else {
+    size <- x$getElementSize()
+
+    driver$mouseMoveToLocation(
+      x = round(size$width / 3),
+      y = round(size$height / 3),
+      webElement = x
+    )
+
+    driver$doubleclick()
+  }
 }
 
 #' @rdname elem_click
@@ -271,45 +287,7 @@ elem_right_click <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("be enabled")
     )
 
-    execute_js_fn_on("function(x) {
-      if (window.MouseEvent) {
-        const ev1 = new MouseEvent('mousedown', {
-            bubbles: true,
-            cancelable: false,
-            view: window,
-            button: 2,
-            buttons: 2,
-            clientX: x.getBoundingClientRect().x,
-            clientY: x.getBoundingClientRect().y
-        });
-        x.dispatchEvent(ev1);
-        const ev2 = new MouseEvent('mouseup', {
-            bubbles: true,
-            cancelable: false,
-            view: window,
-            button: 2,
-            buttons: 0,
-            clientX: x.getBoundingClientRect().x,
-            clientY: x.getBoundingClientRect().y
-        });
-        x.dispatchEvent(ev2);
-        const ev3 = new MouseEvent('contextmenu', {
-            bubbles: true,
-            cancelable: false,
-            view: window,
-            button: 2,
-            buttons: 0,
-            clientX: x.getBoundingClientRect().x,
-            clientY: x.getBoundingClientRect().y
-        });
-        x.dispatchEvent(ev3);
-      } else {
-        x.click();
-        const event = document.createEvent('mouseevents');
-        event.initEvent('contextmenu', true, true);
-        x.dispatchEvent(event);
-      }
-    }", element, session = x$session, driver = x$driver)
+    element_right_click_js(element, x$session, x$driver)
   } else {
     element <- get_element_for_action(
       x,
@@ -320,24 +298,70 @@ elem_right_click <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("be visible and enabled")
     )
 
-    if (x$session == "chromote") {
-      click_chromote(element, x$driver, type = "right")
-    } else {
-      actions <- selenium::actions_stream(
-        selenium::actions_mousemove(
-          x = 0,
-          y = 0,
-          origin = element
-        ),
-        selenium::actions_mousedown(button = "right"),
-        selenium::actions_mouseup(button = "right")
-      )
-
-      x$driver$perform_actions(actions)
-    }
+    element_right_click(element, x$session, x$driver)
   }
 
   invisible(x)
+}
+
+element_right_click_js <- function(x, session, driver) {
+  execute_js_fn_on("function(x) {
+    if (window.MouseEvent) {
+      const ev1 = new MouseEvent('mousedown', {
+          bubbles: true,
+          cancelable: false,
+          view: window,
+          button: 2,
+          buttons: 2,
+          clientX: x.getBoundingClientRect().x,
+          clientY: x.getBoundingClientRect().y
+      });
+      x.dispatchEvent(ev1);
+      const ev2 = new MouseEvent('mouseup', {
+          bubbles: true,
+          cancelable: false,
+          view: window,
+          button: 2,
+          buttons: 0,
+          clientX: x.getBoundingClientRect().x,
+          clientY: x.getBoundingClientRect().y
+      });
+      x.dispatchEvent(ev2);
+      const ev3 = new MouseEvent('contextmenu', {
+          bubbles: true,
+          cancelable: false,
+          view: window,
+          button: 2,
+          buttons: 0,
+          clientX: x.getBoundingClientRect().x,
+          clientY: x.getBoundingClientRect().y
+      });
+      x.dispatchEvent(ev3);
+    } else {
+      x.click();
+      const event = document.createEvent('mouseevents');
+      event.initEvent('contextmenu', true, true);
+      x.dispatchEvent(event);
+    }
+  }", x, session = session, driver = driver)
+}
+
+element_right_click <- function(x, session, driver) {
+  if (session == "chromote") {
+    click_chromote(x, driver, type = "right")
+  } else {
+    actions <- selenium::actions_stream(
+      selenium::actions_mousemove(
+        x = 0,
+        y = 0,
+        origin = x
+      ),
+      selenium::actions_mousedown(button = "right"),
+      selenium::actions_mouseup(button = "right")
+    )
+
+    driver$perform_actions(actions)
+  }
 }
 
 #' Hover over an element
@@ -397,18 +421,7 @@ elem_hover <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("be enabled")
     )
 
-    execute_js_fn_on("function(x) {
-      if (window.MouseEvent) {
-        const event = new MouseEvent('mouseover');
-        x.dispatchEvent(event)
-      } else {
-        x.click();
-        x.click();
-        const event = document.createEvent('mouseevents');
-        event.initEvent('mouseover', true, true);
-        x.dispatchEvent(event);
-      }
-    }", element, session = x$session, driver = x$driver)
+    element_hover_js(element, x$session, x$driver)
   } else {
     element <- get_element_for_action(
       x,
@@ -419,30 +432,49 @@ elem_hover <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("be visible and enabled")
     )
 
-    if (x$session == "chromote") {
-      hover_chromote(element, driver = x$driver)
-    } else if (x$session == "selenium") {
-      actions <- selenium::actions_stream(
-        selenium::actions_mousemove(
-          x = 0,
-          y = 0,
-          origin = element
-        )
-      )
-
-      x$driver$perform_actions(actions)
-    } else {
-      size <- element$getElementSize()
-
-      x$driver$mouseMoveToLocation(
-        x = round(size$width / 3),
-        y = round(size$height / 3),
-        webElement = element
-      )
-    }
+    element_hover(element, x$session, x$driver)
   }
 
   invisible(x)
+}
+
+element_hover_js <- function(x, session, driver) {
+  execute_js_fn_on("function(x) {
+    if (window.MouseEvent) {
+      const event = new MouseEvent('mouseover');
+      x.dispatchEvent(event)
+    } else {
+      x.click();
+      x.click();
+      const event = document.createEvent('mouseevents');
+      event.initEvent('mouseover', true, true);
+      x.dispatchEvent(event);
+    }
+  }", x, session = session, driver = driver)
+}
+
+element_hover <- function(x, session, driver) {
+  if (session == "chromote") {
+    hover_chromote(x, driver = driver)
+  } else if (session == "selenium") {
+    actions <- selenium::actions_stream(
+      selenium::actions_mousemove(
+        x = 0,
+        y = 0,
+        origin = x
+      )
+    )
+
+    driver$perform_actions(actions)
+  } else {
+    size <- x$getElementSize()
+
+    driver$mouseMoveToLocation(
+      x = round(size$width / 3),
+      y = round(size$height / 3),
+      webElement = x
+    )
+  }
 }
 
 hover_chromote <- function(element, driver) {
@@ -538,25 +570,29 @@ elem_set_value <- function(x, text, timeout = NULL) {
     conditions_text = c("be enabled")
   )
 
-  execute_js_fn_on(
-    paste0("x => x.setAttribute('value','", text, "')"),
-    element,
-    session = x$session,
-    driver = x$driver
-  )
-
-  if (x$session == "chromote") {
-    chromote_clear(element, driver = x$driver)
-    chromote_send_chars(text, driver = x$driver)
-  } else if (x$session == "selenium") {
-    element$clear()
-    element$send_keys(text)
-  } else {
-    element$clearElement()
-    element$sendKeysToElement(list(text))
-  }
+  element_set_value(element, text, x$session, x$driver)
 
   invisible(x)
+}
+
+element_set_value <- function(x, text, session, driver) {
+  execute_js_fn_on(
+    paste0("x => x.value = '", text, "'"),
+    x,
+    session = session,
+    driver = driver
+  )
+
+  if (session == "chromote") {
+    chromote_clear(x, driver = driver)
+    chromote_send_chars(text, driver = driver)
+  } else if (session == "selenium") {
+    x$clear()
+    x$send_keys(text)
+  } else {
+    x$clearElement()
+    x$sendKeysToElement(list(text))
+  }
 }
 
 chromote_clear <- function(x, driver) {
@@ -621,20 +657,26 @@ elem_send_keys <- function(x, ..., modifiers = NULL, timeout = NULL) {
     NULL
   }
 
-  if (x$session == "chromote") {
-    chromote_send_keys(element, x$driver, keys, modifiers)
-  } else if (x$session == "selenium") {
-    rlang::check_installed("RSelenium")
+  element_send_keys(element, modifiers, keys, x$session, x$driver)
+
+  invisible(x)
+}
+
+element_send_keys <- function(x, modifiers, keys, session, driver) {
+  if (session == "chromote") {
+    chromote_send_keys(x, driver, keys, modifiers)
+  } else if (session == "selenium") {
+    rlang::check_installed("selenium")
 
     keys <- lapply(keys, function(x) {
       if (inherits(x, "selenider_key")) {
-        get_rselenium_key(x)
+        get_selenium_key(x)
       } else {
         x
       }
     })
 
-    if (inherits(element, "selenider_session")) {
+    if (inherits(x, "selenider_session")) {
       keys <- c(
         selenium::keys$shift["shift" %in% modifiers],
         selenium::keys$control[any(c("control", "ctrl") %in% modifiers)],
@@ -643,7 +685,7 @@ elem_send_keys <- function(x, ..., modifiers = NULL, timeout = NULL) {
         keys
       )
 
-      x$driver$send_keys(!!!keys)
+      driver$send_keys(!!!keys)
     } else {
       modifiers <- c(
         selenium::keys$shift["shift" %in% modifiers],
@@ -671,7 +713,7 @@ elem_send_keys <- function(x, ..., modifiers = NULL, timeout = NULL) {
 
       actions <- selenium::actions_stream(!!!actions)
 
-      x$driver$perform_actions(actions)
+      driver$perform_actions(actions)
     }
   } else {
     rlang::check_installed("RSelenium")
@@ -692,14 +734,12 @@ elem_send_keys <- function(x, ..., modifiers = NULL, timeout = NULL) {
       keys
     )
 
-    if (inherits(element, "selenider_session")) {
-      x$driver$sendKeysToActiveElement(keys)
+    if (inherits(x, "selenider_session")) {
+      driver$sendKeysToActiveElement(keys)
     } else {
-      element$sendKeysToElement(keys)
+      x$sendKeysToElement(keys)
     }
   }
-
-  invisible(x)
 }
 
 chromote_send_keys <- function(element, driver, keys, modifiers) {
@@ -773,17 +813,21 @@ elem_clear_value <- function(x, timeout = NULL) {
     conditions_text = c("be enabled")
   )
 
-  if (x$session == "chromote") {
-    chromote_clear(element, x$driver)
-  } else if (x$session == "selenium") {
-    element$clear()
-    element$send_keys(" ", selenium::keys$backspace)
-  } else {
-    element$clearElement()
-    element$sendKeysToElement(list(" ", RSelenium::selKeys$backspace))
-  }
+  element_clear_value(element, x$session, x$driver)
 
   invisible(x)
+}
+
+element_clear_value <- function(x, session, driver) {
+  if (session == "chromote") {
+    chromote_clear(x, driver)
+  } else if (session == "selenium") {
+    x$clear()
+    x$send_keys(" ", selenium::keys$backspace)
+  } else {
+    x$clearElement()
+    x$sendKeysToElement(list(" ", RSelenium::selKeys$backspace))
+  }
 }
 
 #' Scroll to an element
@@ -841,8 +885,8 @@ elem_scroll_to <- function(x, js = FALSE, timeout = NULL) {
 
   # Firefox does not allow you to scroll to an element if not in view.
   if (js || x$session == "chromote" ||
-    (x$session == "selenium" && x$driver$browser == "firefox") ||
-    (x$session == "RSelenium" && x$driver$browserName == "firefox")) {
+        (x$session == "selenium" && x$driver$browser == "firefox") ||
+        (x$session == "RSelenium" && x$driver$browserName == "firefox")) {
     element <- get_element_for_action(
       x,
       action = "scroll to {.arg x} using JavaScript",
@@ -852,13 +896,7 @@ elem_scroll_to <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("be enabled")
     )
 
-    execute_js_fn_on("function(x) {
-      x.scrollIntoView({
-        block: 'center',
-        inline: 'center',
-        behaviour: 'instant',
-      })
-    }", element, session = x$session, driver = x$driver)
+    element_scroll_to_js(element, x$session, x$driver)
   } else {
     element <- get_element_for_action(
       x,
@@ -869,26 +907,40 @@ elem_scroll_to <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("be visible")
     )
 
-    if (x$session == "selenium") {
-      actions <- selenium::actions_stream(
-        selenium::actions_scroll(
-          x = 0,
-          y = 0,
-          delta_x = 0,
-          delta_y = 0,
-          origin = element
-        )
-      )
-
-      x$driver$perform_actions(actions)
-    } else {
-      x$driver$mouseMoveToLocation(
-        webElement = element
-      )
-    }
+    element_scroll_to(element, x$session, x$driver)
   }
 
   invisible(x)
+}
+
+element_scroll_to_js <- function(x, session, driver) {
+  execute_js_fn_on("function(x) {
+    x.scrollIntoView({
+      block: 'center',
+      inline: 'center',
+      behaviour: 'instant',
+    })
+  }", x, session = session, driver = driver)
+}
+
+element_scroll_to <- function(x, session, driver) {
+  if (session == "selenium") {
+    actions <- selenium::actions_stream(
+      selenium::actions_scroll(
+        x = 0,
+        y = 0,
+        delta_x = 0,
+        delta_y = 0,
+        origin = x
+      )
+    )
+
+    driver$perform_actions(actions)
+  } else {
+    driver$mouseMoveToLocation(
+      webElement = x
+    )
+  }
 }
 
 elem_select <- function(x,
@@ -934,22 +986,21 @@ elem_select <- function(x,
     reset_other = reset_other
   )
 
-  name <- if (x$session == "chromote") {
-    driver <- x$driver
-    tolower(driver$DOM$describeNode(backendNodeId = element)$node$nodeName)
-  } else if (x$session == "selenium") {
-    element$get_tag_name()
-  } else {
-    unpack_list(element$getElementTagName())
-  }
+  name <- element_name(element, x$session, x$driver)
 
+  element_select(element, name, value, text, index, reset_other, x$session, x$driver)
+
+  invisible(x)
+}
+
+element_select <- function(x, name, value, text, index, reset_other, session, driver) {
   reset_other_json <- tolower(as.character(reset_other))
 
   if (name == "value") {
-    execute_js_fn_on(paste0("function(element) {
-      element.selected = true;
+    execute_js_fn_on(paste0("function(x) {
+      x.selected = true;
 
-      const selectElement = element.parentElement;
+      const selectElement = x.parentElement;
 
       while (selectElement.tagName != 'SELECT') {
         if (selectElement == null) {
@@ -961,7 +1012,7 @@ elem_select <- function(x,
 
       if (selectElement.type == 'select-one') {
         for (let i = 0; i < selectElement.options.length; i++) {
-          if (selectElement.options[i] == element) {
+          if (selectElement.options[i] == x) {
             selectElement.selectedIndex = i;
           } else if (", reset_other_json, ") {
             selectElement.options[i].selected = false;
@@ -973,160 +1024,159 @@ elem_select <- function(x,
       selectElement.dispatchEvent(new Event('change', {bubbles: true}));
 
       return true;
-    }"), element, session = x$session, driver = x$driver)
-  } else if (is.character(value) && length(value) == 1) {
-    result <- execute_js_fn_on(paste0("function(element) {
+    }"), x, session = session, driver = driver)
+  } else if (length(value) == 1) {
+    result <- execute_js_fn_on(paste0("function(x) {
       let selected = false;
-      for (let i = 0; i < element.options.length; i++) {
-        if (element.options[i].value == ", value, ") {
-          if (element.type == 'select-one') {
-            element.selectedIndex = i;
-            element.options[i].selected = true;
+      for (let i = 0; i < x.options.length; i++) {
+        if (x.options[i].value == ", value, ") {
+          if (x.type == 'select-one') {
+            x.selectedIndex = i;
+            x.options[i].selected = true;
             selected = true;
           } else {
-            element.options[i].selected = true;
+            x.options[i].selected = true;
             selected = true;
           }
         } else if (", reset_other_json, ") {
-          element.options[i].selected = false;
+          x.options[i].selected = false;
         }
       }
 
-      element.dispatchEvent(new Event('input', {bubbles: true}));
-      element.dispatchEvent(new Event('change', {bubbles: true}));
+      x.dispatchEvent(new Event('input', {bubbles: true}));
+      x.dispatchEvent(new Event('change', {bubbles: true}));
 
       return selected;
-    }"), element, session = x$session, driver = x$driver)
-  } else if (is.character(value)) {
-    execute_js_fn_on(paste0("function(element) {
+    }"), x, session = session, driver = driver)
+  } else if (!is.null(value)) {
+    execute_js_fn_on(paste0("function(x) {
       const values = [", paste0("'", value, "'", collapse = ", "), "];
       let selected = false;
 
-      if (element.type == 'select-one') {
+      if (x.type == 'select-one') {
         return -1;
       }
 
-      for (let i = 0; i < element.options.length; i++) {
-        if (values.includes(element.options[i].textContent)) {
-          element.options[i].selected = true;
+      for (let i = 0; i < x.options.length; i++) {
+        if (values.includes(x.options[i].textContent)) {
+          x.options[i].selected = true;
           selected = true;
         } else if (", reset_other_json, ") {
-          element.options[i].selected = false;
+          x.options[i].selected = false;
         }
       }
 
-      element.dispatchEvent(new Event('input', {bubbles: true}));
-      element.dispatchEvent(new Event('change', {bubbles: true}));
-
+      x.dispatchEvent(new Event('input', {bubbles: true}));
+      x.dispatchEvent(new Event('change', {bubbles: true}));
 
       if (selected) {
         return 1;
       } else {
         return 0;
       }
-    }"))
-
-    # TODO: Deal with result
-  } else if (!is.null(text) && length(text) == 1) {
-    execute_js_fn_on(paste0("function(element) {
+    }"), x, session = session, driver = driver)
+  } else if (length(text) == 1) {
+    execute_js_fn_on(paste0("function(x) {
       let selected = false;
 
-      for (let i = 0; i < element.options.length; i++) {
-        if ('", text, "'.indexOf(element.options[i].textContent) >= 0) {
-          if (element.type == 'select-one') {
-            element.options[i].selected = true;
-            element.selectedIndex = i;
+      for (let i = 0; i < x.options.length; i++) {
+        if ('", text, "'.indexOf(x.options[i].textContent) >= 0) {
+          if (x.type == 'select-one') {
+            x.options[i].selected = true;
+            x.selectedIndex = i;
             selected = true;
           } else {
-            element.options[i].selected = true;
+            x.options[i].selected = true;
             selected = true;
           }
         } else if (", reset_other_json, ") {
-          element.options[i].selected = false;
+          x.options[i].selected = false;
         }
       }
 
-      element.dispatchEvent(new Event('input', {bubbles: true}));
-      element.dispatchEvent(new Event('change', {bubbles: true}));
+      x.dispatchEvent(new Event('input', {bubbles: true}));
+      x.dispatchEvent(new Event('change', {bubbles: true}));
 
       return selected;
-    }"), element, session = x$session, driver = x$driver)
+    }"), x, session = session, driver = driver)
   } else if (!is.null(text)) {
-    execute_js_fn_on(paste0("function(element) {
+    execute_js_fn_on(paste0("function(x) {
       const values = [", paste0("'", text, "'", collapse = ", "), "];
       let selected = false;
 
-      if (element.type == 'select-one') {
+      if (x.type == 'select-one') {
         return -1;
       }
 
-      for (let i = 0; i < element.options.length; i++) {
-        if (values.some(x => x.indexOf(element.options[i].textContent))) {
-          element.options[i].selected = true;
+      for (let i = 0; i < x.options.length; i++) {
+        if (values.some(x => x.indexOf(x.options[i].textContent))) {
+          x.options[i].selected = true;
           selected = true;
         } else if (", reset_other_json, ") {
-          element.options[i].selected = false;
+          x.options[i].selected = false;
         }
       }
 
-      element.dispatchEvent(new Event('input', {bubbles: true}));
-      element.dispatchEvent(new Event('change', {bubbles: true}));
+      x.dispatchEvent(new Event('input', {bubbles: true}));
+      x.dispatchEvent(new Event('change', {bubbles: true}));
 
       if (selected) {
         return 1;
       } else {
         return 0;
       }
-    }"), element, session = x$session, driver = x$driver)
+    }"), x, session = session, driver = driver)
   } else if (length(index) == 1) {
     index <- index - 1
 
-    execute_js_fn_on(paste0("function(element) {
+    execute_js_fn_on(paste0("function(x) {
       let selected = false;
 
       if (", reset_other_json, ") {
-        for (let i = 0; i < element.options.length; i++) {
-          element.options[i].selected = false;
+        for (let i = 0; i < x.options.length; i++) {
+          x.options[i].selected = false;
         }
       }
 
-      if (element.type == 'select-one') {
-        if (element.options.length > ", index, ") {
-          element.selectedIndex = ", index, ";
-          element.options[", index, "].selected = true;
+      if (x.type == 'select-one') {
+        if (x.options.length > ", index, ") {
+          x.selectedIndex = ", index, ";
+          x.options[", index, "].selected = true;
 
-          element.dispatchEvent(new Event('input', {bubbles: true}));
-          element.dispatchEvent(new Event('change', {bubbles: true}));
+          x.dispatchEvent(new Event('input', {bubbles: true}));
+          x.dispatchEvent(new Event('change', {bubbles: true}));
 
           return 1;
         } else {
           return -1;
         }
       } else {
-        if (element.options.length > ", index, ") {
-          element.options[", index, "].selected = true;
+        if (x.options.length > ", index, ") {
+          x.options[", index, "].selected = true;
           selected = true;
         }
       }
 
-      element.dispatchEvent(new Event('input', {bubbles: true}));
-      element.dispatchEvent(new Event('change', {bubbles: true}));
+      x.dispatchEvent(new Event('input', {bubbles: true}));
+      x.dispatchEvent(new Event('change', {bubbles: true}));
 
       if (selected) {
         return 1;
       } else {
         return 0;
       }
-    }"), element, session = x$session, driver = x$driver)
+    }"), x, session = session, driver = driver)
   } else {
-    execute_js_fn_on(paste0("function(element) {
-      if (element.type == 'select-one') {
+    index <- index - 1
+
+    execute_js_fn_on(paste0("function(x) {
+      if (x.type == 'select-one') {
         return -1;
       }
 
       if (", reset_other_json, ") {
-        for (let i = 0; i < element.options.length; i++) {
-          element.options[i].selected = false;
+        for (let i = 0; i < x.options.length; i++) {
+          x.options[i].selected = false;
         }
       }
 
@@ -1135,24 +1185,22 @@ elem_select <- function(x,
 
       let selected = false;
       for (i of values) {
-        if (i >= 0 && i < element.options.length) {
-          element.options[i].selected = true;
+        if (i >= 0 && i < x.options.length) {
+          x.options[i].selected = true;
           selected = true;
         }
       }
 
-      element.dispatchEvent(new Event('input', {bubbles: true}));
-      element.dispatchEvent(new Event('change', {bubbles: true}));
+      x.dispatchEvent(new Event('input', {bubbles: true}));
+      x.dispatchEvent(new Event('change', {bubbles: true}));
 
       if (selected) {
         return 1;
       } else {
         return 0;
       }
-    }"), element, session = x$session, driver = x$driver)
+    }"), x, session = session, driver = driver)
   }
-
-  invisible(x)
 }
 
 get_element_for_selection <- function(x,
@@ -1305,7 +1353,7 @@ get_element_for_selection <- function(x,
 
   if (is.null(element)) {
     stop_not_actionable(c(
-      paste0("To ", action, ", it must exist."),
+      paste0("To select {.arg x}, it must exist."),
       "i" = paste0(format_timeout_for_error(timeout), "{.arg x} was not present.")
     ), call = call, class = "selenider_error_absent_element")
   }
@@ -1372,21 +1420,7 @@ elem_submit <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("have a form element as its ancestor")
     )
 
-    result <- execute_js_fn_on("function(element) {
-      while (element != null) {
-        if (element.tagName == 'FORM') {
-          if (element.requestSubmit) {
-            element.requestSubmit();
-          } else {
-            element.submit();
-          }
-          return true;
-        }
-
-        element = element.parentElement;
-      }
-      return false;
-    }", element, session = x$session, driver = x$driver)
+    result <- element_submit_js(element, x$session, x$driver)
 
     if (!result) {
       # Shouldn't happen
@@ -1404,10 +1438,32 @@ elem_submit <- function(x, js = FALSE, timeout = NULL) {
       conditions_text = c("have a form element as its ancestor")
     )
 
-    element$submitElement()
+    element_submit(element, x$session, x$driver)
   }
 
   invisible(x)
+}
+
+element_submit_js <- function(x, session, driver) {
+  execute_js_fn_on("function(element) {
+    while (element != null) {
+      if (element.tagName == 'FORM') {
+        if (element.requestSubmit) {
+          element.requestSubmit();
+        } else {
+          element.submit();
+        }
+        return true;
+      }
+
+      element = element.parentElement;
+    }
+    return false;
+  }", x, session = session, driver = driver)
+}
+
+element_submit <- function(x, session, driver) {
+  x$submitElement()
 }
 
 get_element_for_action <- function(x,
