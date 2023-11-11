@@ -158,12 +158,11 @@ specified.</p></div>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># Don't set the local session, since we want to do it manually.</span></span>
-<span><span class="va">session_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="selenider_session.html">selenider_session</a></span><span class="op">(</span>local <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="va">session_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="selenider_session.html">selenider_session</a></span><span class="op">(</span>local <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="selenider_session.html">selenider_session</a></span><span class="op">(</span>local <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">get_session</span><span class="op">(</span>create <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="co"># NULL</span></span>
 <span></span>
-<span><span class="fu">local_session</span><span class="op">(</span><span class="va">session_1</span>, close <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu">local_session</span><span class="op">(</span><span class="va">session</span>, close <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">get_session</span><span class="op">(</span>create <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
@@ -177,18 +176,20 @@ specified.</p></div>
 <span><span class="co"># need to use the `.local_envir` argument.</span></span>
 <span><span class="va">set_my_session</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">env</span> <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/stack.html" class="external-link">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="co"># caller_env() is the environment where the function is called.</span></span>
-<span>  <span class="fu">local_session</span><span class="op">(</span><span class="va">session_1</span>, .local_envir <span class="op">=</span> <span class="va">env</span>, close <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  <span class="fu">local_session</span><span class="op">(</span><span class="va">session</span>, .local_envir <span class="op">=</span> <span class="va">env</span>, close <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu">set_my_session</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">with_session</span><span class="op">(</span></span>
-<span>  <span class="va">session_2</span>,</span>
-<span>  <span class="op">{</span><span class="fu">get_session</span><span class="op">(</span>create <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">}</span>,</span>
+<span>  <span class="va">session</span>,</span>
+<span>  <span class="op">{</span></span>
+<span>    <span class="fu">get_session</span><span class="op">(</span>create <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  <span class="op">}</span>,</span>
 <span>  close <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span> <span class="co"># session_2</span></span>
+<span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">get_session</span><span class="op">(</span>create <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="co"># session_1</span></span></code></pre></div>
+<span><span class="fu">get_session</span><span class="op">(</span>create <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
