@@ -340,25 +340,26 @@ create_chromote_session <- function(parent = NULL, ...) {
 
   timeout <- if (on_ci()) 60 * 5 else 60
 
-  if (is.null(parent) &&
-        chromote::has_default_chromote_object() &&
-        !chromote::default_chromote_object()$get_browser()$get_process()$is_alive()) {
-    reset_default_chromote_object(timeout)
+  withr::local_options(list(chromote.timeout = timeout))
+
+  if (is.null(parent) && default_chromote_object_alive()) {
+    reset_default_chromote_object()
   }
 
   if (is.null(parent)) {
     parent <- chromote::default_chromote_object()
   }
 
-  withr::with_options(list(chromote.timeout = timeout), {
-    chromote::ChromoteSession$new(parent = parent, ...)
-  })
+  chromote::ChromoteSession$new(parent = parent, ...)
 }
 
-reset_default_chromote_object <- function(timeout) {
-  withr::with_options(list(chromote.timeout = timeout), {
-    chromote::set_default_chromote_object(chromote::Chromote$new())
-  })
+default_chromote_object_alive <- function() {
+  chromote::has_default_chromote_object() &&
+    !chromote::default_chromote_object()$get_browser()$get_process()$is_alive()
+}
+
+reset_default_chromote_object <- function() {
+  chromote::set_default_chromote_object(chromote::Chromote$new())
 }
 
 #' @rdname selenider_session
