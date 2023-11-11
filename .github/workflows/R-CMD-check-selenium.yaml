@@ -18,14 +18,14 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
-          - {os: ubuntu-latest,   r: 'release'}
-          - {os: ubuntu-latest,   r: 'oldrel-1'}
+          - { os: ubuntu-latest, r: "devel", http-user-agent: "release" }
+          - { os: ubuntu-latest, r: "release" }
+          - { os: ubuntu-latest, r: "oldrel-1" }
         browser: [chrome, firefox]
 
     services:
       selenium:
-        image: selenium/standalone-${{ matrix.browser }}:4.15.0-20231102
+        image: selenium/standalone-${{ matrix.browser }}:4.15.0-20231110
         ports:
           - 4444:4444
         options: >-
@@ -46,7 +46,7 @@ jobs:
 
       - uses: r-lib/actions/setup-r@v2
         with:
-          r-version: 'release'
+          r-version: "release"
           use-public-rspm: true
 
       - uses: r-lib/actions/setup-r-dependencies@v2
