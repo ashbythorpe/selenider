@@ -338,24 +338,27 @@ selenider_session <- function(session = getOption("selenider.session"),
 create_chromote_session <- function(parent = NULL, ...) {
   rlang::check_installed("chromote")
 
+  timeout <- if (on_ci()) 60 * 5 else 60
+
   if (is.null(parent) &&
         chromote::has_default_chromote_object() &&
         !chromote::default_chromote_object()$get_browser()$get_process()$is_alive()) {
-    reset_default_chromote_object()
+    reset_default_chromote_object(timeout)
   }
 
   if (is.null(parent)) {
     parent <- chromote::default_chromote_object()
   }
 
-  timeout <- if (on_ci()) 60 * 5 else 60
   withr::with_options(list(chromote.timeout = timeout), {
     chromote::ChromoteSession$new(parent = parent, ...)
   })
 }
 
-reset_default_chromote_object <- function() {
-  chromote::set_default_chromote_object(chromote::Chromote$new())
+reset_default_chromote_object <- function(timeout) {
+  withr::with_options(list(chromote.timeout = timeout), {
+    chromote::set_default_chromote_object(chromote::Chromote$new())
+  })
 }
 
 #' @rdname selenider_session
