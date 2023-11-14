@@ -388,7 +388,13 @@ diagnose_condition_call <- function(condition,
   )
 
   condition <- if (call_name %in% c("(", "!")) {
-    return(diagnose_condition_inverse(condition, call_name, call, original_env))
+    return(diagnose_condition_inverse(
+      condition,
+      x = x,
+      call_name = call_name,
+      call = call,
+      original_env = original_env
+    ))
   } else if (call_name %in% condition_dependencies$none) {
     diagnose_condition_none(condition, call_name, negated_call_name)
   } else if (call_name %in% condition_dependencies$name) {
@@ -457,6 +463,7 @@ diagnose_condition_call <- function(condition,
 }
 
 diagnose_condition_inverse <- function(condition,
+                                       x,
                                        call_name,
                                        call,
                                        original_env) {

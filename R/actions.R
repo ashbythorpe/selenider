@@ -1008,6 +1008,57 @@ element_scroll_to <- function(x, session, driver) {
   }
 }
 
+#' Select an HTML element
+#'
+#' Select or deselect `select` and `option` elements.
+#'
+#' @param x A `selenider_element` object representing a `select` or `option`
+#'   element.
+#' @param value If `x` is a `select` element, the value of the option to
+#'   select. Can be a character vector, in which case multiple options will be
+#'   selected.
+#' @param text The text content of the option to select. This does not have to
+#'   be a complete match, and multiple options can be selected.
+#' @param index A vector of indexes. The nth option elements will be selected.
+#' @param timeout How long to wait for the element to exist.
+#' @param reset_other If `TRUE` (the default), the other options will be
+#'   deselected.
+#'
+#' @details
+#' If no arguents apart from `x` are supplied, and `x` is a `select` element,
+#' all options will be deselected.
+#'
+#' @returns `x`, invisibly.
+#'
+#' @family actions
+#'
+#' @examplesIf selenider::selenider_available(online = FALSE)
+#' html <- "
+#' <select multiple>
+#'   <option value='a'>Option A.</option>
+#'   <option value='b'>Option B.</option>
+#'   <option value='c'>Option C.</option>
+#' </select>
+#' "
+#' session <- minimal_selenider_session(html)
+#'
+#' s("select") |>
+#'   elem_select("a")
+#'
+#' s("select") |>
+#'   elem_select(text = c("Option A.", "Option C."))
+#'
+#' s("select") |>
+#'   elem_select(index = 2, reset_other = FALSE)
+#'
+#' # Reset selection
+#' s("select") |>
+#'   elem_select()
+#'
+#' s("select") |>
+#'   elem_select("b")
+#'
+#' @export
 elem_select <- function(x,
                         value = NULL,
                         text = NULL,
@@ -1350,7 +1401,10 @@ get_element_for_selection <- function(x,
 
       specific_condition <- function(x) {
         has_at_least(elem_filter(find_elements(x, "option"), function(x) {
-          any(grepl(text, elem_text(x, timeout = 0), fixed = TRUE))
+          actual_text <- elem_text(x, timeout = 0)
+          any(vapply(text, function(x) {
+            grepl(x, actual_text, fixed = TRUE)
+          }, logical(1)))
         }), 1)
       }
 
