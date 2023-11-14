@@ -87,6 +87,10 @@ format_lazy_elements <- function(x, ...) {
       format, ...
     ))
 
-    c(replace_names_bullets(first), replace_names_bullets(formatted), replace_names_bullets(last))
+    c(
+      replace_names_bullets(first),
+      replace_names_bullets(formatted),
+      replace_names_bullets(last)
+    )
   }
 }

@@ -15,9 +15,9 @@
 #' If more than one method is used to select an element (e.g. `css` and
 #' `xpath`), the first element which satisfies all conditions will be found.
 #'
-#' CSS selectors are generally recommended over other options, since they are usually
-#' the easiest to read. Use `"tag_name"` to select by tag name, `".class"` to select
-#' by class, and `"#id"` to select by id.
+#' CSS selectors are generally recommended over other options, since they are
+#' usually the easiest to read. Use `"tag_name"` to select by tag name,
+#' `".class"` to select by class, and `"#id"` to select by id.
 #'
 #' @returns
 #' A `selenider_element` object.

@@ -11,7 +11,10 @@ test_that("Conditions work", {
 
   expect_true(is_absent(s(".random-class")))
 
-  expect_error(is_visible(s(".random-class")), class = "selenider_error_absent_element")
+  expect_error(
+    is_visible(s(".random-class")),
+    class = "selenider_error_absent_element"
+  )
 
   expect_false(is_visible(s(".toggleable")))
   expect_true(is_invisible(s(".toggleable")))

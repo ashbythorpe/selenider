@@ -5,29 +5,32 @@
 #' a selenider element collection.
 #'
 #' `elem_filter()` and `elem_find()` allow you to use conditions to filter HTML
-#' elements (see [is_present()] and other conditions). `elem_find()` returns the *first*
-#' element that satisfies one or more conditions, while `elem_filter()` returns every
-#' element that satisfies these conditions.
+#' elements (see [is_present()] and other conditions). `elem_find()` returns
+#' the *first* element that satisfies one or more conditions, while
+#' `elem_filter()` returns every element that satisfies these conditions.
 #'
-#' `[` and `[[` with a numeric subscript can be used on an element collection to filter
-#' the elements by position. `[` returns a single element at a specified location, while
-#' `[[` returns a collection of the elements at more than one position.
+#' `[` and `[[` with a numeric subscript can be used on an element collection
+#' to filter the elements by position. `[` returns a single element at a
+#' specified location, while `[[` returns a collection of the elements at more
+#' than one position.
 #'
 #' @param x A `selenider_elements` object.
-#' @param ... <[`dynamic-dots`][rlang::dyn-dots]> Conditions (functions or function
-#'   calls) that are used to filter the elements of `x`.
-#' @param i A number (or for `[`, a vector of one or more numbers) used to select
-#'   elements by position.
+#' @param ... <[`dynamic-dots`][rlang::dyn-dots]> Conditions (functions or
+#'   function calls) that are used to filter the elements of `x`.
+#' @param i A number (or for `[`, a vector of one or more numbers) used to
+#'   select elements by position.
 #'
 #' @details
-#' As with the [find_element()] and [find_elements()] functions, these functions are
-#' lazy, meaning that the elements are not fetched and filtered until they are needed.
+#' As with the [find_element()] and [find_elements()] functions, these
+#' functions are lazy, meaning that the elements are not fetched and filtered
+#' until they are needed.
 #'
-#' Conditions can be functions or function calls (see [elem_expect()] for more details).
+#' Conditions can be functions or function calls (see [elem_expect()] for more
+#' details).
 #'
 #' @returns
-#' `elem_filter()` and `[` return a `selenider_elements` object, since they can result
-#' in multiple elements.
+#' `elem_filter()` and `[` return a `selenider_elements` object, since they can
+#' result in multiple elements.
 #' `elem_find()` and `[[` return a single `selenider_element` object.
 #'
 #' @seealso
@@ -86,7 +89,10 @@ elem_filter <- function(x, ...) {
   }
 
   exprs <- enquos(...)
-  arg_names <- lapply(c("a1", "a2", "a3", "a4"), function(x) make_elem_name(exprs, x))
+  arg_names <- lapply(
+    c("a1", "a2", "a3", "a4"),
+    function(x) make_elem_name(exprs, x)
+  )
   elem_name <- make_elem_name(exprs)
   elem_expr <- filter_elem_name(elem_name, arg_names)
   calls <- lapply(exprs, parse_condition, elem_expr)
@@ -95,7 +101,14 @@ elem_filter <- function(x, ...) {
     condition_to_function,
     calls,
     exprs,
-    MoreArgs = list(elem_name = elem_name, arg_names = arg_names, session = x$session, driver = x$driver, driver_id = x$driver_id, timeout = x$timeout),
+    MoreArgs = list(
+      elem_name = elem_name,
+      arg_names = arg_names,
+      session = x$session,
+      driver = x$driver,
+      driver_id = x$driver_id,
+      timeout = x$timeout
+    ),
     SIMPLIFY = FALSE
   )
 
@@ -104,7 +117,8 @@ elem_filter <- function(x, ...) {
   x$selectors[[length(selectors)]]$filter <-
     c(x$selectors[[length(selectors)]]$filter, functions)
 
-  x$selectors[[length(x$selectors)]]$to_be_filtered <- x$selectors[[length(x$selectors)]]$to_be_filtered + 1
+  x$selectors[[length(x$selectors)]]$to_be_filtered <-
+    x$selectors[[length(x$selectors)]]$to_be_filtered + 1
 
   x
 }
@@ -194,7 +208,10 @@ check_subscript_vctrs <- function(i, call = rlang::caller_env()) {
   x
 }
 
-add_numeric_filter <- function(x, i, call = rlang::caller_env(), max_subscript_error = FALSE) {
+add_numeric_filter <- function(x,
+                               i,
+                               call = rlang::caller_env(),
+                               max_subscript_error = FALSE) {
   selectors <- x$selectors
 
   filters <- selectors[[length(selectors)]]$filter
@@ -204,7 +221,12 @@ add_numeric_filter <- function(x, i, call = rlang::caller_env(), max_subscript_e
   }
   numeric_filters <- Filter(is_numeric_and_positive, filters)
 
-  min_length <- if (length(numeric_filters) != 0) min(lengths(numeric_filters)) else Inf
+  min_length <- if (length(numeric_filters) != 0) {
+    min(lengths(numeric_filters))
+  } else {
+    Inf
+  }
+
   max_sub <- max(i, na.rm = TRUE)
 
   if (max_sub >= min_length) {
@@ -237,13 +259,28 @@ add_numeric_filter <- function(x, i, call = rlang::caller_env(), max_subscript_e
       append(x$selectors[[length(selectors)]]$filter, list(i))
   }
 
-  x$selectors[[length(x$selectors)]]$to_be_filtered <- x$selectors[[length(x$selectors)]]$to_be_filtered + 1
+  x$selectors[[length(x$selectors)]]$to_be_filtered <-
+    x$selectors[[length(x$selectors)]]$to_be_filtered + 1
 
   x
 }
 
-condition_to_function <- function(x, original_call, elem_name, arg_names, session, driver, driver_id, timeout) {
-  extra_data <- list(session, driver, driver_id, timeout, webelement_to_element = webelement_to_element, webelements_to_elements = webelements_to_elements)
+condition_to_function <- function(x,
+                                  original_call,
+                                  elem_name,
+                                  arg_names,
+                                  session,
+                                  driver,
+                                  driver_id,
+                                  timeout) {
+  extra_data <- list(
+    session,
+    driver,
+    driver_id,
+    timeout,
+    webelement_to_element = webelement_to_element,
+    webelements_to_elements = webelements_to_elements
+  )
   names(extra_data)[1:4] <- arg_names
 
   args <- pairlist2(x = )
@@ -261,7 +298,14 @@ condition_to_function <- function(x, original_call, elem_name, arg_names, sessio
 }
 
 filter_elem_name <- function(elem_name, arg_names) {
-  args <- paste(elem_name, arg_names[[1]], arg_names[[2]], arg_names[[3]], arg_names[[4]], sep = ", ")
+  args <- paste(
+    elem_name,
+    arg_names[[1]],
+    arg_names[[2]],
+    arg_names[[3]],
+    arg_names[[4]],
+    sep = ", "
+  )
   paste0("webelement_to_element(", args, ")")
 }
 

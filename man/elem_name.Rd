@@ -15,7 +15,8 @@ elem_name(x, timeout = NULL)
 A string.
 }
 \description{
-Get the tag name (e.g. \code{"p"} for a \verb{<p>} tag) of a \code{selenider_element} object.
+Get the tag name (e.g. \code{"p"} for a \verb{<p>} tag) of a \code{selenider_element}
+object.
 }
 \examples{
 \dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

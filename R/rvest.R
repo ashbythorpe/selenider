@@ -7,8 +7,8 @@
 #' @param x A `selenider_session`/`selenider_element` object.
 #' @param timeout How long to wait for `x` to exist in the DOM before throwing
 #'   an error.
-#' @param outer Whether to read the inner (all children of the current element) or
-#'   outer (including the element itself) HTML of `x`.
+#' @param outer Whether to read the inner (all children of the current element)
+#'   or outer (including the element itself) HTML of `x`.
 #' @param encoding,...,options Passed into [xml2::read_html()].
 #'
 #' @returns
@@ -35,7 +35,14 @@
 #' }
 #'
 #' @exportS3Method xml2::read_html selenider_session
-read_html.selenider_session <- function(x, encoding = "", ..., options = c("RECOVER", "NOERROR", "NOBLANKS")) {
+read_html.selenider_session <- function(x,
+                                        encoding = "",
+                                        ...,
+                                        options = c(
+                                          "RECOVER",
+                                          "NOERROR",
+                                          "NOBLANKS"
+                                        )) {
   driver <- x$driver
   if (x$session == "chromote") {
     document <- driver$DOM$getDocument()
@@ -53,7 +60,16 @@ read_html.selenider_session <- function(x, encoding = "", ..., options = c("RECO
 #' @rdname read_html.selenider_session
 #'
 #' @exportS3Method xml2::read_html selenider_element
-read_html.selenider_element <- function(x, encoding = "", timeout = NULL, outer = TRUE, ..., options = c("RECOVER", "NOERROR", "NOBLANKS")) {
+read_html.selenider_element <- function(x,
+                                        encoding = "",
+                                        timeout = NULL,
+                                        outer = TRUE,
+                                        ...,
+                                        options = c(
+                                          "RECOVER",
+                                          "NOERROR",
+                                          "NOBLANKS"
+                                        )) {
   check_number_decimal(timeout, allow_null = TRUE)
   check_bool(outer)
 

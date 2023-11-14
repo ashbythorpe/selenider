@@ -16,25 +16,44 @@ get_with_timeout <- function(timeout, .f, ...) {
   }
 }
 
+retry_until_true <- function(timeout, .f, ...) {
+  if (timeout == 0) {
+    .f(...)
+  } else {
+    end <- Sys.time() + timeout
+
+    while (Sys.time() <= end) {
+      result <- .f(...)
+
+      if (isTRUE(result)) {
+        return(TRUE)
+      }
+    }
+
+    result
+  }
+}
+
 #' Check if selenider can be used
 #'
 #' @description
 #' Checks if selenider's dependencies are available, and that we are in an
 #' environment where it makes sense to open a selenider session.
 #'
-#' `skip_if_selenider_unavailable()` skips a testthat test if `selenider_available()`
-#' returns `FALSE`.
+#' `skip_if_selenider_unavailable()` skips a testthat test if
+#' `selenider_available()` returns `FALSE`.
 #'
-#' @param session Which session we should check. `"chromote"` is used by default.
+#' @param session Which session we should check. `"chromote"` is used by
+#'   default.
 #' @param online Whether we need to check for an internet connection.
 #'
 #' @details
 #' Specifically, the following is checked:
 #'
-#' * The `SELENIDER_AVAILABLE` environment variable. Set this to `"TRUE" `or `"FALSE"`
-#'   to override this function.
-#' * Whether we are on CRAN (using the `NOT_CRAN` environment variable). If we are,
-#'   the function returns `FALSE`.
+#' * The `SELENIDER_AVAILABLE` environment variable. Set this to `"TRUE" `or
+#'   `"FALSE"` to override this function.
+#' * Whether we are on CRAN (using the `NOT_CRAN` environment variable). If we
+#'   are, the function returns `FALSE`.
 #' * Whether an internet connection is available (using [curl::nslookup()]).
 #'
 #' If `session` is `"chromote"`, we also check:
@@ -54,7 +73,10 @@ get_with_timeout <- function(timeout, .f, ...) {
 #' selenider_available()
 #'
 #' @export
-selenider_available <- function(session = c("chromote", "selenium", "rselenium"), online = TRUE) {
+selenider_available <- function(
+  session = c("chromote", "selenium", "rselenium"),
+  online = TRUE
+) {
   check_bool(online)
   session <- arg_match(session)
 
@@ -80,28 +102,43 @@ selenider_available <- function(session = c("chromote", "selenium", "rselenium")
   }
 
   if (session == "chromote") {
-    Sys.getenv("SELENIDER_SESSION") %in% c("", "chromote") &&
-      is_installed("chromote") &&
-      tryCatch(
-        {
-          !is.null(suppressMessages(chromote::find_chrome()))
-        },
-        error = function(e) FALSE
-      )
+    selenider_available_chromote()
   } else if (session == "selenium") {
-    rlang::is_installed("selenium") &&
-      !is.null(find_browser_and_version()$browser)
+    selenider_available_selenium()
   } else {
-    rlang::is_installed("selenium") &&
-      !is.null(find_browser_and_version()$browser)
+    selenider_available_rselenium()
   }
+}
+
+selenider_available_chromote <- function() {
+  Sys.getenv("SELENIDER_SESSION") %in% c("", "chromote") &&
+    is_installed("chromote") &&
+    tryCatch(
+      {
+        !is.null(suppressMessages(chromote::find_chrome()))
+      },
+      error = function(e) FALSE
+    )
+}
+
+selenider_available_selenium <- function() {
+  rlang::is_installed("selenium") &&
+    !is.null(find_browser_and_version()$browser)
+}
+
+selenider_available_rselenium <- function() {
+  rlang::is_installed("RSelenium") &&
+    !is.null(find_browser_and_version()$browser)
 }
 
 #' @rdname selenider_available
 #'
 #' @export
 skip_if_selenider_unavailable <- function(session = c("chromote", "selenium")) {
-  testthat::skip_if_not(selenider_available(session), "Selenider dependencies unavailable")
+  testthat::skip_if_not(
+    selenider_available(session),
+    "Selenider dependencies unavailable"
+  )
 }
 
 on_cran <- function() {
@@ -241,15 +278,28 @@ format_value <- function(x) {
 }
 
 is_multiple_elements <- function(x) {
-  !(inherits_any(x, c("webElement", "remoteDriver", "mock_element", "mock_client", "ChromoteSession", "WebElement", "SeleniumSession")) || (is.numeric(x) && length(x) == 1))
+  !(inherits_any(
+    x,
+    c(
+      "webElement",
+      "remoteDriver",
+      "mock_element",
+      "mock_client",
+      "ChromoteSession",
+      "WebElement",
+      "SeleniumSession"
+    )
+  ) || (is.numeric(x) && length(x) == 1))
 }
 
 uses_selenium <- function(x) {
-  inherits(x, "SeleniumSession") || ("client" %in% names(x) && inherits(x$client, "SeleniumSession"))
+  inherits(x, "SeleniumSession") ||
+    ("client" %in% names(x) && inherits(x$client, "SeleniumSession"))
 }
 
 uses_rselenium <- function(x) {
-  inherits(x, "remoteDriver") || ("client" %in% names(x) && inherits(x$client, "remoteDriver"))
+  inherits(x, "remoteDriver") ||
+    ("client" %in% names(x) && inherits(x$client, "remoteDriver"))
 }
 
 uses_chromote <- function(x) {
@@ -259,7 +309,10 @@ uses_chromote <- function(x) {
 execute_js_fn_on <- function(fn, x, session, driver) {
   if (session == "chromote") {
     script <- paste0("function() { return (", fn, ")(this) }")
-    driver$Runtime$callFunctionOn(script, chromote_object_id(backend_id = x, driver = driver))$result$value
+    driver$Runtime$callFunctionOn(
+      script,
+      chromote_object_id(backend_id = x, driver = driver)
+    )$result$value
   } else {
     script <- paste0("let fn = ", fn, ";", "return fn(arguments[0]);")
     if (session == "selenium") {
@@ -301,6 +354,11 @@ selenider_cleanup <- function(env = rlang::caller_env()) { # nocov start
   if (is_check()) {
     Sys.setenv("_R_CHECK_CONNECTIONS_LEFT_OPEN_" = "FALSE")
   }
-  try_fetch(withr::deferred_run(env), error = function(e) rlang::abort(c("Error in withr::deferred_run()"), parent = e))
+  try_fetch(
+    withr::deferred_run(env),
+    error = function(e) {
+      rlang::abort(c("Error in withr::deferred_run()"), parent = e)
+    }
+  )
   return(invisible())
 } # nocov end

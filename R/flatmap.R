@@ -5,8 +5,8 @@
 #'
 #' `as.list()` transforms a `selenider_elements` object into a list of
 #' `selenider_element` objects. The result can then be used in for loops and
-#' higher order functions like [lapply()]/[purrr::map()] (whereas a `selenider_element`
-#' object cannot).a  This function is stable.
+#' higher order functions like [lapply()]/[purrr::map()] (whereas a
+#' `selenider_element` object cannot). This function is stable.
 #'
 #' `element_list()` is the underlying function called by `element_list()`.
 #'
@@ -28,13 +28,15 @@
 #' @param ... Passed into `.f`.
 #'
 #' @description
-#' `elem_flatmap()` works by executing `.f` on a mock element, then recording the
-#' results in `x`. This means that no matter the length of `x`, `.f` is only evaluated
-#' once, and during the `elem_flatmap()` call. For this reason, `.f` should not invoke
-#' any side effects or do anything other than selecting sub-elements.
+#' `elem_flatmap()` works by executing `.f` on a mock element, then recording
+#' the results in `x`. This means that no matter the length of `x`, `.f` is
+#' only evaluated once, and during the `elem_flatmap()` call. For this reason,
+#' `.f` should not invoke any side effects or do anything other than selecting
+#' sub-elements.
 #'
-#' `elem_flatmap()` can essentially be viewed as a map operation (e.g. [lapply()], [purrr::map()])
-#' followed by a flattening operation ([elem_flatmap()]). This means that:
+#' `elem_flatmap()` can essentially be viewed as a map operation (e.g.
+#' [lapply()], [purrr::map()]) followed by a flattening operation
+#' ([elem_flatmap()]). This means that:
 #' ```
 #' x |>
 #'   elem_flatmap(.f)
@@ -50,20 +52,22 @@
 #'
 #' `as.list()`/`element_list()` essentially turns `x` into:
 #' `list(x[[1]], x[[2]], ...)`
-#' However, to do this, the length of `x` must be computed. This means that while
-#' each element inside the list is still lazy, the list itself cannot be considered
-#' lazy, since the number of elements in the DOM may change. To avoid problems, it is
-#' recommended to use an element list just after it is created, to make sure the
-#' list is an accurate representation of the DOM when it is being used.
+#' However, to do this, the length of `x` must be computed. This means that
+#' while each element inside the list is still lazy, the list itself cannot be
+#' considered lazy, since the number of elements in the DOM may change. To
+#' avoid problems, it is recommended to use an element list just after it is
+#' created, to make sure the list is an accurate representation of the DOM
+#' when it is being used.
 #'
 #' @returns
 #' `elem_flatmap()` returns a `selenider_element` object.
 #' `as.list()`/`element_list()` returns a list of `selenider_element` objects.
 #'
 #' @seealso
-#' * [elem_flatten()] to combine multiple `selenider_element`/`selenider_elements` objects
-#'   into a single object.
-#' * [elem_filter()] and [elem_find()] to filter element collections using a condition.
+#' * [elem_flatten()] to combine multiple
+#'   `selenider_element`/`selenider_elements` objects into a single object.
+#' * [elem_filter()] and [elem_find()] to filter element collections using a
+#'   condition.
 #'
 #' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "

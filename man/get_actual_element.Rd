@@ -21,13 +21,13 @@ An integer (backendNodeId), or a \link[selenium:WebElement]{selenium::WebElement
 \code{get_actual_elements()} returns a list of such objects.
 }
 \description{
-Turn a lazy selenium element or element collection into a backendNodeId (chromote)
-or an \link[selenium:WebElement]{selenium::WebElement}. Use this to perform certain actions on the
-element that are not implemented in selenider.
+Turn a lazy selenium element or element collection into a backendNodeId
+(chromote) or a \link[selenium:WebElement]{selenium::WebElement}. Use this to perform certain actions
+on the element that are not implemented in selenider.
 
 \code{get_actual_element()} turns a \code{selenider_element} object into a single
-backendNodeId or \link[selenium:WebElement]{selenium::WebElement} object. The function will wait for the object
-to exist in the DOM.
+backendNodeId or \link[selenium:WebElement]{selenium::WebElement} object. The function will wait for
+the object to exist in the DOM.
 
 \code{get_actual_elements()} turns a \code{selenider_elements} object into a list
 of \link[selenium:WebElement]{selenium::WebElement} objects, waiting for any parent objects to
@@ -77,9 +77,9 @@ selenider_cleanup()
 elements.
 \item \code{\link[=elem_cache]{elem_cache()}} and \code{\link[=elem_cache]{elem_cache()}} to cache these values.
 \item The \href{https://chromedevtools.github.io/devtools-protocol/tot/}{Chrome Devtools Protocol documentation}
-for the operations that can be performed using a backend node id. Note that
-this requires the \link[chromote:ChromoteSession]{chromote::ChromoteSession} object, which can be retrieved using
-\verb{<selenider_session>$driver}.
+for the operations that can be performed using a backend node id. Note
+that this requires the \link[chromote:ChromoteSession]{chromote::ChromoteSession} object, which can be
+retrieved using \verb{<selenider_session>$driver}.
 \item The documentation for \code{\link[selenium:WebElement]{selenium::WebElement()}} to see the things you can
 do with a webElement.
 }

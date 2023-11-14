@@ -25,7 +25,11 @@
 #' }
 #'
 #' @export
-minimal_selenider_session <- function(html, js = NULL, ..., .env = rlang::caller_env()) { # nocov start
+minimal_selenider_session <- function(html,
+                                      js = NULL,
+                                      ...,
+                                      .env = rlang::caller_env()) {
+  # nocov start
   check_string(js, allow_null = TRUE)
   if (!is.character(html) || length(html) != 1) {
     if (inherits_any(html, c("xml_missing", "xml_node", "xml_nodeset"))) {

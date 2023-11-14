@@ -13,8 +13,8 @@ local_session(session, .local_envir = rlang::caller_env(), close = TRUE)
 with_session(session, code, close = TRUE)
 }
 \arguments{
-\item{create}{If a session is not found, should we create a new one? If this is
-\code{FALSE} and a session is not found, \code{NULL} is returned.}
+\item{create}{If a session is not found, should we create a new one? If this
+is \code{FALSE} and a session is not found, \code{NULL} is returned.}
 
 \item{.env}{If \code{get_session()} creates a session, the environment where this
 session is being used.}

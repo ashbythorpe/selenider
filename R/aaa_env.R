@@ -56,8 +56,8 @@ reset_session <- function(session, old_session, close) {
 #'   this to `FALSE` if you want to use the session even if it is no longer the
 #'   local session. If you want to close the session manually, use
 #'   [close_session()].
-#' @param create If a session is not found, should we create a new one? If this is
-#'   `FALSE` and a session is not found, `NULL` is returned.
+#' @param create If a session is not found, should we create a new one? If this
+#'   is `FALSE` and a session is not found, `NULL` is returned.
 #' @param .env If `get_session()` creates a session, the environment where this
 #'   session is being used.
 #'

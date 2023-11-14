@@ -22,8 +22,8 @@
 #' * [ss()] to quickly select multiple elements without specifying the session.
 #' * [find_element()] to select multiple elements.
 #' * [selenider_session()] to begin a session.
-#' * [elem_children()] and family to select elements using their relative position
-#'   in the DOM.
+#' * [elem_children()] and family to select elements using their relative
+#'   position in the DOM.
 #' * [elem_filter()] and [elem_find()] for filtering element collections.
 #'
 #' @examplesIf selenider::selenider_available(online = FALSE)

@@ -10,9 +10,9 @@
 #'   must all be `TRUE` for the test to pass. See [elem_expect()] for more
 #'   details.
 #' @param testthat Whether to treat the expectation as a `testthat` test. You
-#'   *do not* need to explicitly provide this most of the time, since by default,
-#'   we can use [testthat::is_testing()] to figure out whether `elem_expect()` is
-#'   being called from within a `testthat` test.
+#'   *do not* need to explicitly provide this most of the time, since by
+#'   default, we can use [testthat::is_testing()] to figure out whether
+#'   `elem_expect()` is being called from within a `testthat` test.
 #' @param timeout The number of seconds to wait for a condition to pass. If not
 #'   specified, the timeout used for `x` will be used, or the timeout of the
 #'   local session if an element is not given.
@@ -22,24 +22,28 @@
 #' `elem_wait_until_all()` will succeed. You may want to first verify that
 #' at least one element exists with [has_at_least()].
 #'
-#' `elem_expect_all()` and `elem_wait_until_all()` can be thought of as alternatives
-#' to the use of `all(vapply(FUN.VALUE = logical(1)))` (or [purrr::every()])
-#' within [elem_expect()] and [elem_wait_until()].
+#' `elem_expect_all()` and `elem_wait_until_all()` can be thought of as
+#' alternatives to the use of `all(vapply(FUN.VALUE = logical(1)))` (or
+#' [purrr::every()]) within [elem_expect()] and [elem_wait_until()].
 #'
 #' For example, the following two expressions are equivalent (where `x` is an
 #' element collection).
 #' ```
-#' elem_expect(x, \(element) all(vapply(as.list(element), is_present, logical(1))))
+#' elem_expect(
+#'   x,
+#'   \(element) all(vapply(as.list(element), is_present, logical(1)))
+#' )
 #' elem_expect_all(x, is_present)
 #' ```
 #'
-#' However, the second example will give a more detailed error message on failure.
+#' However, the second example will give a more detailed error message on
+#' failure.
 #'
 #' @returns
 #' `elem_expect_all()` returns `x`, invisibly.
 #'
-#' `elem_wait_until_all()` returns a boolean flag: TRUE if the test passes, FALSE
-#' otherwise.
+#' `elem_wait_until_all()` returns a boolean flag: TRUE if the test passes,
+#' FALSE otherwise.
 #'
 #' @seealso
 #' * [elem_expect()] and [elem_wait_until()].

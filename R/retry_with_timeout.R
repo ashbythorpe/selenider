@@ -19,76 +19,51 @@
 retry_with_timeout <- function(timeout, exprs, data_mask = NULL) {
   end <- Sys.time() + timeout
 
-  if(length(exprs) == 0) {
-    return(TRUE)
+  if (length(exprs) == 0) {
+    TRUE
   } else if (length(exprs) == 1) {
-    if (timeout == 0) {
-      val <- eval_condition(exprs[[1]], data_mask)
-    } else {
-      while (Sys.time() <= end) {
-        val <- eval_condition(exprs[[1]], data_mask)
+    res <- retry_until_true(
+      timeout,
+      function() eval_condition(exprs[[1]], data_mask)
+    )
 
-        if (isTRUE(val)) {
-          return(TRUE)
-        }
-      }
-    }
-
-    if (isTRUE(val)) {
-      return(TRUE)
+    if (isTRUE(res)) {
+      TRUE
     } else {
-      res <- list(
+      list(
         n = 1,
-        val = val
+        val = res
       )
     }
-  } else if (timeout == 0) {
-    pass <- TRUE
-
-    for (a in seq_along(exprs)) {
-      expr <- exprs[[a]]
-      val <- eval_condition(expr, data_mask)
-      if (!isTRUE(val)) {
-        res <- list(
-          n = a,
-          val = val
-        )
-
-        pass <- FALSE
-
-        break
-      }
-    }
-
-    if (pass) {
-      return(TRUE)
-    }
   } else {
-    while (Sys.time() <= end) {
-      pass <- TRUE
+    retry_until_true(
+      timeout,
+      function() {
+        pass <- TRUE
 
-      for (a in seq_along(exprs)) {
-        expr <- exprs[[a]]
-        val <- eval_condition(expr, data_mask)
-        if (!isTRUE(val)) {
-          res <- list(
-            n = a,
-            val = val
-          )
+        for (a in seq_along(exprs)) {
+          expr <- exprs[[a]]
+          val <- eval_condition(expr, data_mask)
+          if (!isTRUE(val)) {
+            res <- list(
+              n = a,
+              val = val
+            )
 
-          pass <- FALSE
+            pass <- FALSE
 
-          break
+            break
+          }
+        }
+
+        if (pass) {
+          TRUE
+        } else {
+          res
         }
       }
-
-      if (pass) {
-        return(TRUE)
-      }
-    }
+    )
   }
-
-  return(res)
 }
 
 eval_condition <- function(x, data_mask = NULL) {
@@ -110,7 +85,7 @@ eval_condition <- function(x, data_mask = NULL) {
 retry_with_timeout_multiple <- function(timeout, exprs, elements, name) {
   end <- Sys.time() + timeout
 
-  if(length(exprs) == 0) {
+  if (length(exprs) == 0) {
     return(TRUE)
   } else if (length(exprs) == 1) {
     if (timeout == 0) {
@@ -207,4 +182,3 @@ eval_condition_multiple <- function(x, elements, name) {
 
   TRUE
 }
-

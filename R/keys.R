@@ -88,19 +88,72 @@ get_rselenium_key <- function(x) {
 # Given a selenider_key, get the description of the key.
 get_chromote_key <- function(x) {
   switch(x,
-    BACKSPACE = list(windowsVirtualKeyCode = 8, code = "Backspace", key = "Backspace"),
-    TAB = list(windowsVirtualKeyCode = 9, code = "Tab", key = "Tab"),
-    RETURN = list(windowsVirtualKeyCode = 13, code = "Enter", key = "Enter", text = "\r"),
-    ENTER = list(windowsVirtualKeyCode = 13, code = "Enter", key = "Enter", text = "\r"),
-    SHIFT = list(windowsVirtualKeyCode = 16, code = "ShiftLeft", key = "Shift", location = 1),
-    CTRL = list(windowsVirtualKeyCode = 17, code = "ControlLeft", key = "Control", location = 1),
-    ALT = list(windowsVirtualKeyCode = 18, code = "AltLeft", key = "Alt", location = 1),
-    ESC = list(windowsVirtualKeyCode = 27, code = "Escape", key = "Escape"),
+    BACKSPACE = list(
+      windowsVirtualKeyCode = 8,
+      code = "Backspace",
+      key = "Backspace"
+    ),
+    TAB = list(
+      windowsVirtualKeyCode = 9,
+      code = "Tab",
+      key = "Tab"
+    ),
+    RETURN = list(
+      windowsVirtualKeyCode = 13,
+      code = "Enter",
+      key = "Enter",
+      text = "\r"
+    ),
+    ENTER = list(
+      windowsVirtualKeyCode = 13,
+      code = "Enter",
+      key = "Enter",
+      text = "\r"
+    ),
+    SHIFT = list(
+      windowsVirtualKeyCode = 16,
+      code = "ShiftLeft",
+      key = "Shift",
+      location = 1
+    ),
+    CTRL = list(
+      windowsVirtualKeyCode = 17,
+      code = "ControlLeft",
+      key = "Control",
+      location = 1
+    ),
+    ALT = list(
+      windowsVirtualKeyCode = 18,
+      code = "AltLeft",
+      key = "Alt",
+      location = 1
+    ),
+    ESC = list(
+      windowsVirtualKeyCode = 27,
+      code = "Escape",
+      key = "Escape"
+    ),
     SPACE = list(windowsVirtualKeyCode = 32, code = "Space", key = " "),
-    UP = list(windowsVirtualKeyCode = 38, code = "ArrowUp", key = "ArrowUp"),
-    DOWN = list(windowsVirtualKeyCode = 40, code = "ArrowDown", key = "ArrowDown"),
-    LEFT = list(windowsVirtualKeyCode = 37, code = "ArrowLeft", key = "ArrowLeft"),
-    RIGHT = list(windowsVirtualKeyCode = 39, code = "ArrowRight", key = "ArrowRight"),
+    UP = list(
+      windowsVirtualKeyCode = 38,
+      code = "ArrowUp",
+      key = "ArrowUp"
+    ),
+    DOWN = list(
+      windowsVirtualKeyCode = 40,
+      code = "ArrowDown",
+      key = "ArrowDown"
+    ),
+    LEFT = list(
+      windowsVirtualKeyCode = 37,
+      code = "ArrowLeft",
+      key = "ArrowLeft"
+    ),
+    RIGHT = list(
+      windowsVirtualKeyCode = 39,
+      code = "ArrowRight",
+      key = "ArrowRight"
+    ),
     INSERT = list(windowsVirtualKeyCode = 45, code = "Insert", key = "Insert"),
     F1 = list(windowsVirtualKeyCode = 112, code = "F1", key = "F1"),
     F2 = list(windowsVirtualKeyCode = 113, code = "F2", key = "F2"),
@@ -114,8 +167,18 @@ get_chromote_key <- function(x) {
     F10 = list(windowsVirtualKeyCode = 121, code = "F10", key = "F10"),
     F11 = list(windowsVirtualKeyCode = 122, code = "F11", key = "F11"),
     F12 = list(windowsVirtualKeyCode = 123, code = "F12", key = "F12"),
-    COMMAND = list(windowsVirtualKeyCode = 91, code = "MetaLeft", key = "Meta", location = 1),
-    META = list(windowsVirtualKeyCode = 91, code = "MetaLeft", key = "Meta", location = 1),
+    COMMAND = list(
+      windowsVirtualKeyCode = 91,
+      code = "MetaLeft",
+      key = "Meta",
+      location = 1
+    ),
+    META = list(
+      windowsVirtualKeyCode = 91,
+      code = "MetaLeft",
+      key = "Meta",
+      location = 1
+    ),
     stop("Key not found")
   )
 }

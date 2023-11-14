@@ -8,31 +8,32 @@
 #'
 #' `elem_parent()` selects the element that contains the current element.
 #'
-#' `elem_siblings()` selects every element which has the same parent as the current
-#' element.
+#' `elem_siblings()` selects every element which has the same parent as the
+#' current element.
 #'
-#' `elem_children()` selects every element which is connected to and directly below
-#' the current element.
+#' `elem_children()` selects every element which is connected to and directly
+#' below the current element.
 #'
-#' `elem_descendants()` selects every element that is contained by the current element.
-#' The current element does not have to be a direct parent, but must be some type of
-#' ancestor.
+#' `elem_descendants()` selects every element that is contained by the current
+#' element. The current element does not have to be a direct parent, but must
+#' be some type of ancestor.
 #'
 #' @param x A `selenider_element` object.
 #'
 #' @details
-#' All functions except `elem_children()` and `elem_descendants()` use XPath selectors,
-#' so may be slow, especially when using `chromote` as a backend.
+#' All functions except `elem_children()` and `elem_descendants()` use XPath
+#' selectors, so may be slow, especially when using `chromote` as a backend.
 #'
-#' @returns All functions return a `selenider_elements` object, except `elem_parent()`,
-#' which returns a `selenider_element` object (since an element can only have one parent).
+#' @returns All functions return a `selenider_elements` object, except
+#'   `elem_parent()`, which returns a `selenider_element` object (since an
+#'   element can only have one parent).
 #'
 #' @seealso
-#' * <http://web.simmons.edu/~grovesd/comm244/notes/week4/document-tree> for a simple
-#'   and visual explanation of the document tree.
-#' * [find_element()] and [find_elements()] for other ways of selecting elements. These
-#'   functions allow you to select ancestors using one or more conditions (e.g. CSS
-#'   selectors).
+#' * <http://web.simmons.edu/~grovesd/comm244/notes/week4/document-tree> for a
+#'   simple and visual explanation of the document tree.
+#' * [find_element()] and [find_elements()] for other ways of selecting
+#'   elements. These functions allow you to select ancestors using one or more
+#'   conditions (e.g. CSS selectors).
 #' * [elem_filter()] and [elem_find()] for filtering element collections.
 #'
 #' @examplesIf selenider::selenider_available(online = FALSE)

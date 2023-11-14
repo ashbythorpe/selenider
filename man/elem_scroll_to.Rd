@@ -32,7 +32,8 @@ function checkScrolled() {
   let element = document.getElementsByTagName('p').item(0);
   let rect = element.getBoundingClientRect();
   // If paragraph is in view
-  if (rect.bottom <= (window.innerHeight || document.documentElement.clientHeight)) {
+  const height = window.innerHeight || document.documentElement.clientHeight;
+  if (rect.bottom <= height) {
     element.innerText = 'You found me!';
   }
 }

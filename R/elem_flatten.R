@@ -3,8 +3,8 @@
 #' Combine a set of `selenider_element`/`selenider_elements` objects
 #' into a single `selenider_elements` object, allowing you to
 #' perform actions on them at once. `c()` and `elem_flatten()` do the same
-#' thing, but `elem_flatten()` works when given a list of `selenider_element`/`selenider_elements`
-#' objects.
+#' thing, but `elem_flatten()` works when given a list of
+#' `selenider_element`/`selenider_elements` objects.
 #'
 #' @param ... <[`dynamic-dots`][rlang::dyn-dots]> `selenider_element` or
 #'   `selenider_elements` objects to be combined, or lists of such objects.
@@ -76,7 +76,11 @@ elem_flatten <- function(...) {
   elem_combine(to_combine)
 }
 
-elem_flatten_init <- function(x, exprs, is_nested = FALSE, index = NULL, call = rlang::caller_env()) {
+elem_flatten_init <- function(x,
+                              exprs,
+                              is_nested = FALSE,
+                              index = NULL,
+                              call = rlang::caller_env()) {
   accepted_classes <- c("selenider_element", "selenider_elements")
 
   result <- list()
@@ -85,9 +89,25 @@ elem_flatten_init <- function(x, exprs, is_nested = FALSE, index = NULL, call = 
 
     if (!inherits_any(element, accepted_classes)) {
       if (is.list(element) && !is_nested) {
-        result <- c(result, elem_flatten_init(element, exprs = exprs, is_nested = TRUE, index = i, call = call))
+        result <- c(
+          result,
+          elem_flatten_init(
+            element,
+            exprs = exprs,
+            is_nested = TRUE,
+            index = i,
+            call = call
+          )
+        )
       } else {
-        stop_flatten_dots(x, exprs = exprs, i = i, index = index, is_nested = is_nested, call = call)
+        stop_flatten_dots(
+          x,
+          exprs = exprs,
+          i = i,
+          index = index,
+          is_nested = is_nested,
+          call = call
+        )
       }
     } else {
       result <- append(result, list(element))

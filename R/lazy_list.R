@@ -31,7 +31,8 @@ state <- function(init) {
 #' A lazy list contains three parts:
 #' * `factory` - Stores `x`.
 #' * `instance` - Stores the current instance of the generator
-#' * `current_value` - Stores the index of the last value that the generator has given.
+#' * `current_value` - Stores the index of the last value that the generator
+#'   has given.
 #'
 #' @noRd
 lazy_list <- function(x) {
@@ -182,8 +183,8 @@ check_lazylist <- function(x) {
 
 #' Convert a normal list to a lazy_list-like object
 #'
-#' Make a normal list compatible with code designed for lazy lists (specifically,
-#' [next_value()] and [next_value_start()]).
+#' Make a normal list compatible with code designed for lazy lists
+#' (specifically, [next_value()] and [next_value_start()]).
 #'
 #' @param x A list
 #'

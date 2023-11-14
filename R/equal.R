@@ -53,7 +53,10 @@ elem_equal <- function(x, y, timeout = NULL) {
     stop_not_actionable(
       c(
         "To compare {.arg x} and {.arg y}, both must be present in the DOM.",
-        paste0(format_timeout_for_error(timeout), "{.arg {missing_arg}} was not found.")
+        paste0(
+          format_timeout_for_error(timeout),
+          "{.arg {missing_arg}} was not found."
+        )
       )
     )
   }
@@ -86,5 +89,8 @@ selenium_equal <- function(x, y, driver) {
 }
 
 rselenium_equal <- function(x, y, driver) {
-  driver$executeScript("return arguments[0].isSameNode(arguments[1])", list(x, y))[[1]]
+  driver$executeScript(
+    "return arguments[0].isSameNode(arguments[1])",
+    list(x, y)
+  )[[1]]
 }

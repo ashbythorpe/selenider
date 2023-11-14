@@ -44,7 +44,10 @@
 #' }
 #'
 #' @export
-print.selenider_element <- function(x, width = getOption("width"), ..., timeout = NULL) {
+print.selenider_element <- function(x,
+                                    width = getOption("width"),
+                                    ...,
+                                    timeout = NULL) {
   cat(format(x, width = width, ..., timeout = timeout), sep = "\n")
 
   invisible(x)
@@ -53,13 +56,20 @@ print.selenider_element <- function(x, width = getOption("width"), ..., timeout 
 #' @rdname print.selenider_element
 #'
 #' @export
-print.selenider_elements <- function(x, width = getOption("width"), ..., n = 20, timeout = NULL) {
+print.selenider_elements <- function(x,
+                                     width = getOption("width"),
+                                     ...,
+                                     n = 20,
+                                     timeout = NULL) {
   cat(format(x, width = width, ..., n = n, timeout = timeout), sep = "\n")
 
   invisible(x)
 }
 
-format.selenider_element <- function(x, width = getOption("width"), ..., timeout = NULL) {
+format.selenider_element <- function(x,
+                                     width = getOption("width"),
+                                     ...,
+                                     timeout = NULL) {
   timeout <- get_timeout(timeout, x$timeout)
 
   element <- get_element_for_property(
@@ -89,7 +99,11 @@ format.selenider_element <- function(x, width = getOption("width"), ..., timeout
 }
 
 #' @export
-format.selenider_elements <- function(x, width = getOption("width"), ..., n = 20, timeout = NULL) {
+format.selenider_elements <- function(x,
+                                      width = getOption("width"),
+                                      ...,
+                                      n = 20,
+                                      timeout = NULL) {
   timeout <- get_timeout(timeout, x$timeout)
 
   elements <- as.list(get_elements_for_property(
@@ -148,6 +162,7 @@ encode_with_width <- function(x, width) {
   x[truncate_raw] <- substr(x[truncate_raw], 1L, width - 3L)
   x <- encodeString(x)
   truncate_encoded <- truncate_raw | nchar(x) > width
-  x[truncate_encoded] <- paste(substr(x[truncate_encoded], 1L, width - 3L), "...")
+  x[truncate_encoded] <-
+    paste(substr(x[truncate_encoded], 1L, width - 3L), "...")
   x
 }

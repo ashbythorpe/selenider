@@ -62,12 +62,14 @@ does not support Microsoft Edge.}
 \item{driver}{A driver object to use instead of creating one manually. This
 can be one of:
 \itemize{
-\item A \link[chromote:ChromoteSession]{chromote::ChromoteSession} object (the result of \code{create_chromote_session()}).
+\item A \link[chromote:ChromoteSession]{chromote::ChromoteSession} object (the result of
+\code{create_chromote_session()}).
 \item A \link[shinytest2:AppDriver]{shinytest2::AppDriver} object.
-\item An \link[selenium:SeleniumSession]{selenium::SeleniumSession} object (the result of \code{create_selenium_client()}).
+\item An \link[selenium:SeleniumSession]{selenium::SeleniumSession} object (the result of
+\code{create_selenium_client()}).
 \item A Selenium server object (the result of \code{\link[wdman:selenium]{wdman::selenium()}}, or
-\code{create_selenium_server()}). In this case, the client object will be created using
-the server object.
+\code{create_selenium_server()}). In this case, the client object will be
+created using the server object.
 \item A list/environment containing the \link[selenium:SeleniumSession]{selenium::SeleniumSession} object,
 the Selenium server object, or both.
 \item An \code{\link[RSelenium:remoteDriver-class]{RSelenium::remoteDriver()}} object (see \code{\link[=create_rselenium_client]{create_rselenium_client()}})
@@ -112,37 +114,42 @@ version of the driver depends on the version of the Chrome browser.}
 usually your local machine (\code{"localhost"}), but can be an IP address.}
 }
 \value{
-A \code{selenider_session} object. Use \code{session$driver} to retrieve the driver object that controls the
-browser.
+A \code{selenider_session} object. Use \code{session$driver} to retrieve the driver
+object that controls the browser.
 }
 \description{
-Begin a session in selenider, setting it as the local session unless otherwise
-specified, allowing the session to be accessed globally in the environment
-where it was defined.
+Begin a session in selenider, setting it as the local session unless
+otherwise specified, allowing the session to be accessed globally in the
+environment where it was defined.
 
-\code{create_chromote_session()}, \code{create_selenium_client()} and \code{create_selenium_server()}
-are low-level functions that allow more control over making a web driver, which
-can then be passed into the \code{driver} argument to \code{selenider_session()}.
+\code{create_chromote_session()}, \code{create_selenium_client()} and
+\code{create_selenium_server()} are low-level functions that allow more control
+over making a web driver, which can then be passed into the \code{driver}
+argument to \code{selenider_session()}.
 }
 \section{Structure of a selenider session}{
-A \code{selenider_session} object is an S3 list, meaning its properties can be accessed using \code{$}.
-Most notably, using \code{session$driver} allows access to the driver object which actually controls
-the browser. If you are using Selenium, use \code{session$driver} to access the \code{remoteDriver}
-object. These objects are useful if you want to do something with the driver that is not directly
-supported by selenider. See \code{\link[=get_actual_element]{get_actual_element()}} for some examples of this.
+A \code{selenider_session} object is an S3 list, meaning its properties can be
+accessed using \code{$}. Most notably, using \code{session$driver} allows access to
+the driver object which actually controls the browser. If you are using
+Selenium, use \code{session$driver} to access the \code{remoteDriver} object. These
+objects are useful if you want to do something with the driver that is not
+directly supported by selenider. See \code{\link[=get_actual_element]{get_actual_element()}} for some
+examples of this.
 }
 
 \section{Custom drivers}{
-Custom driver objects are good if you want more low-level control over the underlying
-functions that create the webdrivers that actually control the browser. However, it is
-recommended to use the selenider functions (e.g. \code{create_selenium_client()}) over
-\code{wdman::selenium()} for better error messages and more reliable behaviour. See
-`vignette("unit-testing", package = "selenider") for more information on using
-selenider with docker/Github Actions.
+Custom driver objects are good if you want more low-level control over the
+underlying functions that create the webdrivers that actually control the
+browser. However, it is recommended to use the selenider functions (e.g.
+\code{create_selenium_client()}) over \code{wdman::selenium()} for better error
+messages and more reliable behaviour. See
+\code{vignette("unit-testing", package = "selenider")} for more information on
+using selenider with docker/Github Actions.
 \subsection{Chromote}{
 
-Supplying a custom \link[chromote:ChromoteSession]{chromote::ChromoteSession} object can allow you to manage the
-underlying \link[chromote:Chromote]{chromote::Chromote} process that is used to spawn sessions. For example:
+Supplying a custom \link[chromote:ChromoteSession]{chromote::ChromoteSession} object can allow you to
+manage the underlying \link[chromote:Chromote]{chromote::Chromote} process that is used to spawn
+sessions. For example:
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{my_chromote_object <- chromote::Chromote$new()
 
@@ -184,9 +191,9 @@ do the equivalent of the following:
 )
 }\if{html}{\out{</div>}}
 
-However, it can sometimes be useful to omit the server, for example when you are running
-the Selenium server using Docker. In this case, you need to make sure the host and port are
-matched correctly.
+However, it can sometimes be useful to omit the server, for example when you
+are running the Selenium server using Docker. In this case, you need to make
+sure the host and port are matched correctly.
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{session <- selenider_session(
   driver = create_selenium_client(
@@ -238,9 +245,11 @@ selenider_cleanup()
 \seealso{
 \itemize{
 \item \code{\link[=close_session]{close_session()}} to close the session. Note that this will not reset the
-result of \code{\link[=get_session]{get_session()}}, which is why \code{\link[withr:defer]{withr::deferred_run()}} is preferred.
+result of \code{\link[=get_session]{get_session()}}, which is why \code{\link[withr:defer]{withr::deferred_run()}} is
+preferred.
 \item \code{\link[=local_session]{local_session()}} and \code{\link[=with_session]{with_session()}} to manually set the local session
 object (and \code{\link[=get_session]{get_session()}} to get it).
-\item \code{\link[=open_url]{open_url()}}, \code{\link[=s]{s()}} and \code{\link[=find_elements]{find_elements()}} to get started once you have created a session.
+\item \code{\link[=open_url]{open_url()}}, \code{\link[=s]{s()}} and \code{\link[=find_elements]{find_elements()}} to get started once you have
+created a session.
 }
 }

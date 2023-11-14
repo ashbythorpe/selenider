@@ -1,13 +1,13 @@
 #' Get the element associated with a selenider element
 #'
 #' @description
-#' Turn a lazy selenium element or element collection into a backendNodeId (chromote)
-#' or an [selenium::WebElement]. Use this to perform certain actions on the
-#' element that are not implemented in selenider.
+#' Turn a lazy selenium element or element collection into a backendNodeId
+#' (chromote) or a [selenium::WebElement]. Use this to perform certain actions
+#' on the element that are not implemented in selenider.
 #'
 #' `get_actual_element()` turns a `selenider_element` object into a single
-#' backendNodeId or [selenium::WebElement] object. The function will wait for the object
-#' to exist in the DOM.
+#' backendNodeId or [selenium::WebElement] object. The function will wait for
+#' the object to exist in the DOM.
 #'
 #' `get_actual_elements()` turns a `selenider_elements` object into a list
 #' of [selenium::WebElement] objects, waiting for any parent objects to
@@ -25,10 +25,10 @@
 #' * [s()], [ss()], [find_element()] and [find_elements()] to select selenider
 #'   elements.
 #' * [elem_cache()] and [elem_cache()] to cache these values.
-#' * The [Chrome Devtools Protocol documentation](https://chromedevtools.github.io/devtools-protocol/tot/)
-#'   for the operations that can be performed using a backend node id. Note that
-#'   this requires the [chromote::ChromoteSession] object, which can be retrieved using
-#'   `<selenider_session>$driver`.
+#' * The [Chrome Devtools Protocol documentation](https://chromedevtools.github.io/devtools-protocol/tot/) `r # nolint`
+#'   for the operations that can be performed using a backend node id. Note
+#'   that this requires the [chromote::ChromoteSession] object, which can be
+#'   retrieved using `<selenider_session>$driver`.
 #' * The documentation for [selenium::WebElement()] to see the things you can
 #'   do with a webElement.
 #'
@@ -156,7 +156,11 @@ get_elements <- function(x) {
     filter <- selector_to_filter$filter
     relevant_filters <- utils::tail(filter, to_be_filtered)
 
-    element <- filter_elements(element, relevant_filters, multiple = (x$to_be_found == 0))
+    element <- filter_elements(
+      element,
+      relevant_filters,
+      multiple = (x$to_be_found == 0)
+    )
 
     if (is.null(element)) {
       return(NULL)
@@ -167,6 +171,10 @@ get_elements <- function(x) {
     return(element)
   }
 
+  apply_selectors(x, element)
+}
+
+apply_selectors <- function(x, element) {
   selectors <- utils::tail(x$selectors, x$to_be_found)
 
   for (selector in utils::head(selectors, -1)) {
@@ -187,22 +195,6 @@ filter_elements <- function(elements, filter, multiple = FALSE) {
   if (length(filter) == 0) {
     stopifnot(multiple) # we need a filter to get a single element
     elements
-  } else if (length(filter) == 1 && is.numeric(filter[[1]])) {
-    if (length(filter[[1]]) == 1 && filter[[1]] > 0) {
-      res <- get_item(elements, filter[[1]])
-
-      if (multiple) {
-        list(res)
-      } else {
-        res
-      }
-    } else {
-      stopifnot(multiple)
-      get_items(elements, filter[[1]])
-    }
-  } else if (length(filter) == 1 && is_function(filter[[1]])) {
-    stopifnot(multiple)
-    lazy_filter(elements, filter[[1]])
   } else if (!multiple) {
     if (is_function(filter[[length(filter)]])) {
       last <- 1

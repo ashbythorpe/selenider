@@ -15,9 +15,7 @@ elem_right_click(x, js = FALSE, timeout = NULL)
 \arguments{
 \item{x}{A \code{selenider_element} object.}
 
-\item{js}{Whether to click the element using JavaScript. For \code{elem_right_click()},
-this is ignored if Selenium is being used, since right clicking using
-selenium does not seem to work (so JavaScript is used instead).}
+\item{js}{Whether to click the element using JavaScript.}
 
 \item{timeout}{How long to wait for the element to exist.}
 }
@@ -25,12 +23,12 @@ selenium does not seem to work (so JavaScript is used instead).}
 \code{x}, invisibly.
 }
 \description{
-Clicks on an HTML element, either by simulating a mouse click or by triggering
-the element's "click" event.
+Clicks on an HTML element, either by simulating a mouse click or by
+triggering the element's "click" event.
 
-\code{elem_click()} left clicks on the element, \code{elem_double_click()} left clicks on the
-element two times in a short period of time, while \code{elem_right_click()} right
-clicks on an element, opening its context menu.
+\code{elem_click()} left clicks on the element, \code{elem_double_click()} left clicks
+on the element two times in a short period of time, while
+\code{elem_right_click()} right clicks on an element, opening its context menu.
 }
 \examples{
 \dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

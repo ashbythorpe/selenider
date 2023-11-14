@@ -9,16 +9,17 @@
 #'
 #' `elem_cache()` forces an element or collection of elements to be collected
 #' and stored, making it eager rather than lazy. This is useful when you are
-#' operating on the same element multiple times, since only collecting the element
-#' once will improve performance. However, you must be sure that the element
-#' will not change on the page while you are using it.
+#' operating on the same element multiple times, since only collecting the
+#' element once will improve performance. However, you must be sure that the
+#' element will not change on the page while you are using it.
 #'
 #' @param x A `selenider_element`/`selenider_elements` object.
-#' @param timeout How long to wait for the element(s) to exist while collecting them.
+#' @param timeout How long to wait for the element(s) to exist while collecting
+#'   them.
 #'
 #' @details
-#' These functions do not make selenider elements *permanently* eager. Further sub-elements
-#' will not be cached unless specified.
+#' These functions do not make selenider elements *permanently* eager. Further
+#' sub-elements will not be cached unless specified.
 #'
 #' For example, consider the following code:
 #' ``` r
@@ -28,8 +29,8 @@
 #'   find_element(".class2")
 #' ```
 #'
-#' In this example, the parent of the element with class ".class1" will be cached,
-#' but the child element with class ".class2" will not.
+#' In this example, the parent of the element with class ".class1" will be
+#' cached, but the child element with class ".class2" will not.
 #'
 #' @returns
 #' A modified version of `x`. The result of `elem_cache()` can be used
@@ -37,7 +38,8 @@
 #'
 #' @seealso
 #' * [find_element()] and [find_elements()] to select elements.
-#' * [element_list()] and [elem_flatmap()] if you want to iterate over an element collection.
+#' * [element_list()] and [elem_flatmap()] if you want to iterate over an
+#'   element collection.
 #'
 #' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
@@ -49,7 +51,8 @@
 #'
 #' session <- minimal_selenider_session(html)
 #'
-#' # Selecting this button may be slow, since we are using relative XPath selectors.
+#' # Selecting this button may be slow, since we are using relative XPath
+#' # selectors.
 #' button <- s("#specifictext") |>
 #'   elem_siblings() |>
 #'   elem_find(has_name("button"))

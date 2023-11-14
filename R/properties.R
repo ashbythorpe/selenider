@@ -1,6 +1,7 @@
 #' Get the tag name of an element
 #'
-#' Get the tag name (e.g. `"p"` for a `<p>` tag) of a `selenider_element` object.
+#' Get the tag name (e.g. `"p"` for a `<p>` tag) of a `selenider_element`
+#' object.
 #'
 #' @param x A `selenider_element` object.
 #' @param timeout The time to wait for `x` to exist.
@@ -92,7 +93,6 @@ elem_text <- function(x, timeout = NULL) {
 
 element_text <- function(x, session, driver) {
   if (session == "chromote") {
-    driver <- driver
     chromote_get_text(x, driver = driver)
   } else if (session == "selenium") {
     x$get_text()
@@ -122,8 +122,8 @@ chromote_get_text <- function(x, driver) {
 #' @param name The name of the attribute to get; a string.
 #' @param default The default value to use if the attribute does not exist in
 #'   the element.
-#' @param ptype The type to cast the value to. Useful when the value is an integer
-#'   or decimal number. By default, the value is returned as a string.
+#' @param ptype The type to cast the value to. Useful when the value is an
+#'   integer or decimal number. By default, the value is returned as a string.
 #' @param timeout The time to wait for `x` to exist.
 #'
 #' @returns
@@ -183,7 +183,10 @@ element_attribute <- function(x, name, default, session, driver) {
 }
 
 chromote_get_attribute <- function(x, name, default, driver) {
-  response <- driver$DOM$getAttributes(chromote_node_id(backend_id = x, driver = driver))$attributes
+  response <- driver$DOM$getAttributes(chromote_node_id(
+    backend_id = x,
+    driver = driver
+  ))$attributes
 
   # CDP returns a list of interleaved names and values
   # So the names are the 1st, 3rd, etc. elements.
@@ -198,7 +201,10 @@ chromote_get_attribute <- function(x, name, default, driver) {
 }
 
 chromote_get_attributes <- function(x, driver) {
-  response <- driver$DOM$getAttributes(chromote_node_id(backend_id = x, driver = driver))$attributes
+  response <- driver$DOM$getAttributes(chromote_node_id(
+    backend_id = x,
+    driver = driver
+  ))$attributes
 
   # CDP returns a list of interleaved names and values
   # We convert this to a named list
@@ -360,7 +366,10 @@ chromote_get_css_property <- function(x, name, default, driver) {
       result
     }
   } else {
-    response <- unlist(driver$CSS$getComputedStyleForNode(chromote_node_id(backend_id = x, driver = driver))$computedStyle)
+    response <- unlist(driver$CSS$getComputedStyleForNode(chromote_node_id(
+      backend_id = x,
+      driver = driver
+    ))$computedStyle)
 
     # Same as chromote_get_attribute()
     names <- response[seq_len(length(response) / 2) * 2 - 1]
@@ -427,7 +436,10 @@ length.selenider_elements <- function(x) {
   elem_size(x)
 }
 
-get_element_for_property <- function(x, action, timeout, call = rlang::caller_env()) {
+get_element_for_property <- function(x,
+                                     action,
+                                     timeout,
+                                     call = rlang::caller_env()) {
   get_element_for_action(
     x,
     action = action,
@@ -439,14 +451,20 @@ get_element_for_property <- function(x, action, timeout, call = rlang::caller_en
   )
 }
 
-get_elements_for_property <- function(x, action, timeout, call = rlang::caller_env()) {
+get_elements_for_property <- function(x,
+                                      action,
+                                      timeout,
+                                      call = rlang::caller_env()) {
   elements <- get_with_timeout(timeout, get_elements, x)
 
   if (is.null(elements)) {
     stop_not_actionable(
       c(
         paste0("To ", action, ", its parent must exist."),
-        "i" = paste0(format_timeout_for_error(timeout), "{.arg x}'s parent did not exist.")
+        "i" = paste0(
+          format_timeout_for_error(timeout),
+          "{.arg x}'s parent did not exist."
+        )
       ),
       call = call,
       class = c(

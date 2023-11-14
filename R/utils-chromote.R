@@ -23,7 +23,9 @@ chromote_node_id <- function(object_id = NULL, backend_id = NULL, driver) {
   if (!is.null(object_id)) {
     driver$DOM$requestNode(object_id)$nodeId
   } else {
-    driver$DOM$requestNode(driver$DOM$resolveNode(backendNodeId = backend_id)$object$objectId)$nodeId
+    driver$DOM$requestNode(
+      driver$DOM$resolveNode(backendNodeId = backend_id)$object$objectId
+    )$nodeId
   }
 }
 
@@ -67,7 +69,9 @@ chromote_is_in_view <- function(node_id = NULL, backend_id = NULL, driver) {
   }
 }
 
-chromote_scroll_into_view <- function(node_id = NULL, backend_id = NULL, driver) {
+chromote_scroll_into_view <- function(node_id = NULL,
+                                      backend_id = NULL,
+                                      driver) {
   driver$Runtime$callFunctionOn("function() {
     this.scrollIntoView({
       block: 'center',
@@ -77,7 +81,9 @@ chromote_scroll_into_view <- function(node_id = NULL, backend_id = NULL, driver)
   }", chromote_object_id(node_id, backend_id, driver = driver))
 }
 
-chromote_scroll_into_view_if_needed <- function(node_id = NULL, backend_id = NULL, driver) {
+chromote_scroll_into_view_if_needed <- function(node_id = NULL, # nolint: object_length_linter
+                                                backend_id = NULL,
+                                                driver) {
   if (!is.null(driver$DOM$scrollIntoViewIfNeeded)) {
     if (!is.null(node_id)) {
       driver$DOM$scrollIntoViewIfNeeded(node_id)

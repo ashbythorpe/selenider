@@ -1,17 +1,15 @@
 #' Click an element
 #'
 #' @description
-#' Clicks on an HTML element, either by simulating a mouse click or by triggering
-#' the element's "click" event.
+#' Clicks on an HTML element, either by simulating a mouse click or by
+#' triggering the element's "click" event.
 #'
-#' `elem_click()` left clicks on the element, `elem_double_click()` left clicks on the
-#' element two times in a short period of time, while `elem_right_click()` right
-#' clicks on an element, opening its context menu.
+#' `elem_click()` left clicks on the element, `elem_double_click()` left clicks
+#' on the element two times in a short period of time, while
+#' `elem_right_click()` right clicks on an element, opening its context menu.
 #'
 #' @param x A `selenider_element` object.
-#' @param js Whether to click the element using JavaScript. For `elem_right_click()`,
-#'   this is ignored if Selenium is being used, since right clicking using
-#'   selenium does not seem to work (so JavaScript is used instead).
+#' @param js Whether to click the element using JavaScript.
 #' @param timeout How long to wait for the element to exist.
 #'
 #' @returns `x`, invisibly.
@@ -110,7 +108,23 @@ element_click_js <- function(x, session, driver) {
     } else {
       x.click();
       const event = document.createEvent('MouseEvent');
-      event.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+      event.initMouseEvent(
+        'click',
+        true,
+        true,
+        window,
+        0,
+        0,
+        0,
+        0,
+        0,
+        false,
+        false,
+        false,
+        false,
+        0,
+        null
+      );
       x.dispatchEvent(event);
     }
   }", x, session = session, driver = driver)
@@ -132,7 +146,8 @@ element_click <- function(x, session, driver) {
 }
 
 left_click_selenium <- function(element, driver) {
-  if (driver$browserName == "internet explorer" && identical(element$getElementTagName(), "checkbox")) {
+  if (driver$browserName == "internet explorer" &&
+        identical(element$getElementTagName(), "checkbox")) {
     try(
       {
         driver$executeScript(
@@ -167,12 +182,31 @@ click_chromote <- function(element, driver, type = "left", count = 1) {
   x <- coords$x
   y <- coords$y
 
-  capture_mouse_press_error(driver$Input$dispatchMouseEvent(type = "mousePressed", x = x, y = y, button = type, clickCount = count, timeout_ = 0.1))
-  capture_mouse_press_error(driver$Input$dispatchMouseEvent(type = "mouseReleased", x = x, y = y, button = type, clickCount = 0, timeout_ = 0.1))
+  capture_mouse_press_error(
+    driver$Input$dispatchMouseEvent(
+      type = "mousePressed",
+      x = x,
+      y = y,
+      button = type,
+      clickCount = count,
+      timeout_ = 0.1
+    )
+  )
+  capture_mouse_press_error(
+    driver$Input$dispatchMouseEvent(
+      type = "mouseReleased",
+      x = x,
+      y = y,
+      button = type,
+      clickCount = 0,
+      timeout_ = 0.1
+    )
+  )
 }
 
-# There is a chrome bug where the mouse event is left hanging when the viewer is enabled.
-# This forces the event to timeout prematurely, and catches the error.
+# There is a chrome bug where the mouse event is left hanging when the viewer
+# is enabled. This forces the event to timeout prematurely, and catches the
+# error.
 capture_mouse_press_error <- function(expr) {
   rlang::try_fetch(
     expr,
@@ -379,13 +413,15 @@ element_right_click <- function(x, session, driver) {
 #'
 #' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
-#' <button onmouseover = settext()> </button>
+#' <button onmouseover = settext()></button>
 #' <p class = 'text'></p>
 #' "
 #'
 #' js <- "
 #' function settext() {
-#'   document.getElementsByClassName('text').item(0).innerHTML = 'Button hovered!'
+#'   const element = document.getElementsByClassName('text').item(0);
+#'
+#'   element.innerHTML = 'Button hovered!';
 #' }
 #' "
 #'
@@ -496,9 +532,9 @@ hover_chromote <- function(element, driver) {
 #' `elem_clear_value()` sets the value of an HTML element to `""`, removing any
 #' existing content.
 #'
-#' @param x A `selenider_element` object. For [elem_send_keys()], this can be `NULL`,
-#'   meaning that the keys will be sent to the current page (or the currently focused
-#'   element) instead of a specific element.
+#' @param x A `selenider_element` object. For [elem_send_keys()], this can be
+#'   `NULL`, meaning that the keys will be sent to the current page (or the
+#'   currently focused element) instead of a specific element.
 #' @param text A string to set the value of the input element to.
 #' @param timeout How long to wait for the element to exist.
 #'
@@ -506,7 +542,11 @@ hover_chromote <- function(element, driver) {
 #'
 #' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
-#' <input type='text' oninput='recordChange(event)' onkeypress='return checkEnter(event);'>
+#' <input
+#'   type='text'
+#'   oninput='recordChange(event)'
+#'   onkeypress='return checkEnter(event);'
+#' />
 #' <p></p>
 #' "
 #'
@@ -595,15 +635,29 @@ element_set_value <- function(x, text, session, driver) {
   }
 }
 
-chromote_clear <- function(x, driver) {
+chromote_clear <- function(
+  x,
+  driver
+) {
   if (is_mac()) {
     click_chromote(x, driver = driver, count = 3)
   } else {
     click_chromote(x, driver = driver)
 
-    chromote_press(driver, modifiers = 2, key = "a", code = "KeyA", windowsVirtualKeyCode = 65)
+    chromote_press(
+      driver,
+      modifiers = 2,
+      key = "a",
+      code = "KeyA",
+      windowsVirtualKeyCode = 65
+    )
   }
-  chromote_press(driver, windowsVirtualKeyCode = 8, code = "Backspace", key = "Backspace")
+  chromote_press(
+    driver,
+    windowsVirtualKeyCode = 8,
+    code = "Backspace",
+    key = "Backspace"
+  )
 }
 
 chromote_send_chars <- function(x, driver) {
@@ -617,8 +671,9 @@ chromote_send_chars <- function(x, driver) {
 #' @rdname elem_set_value
 #'
 #' @param ... A set of inputs to send to `x`.
-#' @param modifiers A character vector; one or more of "shift", "ctrl"/"control", "alt", and "command"/meta".
-#'   Note that when using chromote as a backend, these do not work on Mac OS.
+#' @param modifiers A character vector; one or more of "shift",
+#'   "ctrl"/"control", "alt", and "command"/meta". Note that when using
+#'   chromote as a backend, these do not work on Mac OS.
 #'
 #' @export
 elem_send_keys <- function(x, ..., modifiers = NULL, timeout = NULL) {
@@ -701,7 +756,8 @@ element_send_keys <- function(x, modifiers, keys, session, driver) {
 
       for (modifier in modifiers) {
         actions[[index]] <- selenium::actions_press(modifier)
-        actions[[length(actions) - index + 1]] <- selenium::actions_release(modifier)
+        actions[[length(actions) - index + 1]] <-
+          selenium::actions_release(modifier)
         index <- index + 1
       }
 
@@ -757,7 +813,11 @@ chromote_send_keys <- function(element, driver, keys, modifiers) {
 
 format_keys <- function(keys, modifiers) {
   # Don't use `text` param if we have a modifier that is not shift
-  no_text <- any(vapply(modifiers, function(x) identical(x, "shift"), FUN.VALUE = logical(1)))
+  no_text <- any(vapply(
+    modifiers,
+    function(x) identical(x, "shift"),
+    FUN.VALUE = logical(1)
+  ))
 
   result <- list()
   for (key in keys) {
@@ -854,7 +914,8 @@ element_clear_value <- function(x, session, driver) {
 #'   let element = document.getElementsByTagName('p').item(0);
 #'   let rect = element.getBoundingClientRect();
 #'   // If paragraph is in view
-#'   if (rect.bottom <= (window.innerHeight || document.documentElement.clientHeight)) {
+#'   const height = window.innerHeight || document.documentElement.clientHeight;
+#'   if (rect.bottom <= height) {
 #'     element.innerText = 'You found me!';
 #'   }
 #' }
@@ -884,9 +945,7 @@ elem_scroll_to <- function(x, js = FALSE, timeout = NULL) {
   timeout <- get_timeout(timeout, x$timeout)
 
   # Firefox does not allow you to scroll to an element if not in view.
-  if (js || x$session == "chromote" ||
-        (x$session == "selenium" && x$driver$browser == "firefox") ||
-        (x$session == "RSelenium" && x$driver$browserName == "firefox")) {
+  if (cant_scroll_to(x, js)) {
     element <- get_element_for_action(
       x,
       action = "scroll to {.arg x} using JavaScript",
@@ -911,6 +970,12 @@ elem_scroll_to <- function(x, js = FALSE, timeout = NULL) {
   }
 
   invisible(x)
+}
+
+cant_scroll_to <- function(x, js) {
+  js || x$session == "chromote" ||
+    (x$session == "selenium" && x$driver$browser == "firefox") ||
+    (x$session == "rselenium" && x$driver$browserName == "firefox")
 }
 
 element_scroll_to_js <- function(x, session, driver) {
@@ -960,7 +1025,12 @@ elem_select <- function(x,
   check_number_decimal(timeout, allow_null = TRUE)
   check_bool(reset_other)
 
-  values <- c("value", "text", "index")[c(!is.null(value), !is.null(text), !is.null(index))]
+  values <- c("value", "text", "index")[c(
+    !is.null(value),
+    !is.null(text),
+    !is.null(index)
+  )]
+
   if (length(values) > 1) {
     supplied <- if (length(values) == 2) {
       "Both {.arg {values}} were supplied."
@@ -969,7 +1039,10 @@ elem_select <- function(x,
     }
 
     cli::cli_abort(
-      "Exactly one of {.arg value}, {.arg value}, or {.arg index} must be supplied.",
+      paste0(
+        "Exactly one of {.arg value}, {.arg value}, or {.arg index} must be ",
+        "supplied."
+      ),
       "i" = supplied,
       class = "selenider_error_missing_argument"
     )
@@ -988,12 +1061,28 @@ elem_select <- function(x,
 
   name <- element_name(element, x$session, x$driver)
 
-  element_select(element, name, value, text, index, reset_other, x$session, x$driver)
+  element_select(
+    element,
+    name,
+    value,
+    text,
+    index,
+    reset_other,
+    x$session,
+    x$driver
+  )
 
   invisible(x)
 }
 
-element_select <- function(x, name, value, text, index, reset_other, session, driver) {
+element_select <- function(x,
+                           name,
+                           value,
+                           text,
+                           index,
+                           reset_other,
+                           session,
+                           driver) {
   reset_other_json <- tolower(as.character(reset_other))
 
   if (name == "value") {
@@ -1219,14 +1308,23 @@ get_element_for_selection <- function(x,
         "select {.arg x}",
         list(is_enabled, condition),
         timeout = timeout,
-        failure_messages = c("was not enabled", "did not have the correct tag name"),
-        conditions_text = c("be enabled", "be a `<select>` or `<option>` element"),
+        failure_messages = c(
+          "was not enabled",
+          "did not have the correct tag name"
+        ),
+        conditions_text = c(
+          "be enabled",
+          "be a `<select>` or `<option>` element"
+        ),
         call = call
       ))
     } else {
       name <- "option"
 
-      condition_text <- "be an `<option>` element, not a `<select>` element (as all other arguments are `NULL` and {.arg reset_other} is `FALSE`)"
+      condition_text <- paste0(
+        "be an `<option>` element, not a `<select>` element (as all other ",
+        "arguments are `NULL` and {.arg reset_other} is `FALSE`)"
+      )
       check_multiple <- FALSE
       specific_condition <- NULL
     }
@@ -1242,7 +1340,8 @@ get_element_for_selection <- function(x,
         }), 1)
       }
 
-      specific_condition_text <- "have an `<option>` element with value {.or {.val {value}}}"
+      specific_condition_text <-
+        "have an `<option>` element with value {.or {.val {value}}}"
       specific_failure_message <- "did not have contain the required option"
     } else if (!is.null(text)) {
       name <- "select"
@@ -1255,7 +1354,8 @@ get_element_for_selection <- function(x,
         }), 1)
       }
 
-      specific_condition_text <- "have an `<option>` element with text {.or {.val {text}}}"
+      specific_condition_text <-
+        "have an `<option>` element with text {.or {.val {text}}}"
       specific_failure_message <- "did not have contain the required option"
     } else if (!is.null(index)) {
       name <- "select"
@@ -1270,12 +1370,18 @@ get_element_for_selection <- function(x,
       specific_failure_message <- NULL
     }
 
-    condition_text <- paste0("be a `<select>` element, not an `<option>` element (as {.arg ", arg, "} is not `NULL`)")
+    condition_text <- paste0(
+      "be a `<select>` element, not an `<option>` element (as {.arg ", arg, "}",
+      " is not `NULL`)"
+    )
     if (check_multiple) {
       multiple_condition <- function(x) {
         execute_js_fn("x => x.type != 'select-one'", x)
       }
-      multiple_condition_text <- paste0("support multiple selections (as {.arg ", arg, "} contains multiple items)")
+      multiple_condition_text <- paste0(
+        "support multiple selections (as {.arg ", arg, "} contains multiple ",
+        "items)"
+      )
     }
   }
 
@@ -1293,7 +1399,39 @@ get_element_for_selection <- function(x,
     conditions <- append(conditions, list(multiple_condition))
   }
 
-  meets_condition <- inject(elem_wait_until(x, !!!conditions, timeout = timeout))
+  get_select_element(
+    x,
+    conditions = conditions,
+    timeout = timeout,
+    name = name,
+    condition_text = condition_text,
+    specific_condition = specific_condition,
+    specific_failure_message = specific_failure_message,
+    specific_condition_text = specific_condition_text,
+    check_multiple = check_multiple,
+    multiple_condition = multiple_condition,
+    multiple_condition_text = multiple_condition_text,
+    call = call
+  )
+}
+
+get_select_element <- function(x,
+                               conditions,
+                               timeout,
+                               name,
+                               condition_text,
+                               specific_condition,
+                               specific_failure_message,
+                               specific_condition_text,
+                               check_multiple,
+                               multiple_condition,
+                               multiple_condition_text,
+                               call = rlang::caller_env()) {
+  meets_condition <- inject(elem_wait_until(
+    x,
+    !!!conditions,
+    timeout = timeout
+  ))
 
   other_name <- switch(name,
     "option" = "select",
@@ -1305,14 +1443,20 @@ get_element_for_selection <- function(x,
     if (!is_present(x)) {
       stop_not_actionable(c(
         "To select {.arg x}, it must exist.",
-        "i" = paste0(format_timeout_for_error(timeout), "{.arg x} was not present.")
+        "i" = paste0(
+          format_timeout_for_error(timeout),
+          "{.arg x} was not present."
+        )
       ), call = call, class = "selenider_error_absent_element")
     }
 
     if (!is_enabled(x)) {
       stop_not_actionable(c(
         "To select {.arg x}, it be enabled.",
-        "i" = paste0(format_timeout_for_error(timeout), "{.arg x} was not enabled.")
+        "i" = paste0(
+          format_timeout_for_error(timeout),
+          "{.arg x} was not enabled."
+        )
       ), call = call)
     }
 
@@ -1320,31 +1464,50 @@ get_element_for_selection <- function(x,
       if (elem_name(x, timeout = 0) == other_name) {
         stop_not_actionable(c(
           paste0("To select {.arg x}, it must ", condition_text, "."),
-          "i" = paste0(format_timeout_for_error(timeout), "{.arg x} did not have the correct tag name.")
+          "i" = paste0(
+            format_timeout_for_error(timeout),
+            "{.arg x} did not have the correct tag name."
+          )
         ))
       } else {
         stop_not_actionable(c(
           "To select {.arg x}, it must be a `<select>` or `<option>` element.",
-          "i" = paste0(format_timeout_for_error(timeout), "{.arg x} did not have the correct tag name.")
+          "i" = paste0(
+            format_timeout_for_error(timeout),
+            "{.arg x} did not have the correct tag name."
+          )
         ))
       }
     }
 
     if (!is.null(specific_condition) && !specific_condition(x)) {
       if (is.null(specific_failure_message)) {
-        n_options <- execute_js_fn_on("x => x.options.length", get_element(x), session = x$session, driver = x$driver)
+        n_options <- execute_js_fn_on(
+          "x => x.options.length",
+          get_element(x),
+          session = x$session,
+          driver = x$driver
+        )
         specific_failure_message <- paste0("had {.val {n_options}} options")
       }
       stop_not_actionable(c(
         paste0("To select {.arg x}, it must ", specific_condition_text, "."),
-        "i" = paste0(format_timeout_for_error(timeout), "{.arg x} ", specific_failure_message, ".")
+        "i" = paste0(
+          format_timeout_for_error(timeout),
+          "{.arg x} ",
+          specific_failure_message,
+          "."
+        )
       ))
     }
 
     if (check_multiple && !multiple_condition(x)) {
       stop_not_actionable(c(
         paste0("To select {.arg x}, it must ", multiple_condition_text, "."),
-        "i" = paste0(format_timeout_for_error(timeout), "{.arg x} did not support multiple selections.")
+        "i" = paste0(
+          format_timeout_for_error(timeout),
+          "{.arg x} did not support multiple selections."
+        )
       ))
     }
   }
@@ -1354,7 +1517,10 @@ get_element_for_selection <- function(x,
   if (is.null(element)) {
     stop_not_actionable(c(
       paste0("To select {.arg x}, it must exist."),
-      "i" = paste0(format_timeout_for_error(timeout), "{.arg x} was not present.")
+      "i" = paste0(
+        format_timeout_for_error(timeout),
+        "{.arg x} was not present."
+      )
     ), call = call, class = "selenider_error_absent_element")
   }
 
@@ -1484,7 +1650,10 @@ get_element_for_action <- function(x,
     if (length(conditions) == 0 || !is_present(x)) {
       stop_not_actionable(c(
         paste0("To ", action, ", it must exist."),
-        "i" = paste0(format_timeout_for_error(timeout), "{.arg x} was not present.")
+        "i" = paste0(
+          format_timeout_for_error(timeout),
+          "{.arg x} was not present."
+        )
       ), call = call, class = "selenider_error_absent_element")
     }
 
@@ -1494,7 +1663,10 @@ get_element_for_action <- function(x,
       if (!condition(x)) {
         stop_not_actionable(c(
           paste0("To ", action, ", it must ", conditions_text[[n]], "."),
-          "i" = paste0(format_timeout_for_error(timeout), "{.arg x} {failure_messages[[n]]}.")
+          "i" = paste0(
+            format_timeout_for_error(timeout),
+            "{.arg x} {failure_messages[[n]]}."
+          )
         ), call = call)
       }
     }
@@ -1505,7 +1677,10 @@ get_element_for_action <- function(x,
   if (is.null(element)) {
     stop_not_actionable(c(
       paste0("To ", action, ", it must exist."),
-      "i" = paste0(format_timeout_for_error(timeout), "{.arg x} was not present.")
+      "i" = paste0(
+        format_timeout_for_error(timeout),
+        "{.arg x} was not present."
+      )
     ), call = call, class = "selenider_error_absent_element")
   }
 

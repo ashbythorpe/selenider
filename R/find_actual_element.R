@@ -49,55 +49,75 @@ find_actual_element <- function(x, using, value, driver) {
       }
     )
   } else if (inherits(x, "ChromoteSession")) {
-    if (using == "xpath") {
-      return(use_xpath_chromote(value, x, NULL))
-    }
-
-    selector <- selector_to_css(using, value)
-    document <- x$DOM$getDocument()
-
-    nodeId <- try_fetch(
-      x$DOM$querySelector(document$root$nodeId, selector)$nodeId,
-      error = function(e) {
-        if (grepl("Could not find node with given id", e$message, fixed = TRUE)) {
-          0
-        } else {
-          rlang::zap()
-        }
-      }
-    )
-    if (nodeId == 0) {
-      return(NULL)
-    }
-
-    chromote_backend_id(nodeId, driver = x)
+    find_element_chromote_session(x, using, value)
   } else if (is.numeric(x)) {
-    if (using == "xpath") {
-      return(use_xpath_chromote(value, x, driver = driver))
-    }
-
-    selector <- selector_to_css(using, value)
-    nodeId <- try_fetch(
-      driver$DOM$querySelector(chromote_node_id(backend_id = x, driver = driver), selector)$nodeId,
-      error = function(e) {
-        if (grepl("Could not find node with given id", e$message, fixed = TRUE)) {
-          0
-        } else {
-          rlang::zap()
-        }
-      }
-    )
-    if (nodeId == 0) {
-      return(NULL)
-    }
-
-    chromote_backend_id(nodeId, driver = driver)
+    find_element_chromote_node(x, using, value, driver)
   }
+}
+
+find_element_chromote_session <- function(x, using, value) {
+  if (using == "xpath") {
+    return(use_xpath_chromote(value, x, NULL))
+  }
+
+  selector <- selector_to_css(using, value)
+  document <- x$DOM$getDocument()
+
+  node_id <- try_fetch(
+    x$DOM$querySelector(document$root$nodeId, selector)$nodeId,
+    error = function(e) {
+      if (grepl(
+        "Could not find node with given id",
+        e$message,
+        fixed = TRUE
+      )) {
+        0
+      } else {
+        rlang::zap()
+      }
+    }
+  )
+  if (node_id == 0) {
+    return(NULL)
+  }
+
+  chromote_backend_id(node_id, driver = x)
+}
+
+find_element_chromote_node <- function(x, using, value, driver) {
+  if (using == "xpath") {
+    return(use_xpath_chromote(value, x, driver = driver))
+  }
+
+  selector <- selector_to_css(using, value)
+  node_id <- try_fetch(
+    driver$DOM$querySelector(
+      chromote_node_id(backend_id = x, driver = driver),
+      selector
+    )$nodeId,
+    error = function(e) {
+      if (grepl(
+        "Could not find node with given id",
+        e$message,
+        fixed = TRUE
+      )) {
+        0
+      } else {
+        rlang::zap()
+      }
+    }
+  )
+  if (node_id == 0) {
+    return(NULL)
+  }
+
+  chromote_backend_id(node_id, driver = driver)
 }
 
 #' Find every occurance of an element using a selector
 #'
-#' Same as `find_element()`, but returns every element instead of just the first one.
+#' Same as `find_element()`, but returns every element instead of just the
+#' first one.
 #'
 #' @noRd
 find_actual_elements <- function(x, using, value, driver) {
@@ -127,7 +147,10 @@ find_actual_elements <- function(x, using, value, driver) {
     }
 
     selector <- selector_to_css(using, value)
-    node_ids <- driver$DOM$querySelectorAll(chromote_node_id(backend_id = x, driver = driver), selector)$nodeIds
+    node_ids <- driver$DOM$querySelectorAll(
+      chromote_node_id(backend_id = x, driver = driver),
+      selector
+    )$nodeIds
     lapply(node_ids, chromote_backend_id, driver = driver)
   }
 }
@@ -164,7 +187,10 @@ use_xpath_chromote <- function(xpath, element, driver, multiple = FALSE) {
         return nodes;
       })()"))$result$objectId
     } else {
-      element_object_id <- chromote_object_id(backend_id = element, driver = driver)
+      element_object_id <- chromote_object_id(
+        backend_id = element,
+        driver = driver
+      )
 
       array_object_id <- driver$Runtime$callFunctionOn(paste0("function() {
         let xpath = document.evaluate('", xpath, "', this, null, 5, null);
@@ -178,10 +204,16 @@ use_xpath_chromote <- function(xpath, element, driver, multiple = FALSE) {
       }"), element_object_id)$result$objectId
     }
 
-    length <- driver$Runtime$callFunctionOn("function() { return this.length; }", array_object_id)$result$value
+    length <- driver$Runtime$callFunctionOn(
+      "function() { return this.length; }",
+      array_object_id
+    )$result$value
     nodes <- vector("list", length)
     for (i in seq_len(length)) {
-      object_id <- driver$Runtime$callFunctionOn(paste0("function() { return this[", i - 1L, "]; }"), array_object_id)$result$objectId
+      object_id <- driver$Runtime$callFunctionOn(
+        paste0("function() { return this[", i - 1L, "]; }"),
+        array_object_id
+      )$result$objectId
       nodes[[i]] <- chromote_backend_id(object_id = object_id, driver = driver)
     }
 
@@ -197,7 +229,10 @@ use_xpath_chromote <- function(xpath, element, driver, multiple = FALSE) {
         return node;
       })()"))$result
     } else {
-      element_object_id <- chromote_object_id(backend_id = element, driver = driver)
+      element_object_id <- chromote_object_id(
+        backend_id = element,
+        driver = driver
+      )
 
       result <- driver$Runtime$callFunctionOn(paste0("function() {
         let xpath = document.evaluate('", xpath, "', this, null, 9, null);

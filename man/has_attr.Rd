@@ -18,8 +18,8 @@ has_value(x, value)
 \item{name}{The name of the attribute.}
 
 \item{value}{The value of the attribute. For \code{has_attr()} and \code{has_value()},
-this can be a string or a numeric value, while \code{attr_contains()} can only take
-a string.}
+this can be a string or a numeric value, while \code{attr_contains()} can only
+take a string.}
 }
 \value{
 A boolean value: TRUE or FALSE.

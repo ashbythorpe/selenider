@@ -95,8 +95,14 @@ is_visible <- function(x) {
       driver <- x$driver
       tryCatch(
         {
-          coords <- driver$DOM$getBoxModel(backendNodeId = element)$model$content
-          !chromote_get_css_property(element, "visibility", default = NULL, driver = driver) %in% c("hidden", "collapse")
+          coords <-
+            driver$DOM$getBoxModel(backendNodeId = element)$model$content
+          !chromote_get_css_property(
+            element,
+            "visibility",
+            default = NULL,
+            driver = driver
+          ) %in% c("hidden", "collapse")
         },
         error = function(e) FALSE
       )
@@ -163,9 +169,10 @@ is_enabled <- function(x) {
   if (!is.null(element)) {
     if (x$session == "chromote") {
       driver <- x$driver
+      id <- chromote_object_id(backend_id = element, driver = driver)
       driver$Runtime$callFunctionOn("function() {
         return !this.disabled
-      }", chromote_object_id(backend_id = element, driver = driver))$result$value
+      }", id)$result$value
     } else if (x$session == "selenium") {
       element$is_enabled()
     } else {
@@ -300,8 +307,8 @@ has_exact_text <- function(x, text) {
 #' @param x A `selenider_element` object.
 #' @param name The name of the attribute.
 #' @param value The value of the attribute. For `has_attr()` and `has_value()`,
-#' this can be a string or a numeric value, while `attr_contains()` can only take
-#' a string.
+#' this can be a string or a numeric value, while `attr_contains()` can only
+#' take a string.
 #'
 #' @family conditions
 #'
@@ -492,7 +499,10 @@ is_covered <- function(x) {
     } else if (x$session == "chromote") {
       driver <- x$driver
       coords <- chromote_get_xy(backend_id = element, driver = driver)
-      node_at_location <- driver$DOM$getNodeForLocation(x = coords$x, y = coords$y)
+      node_at_location <- driver$DOM$getNodeForLocation(
+        x = coords$x,
+        y = coords$y
+      )
       node_at_location$backendNodeId == element
     } else {
       execute_js_fn_on("

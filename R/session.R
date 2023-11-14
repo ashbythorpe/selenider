@@ -1,13 +1,14 @@
 #' Start a session
 #'
 #' @description
-#' Begin a session in selenider, setting it as the local session unless otherwise
-#' specified, allowing the session to be accessed globally in the environment
-#' where it was defined.
+#' Begin a session in selenider, setting it as the local session unless
+#' otherwise specified, allowing the session to be accessed globally in the
+#' environment where it was defined.
 #'
-#' `create_chromote_session()`, `create_selenium_client()` and `create_selenium_server()`
-#' are low-level functions that allow more control over making a web driver, which
-#' can then be passed into the `driver` argument to `selenider_session()`.
+#' `create_chromote_session()`, `create_selenium_client()` and
+#' `create_selenium_server()` are low-level functions that allow more control
+#' over making a web driver, which can then be passed into the `driver`
+#' argument to `selenider_session()`.
 #'
 #' @param session The package to use as a backend: either "chromote",
 #'   "selenium" or "rselenium". By default, chromote is used, since this tends
@@ -31,12 +32,14 @@
 #'   does not support Microsoft Edge.
 #' @param driver A driver object to use instead of creating one manually. This
 #'   can be one of:
-#'   * A [chromote::ChromoteSession] object (the result of `create_chromote_session()`).
+#'   * A [chromote::ChromoteSession] object (the result of
+#'     `create_chromote_session()`).
 #'   * A [shinytest2::AppDriver] object.
-#'   * An [selenium::SeleniumSession] object (the result of `create_selenium_client()`).
+#'   * An [selenium::SeleniumSession] object (the result of
+#'     `create_selenium_client()`).
 #'   * A Selenium server object (the result of [wdman::selenium()], or
-#'     `create_selenium_server()`). In this case, the client object will be created using
-#'     the server object.
+#'     `create_selenium_server()`). In this case, the client object will be
+#'     created using the server object.
 #'   * A list/environment containing the [selenium::SeleniumSession] object,
 #'     the Selenium server object, or both.
 #'   * An [RSelenium::remoteDriver()] object (see [create_rselenium_client()])
@@ -60,23 +63,27 @@
 #'
 #' @details
 #' # Structure of a selenider session
-#' A `selenider_session` object is an S3 list, meaning its properties can be accessed using `$`.
-#' Most notably, using `session$driver` allows access to the driver object which actually controls
-#' the browser. If you are using Selenium, use `session$driver` to access the `remoteDriver`
-#' object. These objects are useful if you want to do something with the driver that is not directly
-#' supported by selenider. See [get_actual_element()] for some examples of this.
+#' A `selenider_session` object is an S3 list, meaning its properties can be
+#' accessed using `$`. Most notably, using `session$driver` allows access to
+#' the driver object which actually controls the browser. If you are using
+#' Selenium, use `session$driver` to access the `remoteDriver` object. These
+#' objects are useful if you want to do something with the driver that is not
+#' directly supported by selenider. See [get_actual_element()] for some
+#' examples of this.
 #'
 #' # Custom drivers
-#' Custom driver objects are good if you want more low-level control over the underlying
-#' functions that create the webdrivers that actually control the browser. However, it is
-#' recommended to use the selenider functions (e.g. `create_selenium_client()`) over
-#' `wdman::selenium()` for better error messages and more reliable behaviour. See
-#' `vignette("unit-testing", package = "selenider") for more information on using
-#' selenider with docker/Github Actions.
+#' Custom driver objects are good if you want more low-level control over the
+#' underlying functions that create the webdrivers that actually control the
+#' browser. However, it is recommended to use the selenider functions (e.g.
+#' `create_selenium_client()`) over `wdman::selenium()` for better error
+#' messages and more reliable behaviour. See
+#' `vignette("unit-testing", package = "selenider")` for more information on
+#' using selenider with docker/Github Actions.
 #'
 #' ## Chromote
-#' Supplying a custom [chromote::ChromoteSession] object can allow you to manage the
-#' underlying [chromote::Chromote] process that is used to spawn sessions. For example:
+#' Supplying a custom [chromote::ChromoteSession] object can allow you to
+#' manage the underlying [chromote::Chromote] process that is used to spawn
+#' sessions. For example:
 #' ```
 #' my_chromote_object <- chromote::Chromote$new()
 #'
@@ -117,9 +124,9 @@
 #' )
 #' ```
 #'
-#' However, it can sometimes be useful to omit the server, for example when you are running
-#' the Selenium server using Docker. In this case, you need to make sure the host and port are
-#' matched correctly.
+#' However, it can sometimes be useful to omit the server, for example when you
+#' are running the Selenium server using Docker. In this case, you need to make
+#' sure the host and port are matched correctly.
 #'
 #' ```
 #' session <- selenider_session(
@@ -132,14 +139,16 @@
 #'
 #' @seealso
 #' * [close_session()] to close the session. Note that this will not reset the
-#'   result of [get_session()], which is why [withr::deferred_run()] is preferred.
+#'   result of [get_session()], which is why [withr::deferred_run()] is
+#'   preferred.
 #' * [local_session()] and [with_session()] to manually set the local session
 #'   object (and [get_session()] to get it).
-#' * [open_url()], [s()] and [find_elements()] to get started once you have created a session.
+#' * [open_url()], [s()] and [find_elements()] to get started once you have
+#'   created a session.
 #'
 #' @returns
-#' A `selenider_session` object. Use `session$driver` to retrieve the driver object that controls the
-#' browser.
+#' A `selenider_session` object. Use `session$driver` to retrieve the driver
+#' object that controls the browser.
 #'
 #' @examplesIf selenider::selenider_available()
 #'
@@ -193,56 +202,73 @@ selenider_session <- function(session = getOption("selenider.session"),
   check_bool(quiet)
   check_environment(.env)
 
-  if (is.null(session)) {
-    chromote_installed <- rlang::is_installed("chromote")
-    if (!chromote_installed && !rlang::is_installed("selenium")) {
-      stop_no_dependencies()
-    }
+  session <- check_session_dependencies(session, selenium_manager)
 
-    session <- if (chromote_installed) "chromote" else "selenium"
+  browser_version <- browser_and_version(
+    session,
+    browser = browser,
+    driver = driver
+  )
+
+  browser <- browser_version$browser
+  version <- browser_version$version
+
+  driver <- get_driver(
+    session = session,
+    browser = browser,
+    version = version,
+    driver = driver,
+    view = view,
+    selenium_manager = selenium_manager,
+    quiet = quiet
+  )
+
+  session <- if (uses_selenium(driver)) {
+    "selenium"
+  } else if (uses_rselenium(driver)) {
+    "rselenium"
   } else {
-    session <- rlang::arg_match(session, values = c("chromote", "selenium", "rselenium"))
+    "chromote"
+  }
 
-    if (session == "chromote") {
-      rlang::check_installed("chromote")
-    } else if (session == "selenium") {
-      rlang::check_installed("selenium")
-      if (!selenium_manager) {
-        rlang::check_installed("wdman")
-      }
-    } else {
-      rlang::check_installed("RSelenium")
-      if (selenium_manager) {
-        rlang::check_installed("selenium")
-      } else {
-        rlang::check_installed("wdman")
-      }
+  if (session == "chromote") {
+    server <- NULL
+  } else {
+    server <- driver$server
+    driver <- driver$client
+  }
+
+  session <- new_selenider_session(session, driver, server, timeout)
+
+  if (local) {
+    local_session(session, .local_envir = .env)
+
+    if (inherits(session$driver, "ChromoteSession")) {
+      withr::defer(
+        {
+          # Delete the Crashpad folder if it exists
+          unlink(file.path(tempdir(), "Crashpad"), recursive = TRUE)
+        },
+        envir = .env
+      )
+      timeout <- if (on_ci()) 60 * 5 else 60
+      withr::local_options(
+        list(chromote.timeout = timeout),
+        .local_envir = .env
+      )
     }
   }
 
-  if (session == "chromote" && is.null(driver)) {
-    if (!is.null(browser) && browser != "chrome") {
-      warn_browser_chromote()
-    }
+  session
+}
 
-    browser <- "chrome"
-  } else if (is.null(browser)) {
-    if (is.null(driver) || is_selenium_server(driver)) {
-      bv <- find_browser_and_version()
-
-      if (is.null(bv)) {
-        stop_default_browser()
-      }
-
-      browser <- bv$browser
-      version <- bv$version
-    }
-  } else {
-    if (browser != "phantomjs") {
-      version <- get_browser_version(browser)
-    }
-  }
-
+get_driver <- function(session,
+                       browser,
+                       version,
+                       view,
+                       selenium_manager,
+                       quiet,
+                       driver) {
   if (is.null(driver)) {
     if (session == "chromote") {
       driver <- create_chromote_session()
@@ -293,40 +319,73 @@ selenider_session <- function(session = getOption("selenider.session"),
     driver <- check_supplied_driver(driver, browser = browser)
   }
 
-  session <- if (uses_selenium(driver)) {
-    "selenium"
-  } else if (uses_rselenium(driver)) {
-    "rselenium"
+  driver
+}
+
+check_session_dependencies <- function(session, selenium_manager, call = rlang::caller_env()) {
+  if (is.null(session)) {
+    chromote_installed <- rlang::is_installed("chromote")
+    if (!chromote_installed && !rlang::is_installed("selenium")) {
+      stop_no_dependencies(call = call)
+    }
+
+    session <- if (chromote_installed) "chromote" else "selenium"
   } else {
-    "chromote"
-  }
+    session <- rlang::arg_match(
+      session,
+      values = c("chromote", "selenium", "rselenium"),
+      call = call
+    )
 
-  if (session == "chromote") {
-    server <- NULL
-  } else {
-    server <- driver$server
-    driver <- driver$client
-  }
-
-  session <- new_selenider_session(session, driver, server, timeout)
-
-  if (local) {
-    local_session(session, .local_envir = .env)
-
-    if (inherits(session$driver, "ChromoteSession")) {
-      withr::defer(
-        {
-          # Delete the Crashpad folder if it exists
-          unlink(file.path(tempdir(), "Crashpad"), recursive = TRUE)
-        },
-        envir = .env
-      )
-      timeout <- if (on_ci()) 60 * 5 else 60
-      withr::local_options(list(chromote.timeout = timeout), .local_envir = .env)
+    if (session == "chromote") {
+      rlang::check_installed("chromote", call = call)
+    } else if (session == "selenium") {
+      rlang::check_installed("selenium", call = call)
+      if (!selenium_manager) {
+        rlang::check_installed("wdman", call = call)
+      }
+    } else {
+      rlang::check_installed("RSelenium", call = call)
+      if (selenium_manager) {
+        rlang::check_installed("selenium", call = call)
+      } else {
+        rlang::check_installed("wdman", call = call)
+      }
     }
   }
 
   session
+}
+
+browser_and_version <- function(session, browser, driver, call = rlang::caller_env()) {
+  version <- NULL
+  if (session == "chromote" && is.null(driver)) {
+    if (!is.null(browser) && browser != "chrome") {
+      warn_browser_chromote(call = call)
+    }
+
+    browser <- "chrome"
+  } else if (is.null(browser)) {
+    if (is.null(driver) || is_selenium_server(driver)) {
+      bv <- find_browser_and_version()
+
+      if (is.null(bv)) {
+        stop_default_browser(call = call)
+      }
+
+      browser <- bv$browser
+      version <- bv$version
+    }
+  } else {
+    if (browser != "phantomjs") {
+      version <- get_browser_version(browser)
+    }
+  }
+
+  list(
+    browser = browser,
+    version = version
+  )
 }
 
 #' @rdname selenider_session
@@ -387,7 +446,8 @@ create_selenium_server <- function(browser,
   if (selenium_manager) {
     selenium::selenium_server(
       version = version,
-      selenium_manager = version == "latest" || numeric_version(version) >= "4.9.0",
+      selenium_manager = version == "latest" ||
+        numeric_version(version) >= "4.9.0",
       interactive = FALSE,
       extra_args = c("-p", as.character(port), ...)
     )
@@ -406,9 +466,18 @@ create_selenium_server <- function(browser,
         )
       },
       error = function(e) {
-        if (browser == "chrome" && grepl("version requested doesnt match versions available", e$message)) {
-          # If the version of chrome we found is not available as a webdriver, use the latest one instead.
-          return(create_selenium_server(browser, port = port, version = "latest", quiet = quiet, ...))
+        to_match <- "version requested doesnt match versions available"
+        if (browser == "chrome" &&
+              grepl(to_match, e$message)) {
+          # If the version of chrome we found is not available as a webdriver,
+          # use the latest one instead.
+          return(create_selenium_server(
+            browser,
+            port = port,
+            version = "latest",
+            quiet = quiet,
+            ...
+          ))
         }
 
         stop_selenium_server(e)
@@ -423,7 +492,10 @@ create_selenium_server <- function(browser,
 #'   usually your local machine (`"localhost"`), but can be an IP address.
 #'
 #' @export
-create_selenium_client <- function(browser, port = 4444L, host = "localhost", ...) {
+create_selenium_client <- function(browser,
+                                   port = 4444L,
+                                   host = "localhost",
+                                   ...) {
   res <- rlang::try_fetch(
     selenium::wait_for_selenium_available(
       timeout = 20,
@@ -546,8 +618,9 @@ new_selenider_session <- function(session, driver, server, timeout) {
 
 #' Check the driver argument to selenider_server()
 #'
-#' If the `driver` argument to `selenider_server()` is not `NULL`, check it and convert it
-#' into a valid/consistent session object, throwing an error if it is invalid.
+#' If the `driver` argument to `selenider_server()` is not `NULL`, check it
+#' and convert it into a valid/consistent session object, throwing an error if
+#' it is invalid.
 #'
 #' @param x The supplied driver.
 #' @param browser The supplied/calculated browser.
@@ -556,11 +629,14 @@ new_selenider_session <- function(session, driver, server, timeout) {
 #' @returns
 #' Either a `chromote::ChromoteSession` object, or a named list with two items:
 #' * `client` - A [selenium::SeleniumSession] object.
-#' * `server` - A Selenium server object (the result of [wdman::selenium()]). This
-#'   is optional, and will not be included if the user only supplied a client.
+#' * `server` - A Selenium server object (the result of [wdman::selenium()]).
+#'   This is optional, and will not be included if the user only supplied a
+#'   client.
 #'
 #' @noRd
-check_supplied_driver <- function(x, browser = NULL, call = rlang::caller_env()) {
+check_supplied_driver <- function(x,
+                                  browser = NULL,
+                                  call = rlang::caller_env()) {
   if (inherits(x, "ChromoteSession")) {
     x
   } else if (inherits(x, "AppDriver")) {
@@ -573,55 +649,69 @@ check_supplied_driver <- function(x, browser = NULL, call = rlang::caller_env())
   } else if (is_selenium_client(x)) {
     list(client = x)
   } else if (is.list(x) || is.environment(x)) {
-    nms <- names(x)
-
-    client <- if ("client" %in% nms) check_selenium_client(x$client, call = call) else NULL
-    server <- if ("server" %in% nms) check_selenium_server(x$server, call = call) else NULL
-
-    if (is.null(client)) {
-      client <- find_using(x, is_selenium_client)
-    }
-
-    if (is.null(server)) {
-      server <- find_using(x, is_selenium_server)
-    }
-
-    if (is.null(client) && is.null(server)) {
-      stop_invalid_driver(x, is_list = TRUE, call = call)
-    } else if (is.null(client)) {
-      if (is.null(browser)) {
-        bv <- find_browser_and_version()
-
-        if (is.null(bv)) {
-          stop_default_browser(call = call)
-        }
-
-        browser <- bv$browser
-      }
-
-      port <- find_port_from_server(server, call = call)
-      client <- create_selenium_client(browser, port = port)
-      result <- list(
-        client = client,
-        server = server
-      )
-    } else if (is.null(server)) {
-      result <- list(client = client)
-    } else {
-      result <- list(client = client, server = server)
-    }
-
-    if (is.environment(x)) {
-      # In case `x` is the result of `RSelenium::rsDriver`, make sure the `reg.finalizer` method
-      # does not close the session when the environment is garbage collected.
-      x$client <- list(close = function() {})
-      x$server <- list(stop = function() {})
-    }
-
-    result
+    check_supplied_driver_list(x, browser, call = call)
   } else {
     stop_invalid_driver(x, call = call)
   }
+}
+
+check_supplied_driver_list <- function(x, browser, call = rlang::caller_env()) {
+  nms <- names(x)
+
+  client <- if ("client" %in% nms) {
+    check_selenium_client(x$client, call = call)
+  } else {
+    NULL
+  }
+
+  server <- if ("server" %in% nms) {
+    check_selenium_server(x$server, call = call)
+  } else {
+    NULL
+  }
+
+  if (is.null(client)) {
+    client <- find_using(x, is_selenium_client)
+  }
+
+  if (is.null(server)) {
+    server <- find_using(x, is_selenium_server)
+  }
+
+  if (is.null(client) && is.null(server)) {
+    stop_invalid_driver(x, is_list = TRUE, call = call)
+  } else if (is.null(client)) {
+    if (is.null(browser)) {
+      bv <- find_browser_and_version()
+
+      if (is.null(bv)) {
+        stop_default_browser(call = call)
+      }
+
+      browser <- bv$browser
+    }
+
+    port <- find_port_from_server(server, call = call)
+    client <- create_selenium_client(browser, port = port)
+    result <- list(
+      client = client,
+      server = server
+    )
+  } else if (is.null(server)) {
+    result <- list(client = client)
+  } else {
+    result <- list(client = client, server = server)
+  }
+
+  if (is.environment(x)) {
+    # In case `x` is the result of `RSelenium::rsDriver`, make sure the
+    # `reg.finalizer` method does not close the session when the environment is
+    # garbage collected.
+    x$client <- list(close = function() {})
+    x$server <- list(stop = function() {})
+  }
+
+  result
 }
 
 find_port_from_server <- function(x, call = rlang::caller_env()) {
@@ -650,9 +740,15 @@ find_port_selenium <- function(x) {
   if (is.na(result)) NULL else result
 }
 
-find_port_from_logs <- function(x, pattern = "http://(:?[0-9]+\\.)*[0-9]+:([0-9]+)") {
+find_port_from_logs <- function(
+  x,
+  pattern = "http://(:?[0-9]+\\.)*[0-9]+:([0-9]+)"
+) {
   matches <- regmatches(x, regexec(pattern, x))
-  port_matches <- stats::na.omit(unlist(lapply(matches, function(x) x[length(x)])))
+  port_matches <- stats::na.omit(unlist(lapply(
+    matches,
+    function(x) x[length(x)]
+  )))
   numeric_ports <- suppressWarnings(as.integer(port_matches))
   stats::na.omit(numeric_ports)[1]
 }

@@ -125,38 +125,19 @@ parse_condition_expr <- function(x, elem_name) {
     if (is_call_simple(x)) {
       name <- call_name(x)
 
-      if (name == "{") {
-        return(x)
-      }
+      # Handle simple cases
+      result <- parse_condition_simple(x, name, elem_name)
 
-      if (name %in% c("(", "!")) {
-        return(call2(
-          name, parse_condition_expr(call_args(x)[[1]], elem_name), .ns = call_ns(x)
-        ))
-      } else if (name %in% c("|", "||", "&", "&&")) {
-        args <- call_args(x)
-
-        return(call2(
-          name,
-          parse_condition_expr(args[[1]], elem_name),
-          parse_condition_expr(args[[2]], elem_name),
-          .ns = call_ns(x)
-        ))
-      } else if (name %in% c("all", "any")) {
-        args <- call_args(x)
-        return(call2(
-          name,
-          !!!lapply(args[names(args) != "na.rm"], parse_condition_expr, elem_name),
-          !!!args[names(args) == "na.rm"],
-          .ns = call_ns(x)
-        ))
+      if (!is.null(result)) {
+        return(result)
       }
     } else {
       name <- NA
     }
 
     if (!name %in% c("function", "new_function", "as_function", "as_closure")) {
-      if ("x" %in% call_args_names(x) && name %in% names(rlang::ns_env("selenider"))) {
+      if ("x" %in% call_args_names(x) &&
+            name %in% names(rlang::ns_env("selenider"))) {
         return(x)
       } else {
         return(call_insert(x, elem_name, quo = FALSE))
@@ -165,6 +146,44 @@ parse_condition_expr <- function(x, elem_name) {
   }
 
   call2(x, parse_expr(elem_name))
+}
+
+parse_condition_simple <- function(x, name, elem_name) {
+  if (name == "{") {
+    return(x)
+  }
+
+  if (name %in% c("(", "!")) {
+    return(call2(
+      name, parse_condition_expr(
+        call_args(x)[[1]],
+        elem_name
+      ), .ns = call_ns(x)
+    ))
+  } else if (name %in% c("|", "||", "&", "&&")) {
+    args <- call_args(x)
+
+    return(call2(
+      name,
+      parse_condition_expr(args[[1]], elem_name),
+      parse_condition_expr(args[[2]], elem_name),
+      .ns = call_ns(x)
+    ))
+  } else if (name %in% c("all", "any")) {
+    args <- call_args(x)
+    return(call2(
+      name,
+      !!!lapply(
+        args[names(args) != "na.rm"],
+        parse_condition_expr,
+        elem_name
+      ),
+      !!!args[names(args) == "na.rm"],
+      .ns = call_ns(x)
+    ))
+  }
+
+  NULL
 }
 
 #' Make a unique name for an element
@@ -187,7 +206,10 @@ parse_condition_expr <- function(x, elem_name) {
 make_elem_name <- function(x, name = "element") {
   expr <- paste0(lapply(x, get_expr_string), collapse = "")
 
-  collisions <- regmatches(expr, gregexpr(paste0("\\Q", name, "\\E(?:_*)"), expr))[[1]]
+  collisions <- regmatches(
+    expr,
+    gregexpr(paste0("\\Q", name, "\\E(?:_*)"), expr)
+  )[[1]]
 
   if (length(collisions) == 0) {
     return(name)
