@@ -18,15 +18,15 @@ elem_find(x, ...)
 \arguments{
 \item{x}{A \code{selenider_elements} object.}
 
-\item{...}{<\code{\link[rlang:dyn-dots]{dynamic-dots}}> Conditions (functions or function
-calls) that are used to filter the elements of \code{x}.}
+\item{...}{<\code{\link[rlang:dyn-dots]{dynamic-dots}}> Conditions (functions or
+function calls) that are used to filter the elements of \code{x}.}
 
-\item{i}{A number (or for \code{[}, a vector of one or more numbers) used to select
-elements by position.}
+\item{i}{A number (or for \code{[}, a vector of one or more numbers) used to
+select elements by position.}
 }
 \value{
-\code{elem_filter()} and \code{[} return a \code{selenider_elements} object, since they can result
-in multiple elements.
+\code{elem_filter()} and \code{[} return a \code{selenider_elements} object, since they can
+result in multiple elements.
 \code{elem_find()} and \code{[[} return a single \code{selenider_element} object.
 }
 \description{
@@ -34,19 +34,22 @@ Operators to extract a subset of elements, or a single element, from
 a selenider element collection.
 
 \code{elem_filter()} and \code{elem_find()} allow you to use conditions to filter HTML
-elements (see \code{\link[=is_present]{is_present()}} and other conditions). \code{elem_find()} returns the \emph{first}
-element that satisfies one or more conditions, while \code{elem_filter()} returns every
-element that satisfies these conditions.
+elements (see \code{\link[=is_present]{is_present()}} and other conditions). \code{elem_find()} returns
+the \emph{first} element that satisfies one or more conditions, while
+\code{elem_filter()} returns every element that satisfies these conditions.
 
-\code{[} and \code{[[} with a numeric subscript can be used on an element collection to filter
-the elements by position. \code{[} returns a single element at a specified location, while
-\code{[[} returns a collection of the elements at more than one position.
+\code{[} and \code{[[} with a numeric subscript can be used on an element collection
+to filter the elements by position. \code{[} returns a single element at a
+specified location, while \code{[[} returns a collection of the elements at more
+than one position.
 }
 \details{
-As with the \code{\link[=find_element]{find_element()}} and \code{\link[=find_elements]{find_elements()}} functions, these functions are
-lazy, meaning that the elements are not fetched and filtered until they are needed.
+As with the \code{\link[=find_element]{find_element()}} and \code{\link[=find_elements]{find_elements()}} functions, these
+functions are lazy, meaning that the elements are not fetched and filtered
+until they are needed.
 
-Conditions can be functions or function calls (see \code{\link[=elem_expect]{elem_expect()}} for more details).
+Conditions can be functions or function calls (see \code{\link[=elem_expect]{elem_expect()}} for more
+details).
 }
 \examples{
 \dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

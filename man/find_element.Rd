@@ -54,9 +54,9 @@ of other methods.
 If more than one method is used to select an element (e.g. \code{css} and
 \code{xpath}), the first element which satisfies all conditions will be found.
 
-CSS selectors are generally recommended over other options, since they are usually
-the easiest to read. Use \code{"tag_name"} to select by tag name, \code{".class"} to select
-by class, and \code{"#id"} to select by id.
+CSS selectors are generally recommended over other options, since they are
+usually the easiest to read. Use \code{"tag_name"} to select by tag name,
+\code{".class"} to select by class, and \code{"#id"} to select by id.
 }
 \examples{
 \dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

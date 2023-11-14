@@ -17,17 +17,17 @@ that must return a logical value. If multiple conditions are given, they
 must all be \code{TRUE} for the test to pass.}
 
 \item{testthat}{Whether to treat the expectation as a \code{testthat} test. You
-\emph{do not} need to explicitly provide this most of the time, since by default,
-we can use \code{\link[testthat:is_testing]{testthat::is_testing()}} to figure out whether \code{elem_expect()} is
-being called from within a \code{testthat} test.}
+\emph{do not} need to explicitly provide this most of the time, since by
+default, we can use \code{\link[testthat:is_testing]{testthat::is_testing()}} to figure out whether
+\code{elem_expect()} is being called from within a \code{testthat} test.}
 
 \item{timeout}{The number of seconds to wait for a condition to pass. If not
 specified, the timeout used for \code{x} will be used, or the timeout of the
 local session if an element is not given.}
 }
 \value{
-\code{elem_expect()} invisibly returns the element(s) \code{x}, or \code{NULL} if an element or
-collection of elements was not given in \code{x}.
+\code{elem_expect()} invisibly returns the element(s) \code{x}, or \code{NULL} if an
+element or collection of elements was not given in \code{x}.
 
 \code{elem_wait_for()} returns a boolean flag: TRUE if the test passes, FALSE
 otherwise.
@@ -44,13 +44,14 @@ not the test passed), allowing you to handle the failure case explicitly.
 Conditions can be supplied as functions or calls.
 
 Functions allow you to use unary conditions without formatting them as a
-call (e.g. \code{is_present} rather than \code{is_present()}). It also allows you to make
-use of R's \link[base:function]{anonymous function syntax} to quickly create
-custom conditions. \code{x} will be supplied as the first argument of this function.
+call (e.g. \code{is_present} rather than \code{is_present()}). It also allows you to
+make use of R's \link[base:function]{anonymous function syntax} to quickly
+create custom conditions. \code{x} will be supplied as the first argument of this
+function.
 
-Function calls allow you to use conditions that take multiple arguments (e.g.
-\code{has_text()}) without the use of an intermediate function. The call will
-be modified so that \code{x} is the first argument to the function call. For
+Function calls allow you to use conditions that take multiple arguments
+(e.g. \code{has_text()}) without the use of an intermediate function. The call
+will be modified so that \code{x} is the first argument to the function call. For
 example, \code{has_text("a")} will be modified to become: \code{has_text(x, "a")}.
 
 The and (\code{&&}), or (\code{||}) and not (\code{!}) functions can be used on both types
@@ -77,8 +78,8 @@ manually. To override this default, manually specify a timeout.
 
 These two features allow you to use functions like \code{\link[=elem_text]{elem_text()}} to access
 properties of an element, without needing to worry about the errors that
-they throw or the timeouts that they use. See Examples for a few examples of a
-custom condition.
+they throw or the timeouts that they use. See Examples for a few examples of
+a custom condition.
 
 These custom conditions can also be used with \code{\link[=elem_filter]{elem_filter()}} and
 \code{\link[=elem_find]{elem_find()}}.
@@ -133,13 +134,15 @@ s("p") |>
 s("p") |>
   elem_expect(\(elem) identical(elem_text(elem), "Example text"))
 
-# If your conditions are not specific to an element, you can omit the `x` argument
+# If your conditions are not specific to an element, you can omit the `x`
+# argument
 elem_1 <- s(".class1")
 elem_2 <- s(".class2")
 
 elem_expect(is_present(elem_1) || is_present(elem_2))
 
-# We can now use the conditions on their own to figure out which element exists
+# We can now use the conditions on their own to figure out which element
+# exists
 if (is_present(elem_1)) {
   print("Element 1 is visible")
 } else {
@@ -165,15 +168,16 @@ s("p") |>
 # Or create a function, to reuse the condition multiple times
 text_contains <- function(x, pattern) {
   text <- elem_text(x)
-  
+
   grepl(pattern, text)
 }
 
 s("p") |>
   elem_expect(text_contains("Example *"))
 
-# If we want to continue on error, we need to use the "expect_error_continue" class
-# This involves making a custom error object
+# If we want to continue on error, we need to use the
+# "expect_error_continue" class.
+# This involves making a custom error object.
 error_condition <- function() {
   my_condition <- list(message = "Custom error!")
   class(my_condition) <- c("expect_error_continue", "error", "condition")
@@ -202,8 +206,8 @@ selenider_cleanup()
 \itemize{
 \item \code{\link[=is_present]{is_present()}} and other conditions for predicates for HTML elements.
 (If you scroll down to the \emph{See also} section, you will find the rest).
-\item \code{\link[=elem_expect_all]{elem_expect_all()}} and \code{\link[=elem_wait_until_all]{elem_wait_until_all()}} for an easy way to test a single
-condition on multiple elements.
+\item \code{\link[=elem_expect_all]{elem_expect_all()}} and \code{\link[=elem_wait_until_all]{elem_wait_until_all()}} for an easy way to test a
+single condition on multiple elements.
 \item \code{\link[=elem_filter]{elem_filter()}} and \code{\link[=elem_find]{elem_find()}} to use conditions to filter elements.
 }
 }

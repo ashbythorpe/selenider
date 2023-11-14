@@ -9,7 +9,8 @@ elem_cache(x, timeout = NULL)
 \arguments{
 \item{x}{A \code{selenider_element}/\code{selenider_elements} object.}
 
-\item{timeout}{How long to wait for the element(s) to exist while collecting them.}
+\item{timeout}{How long to wait for the element(s) to exist while collecting
+them.}
 }
 \value{
 A modified version of \code{x}. The result of \code{elem_cache()} can be used
@@ -24,13 +25,13 @@ has been collected, resulting in errors and unreliable behaviour.
 
 \code{elem_cache()} forces an element or collection of elements to be collected
 and stored, making it eager rather than lazy. This is useful when you are
-operating on the same element multiple times, since only collecting the element
-once will improve performance. However, you must be sure that the element
-will not change on the page while you are using it.
+operating on the same element multiple times, since only collecting the
+element once will improve performance. However, you must be sure that the
+element will not change on the page while you are using it.
 }
 \details{
-These functions do not make selenider elements \emph{permanently} eager. Further sub-elements
-will not be cached unless specified.
+These functions do not make selenider elements \emph{permanently} eager. Further
+sub-elements will not be cached unless specified.
 
 For example, consider the following code:
 
@@ -40,8 +41,8 @@ For example, consider the following code:
   find_element(".class2")
 }\if{html}{\out{</div>}}
 
-In this example, the parent of the element with class ".class1" will be cached,
-but the child element with class ".class2" will not.
+In this example, the parent of the element with class ".class1" will be
+cached, but the child element with class ".class2" will not.
 }
 \examples{
 \dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
@@ -54,7 +55,8 @@ html <- "
 
 session <- minimal_selenider_session(html)
 
-# Selecting this button may be slow, since we are using relative XPath selectors.
+# Selecting this button may be slow, since we are using relative XPath
+# selectors.
 button <- s("#specifictext") |>
   elem_siblings() |>
   elem_find(has_name("button"))
@@ -88,6 +90,7 @@ selenider_cleanup()
 \seealso{
 \itemize{
 \item \code{\link[=find_element]{find_element()}} and \code{\link[=find_elements]{find_elements()}} to select elements.
-\item \code{\link[=element_list]{element_list()}} and \code{\link[=elem_flatmap]{elem_flatmap()}} if you want to iterate over an element collection.
+\item \code{\link[=element_list]{element_list()}} and \code{\link[=elem_flatmap]{elem_flatmap()}} if you want to iterate over an
+element collection.
 }
 }

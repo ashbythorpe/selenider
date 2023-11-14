@@ -22,8 +22,9 @@ elem_descendants(x)
 \item{x}{A \code{selenider_element} object.}
 }
 \value{
-All functions return a \code{selenider_elements} object, except \code{elem_parent()},
-which returns a \code{selenider_element} object (since an element can only have one parent).
+All functions return a \code{selenider_elements} object, except
+\code{elem_parent()}, which returns a \code{selenider_element} object (since an
+element can only have one parent).
 }
 \description{
 Find all elements with a certain relative position to an HTML element.
@@ -33,19 +34,19 @@ Find all elements with a certain relative position to an HTML element.
 
 \code{elem_parent()} selects the element that contains the current element.
 
-\code{elem_siblings()} selects every element which has the same parent as the current
-element.
+\code{elem_siblings()} selects every element which has the same parent as the
+current element.
 
-\code{elem_children()} selects every element which is connected to and directly below
-the current element.
+\code{elem_children()} selects every element which is connected to and directly
+below the current element.
 
-\code{elem_descendants()} selects every element that is contained by the current element.
-The current element does not have to be a direct parent, but must be some type of
-ancestor.
+\code{elem_descendants()} selects every element that is contained by the current
+element. The current element does not have to be a direct parent, but must
+be some type of ancestor.
 }
 \details{
-All functions except \code{elem_children()} and \code{elem_descendants()} use XPath selectors,
-so may be slow, especially when using \code{chromote} as a backend.
+All functions except \code{elem_children()} and \code{elem_descendants()} use XPath
+selectors, so may be slow, especially when using \code{chromote} as a backend.
 }
 \examples{
 \dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
@@ -110,11 +111,11 @@ selenider_cleanup()
 }
 \seealso{
 \itemize{
-\item \url{http://web.simmons.edu/~grovesd/comm244/notes/week4/document-tree} for a simple
-and visual explanation of the document tree.
-\item \code{\link[=find_element]{find_element()}} and \code{\link[=find_elements]{find_elements()}} for other ways of selecting elements. These
-functions allow you to select ancestors using one or more conditions (e.g. CSS
-selectors).
+\item \url{http://web.simmons.edu/~grovesd/comm244/notes/week4/document-tree} for a
+simple and visual explanation of the document tree.
+\item \code{\link[=find_element]{find_element()}} and \code{\link[=find_elements]{find_elements()}} for other ways of selecting
+elements. These functions allow you to select ancestors using one or more
+conditions (e.g. CSS selectors).
 \item \code{\link[=elem_filter]{elem_filter()}} and \code{\link[=elem_find]{elem_find()}} for filtering element collections.
 }
 }

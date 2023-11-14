@@ -18,9 +18,9 @@ must all be \code{TRUE} for the test to pass. See \code{\link[=elem_expect]{elem
 details.}
 
 \item{testthat}{Whether to treat the expectation as a \code{testthat} test. You
-\emph{do not} need to explicitly provide this most of the time, since by default,
-we can use \code{\link[testthat:is_testing]{testthat::is_testing()}} to figure out whether \code{elem_expect()} is
-being called from within a \code{testthat} test.}
+\emph{do not} need to explicitly provide this most of the time, since by
+default, we can use \code{\link[testthat:is_testing]{testthat::is_testing()}} to figure out whether
+\code{elem_expect()} is being called from within a \code{testthat} test.}
 
 \item{timeout}{The number of seconds to wait for a condition to pass. If not
 specified, the timeout used for \code{x} will be used, or the timeout of the
@@ -29,8 +29,8 @@ local session if an element is not given.}
 \value{
 \code{elem_expect_all()} returns \code{x}, invisibly.
 
-\code{elem_wait_until_all()} returns a boolean flag: TRUE if the test passes, FALSE
-otherwise.
+\code{elem_wait_until_all()} returns a boolean flag: TRUE if the test passes,
+FALSE otherwise.
 }
 \description{
 \code{elem_expect_all()} and \code{elem_wait_until_all()} are complements to
@@ -42,18 +42,22 @@ If \code{x} does not contain any elements, \code{elem_expect_all()} and
 \code{elem_wait_until_all()} will succeed. You may want to first verify that
 at least one element exists with \code{\link[=has_at_least]{has_at_least()}}.
 
-\code{elem_expect_all()} and \code{elem_wait_until_all()} can be thought of as alternatives
-to the use of \code{all(vapply(FUN.VALUE = logical(1)))} (or \code{\link[purrr:every]{purrr::every()}})
-within \code{\link[=elem_expect]{elem_expect()}} and \code{\link[=elem_wait_until]{elem_wait_until()}}.
+\code{elem_expect_all()} and \code{elem_wait_until_all()} can be thought of as
+alternatives to the use of \code{all(vapply(FUN.VALUE = logical(1)))} (or
+\code{\link[purrr:every]{purrr::every()}}) within \code{\link[=elem_expect]{elem_expect()}} and \code{\link[=elem_wait_until]{elem_wait_until()}}.
 
 For example, the following two expressions are equivalent (where \code{x} is an
 element collection).
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{elem_expect(x, \\(element) all(vapply(as.list(element), is_present, logical(1))))
+\if{html}{\out{<div class="sourceCode">}}\preformatted{elem_expect(
+  x,
+  \\(element) all(vapply(as.list(element), is_present, logical(1)))
+)
 elem_expect_all(x, is_present)
 }\if{html}{\out{</div>}}
 
-However, the second example will give a more detailed error message on failure.
+However, the second example will give a more detailed error message on
+failure.
 }
 \examples{
 \dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

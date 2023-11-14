@@ -5,9 +5,14 @@
 \alias{read_html.selenider_element}
 \title{Read a live HTML document}
 \usage{
-\method{read_html}{selenider_session}(x, encoding = "", ..., options = c("RECOVER", "NOERROR", "NOBLANKS"))
+read_html.selenider_session(
+  x,
+  encoding = "",
+  ...,
+  options = c("RECOVER", "NOERROR", "NOBLANKS")
+)
 
-\method{read_html}{selenider_element}(
+read_html.selenider_element(
   x,
   encoding = "",
   timeout = NULL,
@@ -24,8 +29,8 @@
 \item{timeout}{How long to wait for \code{x} to exist in the DOM before throwing
 an error.}
 
-\item{outer}{Whether to read the inner (all children of the current element) or
-outer (including the element itself) HTML of \code{x}.}
+\item{outer}{Whether to read the inner (all children of the current element)
+or outer (including the element itself) HTML of \code{x}.}
 }
 \value{
 \code{read_html()} returns an XML document. Note that HTML will always be wrapped

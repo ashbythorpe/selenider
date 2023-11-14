@@ -34,13 +34,13 @@ The return value of the JavaScript function, turned back into an R object.
 
 Execute a JavaScript function on zero or more arguments.
 
-\code{execute_js_expr()} is a simpler version of \code{execute_js_fn()} that can evaluate
-simple expressions (e.g. "alert()"). To return a value, you must do so explicitly
-using "return".
+\code{execute_js_expr()} is a simpler version of \code{execute_js_fn()} that can
+evaluate simple expressions (e.g. "alert()"). To return a value, you must
+do so explicitly using "return".
 
-These functions are experimental because their names and parameters are liable to
-change. Additionally, their behaviour can be inconsistent between different session types
-(chromote and selenium) and different browsers.
+These functions are experimental because their names and parameters are
+liable to change. Additionally, their behaviour can be inconsistent between
+different session types (chromote and selenium) and different browsers.
 }
 \details{
 \code{...} can contain \code{selenider_element}/\code{selenider_elements} objects,
@@ -49,10 +49,10 @@ more complex objects (e.g. lists of selenider elements) will not be
 moved into the JavaScript world correctly.
 
 Similarly, nodes and lists of nodes returned from a JavaScript function will
-be converted into their corresponding \code{selenider_element}/\code{selenider_elements}
-objects, while more complex objects will not. These elements are not lazy (see
-\code{\link[=elem_cache]{elem_cache()}}), so make sure you only use them while you are sure they are
-still on the page.
+be converted into their corresponding
+\code{selenider_element}/\code{selenider_elements} objects, while more complex objects
+will not. These elements are not lazy (see \code{\link[=elem_cache]{elem_cache()}}), so make sure you
+only use them while you are sure they are still on the page.
 }
 \examples{
 \dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

@@ -13,7 +13,8 @@ selenider_available(
 skip_if_selenider_unavailable(session = c("chromote", "selenium"))
 }
 \arguments{
-\item{session}{Which session we should check. \code{"chromote"} is used by default.}
+\item{session}{Which session we should check. \code{"chromote"} is used by
+default.}
 
 \item{online}{Whether we need to check for an internet connection.}
 }
@@ -24,16 +25,16 @@ A boolean flag: \code{TRUE} or \code{FALSE}.
 Checks if selenider's dependencies are available, and that we are in an
 environment where it makes sense to open a selenider session.
 
-\code{skip_if_selenider_unavailable()} skips a testthat test if \code{selenider_available()}
-returns \code{FALSE}.
+\code{skip_if_selenider_unavailable()} skips a testthat test if
+\code{selenider_available()} returns \code{FALSE}.
 }
 \details{
 Specifically, the following is checked:
 \itemize{
-\item The \code{SELENIDER_AVAILABLE} environment variable. Set this to \code{"TRUE" }or \code{"FALSE"}
-to override this function.
-\item Whether we are on CRAN (using the \code{NOT_CRAN} environment variable). If we are,
-the function returns \code{FALSE}.
+\item The \code{SELENIDER_AVAILABLE} environment variable. Set this to \code{"TRUE" }or
+\code{"FALSE"} to override this function.
+\item Whether we are on CRAN (using the \code{NOT_CRAN} environment variable). If we
+are, the function returns \code{FALSE}.
 \item Whether an internet connection is available (using \code{\link[curl:nslookup]{curl::nslookup()}}).
 }
 

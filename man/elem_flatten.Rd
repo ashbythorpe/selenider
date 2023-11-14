@@ -23,8 +23,8 @@ A \code{selenider_elements} object.
 Combine a set of \code{selenider_element}/\code{selenider_elements} objects
 into a single \code{selenider_elements} object, allowing you to
 perform actions on them at once. \code{c()} and \code{elem_flatten()} do the same
-thing, but \code{elem_flatten()} works when given a list of \code{selenider_element}/\code{selenider_elements}
-objects.
+thing, but \code{elem_flatten()} works when given a list of
+\code{selenider_element}/\code{selenider_elements} objects.
 }
 \examples{
 \dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

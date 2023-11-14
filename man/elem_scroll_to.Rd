@@ -59,6 +59,7 @@ selenider_cleanup()
 Other actions: 
 \code{\link{elem_click}()},
 \code{\link{elem_hover}()},
+\code{\link{elem_select}()},
 \code{\link{elem_set_value}()},
 \code{\link{elem_submit}()}
 }

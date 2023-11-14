@@ -30,8 +30,8 @@ elem_flatmap(x, .f, ...)
 
 \code{as.list()} transforms a \code{selenider_elements} object into a list of
 \code{selenider_element} objects. The result can then be used in for loops and
-higher order functions like \code{\link[=lapply]{lapply()}}/\code{\link[purrr:map]{purrr::map()}} (whereas a \code{selenider_element}
-object cannot).a  This function is stable.
+higher order functions like \code{\link[=lapply]{lapply()}}/\code{\link[purrr:map]{purrr::map()}} (whereas a
+\code{selenider_element} object cannot). This function is stable.
 
 \code{element_list()} is the underlying function called by \code{element_list()}.
 
@@ -47,13 +47,15 @@ elements will be maintained, and nothing will be fetched from the DOM.
 This function is experimental, and won't work if \code{.f} uses \code{\link[=elem_flatten]{elem_flatten()}}
 (or nested \code{elem_flatmap()}).
 
-\code{elem_flatmap()} works by executing \code{.f} on a mock element, then recording the
-results in \code{x}. This means that no matter the length of \code{x}, \code{.f} is only evaluated
-once, and during the \code{elem_flatmap()} call. For this reason, \code{.f} should not invoke
-any side effects or do anything other than selecting sub-elements.
+\code{elem_flatmap()} works by executing \code{.f} on a mock element, then recording
+the results in \code{x}. This means that no matter the length of \code{x}, \code{.f} is
+only evaluated once, and during the \code{elem_flatmap()} call. For this reason,
+\code{.f} should not invoke any side effects or do anything other than selecting
+sub-elements.
 
-\code{elem_flatmap()} can essentially be viewed as a map operation (e.g. \code{\link[=lapply]{lapply()}}, \code{\link[purrr:map]{purrr::map()}})
-followed by a flattening operation (\code{\link[=elem_flatmap]{elem_flatmap()}}). This means that:
+\code{elem_flatmap()} can essentially be viewed as a map operation (e.g.
+\code{\link[=lapply]{lapply()}}, \code{\link[purrr:map]{purrr::map()}}) followed by a flattening operation
+(\code{\link[=elem_flatmap]{elem_flatmap()}}). This means that:
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{x |>
   elem_flatmap(.f)
@@ -71,11 +73,12 @@ However, the second approach is not done lazily.
 
 \code{as.list()}/\code{element_list()} essentially turns \code{x} into:
 \code{list(x[[1]], x[[2]], ...)}
-However, to do this, the length of \code{x} must be computed. This means that while
-each element inside the list is still lazy, the list itself cannot be considered
-lazy, since the number of elements in the DOM may change. To avoid problems, it is
-recommended to use an element list just after it is created, to make sure the
-list is an accurate representation of the DOM when it is being used.
+However, to do this, the length of \code{x} must be computed. This means that
+while each element inside the list is still lazy, the list itself cannot be
+considered lazy, since the number of elements in the DOM may change. To
+avoid problems, it is recommended to use an element list just after it is
+created, to make sure the list is an accurate representation of the DOM
+when it is being used.
 }
 \examples{
 \dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
@@ -122,8 +125,9 @@ selenider_cleanup()
 }
 \seealso{
 \itemize{
-\item \code{\link[=elem_flatten]{elem_flatten()}} to combine multiple \code{selenider_element}/\code{selenider_elements} objects
-into a single object.
-\item \code{\link[=elem_filter]{elem_filter()}} and \code{\link[=elem_find]{elem_find()}} to filter element collections using a condition.
+\item \code{\link[=elem_flatten]{elem_flatten()}} to combine multiple
+\code{selenider_element}/\code{selenider_elements} objects into a single object.
+\item \code{\link[=elem_filter]{elem_filter()}} and \code{\link[=elem_find]{elem_find()}} to filter element collections using a
+condition.
 }
 }

@@ -51,6 +51,7 @@ Other actions:
 \code{\link{elem_click}()},
 \code{\link{elem_hover}()},
 \code{\link{elem_scroll_to}()},
+\code{\link{elem_select}()},
 \code{\link{elem_set_value}()}
 }
 \concept{actions}
