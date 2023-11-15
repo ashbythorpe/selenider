@@ -1,3 +1,5 @@
+<!doctype html>
+
 <h1>Site automation tests</h1>
 
 <p>The following button toggles a paragraph:</p>
@@ -28,5 +30,22 @@
 </form>
 <p id="form-output" style="color: red"></p>
 
+<select id="selection">
+  <option value="1">One</option>
+  <option value="2">Two</option>
+  <option value="3">Three</option>
+</select>
+
+<p id="selection-output"></p>
+
+<select multiple id="multiple-selection">
+  <option value="1">One</option>
+  <option value="2">Two</option>
+  <option value="3">Three</option>
+</select>
+
+<p id="multiple-selection-output"></p>
+
 <br />
+<script src="jquery-3.7.1.min.js"></script>
 <script src="test_site.js"></script>
