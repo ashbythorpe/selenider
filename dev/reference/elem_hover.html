@@ -94,6 +94,7 @@ clicking or interacting with it.</p>
     <div class="dont-index"><p>Other actions: 
 <code><a href="elem_click.html">elem_click</a>()</code>,
 <code><a href="elem_scroll_to.html">elem_scroll_to</a>()</code>,
+<code><a href="elem_select.html">elem_select</a>()</code>,
 <code><a href="elem_set_value.html">elem_set_value</a>()</code>,
 <code><a href="elem_submit.html">elem_submit</a>()</code></p></div>
     </div>
@@ -101,13 +102,15 @@ clicking or interacting with it.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="va">html</span> <span class="op">&lt;-</span> <span class="st">"</span></span>
-<span><span class="st">&lt;button onmouseover = settext()&gt; &lt;/button&gt;</span></span>
+<span><span class="st">&lt;button onmouseover = settext()&gt;&lt;/button&gt;</span></span>
 <span><span class="st">&lt;p class = 'text'&gt;&lt;/p&gt;</span></span>
 <span><span class="st">"</span></span>
 <span></span>
 <span><span class="va">js</span> <span class="op">&lt;-</span> <span class="st">"</span></span>
 <span><span class="st">function settext() {</span></span>
-<span><span class="st">  document.getElementsByClassName('text').item(0).innerHTML = 'Button hovered!'</span></span>
+<span><span class="st">  const element = document.getElementsByClassName('text').item(0);</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">  element.innerHTML = 'Button hovered!';</span></span>
 <span><span class="st">}</span></span>
 <span><span class="st">"</span></span>
 <span></span>

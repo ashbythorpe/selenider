@@ -91,6 +91,7 @@
     <div class="dont-index"><p>Other actions: 
 <code><a href="elem_click.html">elem_click</a>()</code>,
 <code><a href="elem_hover.html">elem_hover</a>()</code>,
+<code><a href="elem_select.html">elem_select</a>()</code>,
 <code><a href="elem_set_value.html">elem_set_value</a>()</code>,
 <code><a href="elem_submit.html">elem_submit</a>()</code></p></div>
     </div>
@@ -108,7 +109,8 @@
 <span><span class="st">  let element = document.getElementsByTagName('p').item(0);</span></span>
 <span><span class="st">  let rect = element.getBoundingClientRect();</span></span>
 <span><span class="st">  // If paragraph is in view</span></span>
-<span><span class="st">  if (rect.bottom &lt;= (window.innerHeight || document.documentElement.clientHeight)) {</span></span>
+<span><span class="st">  const height = window.innerHeight || document.documentElement.clientHeight;</span></span>
+<span><span class="st">  if (rect.bottom &lt;= height) {</span></span>
 <span><span class="st">    element.innerText = 'You found me!';</span></span>
 <span><span class="st">  }</span></span>
 <span><span class="st">}</span></span>

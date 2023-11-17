@@ -73,9 +73,9 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>x</dt>
-<dd><p>A <code>selenider_element</code> object. For <code>elem_send_keys()</code>, this can be <code>NULL</code>,
-meaning that the keys will be sent to the current page (or the currently focused
-element) instead of a specific element.</p></dd>
+<dd><p>A <code>selenider_element</code> object. For <code>elem_send_keys()</code>, this can be
+<code>NULL</code>, meaning that the keys will be sent to the current page (or the
+currently focused element) instead of a specific element.</p></dd>
 
 
 <dt>text</dt>
@@ -91,8 +91,9 @@ element) instead of a specific element.</p></dd>
 
 
 <dt>modifiers</dt>
-<dd><p>A character vector; one or more of "shift", "ctrl"/"control", "alt", and "command"/meta".
-Note that when using chromote as a backend, these do not work on Mac OS.</p></dd>
+<dd><p>A character vector; one or more of "shift",
+"ctrl"/"control", "alt", and "command"/meta". Note that when using
+chromote as a backend, these do not work on Mac OS.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -113,13 +114,18 @@ existing content.</p>
 <code><a href="elem_click.html">elem_click</a>()</code>,
 <code><a href="elem_hover.html">elem_hover</a>()</code>,
 <code><a href="elem_scroll_to.html">elem_scroll_to</a>()</code>,
+<code><a href="elem_select.html">elem_select</a>()</code>,
 <code><a href="elem_submit.html">elem_submit</a>()</code></p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="va">html</span> <span class="op">&lt;-</span> <span class="st">"</span></span>
-<span><span class="st">&lt;input type='text' oninput='recordChange(event)' onkeypress='return checkEnter(event);'&gt;</span></span>
+<span><span class="st">&lt;input</span></span>
+<span><span class="st">  type='text'</span></span>
+<span><span class="st">  oninput='recordChange(event)'</span></span>
+<span><span class="st">  onkeypress='return checkEnter(event);'</span></span>
+<span><span class="st">/&gt;</span></span>
 <span><span class="st">&lt;p&gt;&lt;/p&gt;</span></span>
 <span><span class="st">"</span></span>
 <span></span>
