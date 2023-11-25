@@ -26,11 +26,6 @@ selenider_test_session <- function(x, .env = rlang::caller_env()) {
       envir = .env
     )
   } else if (docker && session == "selenium") {
-    if (selenium::selenium_server_available()) {
-      print(selenium::get_server_status())
-      stop("Selenium server not running")
-    }
-
     client <- create_selenium_client(browser, port = port)
 
     result <- selenider_session(driver = client, .env = .env)
