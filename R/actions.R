@@ -682,7 +682,7 @@ elem_send_keys <- function(x, ..., modifiers = NULL, timeout = NULL) {
   check_dots_unnamed()
 
   if (is.null(x)) {
-    x <- get_session()
+    x <- get_session(.env = rlang::caller_env())
   }
 
   exprs <- enexprs(...)
@@ -945,7 +945,7 @@ elem_scroll_to <- function(x, js = FALSE, timeout = NULL) {
   timeout <- get_timeout(timeout, x$timeout)
 
   # Firefox does not allow you to scroll to an element if not in view.
-  if (cant_scroll_to(x, js)) {
+  if (js || cant_scroll_to_manually(x)) {
     element <- get_element_for_action(
       x,
       action = "scroll to {.arg x} using JavaScript",
@@ -972,8 +972,8 @@ elem_scroll_to <- function(x, js = FALSE, timeout = NULL) {
   invisible(x)
 }
 
-cant_scroll_to <- function(x, js) {
-  js || x$session == "chromote" ||
+cant_scroll_to_manually <- function(x) {
+  x$session == "chromote" ||
     (x$session == "selenium" && x$driver$browser == "firefox") ||
     (x$session == "rselenium" && x$driver$browserName == "firefox")
 }

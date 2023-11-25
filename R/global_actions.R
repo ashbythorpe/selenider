@@ -299,7 +299,7 @@ get_page_source <- function(session = NULL, ...) {
   rlang::check_installed("xml2")
 
   if (is.null(session)) {
-    session <- get_session()
+    session <- get_session(.env = caller_env())
   }
 
   driver <- session$driver
@@ -342,7 +342,7 @@ get_page_source <- function(session = NULL, ...) {
 #' @export
 current_url <- function(session = NULL) {
   if (is.null(session)) {
-    session <- get_session()
+    session <- get_session(.env = caller_env())
   }
 
   driver <- session$driver

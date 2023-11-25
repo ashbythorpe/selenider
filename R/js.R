@@ -225,7 +225,7 @@ get_info_from_args <- function(args, session, timeout) {
 
   if (is.null(driver)) {
     if (is.null(session)) {
-      session <- get_session()
+      session <- get_session(.env = caller_env(2))
     }
 
     driver <- session$driver
