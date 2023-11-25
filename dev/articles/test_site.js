@@ -35,6 +35,7 @@ $(function () {
     $("#multiple-selection-output").text(
       $(this)
         .val()
+        .map(Number)
         .reduce((x, y) => x + y, 0),
     );
   });
