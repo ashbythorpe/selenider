@@ -28,7 +28,7 @@ format_lazy_selenider_element <- function(x, ...) {
     bullets <- format_lazy_element(x)
     cli::cli_text("A selenider element selecting:")
 
-    if (length(bullets) == 1) {
+    if (length(bullets[names(bullets) != " "]) == 1) {
       cli::cli_text(bullets)
     } else {
       cli::cli_bullets(bullets)
@@ -57,7 +57,7 @@ format_lazy_selenider_elements <- function(x, ...) {
     bullets <- format_lazy_elements(x)
     cli::cli_text("A collection of selenider elements selecting:")
 
-    if (length(bullets) == 1) {
+    if (length(bullets[names(bullets) != " "]) == 1) {
       cli::cli_text(bullets)
     } else {
       cli::cli_bullets(bullets)

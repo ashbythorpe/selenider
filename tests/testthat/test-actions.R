@@ -1,7 +1,7 @@
 test_that("actions work", {
   session <- selenider_test_session()
 
-  open_url("https://ashbythorpe.github.io/selenider/articles/test-site.html")
+  open_url("https://ashbythorpe.github.io/selenider/dev/articles/test-site.html")
 
   # Button tests
 
@@ -58,6 +58,151 @@ test_that("actions work", {
   elem_submit(button)
 
   elem_expect(s("#form-output"), has_text("Form submitted"))
+
+  output <- s("#selection-output")
+  selection <- s("#selection")
+
+  elem_expect(output, has_exact_text(""))
+
+  elem_select(selection, 2)
+
+  elem_expect(output, has_text("2"))
+
+  elem_select(selection, 1)
+
+  elem_expect(output, has_text("1"))
+
+  elem_select(selection, text = "Three")
+
+  elem_expect(output, has_text("3"))
+
+  elem_select(selection, index = 2)
+
+  elem_expect(output, has_text("2"))
+
+  elem_select(find_element(selection, "option"))
+
+  elem_expect(output, has_text("1"))
+
+  elem_select(selection)
+
+  elem_expect(output, has_exact_text(""))
+
+  output <- s("#multiple-selection-output")
+  selection <- s("#multiple-selection")
+
+  elem_expect(output, has_exact_text(""))
+
+  elem_select(selection, 2)
+
+  elem_expect(output, has_text("2"))
+
+  elem_select(selection, 1, reset_other = FALSE)
+
+  elem_expect(output, has_text("3"))
+
+  elem_select(selection, c(2, 3))
+
+  elem_expect(output, has_text("5"))
+
+  elem_select(selection, c(1, 2), reset_other = FALSE)
+
+  elem_expect(output, has_text("6"))
+
+  elem_select(selection, text = c("One", "Three"))
+
+  elem_expect(output, has_text("4"))
+
+  elem_select(selection, text = "Two", reset_other = FALSE)
+
+  elem_expect(output, has_text("6"))
+
+  elem_select(selection, 1)
+
+  elem_select(selection, text = c("Two", "Three"), reset_other = FALSE)
+
+  elem_expect(output, has_text("6"))
+
+  elem_select(selection, index = c(1, 2))
+
+  elem_expect(output, has_text("3"))
+
+  elem_select(selection, index = 3, reset_other = FALSE)
+
+  elem_expect(output, has_text("6"))
+
+  elem_select(selection, 1)
+
+  elem_select(selection, index = c(1, 2), reset_other = FALSE)
+
+  elem_expect(output, has_text("3"))
+
+  elem_select(find_elements(selection, "option")[-1])
+
+  elem_expect(output, has_text("5"))
+
+  elem_select(find_element(selection, "option"), reset_other = FALSE)
+
+  elem_expect(output, has_text("6"))
+
+  elem_select(selection, 1)
+
+  elem_select(find_elements(selection, "option")[-1], reset_other = FALSE)
+
+  elem_expect(output, has_text("6"))
+
+  elem_select(selection)
+
+  elem_expect(output, has_text("0"))
+})
+
+test_that("get_element_for_selection() works", {
+  session <- selenider_test_session()
+
+  open_url("https://ashbythorpe.github.io/selenider/dev/articles/test-site.html")
+
+  selection <- s("#selection")
+  option <- find_element(selection, "option")
+
+  expect_snapshot(
+    elem_select(selection, reset_other = FALSE, timeout = 0.1),
+    error = TRUE
+  )
+
+  expect_snapshot(
+    elem_select(option, 1, timeout = 0.1),
+    error = TRUE
+  )
+
+  expect_snapshot(
+    elem_select(selection, 4, timeout = 0.1),
+    error = TRUE
+  )
+
+  expect_snapshot(
+    elem_select(selection, c(1, 2), timeout = 0.1),
+    error = TRUE
+  )
+
+  expect_snapshot(
+    elem_select(selection, text = "Four", timeout = 0.1),
+    error = TRUE
+  )
+
+  expect_snapshot(
+    elem_select(selection, text = c("One", "Three"), timeout = 0.1),
+    error = TRUE
+  )
+
+  expect_snapshot(
+    elem_select(selection, index = 4, timeout = 0.1),
+    error = TRUE
+  )
+
+  expect_snapshot(
+    elem_select(selection, index = c(1, 2), timeout = 0.1),
+    error = TRUE
+  )
 })
 
 test_that("JavaScript actions work", {

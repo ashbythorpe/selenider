@@ -263,13 +263,24 @@ format_selector_multiple <- function(selector, # nolint: cyclocomp_linter
                                      element_name = NULL,
                                      of = NULL,
                                      with = NULL) {
+  last_filter <- if (length(selector$filter) > 0) {
+    selector$filter[[length(selector$filter)]]
+  } else {
+    NULL
+  }
+
+  actually_multiple <-
+    !(is.numeric(last_filter) && length(last_filter) == 1 && last_filter > 0)
+
   if (is.null(element_name)) {
     element_name <- if (!is.null(of)) {
-      paste(" children of", of, "element")
+      children <- if (actually_multiple) "children" else "child"
+      paste(" ", children, " of", of, "element")
     } else {
+      elements <- if (actually_multiple) "elements" else "element"
       paste0(
         if (first) "" else " child",
-        " elements"
+        " ", elements
       )
     }
   }
@@ -320,7 +331,7 @@ format_selector_multiple <- function(selector, # nolint: cyclocomp_linter
         }
       }
 
-      format_ordinal(last, element,  " matching a custom condition.")
+      format_ordinal(last, element, " matching a custom condition.")
     } else {
       paste0("The", element, " matching a custom condition.")
     }
@@ -451,7 +462,7 @@ format_ordinal_flattened <- function(x, condition = ".") {
   } else {
     c(
       paste0(
-        "All elements of a combination of elements except the ",
+        "All of a combination of elements except the ",
         subscript_ordinal(abs(x)),
         condition[1]
       ),

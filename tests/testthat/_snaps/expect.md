@@ -299,7 +299,7 @@
       ! Condition failed after waiting for 0.1 seconds:
       `has_at_least(1)`
       i `x` contains less than 1 element.
-      i Actual number of elements: "0".
+      i Actual number of elements: 0.
 
 ---
 
@@ -310,7 +310,7 @@
       ! Condition failed after waiting for 0.1 seconds:
       `has_length(2)`
       i `x` does not contain 2 elements.
-      i Actual number of elements: "1".
+      i Actual number of elements: 1.
 
 # elem_expect() test failures work
 

@@ -455,24 +455,13 @@ get_elements_for_property <- function(x,
                                       action,
                                       timeout,
                                       call = rlang::caller_env()) {
-  elements <- get_with_timeout(timeout, get_elements, x)
-
-  if (is.null(elements)) {
-    stop_not_actionable(
-      c(
-        paste0("To ", action, ", its parent must exist."),
-        "i" = paste0(
-          format_timeout_for_error(timeout),
-          "{.arg x}'s parent did not exist."
-        )
-      ),
-      call = call,
-      class = c(
-        "selenider_error_absent_parent",
-        "selenider_error_absent_element"
-      )
-    )
-  }
-
-  elements
+  get_elements_for_action(
+    x,
+    action = action,
+    conditions = list(),
+    timeout = timeout,
+    failure_messages = c(),
+    conditions_text = c(),
+    call = call
+  )
 }

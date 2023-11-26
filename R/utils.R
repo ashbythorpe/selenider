@@ -74,9 +74,8 @@ retry_until_true <- function(timeout, .f, ...) {
 #'
 #' @export
 selenider_available <- function(
-  session = c("chromote", "selenium", "rselenium"),
-  online = TRUE
-) {
+    session = c("chromote", "selenium", "rselenium"),
+    online = TRUE) {
   check_bool(online)
   session <- arg_match(session)
 
@@ -319,6 +318,39 @@ execute_js_fn_on <- function(fn, x, session, driver) {
       driver$execute_script(script, x)
     } else {
       unpack_list(driver$executeScript(script, list(x)))
+    }
+  }
+}
+
+execute_js_fn_on_multiple <- function(fn, x, session, driver) {
+  if (length(x) == 1) {
+    return(execute_js_fn_on(fn, x[[1]], session, driver))
+  }
+
+  if (session == "chromote") {
+    arg_names <- get_argument_names(seq_along(x) - 1)
+    args <- paste0(arg_names[-1], collapse = ", ")
+    inner_args <- paste0(arg_names, collapse = ", ")
+    script <- paste0(
+      "function(", args, ") { return (", fn, ")([", inner_args, "]) }"
+    )
+
+    first_element <- chromote_object_id(backend_id = x[[1]], driver = driver)
+    other_elements <- rest <- lapply(x[-1], function(y) {
+      list(objectId = chromote_object_id(backend_id = y, driver = driver))
+    })
+
+    driver$Runtime$callFunctionOn(
+      script,
+      chromote_object_id(backend_id = x[[1]], driver = driver),
+      arguments = other_elements
+    )
+  } else {
+    script <- paste0("let fn = ", fn, ";", "return fn(Array.from(arguments));")
+    if (session == "selenium") {
+      driver$execute_script(script, !!!x)
+    } else {
+      unpack_list(driver$executeScript(script, x))
     }
   }
 }

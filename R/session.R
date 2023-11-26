@@ -293,8 +293,10 @@ get_driver <- function(session,
         ), message = "Selenium server failed to start.")
       }
 
-      server$read_output()
-      server$read_error()
+      if (inherits(server, "SeleniumServer")) {
+        server$read_output()
+        server$read_error()
+      }
 
       if (session == "selenium") {
         opts <- if (browser == "chrome") {
@@ -466,6 +468,7 @@ create_selenium_server <- function(browser,
       selenium_manager = version == "latest" ||
         numeric_version(version) >= "4.9.0",
       interactive = FALSE,
+      verbose = !quiet,
       extra_args = c("-p", as.character(port), ...)
     )
   } else {

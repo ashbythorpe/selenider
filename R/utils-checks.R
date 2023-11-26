@@ -51,3 +51,44 @@ check_selenium_client <- function(x, call = rlang::caller_env()) {
   }
   x
 }
+
+check_vector <- function(x,
+                         check_fun,
+                         ...,
+                         allow_null = FALSE,
+                         arg = rlang::caller_arg(x),
+                         call = rlang::caller_env()) {
+  if (is.vector(x)) {
+    good <- TRUE
+    for (a in x) {
+      good <- tryCatch(
+        {
+          check_fun(
+            a,
+            allow_null = allow_null,
+            ...
+          )
+          TRUE
+        },
+        error = function(e) {
+          FALSE
+        }
+      )
+    }
+
+    if (good) {
+      return(invisible(NULL))
+    }
+  } else if (allow_null && is.null(x)) {
+    return(invisible(NULL))
+  }
+
+  stop_input_type(
+    x,
+    "a whole number larger than or equal to 1",
+    ...,
+    allow_null = allow_null,
+    arg = arg,
+    call = call
+  )
+}

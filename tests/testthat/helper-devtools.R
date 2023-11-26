@@ -39,6 +39,15 @@ selenider_test_chromote_view <- function() {
   ), rlang::ns_env("devtools")$test())
 }
 
+selenider_test_rselenium_chrome <- function(docker = FALSE) {
+  cli::cli_alert_info("Running tests using Selenium and Chrome")
+  withr::with_envvar(c(
+    "SELENIDER_SESSION" = "rselenium",
+    "SELENIDER_BROWSER" = "chrome",
+    "SELENIDER_DOCKER" = as.character(docker)
+  ), rlang::ns_env("devtools")$test())
+}
+
 selenider_test_rselenium_firefox <- function(docker = FALSE) {
   cli::cli_alert_info("Running tests using Selenium and Firefox")
   withr::with_envvar(c(

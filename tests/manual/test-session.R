@@ -88,4 +88,3 @@ test_that("Creating sessions using RSelenium works", {
   withr::deferred_run()
   server$kill()
 })
-

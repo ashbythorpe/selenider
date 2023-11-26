@@ -776,7 +776,7 @@ diagnose_condition_length <- function(condition,
     c(
       condition,
       "i" = paste0("{.arg {x_name}} ", cond, "."),
-      "i" = paste0("Actual number of elements: {.val ", actual_length, "}.")
+      "i" = paste0("Actual number of elements: {.val {", actual_length, "}}.")
     )
   }
 }

@@ -110,7 +110,7 @@
       print_lazy(elements[5])
     Output
       A collection of selenider elements selecting:
-      The 5th elements with css selector ".myclass".
+      The 5th element with css selector ".myclass".
 
 ---
 
@@ -143,8 +143,8 @@
       print_lazy(elem_filter(elements, is_present))
     Output
       A collection of selenider elements selecting:
-      * The elements with css selector ".myclass" matching the following condition:
-        `is_present`
+      The elements with css selector ".myclass" matching the following
+      condition:`is_present`
 
 ---
 
@@ -152,9 +152,8 @@
       print_lazy(elem_find(elements, is_present))
     Output
       A selenider element selecting:
-      * The first element with css selector ".myclass" matching the following
-        condition:
-        `is_present`
+      The first element with css selector ".myclass" matching the following
+      condition:`is_present`
 
 ---
 
@@ -178,9 +177,8 @@
       print_lazy(elem_filter(elements, is_present)[[4]])
     Output
       A selenider element selecting:
-      * The 4th element with css selector ".myclass" matching the following
-        condition:
-        `is_present`
+      The 4th element with css selector ".myclass" matching the following
+      condition:`is_present`
 
 ---
 
@@ -188,9 +186,8 @@
       print_lazy(elem_filter(elements, is_present)[2:6])
     Output
       A collection of selenider elements selecting:
-      * The 2nd, 3rd, 4th, 5th, and 6th elements with css selector ".myclass"
-        matching the following condition:
-        `is_present`
+      The 2nd, 3rd, 4th, 5th, and 6th elements with css selector ".myclass" matching
+      the following condition:`is_present`
 
 ---
 
@@ -198,9 +195,8 @@
       print_lazy(elem_filter(elements, is_present)[-3])
     Output
       A collection of selenider elements selecting:
-      * All elements with css selector ".myclass" except the third matching the
-        following condition:
-        `is_present`
+      All elements with css selector ".myclass" except the third matching the
+      following condition:`is_present`
 
 # Lazy printing DOM-relative selectors works
 
@@ -349,7 +345,7 @@
       print_lazy(elements[-3])
     Output
       A collection of selenider elements selecting:
-      All elements of a combination of elements except the third.
+      All of a combination of elements except the third.
 
 ---
 
@@ -357,8 +353,8 @@
       print_lazy(elem_filter(elements, is_present))
     Output
       A collection of selenider elements selecting:
-      * The elements in a combination of elements that match the following condition:
-        `is_present`
+      The elements in a combination of elements that match the following
+      condition:`is_present`
 
 ---
 
@@ -366,8 +362,8 @@
       print_lazy(elem_find(elements, is_present))
     Output
       A selenider element selecting:
-      * The first of a combination of elements matching the following condition:
-        `is_present`
+      The first of a combination of elements matching the following
+      condition:`is_present`
 
 ---
 
