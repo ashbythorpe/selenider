@@ -400,11 +400,14 @@ element_right_click <- function(x, session, driver) {
 
 #' Hover over an element
 #'
-#' Move the mouse over to an HTML element and hover over it, without actually
-#' clicking or interacting with it.
+#' @description
+#' `elem_hover()` moves the mouse over to an HTML element and hovers over it,
+#' without actually clicking or interacting with it.
+#'
+#' `elem_focus()` focuses an HTML element.
 #'
 #' @param x A `selenider_element` object.
-#' @param js Whether to hover the element using JavaScript.
+#' @param js Whether to hover over the element using JavaScript.
 #' @param timeout How long to wait for the element to exist.
 #'
 #' @returns `x`, invisibly.
@@ -433,6 +436,9 @@ element_right_click <- function(x, session, driver) {
 #'   elem_hover()
 #'
 #' elem_expect(s(".text"), has_text("Button hovered!"))
+#'
+#' s("button") |>
+#'   elem_focus()
 #'
 #' \dontshow{
 #' # Clean up all connections and invalidate default chromote object
@@ -521,6 +527,41 @@ hover_chromote <- function(element, driver) {
   y <- coords$y
 
   driver$Input$dispatchMouseEvent(type = "mouseMoved", x = x, y = y)
+}
+
+#' @rdname elem_hover
+#'
+#' @export
+elem_focus <- function(x, timeout = NULL) {
+  check_class(x, "selenider_element")
+  check_number_decimal(timeout, allow_null = TRUE)
+
+  timeout <- get_timeout(timeout, x$timeout)
+
+  element <- get_element_for_action(
+    x,
+    action = "focus {.arg x}",
+    conditions = list(is_visible),
+    timeout = timeout,
+    failure_messages = c("was not visible"),
+    conditions_text = c("be visible")
+  )
+
+  element_focus(element, x$session, x$driver)
+
+  invisible(x)
+}
+
+element_focus <- function(x, session, driver) {
+  if (session == "chromote") {
+    chromote_focus(x, driver = driver)
+  } else {
+    execute_js_fn_on("x => x.focus()", x, session = session, driver = driver)
+  }
+}
+
+chromote_focus <- function(x, driver) {
+  driver$DOM$focus(backendNodeId = x)
 }
 
 #' Set the value of an input
@@ -651,6 +692,7 @@ chromote_clear <- function(
       windowsVirtualKeyCode = 65
     )
   }
+
   chromote_press(
     driver,
     windowsVirtualKeyCode = 8,
