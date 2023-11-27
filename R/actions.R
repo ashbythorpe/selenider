@@ -178,7 +178,7 @@ left_click_selenium <- function(element, driver) {
 click_chromote <- function(element, driver, type = "left", count = 1) {
   chromote_scroll_into_view_if_needed(backend_id = element, driver = driver)
 
-  coords <- chromote_get_xy(backend_id = element, driver = driver)
+  coords <- chromote_clickable_point(backend_id = element, driver = driver)
   x <- coords$x
   y <- coords$y
 
@@ -516,7 +516,7 @@ element_hover <- function(x, session, driver) {
 hover_chromote <- function(element, driver) {
   chromote_scroll_into_view_if_needed(backend_id = element, driver = driver)
 
-  coords <- chromote_get_xy(backend_id = element, driver = driver)
+  coords <- chromote_clickable_point(backend_id = element, driver = driver)
   x <- coords$x
   y <- coords$y
 
