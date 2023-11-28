@@ -67,9 +67,9 @@ can be one of:
 \item A \link[shinytest2:AppDriver]{shinytest2::AppDriver} object.
 \item An \link[selenium:SeleniumSession]{selenium::SeleniumSession} object (the result of
 \code{create_selenium_client()}).
-\item A Selenium server object (the result of \code{\link[wdman:selenium]{wdman::selenium()}}, or
-\code{create_selenium_server()}). In this case, the client object will be
-created using the server object.
+\item A Selenium server object (the result of \code{\link[selenium:selenium_server]{selenium::selenium_server()}},
+\code{\link[wdman:selenium]{wdman::selenium()}} or \code{create_selenium_server()}). In this case, the
+client object will be created using the server object.
 \item A list/environment containing the \link[selenium:SeleniumSession]{selenium::SeleniumSession} object,
 the Selenium server object, or both.
 \item An \code{\link[RSelenium:remoteDriver-class]{RSelenium::remoteDriver()}} object (see \code{\link[=create_rselenium_client]{create_rselenium_client()}})
@@ -80,9 +80,10 @@ See Details for more information about providing a custom driver object.
 \item{local}{Whether to set the session as the local session object,
 using \code{\link[=local_session]{local_session()}}.}
 
-\item{quiet}{Whether to let \code{\link[wdman:selenium]{wdman::selenium()}} display messages. By
-default, this output is suppressed, as it is not usually useful. Chromote
-does not display any output when creating a session.}
+\item{quiet}{Whether to let \code{\link[selenium:selenium_server]{selenium::selenium_server()}} or
+\code{\link[wdman:selenium]{wdman::selenium()}} display messages. By default, this output is
+suppressed, as it is not usually useful. Chromote does not display any
+output when creating a session.}
 
 \item{.env}{Passed into \code{\link[=local_session]{local_session()}}, to define the
 environment in which the session is used. Change this if you want to
@@ -97,8 +98,10 @@ Passed into \link[chromote:ChromoteSession]{chromote::ChromoteSession$new()}.}
 \item For \code{create_chromote_session()}, these are passed into
 \code{\link[chromote:ChromoteSession]{chromote::ChromoteSession$new()}}.
 \item For \code{create_selenium_server()}, these are passed into
-\code{\link[selenium:SeleniumSession]{selenium::SeleniumSession$new()}}, or
-\code{\link[wdman:selenium]{wdman::selenium()}} if \code{selenium_manager} is \code{FALSE}.
+\code{\link[selenium:selenium_server]{selenium::selenium_server()}}, or \code{\link[wdman:selenium]{wdman::selenium()}} if
+\code{selenium_manager} is \code{FALSE}.
+\item For \code{create_selenium_client()}, these are passed into
+\code{\link[selenium:SeleniumSession]{selenium::SeleniumSession$new()}}.
 }}
 
 \item{version}{The version of Selenium Server to run.}
@@ -131,18 +134,18 @@ argument to \code{selenider_session()}.
 A \code{selenider_session} object is an S3 list, meaning its properties can be
 accessed using \code{$}. Most notably, using \code{session$driver} allows access to
 the driver object which actually controls the browser. If you are using
-Selenium, use \code{session$driver} to access the \code{remoteDriver} object. These
-objects are useful if you want to do something with the driver that is not
-directly supported by selenider. See \code{\link[=get_actual_element]{get_actual_element()}} for some
-examples of this.
+Selenium, use \code{session$driver} to access the \link[selenium:SeleniumSession]{selenium::SeleniumSession}
+object. These objects are useful if you want to do something with the
+driver that is not directly supported by selenider. See
+\code{\link[=get_actual_element]{get_actual_element()}} for some examples of this.
 }
 
 \section{Custom drivers}{
 Custom driver objects are good if you want more low-level control over the
 underlying functions that create the webdrivers that actually control the
 browser. However, it is recommended to use the selenider functions (e.g.
-\code{create_selenium_client()}) over \code{wdman::selenium()} for better error
-messages and more reliable behaviour. See
+\code{create_selenium_client()}) over \link[selenium:SeleniumSession]{selenium::SeleniumSession} for better
+error messages and more reliable behaviour. See
 \code{vignette("unit-testing", package = "selenider")} for more information on
 using selenider with docker/Github Actions.
 \subsection{Chromote}{

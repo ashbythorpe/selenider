@@ -37,9 +37,9 @@
 #'   * A [shinytest2::AppDriver] object.
 #'   * An [selenium::SeleniumSession] object (the result of
 #'     `create_selenium_client()`).
-#'   * A Selenium server object (the result of [wdman::selenium()], or
-#'     `create_selenium_server()`). In this case, the client object will be
-#'     created using the server object.
+#'   * A Selenium server object (the result of [selenium::selenium_server()],
+#'     [wdman::selenium()] or `create_selenium_server()`). In this case, the
+#'     client object will be created using the server object.
 #'   * A list/environment containing the [selenium::SeleniumSession] object,
 #'     the Selenium server object, or both.
 #'   * An [RSelenium::remoteDriver()] object (see [create_rselenium_client()])
@@ -47,9 +47,10 @@
 #'   See Details for more information about providing a custom driver object.
 #' @param local Whether to set the session as the local session object,
 #'   using [local_session()].
-#' @param quiet Whether to let [wdman::selenium()] display messages. By
-#'   default, this output is suppressed, as it is not usually useful. Chromote
-#'   does not display any output when creating a session.
+#' @param quiet Whether to let [selenium::selenium_server()] or
+#'   [wdman::selenium()] display messages. By default, this output is
+#'   suppressed, as it is not usually useful. Chromote does not display any
+#'   output when creating a session.
 #' @param .env Passed into [local_session()], to define the
 #'   environment in which the session is used. Change this if you want to
 #'   create the session inside a function and then use it outside the
@@ -58,25 +59,27 @@
 #'   * For `create_chromote_session()`, these are passed into
 #'     [`chromote::ChromoteSession$new()`][chromote::ChromoteSession].
 #'  * For `create_selenium_server()`, these are passed into
-#'    [`selenium::SeleniumSession$new()`][selenium::SeleniumSession], or
-#'    [wdman::selenium()] if `selenium_manager` is `FALSE`.
+#'    [`selenium::selenium_server()`], or [wdman::selenium()] if
+#'    `selenium_manager` is `FALSE`.
+#'  * For `create_selenium_client()`, these are passed into
+#'    [`selenium::SeleniumSession$new()`][selenium::SeleniumSession].
 #'
 #' @details
 #' # Structure of a selenider session
 #' A `selenider_session` object is an S3 list, meaning its properties can be
 #' accessed using `$`. Most notably, using `session$driver` allows access to
 #' the driver object which actually controls the browser. If you are using
-#' Selenium, use `session$driver` to access the `remoteDriver` object. These
-#' objects are useful if you want to do something with the driver that is not
-#' directly supported by selenider. See [get_actual_element()] for some
-#' examples of this.
+#' Selenium, use `session$driver` to access the [selenium::SeleniumSession]
+#' object. These objects are useful if you want to do something with the
+#' driver that is not directly supported by selenider. See
+#' [get_actual_element()] for some examples of this.
 #'
 #' # Custom drivers
 #' Custom driver objects are good if you want more low-level control over the
 #' underlying functions that create the webdrivers that actually control the
 #' browser. However, it is recommended to use the selenider functions (e.g.
-#' `create_selenium_client()`) over `wdman::selenium()` for better error
-#' messages and more reliable behaviour. See
+#' `create_selenium_client()`) over [selenium::SeleniumSession] for better
+#' error messages and more reliable behaviour. See
 #' `vignette("unit-testing", package = "selenider")` for more information on
 #' using selenider with docker/Github Actions.
 #'
