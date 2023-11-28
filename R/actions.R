@@ -656,29 +656,116 @@ elem_set_value <- function(x, text, timeout = NULL) {
   invisible(x)
 }
 
-element_set_value <- function(x, text, session, driver) {
-  execute_js_fn_on(
-    paste0("x => x.value = '", text, "'"),
-    x,
-    session = session,
-    driver = driver
-  )
+element_input_type <- function(x, session, driver) {
+  execute_js_fn_on("function(x) {
+    if (x instanceof HTMLSelectElement) {
+      return 'select';
+    }
 
-  if (session == "chromote") {
-    chromote_clear(x, driver = driver)
-    chromote_send_chars(text, driver = driver)
-  } else if (session == "selenium") {
-    x$clear()
-    x$send_keys(text)
-  } else {
-    x$clearElement()
-    x$sendKeysToElement(list(text))
+    if (x instanceof HTMLTextAreaElement) {
+      return 'typeable-input';
+    }
+
+    if (x instanceof HTMLInputElement) {
+      if (
+        [
+          'textarea',
+          'text',
+          'url',
+          'tel',
+          'search',
+          'password',
+          'number',
+          'email',
+        ].includes(x)
+      ) {
+        return 'typeable-input';
+      } else {
+        return 'other-input';
+      }
+    }
+
+    if (x.isContentEditable) {
+      return 'contenteditable';
+    }
+
+    return 'unknown';
+  }", x, session = session, driver = driver)
+}
+
+element_set_value <- function(x, text, session, driver) {
+  type <- element_input_type(x, session = session, driver = driver)
+
+  if (type == "select") {
+    element_select(
+      x,
+      elem_name = "select",
+      value = value,
+      text = NULL,
+      index = NULL,
+      reset_other = TRUE,
+      session = session,
+      driver = driver
+    )
+  } else if (type %in% c("typeable-input", "contenteditable")) {
+    rest <- partially_type(x, text, session, driver)
+    element_focus(x, session = session, driver = driver)
+
+    if (session == "chromote") {
+      chromote_send_chars(rest, driver = driver)
+    } else if (session == "selenium") {
+      x$send_keys(rest)
+    } else {
+      x$sendKeysToElement(list(rest))
+    }
+  } else if (type == "other-input") {
+    element_focus(x, session = session, driver = driver)
+
+    execute_js_fn_on(paste0("function(x) {
+      (x as HTMLInputElement).value = '", text, "';
+      x.dispatchEvent(new Event('input', {bubbles: true}));
+      x.dispatchEvent(new Event('change', {bubbles: true}));
+    }"), x, value = text, session = session, driver = driver)
   }
 }
 
-chromote_clear <- function(
-    x,
-    driver) {
+partially_type <- function(x, text, session, driver) {
+  execute_js_fn_on(paste0("function(x) {
+    const text = '", text, "';
+    const currentValue = if (x.isContentEditable) {
+      x.innerText
+    } else {
+      x.value;
+    }
+
+    if(text.length <= currentValue.length || !text.startsWith(x.value)) {
+      if (x.isContentEditable) {
+        x.innerText = '';
+      } else {
+        x.value = '';
+      }
+      return text;
+    }
+
+    const originalValue = if (x.isContentEditable) {
+      x.innerText
+    } else {
+      x.value;
+    }
+
+    if (x.isContentEditable) {
+      x.innerText = '';
+      x.innerText = originalValue;
+    } else {
+      x.value = '';
+      x.value = originalValue;
+    }
+    return text.substring(originalValue.length);
+  }"))
+}
+
+chromote_clear <- function(x,
+                           driver) {
   if (is_mac()) {
     click_chromote(x, driver = driver, count = 3)
   } else {
