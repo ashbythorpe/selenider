@@ -70,7 +70,7 @@ remotes::install_github("ashbythorpe/selenider")
 ```
 
 Additionally, you must install [chromote](https://rstudio.github.io/chromote/)
-or [selenium](https://ashbythorpe.github.io/selenium/).
+or [selenium](https://ashbythorpe.github.io/selenium-r/).
 We recommend chromote, as it is quicker and easier to get up and running.
 ``` r
 # Either:
