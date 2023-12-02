@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">selenider</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.2.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,15 +58,18 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="selenider-development-version">selenider (development version)<a class="anchor" aria-label="anchor" href="#selenider-development-version"></a></h2>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.2.0" id="selenider-020">selenider 0.2.0<a class="anchor" aria-label="anchor" href="#selenider-020"></a></h2>
 <div class="section level3">
-<h3 id="new-features-development-version">New features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
+<h3 id="new-features-0-2-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-2-0"></a></h3>
 <ul><li><p><code><a href="../reference/elem_select.html">elem_select()</a></code> is a new function for interacting with <code>&lt;select&gt;</code>/<code>&lt;option&gt;</code> elements, allowing you to easily select by value, text and index.</p></li>
 <li><p>New <code><a href="../reference/current_url.html">current_url()</a></code> returns the URL of the current page. ## Major changes</p></li>
 <li><p>Previously, <code>selenider</code> used <a href="https://docs.ropensci.org/RSelenium/" class="external-link">RSelenium</a> as a Selenium backend. However, this package did not work with latest version of Selenium, or the latest version of Google Chrome. It now uses <a href="https://ashbythorpe.github.io/selenium-r/" class="external-link">selenium</a>, which is compatible with both. This should make <code>selenider</code> more reliable, and more likely to work out of the box when using Selenium.</p></li>
 <li><p>Printing HTML elements now prints the actual HTML contained by the element. Previously, it printed the element in “lazy” form, describing how the element was to be obtained. While this new change makes viewing elements much easier, it also means that to print an element, it needs to exist in the DOM. Use <code><a href="../reference/print.selenider_element.html">print_lazy()</a></code> to use the previous behaviour when printing.</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="minor-changes-and-bug-fixes-development-version">Minor changes and bug fixes<a class="anchor" aria-label="anchor" href="#minor-changes-and-bug-fixes-development-version"></a></h3>
+<h3 id="minor-changes-and-bug-fixes-0-2-0">Minor changes and bug fixes<a class="anchor" aria-label="anchor" href="#minor-changes-and-bug-fixes-0-2-0"></a></h3>
 <ul><li>
 <code><a href="../reference/take_screenshot.html">take_screenshot()</a></code> with <code>file = NULL</code> now views the screenshot correctly.</li>
 <li>
