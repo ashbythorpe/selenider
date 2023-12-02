@@ -58,20 +58,25 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="selenider-development-version">selenider (development version)<a class="anchor" aria-label="anchor" href="#selenider-development-version"></a></h2>
+<div class="section level3">
+<h3 id="new-features-development-version">New features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
+<ul><li><p><code><a href="../reference/elem_select.html">elem_select()</a></code> is a new function for interacting with <code>&lt;select&gt;</code>/<code>&lt;option&gt;</code> elements, allowing you to easily select by value, text and index.</p></li>
+<li><p>New <code><a href="../reference/current_url.html">current_url()</a></code> returns the URL of the current page. ## Major changes</p></li>
+<li><p>Previously, <code>selenider</code> used <a href="https://docs.ropensci.org/RSelenium/" class="external-link">RSelenium</a> as a Selenium backend. However, this package did not work with latest version of Selenium, or the latest version of Google Chrome. It now uses <a href="https://ashbythorpe.github.io/selenium-r/" class="external-link">selenium</a>, which is compatible with both. This should make <code>selenider</code> more reliable, and more likely to work out of the box when using Selenium.</p></li>
+<li><p>Printing HTML elements now prints the actual HTML contained by the element. Previously, it printed the element in “lazy” form, describing how the element was to be obtained. While this new change makes viewing elements much easier, it also means that to print an element, it needs to exist in the DOM. Use <code><a href="../reference/print.selenider_element.html">print_lazy()</a></code> to use the previous behaviour when printing.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="minor-changes-and-bug-fixes-development-version">Minor changes and bug fixes<a class="anchor" aria-label="anchor" href="#minor-changes-and-bug-fixes-development-version"></a></h3>
 <ul><li>
 <code><a href="../reference/take_screenshot.html">take_screenshot()</a></code> with <code>file = NULL</code> now views the screenshot correctly.</li>
 <li>
-<code><a href="../reference/current_url.html">current_url()</a></code> is a new function that returns the current URL.</li>
+<code><a href="../reference/elem_set_value.html">elem_set_value()</a></code> now correctly invisibly returns its first argument <code>x</code>, allowing it to be used in a pipeline.</li>
 <li>
-<code><a href="../reference/elem_set_value.html">elem_set_value()</a></code> now correctly invisibly returns its first argument <code>x</code>.</li>
+<code><a href="../reference/find_element.html">find_element()</a></code> and <code><a href="../reference/find_elements.html">find_elements()</a></code> no longer accept the <code>link_text</code> argument, as this was not working with chromote. Use <code><a href="../reference/elem_filter.html">elem_find()</a></code> or <code><a href="../reference/elem_filter.html">elem_filter()</a></code> instead.</li>
 <li>
-<code>selenium</code> is now used as a backend instead of <code>RSelenium</code>.</li>
-<li>Removed <code>link_text</code> as an argument in <code><a href="../reference/find_element.html">find_element()</a></code>/<code><a href="../reference/find_elements.html">find_elements()</a></code>, as it does not work with chromote.</li>
-<li>Change print method to print the HTML value of an element/element collection.</li>
-<li>Updated <code><a href="../reference/elem_attr.html">elem_value()</a></code> to get the use JavaScript (e.g. <code>x.value</code>), instead of the <code>value</code> attribute.</li>
-<li>
-<code><a href="../reference/elem_select.html">elem_select()</a></code> is a new function for interacting with <code>&lt;select&gt;</code>/<code>&lt;option&gt;</code> elements.</li>
+<code>elem_get_value()</code> now uses the JavaScript <code>value</code> property of an element, not the <code>"value"</code> attribute, meaning that it works in more cases.</li>
 </ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.2" id="selenider-012">selenider 0.1.2<a class="anchor" aria-label="anchor" href="#selenider-012"></a></h2><p class="text-muted">CRAN release: 2023-10-01</p>
 <ul><li>Responded to CRAN review.</li>

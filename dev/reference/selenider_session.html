@@ -152,9 +152,9 @@ can be one of:</p><ul><li><p>A <a href="http://rstudio.github.io/chromote/refere
 <li><p>A <a href="https://rstudio.github.io/shinytest2/reference/AppDriver.html" class="external-link">shinytest2::AppDriver</a> object.</p></li>
 <li><p>An <a href="https://ashbythorpe.github.io/selenium-r/reference/SeleniumSession.html" class="external-link">selenium::SeleniumSession</a> object (the result of
 <code>create_selenium_client()</code>).</p></li>
-<li><p>A Selenium server object (the result of <code><a href="https://docs.ropensci.org/wdman/reference/selenium.html" class="external-link">wdman::selenium()</a></code>, or
-<code>create_selenium_server()</code>). In this case, the client object will be
-created using the server object.</p></li>
+<li><p>A Selenium server object (the result of <code><a href="https://ashbythorpe.github.io/selenium-r/reference/selenium_server.html" class="external-link">selenium::selenium_server()</a></code>,
+<code><a href="https://docs.ropensci.org/wdman/reference/selenium.html" class="external-link">wdman::selenium()</a></code> or <code>create_selenium_server()</code>). In this case, the
+client object will be created using the server object.</p></li>
 <li><p>A list/environment containing the <a href="https://ashbythorpe.github.io/selenium-r/reference/SeleniumSession.html" class="external-link">selenium::SeleniumSession</a> object,
 the Selenium server object, or both.</p></li>
 <li><p>An <code><a href="https://docs.ropensci.org/RSelenium/reference/remoteDriver-class.html" class="external-link">RSelenium::remoteDriver()</a></code> object (see <code><a href="create_rselenium_client.html">create_rselenium_client()</a></code>)
@@ -169,9 +169,10 @@ using <code><a href="get_session.html">local_session()</a></code>.</p></dd>
 
 
 <dt>quiet</dt>
-<dd><p>Whether to let <code><a href="https://docs.ropensci.org/wdman/reference/selenium.html" class="external-link">wdman::selenium()</a></code> display messages. By
-default, this output is suppressed, as it is not usually useful. Chromote
-does not display any output when creating a session.</p></dd>
+<dd><p>Whether to let <code><a href="https://ashbythorpe.github.io/selenium-r/reference/selenium_server.html" class="external-link">selenium::selenium_server()</a></code> or
+<code><a href="https://docs.ropensci.org/wdman/reference/selenium.html" class="external-link">wdman::selenium()</a></code> display messages. By default, this output is
+suppressed, as it is not usually useful. Chromote does not display any
+output when creating a session.</p></dd>
 
 
 <dt>.env</dt>
@@ -190,8 +191,10 @@ Passed into <a href="http://rstudio.github.io/chromote/reference/ChromoteSession
 <dd><p>Arguments to finetune the creation of the specific driver.</p><ul><li><p>For <code>create_chromote_session()</code>, these are passed into
 <code><a href="http://rstudio.github.io/chromote/reference/ChromoteSession.html" class="external-link">chromote::ChromoteSession$new()</a></code>.</p></li>
 <li><p>For <code>create_selenium_server()</code>, these are passed into
-<code><a href="https://ashbythorpe.github.io/selenium-r/reference/SeleniumSession.html" class="external-link">selenium::SeleniumSession$new()</a></code>, or
-<code><a href="https://docs.ropensci.org/wdman/reference/selenium.html" class="external-link">wdman::selenium()</a></code> if <code>selenium_manager</code> is <code>FALSE</code>.</p></li>
+<code><a href="https://ashbythorpe.github.io/selenium-r/reference/selenium_server.html" class="external-link">selenium::selenium_server()</a></code>, or <code><a href="https://docs.ropensci.org/wdman/reference/selenium.html" class="external-link">wdman::selenium()</a></code> if
+<code>selenium_manager</code> is <code>FALSE</code>.</p></li>
+<li><p>For <code>create_selenium_client()</code>, these are passed into
+<code><a href="https://ashbythorpe.github.io/selenium-r/reference/SeleniumSession.html" class="external-link">selenium::SeleniumSession$new()</a></code>.</p></li>
 </ul></dd>
 
 
@@ -227,18 +230,18 @@ object that controls the browser.</p>
     <p>A <code>selenider_session</code> object is an S3 list, meaning its properties can be
 accessed using <code>$</code>. Most notably, using <code>session$driver</code> allows access to
 the driver object which actually controls the browser. If you are using
-Selenium, use <code>session$driver</code> to access the <code>remoteDriver</code> object. These
-objects are useful if you want to do something with the driver that is not
-directly supported by selenider. See <code><a href="get_actual_element.html">get_actual_element()</a></code> for some
-examples of this.</p>
+Selenium, use <code>session$driver</code> to access the <a href="https://ashbythorpe.github.io/selenium-r/reference/SeleniumSession.html" class="external-link">selenium::SeleniumSession</a>
+object. These objects are useful if you want to do something with the
+driver that is not directly supported by selenider. See
+<code><a href="get_actual_element.html">get_actual_element()</a></code> for some examples of this.</p>
     </div>
     <div class="section level2">
     <h2 id="custom-drivers">Custom drivers<a class="anchor" aria-label="anchor" href="#custom-drivers"></a></h2>
     <p>Custom driver objects are good if you want more low-level control over the
 underlying functions that create the webdrivers that actually control the
 browser. However, it is recommended to use the selenider functions (e.g.
-<code>create_selenium_client()</code>) over <code><a href="https://docs.ropensci.org/wdman/reference/selenium.html" class="external-link">wdman::selenium()</a></code> for better error
-messages and more reliable behaviour. See
+<code>create_selenium_client()</code>) over <a href="https://ashbythorpe.github.io/selenium-r/reference/SeleniumSession.html" class="external-link">selenium::SeleniumSession</a> for better
+error messages and more reliable behaviour. See
 <code><a href="../articles/unit-testing.html">vignette("unit-testing", package = "selenider")</a></code> for more information on
 using selenider with docker/Github Actions.</p><div class="section">
 <h3 id="chromote">Chromote<a class="anchor" aria-label="anchor" href="#chromote"></a></h3>
