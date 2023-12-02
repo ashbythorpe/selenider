@@ -1,4 +1,4 @@
-# selenider (development version)
+# selenider 0.2.0
 
 ## New features
 
