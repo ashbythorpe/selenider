@@ -49,6 +49,9 @@
     <loc>https://ashbythorpe.github.io/selenider/reference/close_session.html</loc>
   </url>
   <url>
+    <loc>https://ashbythorpe.github.io/selenider/reference/create_rselenium_client.html</loc>
+  </url>
+  <url>
     <loc>https://ashbythorpe.github.io/selenider/reference/current_url.html</loc>
   </url>
   <url>
@@ -89,6 +92,9 @@
   </url>
   <url>
     <loc>https://ashbythorpe.github.io/selenider/reference/elem_scroll_to.html</loc>
+  </url>
+  <url>
+    <loc>https://ashbythorpe.github.io/selenider/reference/elem_select.html</loc>
   </url>
   <url>
     <loc>https://ashbythorpe.github.io/selenider/reference/elem_set_value.html</loc>
@@ -155,6 +161,9 @@
   </url>
   <url>
     <loc>https://ashbythorpe.github.io/selenider/reference/open_url.html</loc>
+  </url>
+  <url>
+    <loc>https://ashbythorpe.github.io/selenider/reference/print.selenider_element.html</loc>
   </url>
   <url>
     <loc>https://ashbythorpe.github.io/selenider/reference/read_html.selenider_session.html</loc>

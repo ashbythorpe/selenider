@@ -8,8 +8,8 @@
 <meta name="description" content="selenider">
 <title>Getting started with selenider • selenider</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Getting started with selenider">
 <meta property="og:description" content="selenider">
@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">selenider</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -113,17 +113,17 @@ function, it will be closed automatically when the function finishes
 running. If you want to use the session outside the function, you need
 to use the <code>.env</code> argument. For example, let’s say we want a
 wrapper function around <code><a href="../reference/selenider_session.html">selenider_session()</a></code> that always
-uses RSelenium:</p>
+uses selenium:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Bad (unless you only need to use the session inside the function)</span></span>
 <span><span class="va">my_selenider_session</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu"><a href="../reference/selenider_session.html">selenider_session</a></span><span class="op">(</span><span class="st">"RSelenium"</span>, <span class="va">...</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/selenider_session.html">selenider_session</a></span><span class="op">(</span><span class="st">"selenium"</span>, <span class="va">...</span><span class="op">)</span></span>
 <span>  <span class="co"># The session will be closed here</span></span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="co"># Good - the session will be open in the caller environment/function</span></span>
 <span><span class="va">my_selenider_session</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span>, <span class="va">.env</span> <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/stack.html" class="external-link">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu"><a href="../reference/selenider_session.html">selenider_session</a></span><span class="op">(</span><span class="st">"RSelenium"</span>, <span class="va">...</span>, .env <span class="op">=</span> <span class="va">.env</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/selenider_session.html">selenider_session</a></span><span class="op">(</span><span class="st">"selenium"</span>, <span class="va">...</span>, .env <span class="op">=</span> <span class="va">.env</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <p>Use <code><a href="../reference/open_url.html">open_url()</a></code> to navigate to a website. selenider also
 provides the <code><a href="../reference/back.html">back()</a></code> and <code><a href="../reference/back.html">forward()</a></code> functions to
@@ -149,23 +149,47 @@ are used, but other options are available.</p>
 <code class="sourceCode R"><span><span class="va">header</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/s.html">s</a></span><span class="op">(</span><span class="st">"#rStudioHeader"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">header</span></span>
-<span><span class="co">#&gt; A selenider element selecting:</span></span>
-<span><span class="co">#&gt; The first element with css selector <span style="color: #0000BB;">"#rStudioHeader"</span>.</span></span></code></pre></div>
+<span><span class="co">#&gt; { selenider_element }</span></span>
+<span><span class="co">#&gt; &lt;div id="rStudioHeader"&gt;</span></span>
+<span><span class="co">#&gt;   \n          &lt;div class="band"&gt;\n            &lt;div class="innards bandContent ...</span></span>
+<span><span class="co">#&gt; &lt;/div&gt;</span></span></code></pre></div>
 <p>For example, an XPath can be used instead. XPaths can be useful for
 more complex selectors, and are not limited to selecting from the
 ancestors of the current element. However, they can be difficult to
 read.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/s.html">s</a></span><span class="op">(</span>xpath <span class="op">=</span> <span class="st">"//div/a"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; A selenider element selecting:</span></span>
-<span><span class="co">#&gt; The first element with xpath <span style="color: #0000BB;">"//div/a"</span>.</span></span></code></pre></div>
+<span><span class="co">#&gt; { selenider_element }</span></span>
+<span><span class="co">#&gt; &lt;a class="productName" href="/"&gt;</span></span>
+<span><span class="co">#&gt;   Tidyverse</span></span>
+<span><span class="co">#&gt; &lt;/a&gt;</span></span></code></pre></div>
 <p>Use <code><a href="../reference/s.html">ss()</a></code> to select multiple elements.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">all_links</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/s.html">ss</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">all_links</span></span>
-<span><span class="co">#&gt; A collection of selenider elements selecting:</span></span>
-<span><span class="co">#&gt; The elements with css selector <span style="color: #0000BB;">"a"</span>.</span></span></code></pre></div>
+<span><span class="co">#&gt; { selenider_elements (24) }</span></span>
+<span><span class="co">#&gt; [1] &lt;a class="productName" href="/"&gt;Tidyverse&lt;/a&gt;</span></span>
+<span><span class="co">#&gt; [2] &lt;a class="menuItem " href="/packages/"&gt;Packages&lt;/a&gt;</span></span>
+<span><span class="co">#&gt; [3] &lt;a class="menuItem " href="/blog/"&gt;Blog&lt;/a&gt;</span></span>
+<span><span class="co">#&gt; [4] &lt;a class="menuItem " href="/learn/"&gt;Learn&lt;/a&gt;</span></span>
+<span><span class="co">#&gt; [5] &lt;a class="menuItem " href="/help/"&gt;Help&lt;/a&gt;</span></span>
+<span><span class="co">#&gt; [6] &lt;a class="menuItem " href="/contribute/"&gt;Contribute&lt;/a&gt;</span></span>
+<span><span class="co">#&gt; [7] &lt;a href="https://dplyr.tidyverse.org"&gt;&lt;img src="/css/images/hex/dplyr.png" al ...</span></span>
+<span><span class="co">#&gt; [8] &lt;a href="https://ggplot2.tidyverse.org"&gt;&lt;img src="/css/images/hex/ggplot2.png ...</span></span>
+<span><span class="co">#&gt; [9] &lt;a href="https://readr.tidyverse.org"&gt;&lt;img src="/css/images/hex/readr.png" al ...</span></span>
+<span><span class="co">#&gt; [10] &lt;a href="https://forcats.tidyverse.org"&gt;&lt;img src="/css/images/hex/forcats.png ...</span></span>
+<span><span class="co">#&gt; [11] &lt;a href="https://stringr.tidyverse.org"&gt;&lt;img src="/css/images/hex/stringr.png ...</span></span>
+<span><span class="co">#&gt; [12] &lt;a href="https://tibble.tidyverse.org"&gt;&lt;img src="/css/images/hex/tibble.png"  ...</span></span>
+<span><span class="co">#&gt; [13] &lt;a href="https://tidyr.tidyverse.org"&gt;&lt;img src="/css/images/hex/tidyr.png" al ...</span></span>
+<span><span class="co">#&gt; [14] &lt;a href="https://purrr.tidyverse.org"&gt;&lt;img src="/css/images/hex/purrr.png" al ...</span></span>
+<span><span class="co">#&gt; [15] &lt;a href="/packages"&gt;collection of R packages&lt;/a&gt;</span></span>
+<span><span class="co">#&gt; [16] &lt;a href="http://r4ds.had.co.nz/" target="_blank" rel="noopener"&gt;online&lt;/a&gt;</span></span>
+<span><span class="co">#&gt; [17] &lt;a href="http://amzn.to/2aHLAQ1" target="_blank" rel="noopener"&gt;the book&lt;/a&gt;</span></span>
+<span><span class="co">#&gt; [18] &lt;a href="/learn/"&gt;resource&lt;/a&gt;</span></span>
+<span><span class="co">#&gt; [19] &lt;a href="http://amzn.to/2aHLAQ1"&gt;&lt;img class="bookCover" src="/images/cover.pn ...</span></span>
+<span><span class="co">#&gt; [20] &lt;a href="/help/#reprex"&gt;reprex&lt;/a&gt;</span></span>
+<span><span class="co">#&gt; ...</span></span></code></pre></div>
 <p>Use <code><a href="../reference/find_element.html">find_element()</a></code> and <code><a href="../reference/find_elements.html">find_elements()</a></code> to
 find child elements of an existing element. These can be chained with
 the pipe operator (<code>|&gt;</code>) to specify paths to elements.
@@ -177,34 +201,45 @@ types are available, but CSS selectors are used by default.</p>
 <span>  <span class="fu"><a href="../reference/find_element.html">find_element</a></span><span class="op">(</span><span class="st">".productName"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">tidyverse_title</span></span>
-<span><span class="co">#&gt; A selenider element selecting:</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> The first element with css selector <span style="color: #0000BB;">"#rStudioHeader"</span>.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> The first child element with css selector <span style="color: #0000BB;">"div"</span>.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> The first child element with css selector <span style="color: #0000BB;">".productName"</span>.</span></span>
+<span><span class="co">#&gt; { selenider_element }</span></span>
+<span><span class="co">#&gt; &lt;a class="productName" href="/"&gt;</span></span>
+<span><span class="co">#&gt;   Tidyverse</span></span>
+<span><span class="co">#&gt; &lt;/a&gt;</span></span>
 <span></span>
 <span><span class="va">menu_items</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/s.html">s</a></span><span class="op">(</span><span class="st">"#rStudioHeader"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/find_element.html">find_element</a></span><span class="op">(</span><span class="st">"#menu"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/find_elements.html">find_elements</a></span><span class="op">(</span><span class="st">".menuItem"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">menu_items</span></span>
-<span><span class="co">#&gt; A collection of selenider elements selecting:</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> The first element with css selector <span style="color: #0000BB;">"#rStudioHeader"</span>.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> The first child element with css selector <span style="color: #0000BB;">"#menu"</span>.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> The child elements with css selector <span style="color: #0000BB;">".menuItem"</span>.</span></span></code></pre></div>
+<span><span class="co">#&gt; { selenider_elements (5) }</span></span>
+<span><span class="co">#&gt; [1] &lt;a class="menuItem " href="/packages/"&gt;Packages&lt;/a&gt;</span></span>
+<span><span class="co">#&gt; [2] &lt;a class="menuItem " href="/blog/"&gt;Blog&lt;/a&gt;</span></span>
+<span><span class="co">#&gt; [3] &lt;a class="menuItem " href="/learn/"&gt;Learn&lt;/a&gt;</span></span>
+<span><span class="co">#&gt; [4] &lt;a class="menuItem " href="/help/"&gt;Help&lt;/a&gt;</span></span>
+<span><span class="co">#&gt; [5] &lt;a class="menuItem " href="/contribute/"&gt;Contribute&lt;/a&gt;</span></span></code></pre></div>
 <p>Use <code><a href="../reference/elem_ancestors.html">elem_children()</a></code> and friends to find elements using
 their relative position to another.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/s.html">s</a></span><span class="op">(</span><span class="st">"#menuItems"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/elem_ancestors.html">elem_children</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; A collection of selenider elements selecting:</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> The first element with css selector <span style="color: #0000BB;">"#menuItems"</span>.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> The direct children.</span></span>
+<span><span class="co">#&gt; { selenider_elements (5) }</span></span>
+<span><span class="co">#&gt; [1] &lt;a class="menuItem " href="/packages/"&gt;Packages&lt;/a&gt;</span></span>
+<span><span class="co">#&gt; [2] &lt;a class="menuItem " href="/blog/"&gt;Blog&lt;/a&gt;</span></span>
+<span><span class="co">#&gt; [3] &lt;a class="menuItem " href="/learn/"&gt;Learn&lt;/a&gt;</span></span>
+<span><span class="co">#&gt; [4] &lt;a class="menuItem " href="/help/"&gt;Help&lt;/a&gt;</span></span>
+<span><span class="co">#&gt; [5] &lt;a class="menuItem " href="/contribute/"&gt;Contribute&lt;/a&gt;</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/s.html">s</a></span><span class="op">(</span><span class="st">"#menuItems"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/elem_ancestors.html">elem_ancestors</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; A collection of selenider elements selecting:</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> The first element with css selector <span style="color: #0000BB;">"#menuItems"</span>.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> The ancestors.</span></span></code></pre></div>
+<span><span class="co">#&gt; { selenider_elements (8) }</span></span>
+<span><span class="co">#&gt; [1] &lt;html lang="en-us"&gt;&lt;head&gt;\n\n\n\n\n\n&lt;link rel="stylesheet" href="/css/fonts. ...</span></span>
+<span><span class="co">#&gt; [2] &lt;body&gt;\n    &lt;div id="appTidyverseSite"&gt;\n      &lt;div id="main"&gt;\n        \n    ...</span></span>
+<span><span class="co">#&gt; [3] &lt;div id="appTidyverseSite"&gt;\n      &lt;div id="main"&gt;\n        \n        &lt;div id ...</span></span>
+<span><span class="co">#&gt; [4] &lt;div id="main"&gt;\n        \n        &lt;div id="rStudioHeader"&gt;\n          &lt;div c ...</span></span>
+<span><span class="co">#&gt; [5] &lt;div id="rStudioHeader"&gt;\n          &lt;div class="band"&gt;\n            &lt;div clas ...</span></span>
+<span><span class="co">#&gt; [6] &lt;div class="band"&gt;\n            &lt;div class="innards bandContent"&gt;\n           ...</span></span>
+<span><span class="co">#&gt; [7] &lt;div class="innards bandContent"&gt;\n              &lt;div&gt;\n                &lt;a cl ...</span></span>
+<span><span class="co">#&gt; [8] &lt;div id="menu"&gt;\n  &lt;div id="menuToggler"&gt;&lt;/div&gt;\n  &lt;div id="menuItems" class= ...</span></span></code></pre></div>
 <p>You can use <code><a href="../reference/elem_filter.html">elem_filter()</a></code> and <code><a href="../reference/elem_filter.html">elem_find()</a></code>
 to filter collections of elements using a custom function.
 <code><a href="../reference/elem_filter.html">elem_find()</a></code> returns the first matching element, while
@@ -215,23 +250,21 @@ functions use the same interface as <code><a href="../reference/elem_expect.html
 <code class="sourceCode R"><span><span class="co"># Find the blog item in the menu</span></span>
 <span><span class="va">menu_items</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/elem_filter.html">elem_find</a></span><span class="op">(</span><span class="fu"><a href="../reference/has_text.html">has_text</a></span><span class="op">(</span><span class="st">"Blog"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; A selenider element selecting:</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> The first element with css selector <span style="color: #0000BB;">"#rStudioHeader"</span>.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> The first child element with css selector <span style="color: #0000BB;">"#menu"</span>.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> The first child element with css selector <span style="color: #0000BB;">".menuItem"</span> matching the following</span></span>
-<span><span class="co">#&gt;   condition:</span></span>
-<span><span class="co">#&gt;   `has_text("Blog")`</span></span>
+<span><span class="co">#&gt; { selenider_element }</span></span>
+<span><span class="co">#&gt; &lt;a class="menuItem " href="/blog/"&gt;</span></span>
+<span><span class="co">#&gt;   Blog</span></span>
+<span><span class="co">#&gt; &lt;/a&gt;</span></span>
 <span></span>
 <span><span class="co"># Find the hex badges on the second row</span></span>
 <span><span class="fu"><a href="../reference/s.html">s</a></span><span class="op">(</span><span class="st">".hexBadges"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/find_elements.html">find_elements</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/find_elements.html">find_elements</a></span><span class="op">(</span><span class="st">"img"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/elem_filter.html">elem_filter</a></span><span class="op">(</span></span>
 <span>    \<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/substr.html" class="external-link">substring</a></span><span class="op">(</span><span class="fu"><a href="../reference/elem_attr.html">elem_attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"class"</span><span class="op">)</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span> <span class="op">==</span> <span class="st">"r2"</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; A collection of selenider elements selecting:</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> The first element with css selector <span style="color: #0000BB;">".hexBadges"</span>.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> The child elements with css selector <span style="color: #0000BB;">"a"</span> matching the following condition:</span></span>
-<span><span class="co">#&gt;   `function(x) substring(elem_attr(x, "class"), 1, 2) == "r2"`</span></span></code></pre></div>
+<span><span class="co">#&gt; { selenider_elements (3) }</span></span>
+<span><span class="co">#&gt; [1] &lt;img src="/css/images/hex/ggplot2.png" alt="ggplot2 hex sticker" class="r2 c0"&gt;</span></span>
+<span><span class="co">#&gt; [2] &lt;img src="/css/images/hex/forcats.png" alt="forcats hex sticker" class="r2 c1"&gt;</span></span>
+<span><span class="co">#&gt; [3] &lt;img src="/css/images/hex/tibble.png" alt="tibble hex sticker" class="r2 c2"&gt;</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="interacting-with-an-element">Interacting with an element<a class="anchor" aria-label="anchor" href="#interacting-with-an-element"></a>
@@ -320,10 +353,10 @@ form.</p>
 <span><span class="co">#&gt; $class</span></span>
 <span><span class="co">#&gt; [1] "r1 c0"</span></span>
 <span></span>
-<span><span class="co"># Get the 'value' attribute (NA in this case)</span></span>
+<span><span class="co"># Get the 'value' attribute (`NULL` in this case)</span></span>
 <span><span class="fu"><a href="../reference/s.html">s</a></span><span class="op">(</span><span class="st">"#homeContent"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/elem_attr.html">elem_value</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] NA</span></span>
+<span><span class="co">#&gt; NULL</span></span>
 <span></span>
 <span><span class="co"># Get a CSS property</span></span>
 <span><span class="fu"><a href="../reference/s.html">s</a></span><span class="op">(</span><span class="st">".tagline"</span><span class="op">)</span> <span class="op">|&gt;</span></span>

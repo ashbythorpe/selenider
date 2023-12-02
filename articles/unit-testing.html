@@ -8,8 +8,8 @@
 <meta name="description" content="selenider">
 <title>Unit testing • selenider</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Unit testing">
 <meta property="og:description" content="selenider">
@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">selenider</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -165,7 +165,9 @@ instead.</p>
 <span>  <span class="op">)</span>,</span>
 <span>  server <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="va">even</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">button</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%%</a></span> <span class="fl">2</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/exportTestValues.html" class="external-link">exportTestValues</a></span><span class="op">(</span>even <span class="op">=</span> <span class="op">{</span> <span class="fu">even</span><span class="op">(</span><span class="op">)</span> <span class="op">}</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/exportTestValues.html" class="external-link">exportTestValues</a></span><span class="op">(</span>even <span class="op">=</span> <span class="op">{</span></span>
+<span>      <span class="fu">even</span><span class="op">(</span><span class="op">)</span></span>
+<span>    <span class="op">}</span><span class="op">)</span></span>
 <span>  <span class="op">}</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>To start a selenider session using an existing
@@ -195,16 +197,16 @@ instead.</p>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Can't compare snapshot to reference when testing interactively.</span></span>
 <span><span class="co">#&gt; i Run `devtools::test()` or `testthat::test_file()` to see changes.</span></span>
-<span><span class="co">#&gt; New path: /tmp/RtmpFTBBYX/st2-1ca57e6abe22/001_.png</span></span>
+<span><span class="co">#&gt; New path: /tmp/RtmpciCfar/st2-1d396be624ed/001_.png</span></span>
 <span><span class="co">#&gt; Can't compare snapshot to reference when testing interactively.</span></span>
 <span><span class="co">#&gt; i Run `devtools::test()` or `testthat::test_file()` to see changes.</span></span>
-<span><span class="co">#&gt; New path: /tmp/RtmpFTBBYX/st2-1ca57e6abe22/001.json</span></span>
+<span><span class="co">#&gt; New path: /tmp/RtmpciCfar/st2-1d396be624ed/001.json</span></span>
 <span><span class="co">#&gt; Can't compare snapshot to reference when testing interactively.</span></span>
 <span><span class="co">#&gt; i Run `devtools::test()` or `testthat::test_file()` to see changes.</span></span>
-<span><span class="co">#&gt; New path: /tmp/RtmpFTBBYX/st2-1ca57e6abe22/002_.png</span></span>
+<span><span class="co">#&gt; New path: /tmp/RtmpciCfar/st2-1d396be624ed/002_.png</span></span>
 <span><span class="co">#&gt; Can't compare snapshot to reference when testing interactively.</span></span>
 <span><span class="co">#&gt; i Run `devtools::test()` or `testthat::test_file()` to see changes.</span></span>
-<span><span class="co">#&gt; New path: /tmp/RtmpFTBBYX/st2-1ca57e6abe22/002.json</span></span>
+<span><span class="co">#&gt; New path: /tmp/RtmpciCfar/st2-1d396be624ed/002.json</span></span>
 <span><span class="co">#&gt; Test passed</span></span></code></pre></div>
 <p>Note the difference in styles: while in selenider you must specify
 tests explicitly, shinytest2 uses a snapshot-based approach (specifying
@@ -230,19 +232,19 @@ to make any special additions to your workflow files, and can safely use
 something like <a href="https://github.com/r-lib/actions/tree/v2-branch/examples#standard-ci-workflow" class="external-link">r-lib’s
 R CMD CHECK action</a>. This is because chromote only requires chrome to
 be installed, which is already the case on Github’s machines.</p>
-<p>Using RSelenium as your backend is more complicated. Installing
-RSelenium can be complicated, so for a reliable workflow, we recommend
-using docker. Unfortunately, RSelenium currently only supports rather
-old docker images. We currently use RSelenium version 3.141.0. Note that
-some of the following advice also applies if you want to use Selenium
-and docker manually.</p>
-<p>To use docker in a Github Action yaml file, add the following lines
-(changing the ports and browser if wanted/needed):</p>
+<p>If you want to use selenium with Github Actions, it is recommended to
+make use of docker. See <a href="https://github.com/SeleniumHQ/docker-selenium" class="external-link uri">https://github.com/SeleniumHQ/docker-selenium</a> for more
+information. For example, the following lines in a Github Actions yaml
+file will start a selenium server (version 4.15.0), supporting Firefox,
+on port 4444. We recommend using the “shm-size” argument to make sure
+you don’t run out of memory.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">services</span><span class="kw">:</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">selenium</span><span class="kw">:</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> selenium/standalone-firefox:3.141.0</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> selenium/standalone-firefox:4.15.0-20231108</span></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> 4444:4444</span></span></code></pre></div>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> 4444:4444</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">    options</span><span class="kw">: </span><span class="ch">&gt;-</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>      --shm-size="2g"</span></code></pre></div>
 <p>This will download Firefox and start a Selenium server on port 4444.
 Automating a browser with Selenium consists of two parts: the server and
 the client. By default, <code><a href="../reference/selenider_session.html">selenider_session()</a></code> tries to setup
@@ -254,9 +256,10 @@ into the <code>driver</code> argument to
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"selenium"</span>,</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">browser =</span> <span class="st">"firefox"</span></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">driver =</span> <span class="fu">create_selenium_client</span>(</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">port =</span> <span class="dv">4444</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">browser =</span> <span class="st">"firefox"</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">port =</span> <span class="dv">4444</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <p>The session can then by used as usual. selenider will no longer be
 able to close the selenium server, but this should be done automatically
 in the Github Action.</p>

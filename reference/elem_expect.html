@@ -3,7 +3,7 @@
 certain period of time (by default 4 seconds), this does not happen, an
 informative error is thrown. Otherwise, the original element is returned.
 elem_wait_until() does the same, but returns a logical value (whether or
-not the test passed), allowing you to handle the failure case explicitly."><title>Test one or more conditions on HTML elements — elem_expect • selenider</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Test one or more conditions on HTML elements — elem_expect"><meta property="og:description" content="elem_expect() waits for a set of conditions to return TRUE. If, after a
+not the test passed), allowing you to handle the failure case explicitly."><title>Test one or more conditions on HTML elements — elem_expect • selenider</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Test one or more conditions on HTML elements — elem_expect"><meta property="og:description" content="elem_expect() waits for a set of conditions to return TRUE. If, after a
 certain period of time (by default 4 seconds), this does not happen, an
 informative error is thrown. Otherwise, the original element is returned.
 elem_wait_until() does the same, but returns a logical value (whether or
@@ -18,7 +18,7 @@ not the test passed), allowing you to handle the failure case explicitly."><!-- 
     
     <a class="navbar-brand me-2" href="../index.html">selenider</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -94,9 +94,9 @@ must all be <code>TRUE</code> for the test to pass.</p></dd>
 
 <dt>testthat</dt>
 <dd><p>Whether to treat the expectation as a <code>testthat</code> test. You
-<em>do not</em> need to explicitly provide this most of the time, since by default,
-we can use <code><a href="https://testthat.r-lib.org/reference/is_testing.html" class="external-link">testthat::is_testing()</a></code> to figure out whether <code>elem_expect()</code> is
-being called from within a <code>testthat</code> test.</p></dd>
+<em>do not</em> need to explicitly provide this most of the time, since by
+default, we can use <code><a href="https://testthat.r-lib.org/reference/is_testing.html" class="external-link">testthat::is_testing()</a></code> to figure out whether
+<code>elem_expect()</code> is being called from within a <code>testthat</code> test.</p></dd>
 
 
 <dt>timeout</dt>
@@ -109,8 +109,8 @@ local session if an element is not given.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p><code>elem_expect()</code> invisibly returns the element(s) <code>x</code>, or <code>NULL</code> if an element or
-collection of elements was not given in <code>x</code>.</p>
+<p><code>elem_expect()</code> invisibly returns the element(s) <code>x</code>, or <code>NULL</code> if an
+element or collection of elements was not given in <code>x</code>.</p>
 
 
 <p><code>elem_wait_for()</code> returns a boolean flag: TRUE if the test passes, FALSE
@@ -120,12 +120,13 @@ otherwise.</p>
     <h2 id="conditions">Conditions<a class="anchor" aria-label="anchor" href="#conditions"></a></h2>
     <p>Conditions can be supplied as functions or calls.</p>
 <p>Functions allow you to use unary conditions without formatting them as a
-call (e.g. <code>is_present</code> rather than <code><a href="is_present.html">is_present()</a></code>). It also allows you to make
-use of R's <a href="https://rdrr.io/r/base/function.html" class="external-link">anonymous function syntax</a> to quickly create
-custom conditions. <code>x</code> will be supplied as the first argument of this function.</p>
-<p>Function calls allow you to use conditions that take multiple arguments (e.g.
-<code><a href="has_text.html">has_text()</a></code>) without the use of an intermediate function. The call will
-be modified so that <code>x</code> is the first argument to the function call. For
+call (e.g. <code>is_present</code> rather than <code><a href="is_present.html">is_present()</a></code>). It also allows you to
+make use of R's <a href="https://rdrr.io/r/base/function.html" class="external-link">anonymous function syntax</a> to quickly
+create custom conditions. <code>x</code> will be supplied as the first argument of this
+function.</p>
+<p>Function calls allow you to use conditions that take multiple arguments
+(e.g. <code><a href="has_text.html">has_text()</a></code>) without the use of an intermediate function. The call
+will be modified so that <code>x</code> is the first argument to the function call. For
 example, <code>has_text("a")</code> will be modified to become: <code>has_text(x, "a")</code>.</p>
 <p>The and (<code>&amp;&amp;</code>), or (<code>||</code>) and not (<code>!</code>) functions can be used on both types
 of conditions. If more than one condition are given in <code>...</code>, they are
@@ -146,8 +147,8 @@ default, set to 0, ignoring the local timeout. This is important, since
 manually. To override this default, manually specify a timeout.</p></li>
 </ul><p>These two features allow you to use functions like <code><a href="elem_text.html">elem_text()</a></code> to access
 properties of an element, without needing to worry about the errors that
-they throw or the timeouts that they use. See Examples for a few examples of a
-custom condition.</p>
+they throw or the timeouts that they use. See Examples for a few examples of
+a custom condition.</p>
 <p>These custom conditions can also be used with <code><a href="elem_filter.html">elem_filter()</a></code> and
 <code><a href="elem_filter.html">elem_find()</a></code>.</p>
     </div>
@@ -156,8 +157,8 @@ custom condition.</p>
     <div class="dont-index">
 <ul><li><p><code><a href="is_present.html">is_present()</a></code> and other conditions for predicates for HTML elements.
 (If you scroll down to the <em>See also</em> section, you will find the rest).</p></li>
-<li><p><code><a href="elem_expect_all.html">elem_expect_all()</a></code> and <code><a href="elem_expect_all.html">elem_wait_until_all()</a></code> for an easy way to test a single
-condition on multiple elements.</p></li>
+<li><p><code><a href="elem_expect_all.html">elem_expect_all()</a></code> and <code><a href="elem_expect_all.html">elem_wait_until_all()</a></code> for an easy way to test a
+single condition on multiple elements.</p></li>
 <li><p><code><a href="elem_filter.html">elem_filter()</a></code> and <code><a href="elem_filter.html">elem_find()</a></code> to use conditions to filter elements.</p></li>
 </ul></div>
     </div>
@@ -167,7 +168,7 @@ condition on multiple elements.</p></li>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="va">html</span> <span class="op">&lt;-</span> <span class="st">"</span></span>
 <span><span class="st">&lt;div class='class1'&gt;</span></span>
 <span><span class="st">&lt;button id='disabled-button' disabled&gt;Disabled&lt;/button&gt;</span></span>
-<span><span class="st">&lt;p style='visibility:hidden;'&gt;Example text&lt;/p&gt;</span></span>
+<span><span class="st">&lt;p&gt;Example text&lt;/p&gt;</span></span>
 <span><span class="st">&lt;button id='enabled-button'&gt;Enabled&lt;/button&gt;</span></span>
 <span><span class="st">&lt;/div&gt;</span></span>
 <span><span class="st"></span></span>
@@ -205,19 +206,21 @@ condition on multiple elements.</p></li>
 <span><span class="co"># Note that elem_click() will do this automatically</span></span>
 <span></span>
 <span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"p"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">elem_expect</span><span class="op">(</span><span class="va">is_hidden</span>, <span class="fu"><a href="has_text.html">has_exact_text</a></span><span class="op">(</span><span class="st">"Example text"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu">elem_expect</span><span class="op">(</span><span class="va">is_visible</span>, <span class="fu"><a href="has_text.html">has_exact_text</a></span><span class="op">(</span><span class="st">"Example text"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Or use an anonymous function</span></span>
 <span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"p"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">elem_expect</span><span class="op">(</span>\<span class="op">(</span><span class="va">elem</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="elem_text.html">elem_text</a></span><span class="op">(</span><span class="va">elem</span><span class="op">)</span>, <span class="st">"Example text"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># If your conditions are not specific to an element, you can omit the `x` argument</span></span>
+<span><span class="co"># If your conditions are not specific to an element, you can omit the `x`</span></span>
+<span><span class="co"># argument</span></span>
 <span><span class="va">elem_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class1"</span><span class="op">)</span></span>
 <span><span class="va">elem_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">".class2"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">elem_expect</span><span class="op">(</span><span class="fu"><a href="is_present.html">is_present</a></span><span class="op">(</span><span class="va">elem_1</span><span class="op">)</span> <span class="op">||</span> <span class="fu"><a href="is_present.html">is_present</a></span><span class="op">(</span><span class="va">elem_2</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># We can now use the conditions on their own to figure out which element exists</span></span>
+<span><span class="co"># We can now use the conditions on their own to figure out which element</span></span>
+<span><span class="co"># exists</span></span>
 <span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="is_present.html">is_present</a></span><span class="op">(</span><span class="va">elem_1</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="st">"Element 1 is visible"</span><span class="op">)</span></span>
 <span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
@@ -243,15 +246,16 @@ condition on multiple elements.</p></li>
 <span><span class="co"># Or create a function, to reuse the condition multiple times</span></span>
 <span><span class="va">text_contains</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">pattern</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">text</span> <span class="op">&lt;-</span> <span class="fu"><a href="elem_text.html">elem_text</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span>  </span>
+<span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="va">pattern</span>, <span class="va">text</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu"><a href="s.html">s</a></span><span class="op">(</span><span class="st">"p"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">elem_expect</span><span class="op">(</span><span class="fu">text_contains</span><span class="op">(</span><span class="st">"Example *"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># If we want to continue on error, we need to use the "expect_error_continue" class</span></span>
-<span><span class="co"># This involves making a custom error object</span></span>
+<span><span class="co"># If we want to continue on error, we need to use the</span></span>
+<span><span class="co"># "expect_error_continue" class.</span></span>
+<span><span class="co"># This involves making a custom error object.</span></span>
 <span><span class="va">error_condition</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">my_condition</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>message <span class="op">=</span> <span class="st">"Custom error!"</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">my_condition</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"expect_error_continue"</span>, <span class="st">"error"</span>, <span class="st">"condition"</span><span class="op">)</span></span>
