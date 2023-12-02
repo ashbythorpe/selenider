@@ -4,9 +4,9 @@
 \name{selenider-package}
 \alias{selenider}
 \alias{selenider-package}
-\title{selenider: Concise, Lazy and Reliable Wrapper for 'chromote' and 'RSelenium'}
+\title{selenider: Concise, Lazy and Reliable Wrapper for 'chromote' and 'selenium'}
 \description{
-A user-friendly wrapper for web automation, using either 'chromote' or 'RSelenium'. Provides a simple and consistent API to make web scraping and testing scripts easy to write and understand. Elements are lazy, and automatically wait for the website to be valid, resulting in reliable and reproducible code, with no visible impact on the experience of the programmer.
+A user-friendly wrapper for web automation, using either 'chromote' or 'selenium'. Provides a simple and consistent API to make web scraping and testing scripts easy to write and understand. Elements are lazy, and automatically wait for the website to be valid, resulting in reliable and reproducible code, with no visible impact on the experience of the programmer.
 }
 \seealso{
 Useful links:
