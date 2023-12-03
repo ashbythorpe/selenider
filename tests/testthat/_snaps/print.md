@@ -5,7 +5,7 @@
     Output
       { selenider_element }
       <div class="toggleable" style="display: none;">
-        \n<p>Hello!</p>\n
+        \n  <p>Hello!</p>\n
       </div>
 
 ---
