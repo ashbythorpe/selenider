@@ -70,7 +70,7 @@ remotes::install_github("ashbythorpe/selenider")
 
 Additionally, you must install
 [chromote](https://rstudio.github.io/chromote/) or
-[selenium](https://ashbythorpe.github.io/selenium/). We recommend
+[selenium](https://ashbythorpe.github.io/selenium-r/). We recommend
 chromote, as it is quicker and easier to get up and running.
 
 ``` r
@@ -131,6 +131,9 @@ s("dl") |>
 #> 
 #> [[2]]
 #> [1] "https://cran.ma.imperial.ac.uk/"
+#> 
+#> [[3]]
+#> [1] "https://anorien.csc.warwick.ac.uk/CRAN/"
 ```
 
 ## Vignettes
