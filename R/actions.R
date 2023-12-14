@@ -526,7 +526,12 @@ hover_chromote <- function(element, driver) {
   x <- coords$x
   y <- coords$y
 
-  driver$Input$dispatchMouseEvent(type = "mouseMoved", x = x, y = y)
+  driver$Input$dispatchMouseEvent(
+    type = "mouseMoved",
+    x = x,
+    y = y,
+    button = "middle",
+  )
 }
 
 #' @rdname elem_hover
@@ -677,7 +682,7 @@ element_input_type <- function(x, session, driver) {
           'password',
           'number',
           'email',
-        ].includes(x)
+        ].includes(x.type)
       ) {
         return 'typeable-input';
       } else {
@@ -725,20 +730,16 @@ element_set_value <- function(x, text, session, driver) {
       (x as HTMLInputElement).value = '", text, "';
       x.dispatchEvent(new Event('input', {bubbles: true}));
       x.dispatchEvent(new Event('change', {bubbles: true}));
-    }"), x, value = text, session = session, driver = driver)
+    }"), x, session = session, driver = driver)
   }
 }
 
 partially_type <- function(x, text, session, driver) {
   execute_js_fn_on(paste0("function(x) {
     const text = '", text, "';
-    const currentValue = if (x.isContentEditable) {
-      x.innerText
-    } else {
-      x.value;
-    }
+    const currentValue = x.isContentEditable ? x.innerText : x.value;
 
-    if(text.length <= currentValue.length || !text.startsWith(x.value)) {
+    if (text.length <= currentValue.length || !text.startsWith(x.value)) {
       if (x.isContentEditable) {
         x.innerText = '';
       } else {
@@ -747,11 +748,7 @@ partially_type <- function(x, text, session, driver) {
       return text;
     }
 
-    const originalValue = if (x.isContentEditable) {
-      x.innerText
-    } else {
-      x.value;
-    }
+    const originalValue = x.isContentEditable ? x.innerText : x.value;
 
     if (x.isContentEditable) {
       x.innerText = '';
@@ -760,8 +757,9 @@ partially_type <- function(x, text, session, driver) {
       x.value = '';
       x.value = originalValue;
     }
+
     return text.substring(originalValue.length);
-  }"))
+  }"), x, session = session, driver = driver)
 }
 
 chromote_clear <- function(x,
@@ -928,7 +926,7 @@ element_send_keys <- function(x, modifiers, keys, session, driver) {
 
 chromote_send_keys <- function(element, driver, keys, modifiers) {
   if (!is.null(element)) {
-    click_chromote(element, driver = driver)
+    chromote_focus(element, driver = driver)
   }
 
   keys <- format_keys(keys, modifiers)

@@ -116,7 +116,8 @@ chromote_clickable_point <- function(node_id = NULL,
       node_id = node_id,
       backend_id = backend_id,
       driver = driver
-    )
+    ),
+    returnByValue = TRUE
   )$result$value
 
   if (length(boxes) == 0) {
