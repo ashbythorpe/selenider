@@ -213,14 +213,16 @@ selenider_session <- function(session = getOption("selenider.session"),
   )
 
   browser <- browser_version$browser
-  version <- browser_version$version
+
+  if (inherits(options, "selenium_options") &&
+    inherits(options$server_options, "wdman_server_options") && # nolint: indentation_linter
+    is.null(options$server_options$version)) {
+    options$server_options$version <- browser_version$version
+  }
 
   driver <- get_driver(
     browser = browser,
-    version = version,
-    view = view,
-    selenium_manager = selenium_manager,
-    quiet = quiet,
+    options = options,
     driver = driver
   )
 
@@ -322,12 +324,14 @@ get_driver <- function(browser, options, driver) {
       server <- if (inherits(options$server_options, "selenium_server_options") && has_default_selenium_object()) {
         new_server <- FALSE
         default_selenium_object()
-      } else {
+      } else if (!is.null(options$server_options)) {
         new_server <- TRUE
         skip_error_if_testing(create_selenium_server(
           browser,
-          options
+          options$server_options
         ), message = "Selenium server failed to start.")
+      } else {
+        NULL
       }
 
       if (inherits(server, "SeleniumServer")) {
@@ -349,12 +353,12 @@ get_driver <- function(browser, options, driver) {
         }
 
         client <- skip_error_if_testing(
-          create_selenium_client(browser, options),
+          create_selenium_client(browser, options$client_options),
           message = "Selenium client failed to start."
         )
       } else {
         client <- skip_error_if_testing(
-          create_rselenium_client(browser, options),
+          create_rselenium_client(browser, options$client_options),
           message = "RSelenium client failed to start."
         )
       }
@@ -364,7 +368,7 @@ get_driver <- function(browser, options, driver) {
         client = client
       )
 
-      if (selenium_manager && new_server) {
+      if (inherits(options$server_options, "selenium_server_options") && new_server) {
         set_default_selenium_object(server)
       }
     }
@@ -515,6 +519,10 @@ create_selenium_server <- function(browser, options) {
       extra_args = c("-p", as.character(options$port), options$extra_args)
     )
   } else {
+    if (is.null(options$driver_version)) {
+
+    }
+
     chromever <- if (browser == "chrome") options$driver_version else NULL
     geckover <- if (browser == "firefox") options$driver_version else NULL
     iedrver <- if (browser == "internet explorer") options$driver_version else NULL

@@ -13,6 +13,7 @@ chromote_options <- function(view = FALSE,
   check_bool(auto_events, allow_null = TRUE)
 
   result <- list(
+    view = view,
     parent = parent,
     width = width,
     height = height,
@@ -28,15 +29,17 @@ chromote_options <- function(view = FALSE,
 
 selenium_options <- function(client_options = selenium_client_options(),
                              server_options = selenium_server_options()) {
-  check_class(client_options, c("selenider_client_options"))
-  check_class(server_options, c("selenider_server_options"))
+  check_class(client_options, c("selenium_client_options", "rselenium_client_options"))
+  check_class(server_options, c("selenium_server_options", "wdman_server_options"), allow_null = TRUE)
 
   result <- list(
-    client = client_options,
-    server = server_options
+    client_options = client_options,
+    server_options = server_options
   )
 
   class(result) <- c("selenider_options", "list")
+
+  result
 }
 
 selenium_server_options <- function(version = "latest",
@@ -50,13 +53,13 @@ selenium_server_options <- function(version = "latest",
                                     extra_args = c()) {
   check_string(version)
   check_number_whole(port)
-  check_bool(selenium_manager)
+  check_bool(selenium_manager, allow_null = TRUE)
   check_bool(verbose)
   check_bool(temp)
   check_string(path, allow_null = TRUE)
   check_bool(interactive)
   check_bool(echo_cmd)
-  check_character(extra_args)
+  check_character(extra_args, allow_null = TRUE)
 
   result <- list(
     version = version,

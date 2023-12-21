@@ -92,3 +92,24 @@ check_vector <- function(x,
     call = call
   )
 }
+
+check_list <- function(x,
+                       ...,
+                       allow_null = FALSE,
+                       arg = rlang::caller_arg(x),
+                       call = rlang::caller_env()) {
+  if (is.list(x)) {
+    return(invisible(NULL))
+  } else if (allow_null && is.null(x)) {
+    return(invisible(NULL))
+  }
+
+  stop_input_type(
+    x,
+    "a list",
+    ...,
+    allow_null = allow_null,
+    arg = arg,
+    call = call
+  )
+}
