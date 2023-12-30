@@ -1,3 +1,39 @@
+#' Driver options
+#'
+#' @description
+#' `chromote_options()` and `selenium_options()` return a list of options that
+#' can be passed to the `options` argument of `selenider_session()`.
+#'
+#' `chromote_options()` allows you to control the creation of a chromote driver
+#' created using [chromote::ChromoteSession$new()][chromote::ChromoteSession].
+#'
+#' `selenium_options()` allows you to control the creation of a selenium driver.
+#'
+#' `selenium_server_options()` and `wdman_server_options()` should be passed to
+#' the `server_options` argument of `selenium_options()`. By default, the former
+#' is used, meaning that the server is created using
+#' [selenium::selenium_server()]. If `wdman_server_options()` is used instead,
+#' the server will be created using [wdman::selenium()].
+#'
+#' `selenium_client_options()` should be passed to the `client_options` argument
+#' of `selenium_options()`, allowing you to control the creation of a Selenium
+#' client created using
+#' [selenium::SeleniumSession$new()][selenium::SeleniumSession].
+#'
+#' `r lifecycle::badge("superseded")`
+#'
+#' Instead of using `selenium_client_options()`, you can use
+#' `rselenium_client_options()` to control the creation of an
+#' [RSelenium::remoteDriver()] object instead. This is not recommended, since
+#' RSelenium is incompatible with newer versions of Selenium.
+#'
+#' @param view Whether to run the browser in headless mode.
+#' @param parent The parent chromote session.
+#' @param width,height,targetId,wait_,auto_events Passed into
+#'   [chromote::ChromoteSession$new()][chromote::ChromoteSession].
+#'
+#'
+#' @export
 chromote_options <- function(view = FALSE,
                              parent = NULL,
                              width = 992,
@@ -27,6 +63,13 @@ chromote_options <- function(view = FALSE,
   result
 }
 
+#' @rdname chromote_options
+#'
+#' @param client_options A [selenium_client_options()] object.
+#' @param server_options A [selenium_server_options()] or
+#'   [wdman_server_options()] object.
+#'
+#' @export
 selenium_options <- function(client_options = selenium_client_options(),
                              server_options = selenium_server_options()) {
   check_class(client_options, c("selenium_client_options", "rselenium_client_options"))
@@ -42,6 +85,14 @@ selenium_options <- function(client_options = selenium_client_options(),
   result
 }
 
+#' @rdname chromote_options
+#'
+#' @param version The version of Selenium server to use.
+#' @param port The port number to use.
+#' @param selenium_manager,verbose,temp,path,interactive,echo_cmd,extra_args
+#'   Passed into [selenium::selenium_server()].
+#'
+#' @export
 selenium_server_options <- function(version = "latest",
                                     port = 4444L,
                                     selenium_manager = NULL,
@@ -78,6 +129,13 @@ selenium_server_options <- function(version = "latest",
   result
 }
 
+#' @rdname chromote_options
+#'
+#' @param driver_version The version of the browser-specific driver to use.
+#' @param check,retcommand,...
+#'   Passed into [wdman::selenium()].
+#'
+#' @export
 wdman_server_options <- function(version = "latest",
                                  driver_version = "latest",
                                  port = 4444L,
@@ -107,6 +165,12 @@ wdman_server_options <- function(version = "latest",
   result
 }
 
+#' @rdname chromote_options
+#'
+#' @param host,capabilities,request_body,timeout
+#'   Passed into [selenium::SeleniumSession$new()][selenium::SeleniumSession].
+#'
+#' @export
 selenium_client_options <- function(port = 4444L,
                                     host = "localhost",
                                     verbose = FALSE,
@@ -134,6 +198,12 @@ selenium_client_options <- function(port = 4444L,
   result
 }
 
+#' @rdname chromote_options
+#'
+#' @param platform,javascript,native_events,extra_capabilities
+#'   Passed into [RSelenium::remoteDriver()].
+#'
+#' @export
 rselenium_client_options <- function(port = 4444L,
                                      host = "localhost",
                                      path = "/wd/hub",
@@ -142,6 +212,8 @@ rselenium_client_options <- function(port = 4444L,
                                      javascript = TRUE,
                                      native_events = TRUE,
                                      extra_capabilities = list()) {
+  lifecycle::signal_stage("superseded", "rselenium_client_options()")
+
   check_number_whole(port)
   check_string(host)
   check_string(path)
