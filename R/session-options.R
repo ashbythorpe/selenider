@@ -80,7 +80,7 @@ selenium_options <- function(client_options = selenium_client_options(),
     server_options = server_options
   )
 
-  class(result) <- c("selenider_options", "list")
+  class(result) <- c("selenium_options", "list")
 
   result
 }
