@@ -45,7 +45,7 @@
 #' elem <- s("div") |>
 #'   get_actual_element()
 #'
-#' # The webDriver/ChromoteSession can be accessed using session$driver
+#' # The ChromoteSession/SeleniumSession can be accessed using session$driver
 #' driver <- session$driver
 #'
 #' if (inherits(driver, "ChromoteSession")) {
