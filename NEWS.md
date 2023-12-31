@@ -1,5 +1,9 @@
 # selenider (development version)
 
+* Moved all session-specific options in `selenider_session()` to an option object
+  (either `chromote_options()` or `selenium_options()`), which can be passed to
+  the new `options` argument of `selenider_session()`.
+
 # selenider 0.2.0
 
 ## New features

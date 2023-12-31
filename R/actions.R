@@ -141,13 +141,13 @@ element_click <- function(x, session, driver) {
   } else if (session == "selenium") {
     x$click()
   } else {
-    left_click_selenium(x, driver)
+    left_click_rselenium(x, driver)
   }
 }
 
-left_click_selenium <- function(element, driver) {
+left_click_rselenium <- function(element, driver) {
   if (driver$browserName == "internet explorer" &&
-    identical(element$getElementTagName(), "checkbox")) {
+        identical(element$getElementTagName(), "checkbox")) {
     try(
       {
         driver$executeScript(

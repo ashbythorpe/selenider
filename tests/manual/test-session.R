@@ -22,7 +22,7 @@ test_that("Creating sessions using RSelenium works", {
 
   withr::deferred_run()
 
-  server <- create_selenium_server("firefox", port = 4444L)
+  server <- create_selenium_server("firefox", options = selenium_server_options(port = 4444L))
 
   session <- selenider_session(browser = "firefox", driver = server)
 
@@ -34,7 +34,7 @@ test_that("Creating sessions using RSelenium works", {
 
   withr::deferred_run()
 
-  server <- create_selenium_server("firefox", port = 4445L)
+  server <- create_selenium_server("firefox", options = selenium_server_options(port = 4445L))
 
   session <- selenider_session(browser = "firefox", driver = list(server = server))
 
@@ -44,7 +44,7 @@ test_that("Creating sessions using RSelenium works", {
 
   withr::deferred_run()
 
-  server <- create_selenium_server("firefox", port = 4446L)
+  server <- create_selenium_server("firefox", options = selenium_server_options(port = 4446L))
 
   session <- selenider_session(browser = "firefox", driver = list(server))
 
@@ -54,8 +54,8 @@ test_that("Creating sessions using RSelenium works", {
 
   withr::deferred_run()
 
-  server <- create_selenium_server("firefox", port = 4447L)
-  client <- create_selenium_client("firefox", port = 4447L)
+  server <- create_selenium_server("firefox", options = selenium_server_options(port = 4447L))
+  client <- create_selenium_client("firefox", options = selenium_client_options(port = 4447L))
 
   session <- selenider_session(driver = list(client, server))
 
@@ -65,8 +65,8 @@ test_that("Creating sessions using RSelenium works", {
 
   withr::deferred_run()
 
-  server <- create_selenium_server("firefox", port = 4448L)
-  client <- create_selenium_client("firefox", port = 4448L)
+  server <- create_selenium_server("firefox", options = selenium_server_options(port = 4448L))
+  client <- create_selenium_client("firefox", options = selenium_client_options(port = 4448L))
 
   session <- selenider_session(driver = list(client = client, server = server))
 
@@ -76,8 +76,8 @@ test_that("Creating sessions using RSelenium works", {
 
   withr::deferred_run()
 
-  server <- create_selenium_server("firefox", port = 4449L)
-  client <- create_selenium_client("firefox", port = 4449L)
+  server <- create_selenium_server("firefox", options = selenium_server_options(port = 4449L))
+  client <- create_selenium_client("firefox", options = selenium_client_options(port = 4449L))
 
   session <- selenider_session(driver = list(client))
 
