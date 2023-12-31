@@ -240,12 +240,14 @@ selenider_session <- function(session = getOption("selenider.session"),
 
   if (session == "chromote") {
     server <- NULL
+    cache_server <- NULL
   } else {
     server <- driver$server
+    cache_server <- driver$cache_server
     driver <- driver$client
   }
 
-  session <- new_selenider_session(session, driver, server, timeout)
+  session <- new_selenider_session(session, driver, server, cache_server, timeout)
 
   if (local) {
     local_session(session, .local_envir = .env)
@@ -325,11 +327,13 @@ get_driver <- function(browser, options, driver) {
         driver$view()
       }
     } else {
-      server <- if (inherits(options$server_options, "selenium_server_options") && has_default_selenium_object()) {
-        new_server <- FALSE
+      reuse_server <- inherits(options$server_options, "selenium_server_options") &&
+        has_default_selenium_object() &&
+        identical(options$server_options, default_selenium_options())
+
+      server <- if (reuse_server) {
         default_selenium_object()
       } else if (!is.null(options$server_options)) {
-        new_server <- TRUE
         skip_error_if_testing(create_selenium_server(
           browser,
           options$server_options
@@ -367,14 +371,19 @@ get_driver <- function(browser, options, driver) {
         )
       }
 
+      cache <- inherits(options$server_options, "selenium_server_options") &&
+        !has_default_selenium_object()
+
+      if (cache) {
+        set_default_selenium_object(server)
+        set_default_selenium_options(options$server_options)
+      }
+
       driver <- list(
         server = server,
-        client = client
+        client = client,
+        cache_server = cache || reuse_server
       )
-
-      if (inherits(options$server_options, "selenium_server_options") && new_server) {
-        set_default_selenium_object(server)
-      }
     }
   } else {
     driver <- check_supplied_driver(driver, browser = browser)
@@ -677,12 +686,13 @@ create_rselenium_client <- function(browser, options = rselenium_client_options(
   driver
 }
 
-new_selenider_session <- function(session, driver, server, timeout) {
+new_selenider_session <- function(session, driver, server, cache_server, timeout) {
   res <- list(
     id = round(stats::runif(1, min = 0, max = 1000000)),
     session = session,
     driver = driver,
     server = server,
+    cache_server = cache_server,
     timeout = timeout,
     start_time = Sys.time()
   )
@@ -726,7 +736,7 @@ check_supplied_driver <- function(x,
       message = "Selenium client failed to start."
     )
 
-    list(client = client, server = x)
+    list(client = client, server = x, cache_server = FALSE)
   } else if (is_selenium_client(x)) {
     list(client = x)
   } else if (is.list(x) || is.environment(x)) {
@@ -796,12 +806,13 @@ check_supplied_driver_list <- function(x, browser, options, call = rlang::caller
     )
     result <- list(
       client = client,
-      server = server
+      server = server,
+      cache_server = FALSE
     )
   } else if (is.null(server)) {
     result <- list(client = client)
   } else {
-    result <- list(client = client, server = server)
+    result <- list(client = client, server = server, cache_server = FALSE)
   }
 
   if (is.environment(x)) {
@@ -904,9 +915,19 @@ close_session <- function(x = NULL) {
     try_fetch(
       x$driver$close(),
       error = function(e) {
+        if (!is.null(x$server) && !x$cache_server) {
+          # Don't close a selenium_server() object if it is being shared.
+          # The process is supervised, so will be closed when the R process
+          # finishes.
+          x$server$kill()
+        }
         stop_close_session(e)
       }
     )
+
+    if (!is.null(x$server) && !x$cache_server) {
+      invisible(x$server$kill())
+    }
   } else {
     try_fetch(
       x$driver$close(),

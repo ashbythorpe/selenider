@@ -189,14 +189,6 @@ get_comparison_function <- function(driver) {
   }
 }
 
-`%||%` <- function(x, y) {
-  if (is.null(x)) {
-    y
-  } else {
-    x
-  }
-}
-
 every <- function(x, .f) {
   all(vapply(x, .f, FUN.VALUE = logical(1)))
 }
