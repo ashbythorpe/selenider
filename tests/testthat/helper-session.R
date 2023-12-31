@@ -31,8 +31,6 @@ selenider_test_session <- function(x, .env = rlang::caller_env()) {
       envir = .env
     )
   } else if (docker && session == "selenium") {
-    client <- create_selenium_client(browser, port = port)
-
     result <- selenider_session(
       "selenium",
       browser = browser,
@@ -45,8 +43,6 @@ selenider_test_session <- function(x, .env = rlang::caller_env()) {
   } else if (session == "selenium") {
     result <- selenider_session(session, browser = browser, .env = .env)
   } else if (docker && session == "rselenium") {
-    client <- create_rselenium_client(browser, port = port)
-
     result <- selenider_session(
       "rselenium",
       browser = browser,
