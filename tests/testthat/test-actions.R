@@ -154,6 +154,15 @@ test_that("actions work", {
   elem_select(selection)
 
   elem_expect(output, has_text("0"))
+
+  editable <- s("#editable-text")
+  editable_output <- s("#editable-text-output")
+
+  elem_expect(editable_output, has_exact_text(""))
+
+  elem_set_value(editable, "my text")
+
+  elem_expect(editable_output, has_text("my text"))
 })
 
 test_that("get_element_for_selection() works", {

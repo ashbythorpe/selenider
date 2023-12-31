@@ -1,7 +1,7 @@
 test_that("selenider_element properties work", {
   session <- selenider_test_session()
 
-  open_url("https://ashbythorpe.github.io/selenider/articles/test-site.html")
+  open_url("https://ashbythorpe.github.io/selenider/dev/articles/test-site.html")
 
   expect_equal(elem_name(s("#toggle_div")), "button")
   expect_equal(elem_name(s(".actions-form")), "form")
@@ -26,4 +26,20 @@ test_that("selenider_element properties work", {
 
   # Computed style
   expect_true(elem_css_property(s("#form-output"), "color") %in% c("rgb(255, 0, 0)", "rgba(255, 0, 0, 1)"))
+
+  elem_select(s("#selection"), 1)
+
+  expect_equal(elem_value(s("#selection")), "1")
+
+  elem_select(s("#multiple-selection"), c(2, 3))
+
+  expect_equal(elem_value(s("#multiple-selection")), c("2", "3"))
+
+  editable <- s("#editable-text")
+
+  expect_equal(elem_value(editable), "Editable text")
+
+  elem_set_value(editable, "my text")
+
+  expect_equal(elem_value(editable), "my text")
 })

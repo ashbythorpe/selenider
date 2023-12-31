@@ -723,7 +723,7 @@ element_set_value <- function(x, text, session, driver) {
     } else {
       x$sendKeysToElement(list(rest))
     }
-  } else if (type == "other-input") {
+  } else {
     element_focus(x, session = session, driver = driver)
 
     execute_js_fn_on(paste0("function(x) {
