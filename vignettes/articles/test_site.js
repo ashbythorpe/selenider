@@ -39,4 +39,8 @@ $(function () {
         .reduce((x, y) => x + y, 0),
     );
   });
+
+  $("#editable-text").on("input", function () {
+    $("#editable-text-output").text($(this).text());
+  });
 });
