@@ -27,20 +27,24 @@
 #' [RSelenium::remoteDriver()] object instead. This is not recommended, since
 #' RSelenium is incompatible with newer versions of Selenium.
 #'
-#' @param view Whether to run the browser in headless mode.
+#' @param headless Whether to run the browser in headless mode, meaning
+#'   that you won't actually be able to see the browser as you control it.
+#'   For debugging purposes and interactive use, it is often useful to set
+#'   this to `FALSE`.
 #' @param parent The parent chromote session.
 #' @param width,height,targetId,wait_,auto_events Passed into
 #'   [chromote::ChromoteSession$new()][chromote::ChromoteSession].
 #'
 #'
 #' @export
-chromote_options <- function(view = FALSE,
+chromote_options <- function(headless = TRUE,
                              parent = NULL,
                              width = 992,
                              height = 1323,
                              targetId = NULL, # nolint: object_name_linter
                              wait_ = TRUE,
                              auto_events = NULL) {
+  check_bool(headless)
   check_class(parent, "Chromote", allow_null = TRUE)
   check_number_whole(width)
   check_number_whole(height)
@@ -49,7 +53,7 @@ chromote_options <- function(view = FALSE,
   check_bool(auto_events, allow_null = TRUE)
 
   result <- list(
-    view = view,
+    headless = headless,
     parent = parent,
     width = width,
     height = height,

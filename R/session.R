@@ -323,7 +323,7 @@ get_driver <- function(browser, options, driver) {
         message = "Chromote session failed to start."
       )
 
-      if (options$view) {
+      if (!options$headless) {
         driver$view()
       }
     } else {

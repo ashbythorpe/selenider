@@ -2,14 +2,17 @@
 % Please edit documentation in R/actions.R
 \name{elem_hover}
 \alias{elem_hover}
+\alias{elem_focus}
 \title{Hover over an element}
 \usage{
 elem_hover(x, js = FALSE, timeout = NULL)
+
+elem_focus(x, timeout = NULL)
 }
 \arguments{
 \item{x}{A \code{selenider_element} object.}
 
-\item{js}{Whether to hover the element using JavaScript.}
+\item{js}{Whether to hover over the element using JavaScript.}
 
 \item{timeout}{How long to wait for the element to exist.}
 }
@@ -17,8 +20,10 @@ elem_hover(x, js = FALSE, timeout = NULL)
 \code{x}, invisibly.
 }
 \description{
-Move the mouse over to an HTML element and hover over it, without actually
-clicking or interacting with it.
+\code{elem_hover()} moves the mouse over to an HTML element and hovers over it,
+without actually clicking or interacting with it.
+
+\code{elem_focus()} focuses an HTML element.
 }
 \examples{
 \dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
@@ -43,6 +48,9 @@ s("button") |>
   elem_hover()
 
 elem_expect(s(".text"), has_text("Button hovered!"))
+
+s("button") |>
+  elem_focus()
 
 \dontshow{
 # Clean up all connections and invalidate default chromote object

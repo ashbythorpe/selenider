@@ -10,7 +10,7 @@
 \title{Driver options}
 \usage{
 chromote_options(
-  view = FALSE,
+  headless = TRUE,
   parent = NULL,
   width = 992,
   height = 1323,
@@ -67,7 +67,10 @@ rselenium_client_options(
 )
 }
 \arguments{
-\item{view}{Whether to run the browser in headless mode.}
+\item{headless}{Whether to run the browser in headless mode, meaning
+that you won't actually be able to see the browser as you control it.
+For debugging purposes and interactive use, it is often useful to set
+this to \code{FALSE}.}
 
 \item{parent}{The parent chromote session.}
 
