@@ -198,16 +198,16 @@ instead.</p>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Can't compare snapshot to reference when testing interactively.</span></span>
 <span><span class="co">#&gt; i Run `devtools::test()` or `testthat::test_file()` to see changes.</span></span>
-<span><span class="co">#&gt; New path: /tmp/RtmpM4Zras/st2-1c6e251251f4/001_.png</span></span>
+<span><span class="co">#&gt; New path: /tmp/RtmpHAvKjm/st2-1c3271a4beb1/001_.png</span></span>
 <span><span class="co">#&gt; Can't compare snapshot to reference when testing interactively.</span></span>
 <span><span class="co">#&gt; i Run `devtools::test()` or `testthat::test_file()` to see changes.</span></span>
-<span><span class="co">#&gt; New path: /tmp/RtmpM4Zras/st2-1c6e251251f4/001.json</span></span>
+<span><span class="co">#&gt; New path: /tmp/RtmpHAvKjm/st2-1c3271a4beb1/001.json</span></span>
 <span><span class="co">#&gt; Can't compare snapshot to reference when testing interactively.</span></span>
 <span><span class="co">#&gt; i Run `devtools::test()` or `testthat::test_file()` to see changes.</span></span>
-<span><span class="co">#&gt; New path: /tmp/RtmpM4Zras/st2-1c6e251251f4/002_.png</span></span>
+<span><span class="co">#&gt; New path: /tmp/RtmpHAvKjm/st2-1c3271a4beb1/002_.png</span></span>
 <span><span class="co">#&gt; Can't compare snapshot to reference when testing interactively.</span></span>
 <span><span class="co">#&gt; i Run `devtools::test()` or `testthat::test_file()` to see changes.</span></span>
-<span><span class="co">#&gt; New path: /tmp/RtmpM4Zras/st2-1c6e251251f4/002.json</span></span>
+<span><span class="co">#&gt; New path: /tmp/RtmpHAvKjm/st2-1c3271a4beb1/002.json</span></span>
 <span><span class="co">#&gt; Test passed</span></span></code></pre></div>
 <p>Note the difference in styles: while in selenider you must specify
 tests explicitly, shinytest2 uses a snapshot-based approach (specifying
@@ -250,17 +250,16 @@ you don’t run out of memory.</p>
 Automating a browser with Selenium consists of two parts: the server and
 the client. By default, <code><a href="../reference/selenider_session.html">selenider_session()</a></code> tries to setup
 both, but we can stop this from happening by using the
-<code>create_selenium_client()</code> function, and passing the result
-into the <code>driver</code> argument to
-<code><a href="../reference/selenider_session.html">selenider_session()</a></code>.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>session <span class="ot">&lt;-</span> <span class="fu">selenider_session</span>(</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"selenium"</span>,</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">browser =</span> <span class="st">"firefox"</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">driver =</span> <span class="fu">create_selenium_client</span>(</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">browser =</span> <span class="st">"firefox"</span>,</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">port =</span> <span class="dv">4444</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<code>options</code> argument.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selenider_session.html">selenider_session</a></span><span class="op">(</span></span>
+<span>  <span class="st">"selenium"</span>,</span>
+<span>  browser <span class="op">=</span> <span class="st">"firefox"</span>,</span>
+<span>  options <span class="op">=</span> <span class="fu"><a href="../reference/chromote_options.html">selenium_options</a></span><span class="op">(</span></span>
+<span>    server_options <span class="op">=</span> <span class="cn">NULL</span>, <span class="co"># Stop selenider from creating a server</span></span>
+<span>    client_options <span class="op">=</span> <span class="fu"><a href="../reference/chromote_options.html">selenium_client_options</a></span><span class="op">(</span>port <span class="op">=</span> <span class="fl">4444L</span><span class="op">)</span> <span class="co"># Use the port of the server</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>The session can then by used as usual. selenider will no longer be
 able to close the selenium server, but this should be done automatically
 in the Github Action.</p>
