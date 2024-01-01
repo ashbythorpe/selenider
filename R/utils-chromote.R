@@ -100,3 +100,70 @@ chromote_press <- function(driver, ...) {
   driver$Input$dispatchKeyEvent(type = "keyDown", ...)
   driver$Input$dispatchKeyEvent(type = "keyUp", ...)
 }
+
+chromote_clickable_point <- function(node_id = NULL,
+                                     backend_id = NULL,
+                                     driver) {
+  chromote_scroll_into_view_if_needed(node_id, backend_id, driver = driver)
+
+  boxes <- driver$Runtime$callFunctionOn(
+    "function() {
+      return [...this.getClientRects()].map(rect => {
+        return {x: rect.x, y: rect.y, width: rect.width, height: rect.height};
+      });
+    }",
+    chromote_object_id(
+      node_id = node_id,
+      backend_id = backend_id,
+      driver = driver
+    ),
+    returnByValue = TRUE
+  )$result$value
+
+  if (length(boxes) == 0) {
+    return(NULL)
+  }
+
+  document_rect <- driver$Runtime$evaluate("{
+    documentWidth: document.documentElement.clientWidth,
+    documentHeight: document.documentElement.clientHeight,
+  }")$result$value
+  width <- document_rect$documentWidth
+  height <- document_rect$documentHeight
+
+  boxes <- lapply(boxes, intersect_box, width, height)
+
+  box <- find_using(boxes, function(box) {
+    box$width >= 1 && box$height >= 1
+  })
+
+  if (is.null(box)) {
+    return(NULL)
+  }
+
+  list(
+    x = box$x + box$width / 2,
+    y = box$y + box$height / 2
+  )
+}
+
+intersect_box <- function(box, width, height) {
+  width <- max(if (box$x >= 0) {
+    min(width - box$x, box$width)
+  } else {
+    min(width, box$width - box$x)
+  }, 0)
+
+  height <- max(if (box$y >= 0) {
+    min(height - box$y, box$height)
+  } else {
+    min(height, box$height - box$y)
+  })
+
+  list(
+    x = box$x,
+    y = box$y,
+    width = width,
+    height = height
+  )
+}

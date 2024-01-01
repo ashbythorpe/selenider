@@ -300,10 +300,17 @@ uses_chromote <- function(x) {
 execute_js_fn_on <- function(fn, x, session, driver) {
   if (session == "chromote") {
     script <- paste0("function() { return (", fn, ")(this) }")
-    driver$Runtime$callFunctionOn(
+    result <- driver$Runtime$callFunctionOn(
       script,
-      chromote_object_id(backend_id = x, driver = driver)
-    )$result$value
+      chromote_object_id(backend_id = x, driver = driver),
+      returnByValue = TRUE
+    )
+
+    if (!is.null(result$exceptionDetails)) {
+      print(result$exceptionDetails)
+    }
+
+    result$result$value
   } else {
     script <- paste0("let fn = ", fn, ";", "return fn(arguments[0]);")
     if (session == "selenium") {
@@ -332,11 +339,18 @@ execute_js_fn_on_multiple <- function(fn, x, session, driver) {
       list(objectId = chromote_object_id(backend_id = y, driver = driver))
     })
 
-    driver$Runtime$callFunctionOn(
+    result <- driver$Runtime$callFunctionOn(
       script,
       chromote_object_id(backend_id = x[[1]], driver = driver),
-      arguments = other_elements
+      arguments = other_elements,
+      returnByValue = TRUE
     )
+
+    if (!is.null(result$exceptionDetails)) {
+      print(result$exceptionDetails)
+    }
+
+    result$result$value
   } else {
     script <- paste0("let fn = ", fn, ";", "return fn(Array.from(arguments));")
     if (session == "selenium") {

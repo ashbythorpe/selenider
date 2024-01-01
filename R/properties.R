@@ -275,7 +275,39 @@ elem_value <- function(x, ptype = character(), timeout = NULL) {
 }
 
 element_value <- function(x, session, driver) {
-  execute_js_fn_on("x => x.value", x, session = session, driver = driver)
+  type <- element_input_type(x, session = session, driver = driver)
+
+  if (type == "select") {
+    element_select_value(x, session = session, driver = driver)
+  } else if (type == "contenteditable") {
+    element_text(x, session = session, driver = driver)
+  } else {
+    execute_js_fn_on("x => x.value", x, session = session, driver = driver)
+  }
+}
+
+element_select_value <- function(x, session, driver) {
+  result <- execute_js_fn_on("function(x) {
+    if (x.type == 'select-one') {
+      return x.options[x.selectedIndex].value;
+    } else {
+      let result = [];
+
+      for (let i = 0; i < x.options.length; i++) {
+        if (x.options[i].selected) {
+          result.push(x.options[i].value);
+        }
+      }
+
+      return result;
+    }
+  }", x, session = session, driver = driver)
+
+  if (is.list(result)) {
+    unlist(result)
+  } else {
+    result
+  }
 }
 
 convert_value <- function(x, ptype) {
