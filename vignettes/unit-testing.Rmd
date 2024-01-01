@@ -167,16 +167,15 @@ services:
 This will download Firefox and start a Selenium server on port 4444. Automating a browser
 with Selenium consists of two parts: the server and the client. By default, 
 `selenider_session()` tries to setup both, but we can stop this from happening by using
-the `create_selenium_client()` function, and passing the result into the `driver` argument
-to `selenider_session()`.
+the `options` argument.
 
 ``` r
 session <- selenider_session(
   "selenium",
-  browser = "firefox"
-  driver = create_selenium_client(
-    browser = "firefox",
-    port = 4444
+  browser = "firefox",
+  options = selenium_options(
+    server_options = NULL, # Stop selenider from creating a server
+    client_options = selenium_client_options(port = 4444L) # Use the port of the server
   )
 )
 ```
