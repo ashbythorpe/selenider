@@ -144,7 +144,7 @@ wdman_server_options <- function(version = "latest",
                                  driver_version = "latest",
                                  port = 4444L,
                                  check = TRUE,
-                                 verbose = TRUE,
+                                 verbose = FALSE,
                                  retcommand = FALSE,
                                  ...) {
   check_string(version)

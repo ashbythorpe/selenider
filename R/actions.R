@@ -705,7 +705,7 @@ element_set_value <- function(x, text, session, driver) {
     element_select(
       x,
       elem_name = "select",
-      value = value,
+      value = text,
       text = NULL,
       index = NULL,
       reset_other = TRUE,

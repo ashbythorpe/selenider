@@ -37,6 +37,8 @@
 #'   environment in which the session is used. Change this if you want to
 #'   create the session inside a function and then use it outside the
 #'   function.
+#' @param view,selenium_manager,quiet `r lifecycle::badge("deprecated")`
+#'   Use the `options` argument instead.
 #'
 #' @details
 #' # Useful session-specific options
@@ -199,7 +201,58 @@ selenider_session <- function(session = getOption("selenider.session"),
                               options = NULL,
                               driver = NULL,
                               local = TRUE,
-                              .env = rlang::caller_env()) {
+                              .env = rlang::caller_env(),
+                              view = FALSE,
+                              selenium_manager = TRUE,
+                              quiet = TRUE) {
+  if (isTRUE(view)) {
+    lifecycle::deprecate_warn(
+      "0.2.0.9000",
+      "selenider_session(view)",
+      I("`options = chromote_options(headless = FALSE)`")
+    )
+
+    if (inherits(options, "chromote_options")) {
+      options$headless <- FALSE
+    }
+  }
+
+  if (!isTRUE(selenium_manager)) {
+    lifecycle::deprecate_warn(
+      "0.2.0.9000",
+      "selenider_session(selenium_manager)",
+      I("`options = selenium_options(server_options = wdman_server_options())`")
+    )
+
+    if (inherits(options, "selenium_options") && !inherits(options$server_options, "wdman_server_options")) {
+      options$server_options <- wdman_server_options()
+    }
+  }
+
+  if (!isTRUE(quiet)) {
+    if (inherits(options$server_options, "wdman_server_options")) {
+      lifecycle::deprecate_warn(
+        "0.2.0.9000",
+        "selenider_session(quiet)",
+        I("`options = selenium_options(server_options = wdman_server_options(verbose = TRUE))`")
+      )
+
+      options$server_options$verbose <- TRUE
+    } else {
+      lifecycle::deprecate_warn(
+        "0.2.0.9000",
+        "selenider_session(quiet)",
+        I("`options = selenium_options(server_options = selenium_server_options(verbose = TRUE))`")
+      )
+
+      if (inherits(options$server_options, "selenium_server_options")) {
+        options$server_options$verbose <- TRUE
+      }
+    }
+  }
+
+
+
   check_string(session, allow_null = TRUE)
   check_string(browser, allow_null = TRUE)
   check_number_decimal(timeout, allow_null = TRUE)
@@ -480,7 +533,7 @@ create_chromote_session <- function(options = chromote_options()) {
   rlang::check_installed("chromote")
 
   parent <- options$parent
-  options <- options[!names(options) %in% c("parent", "view")]
+  options <- options[!names(options) %in% c("parent", "headless")]
 
   timeout <- if (on_ci()) 60 * 5 else 60
 

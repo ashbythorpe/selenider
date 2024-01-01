@@ -11,7 +11,10 @@ selenider_session(
   options = NULL,
   driver = NULL,
   local = TRUE,
-  .env = rlang::caller_env()
+  .env = rlang::caller_env(),
+  view = FALSE,
+  selenium_manager = TRUE,
+  quiet = TRUE
 )
 }
 \arguments{
@@ -55,6 +58,9 @@ using \code{\link[=local_session]{local_session()}}.}
 environment in which the session is used. Change this if you want to
 create the session inside a function and then use it outside the
 function.}
+
+\item{view, selenium_manager, quiet}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+Use the \code{options} argument instead.}
 }
 \value{
 A \code{selenider_session} object. Use \code{session$driver} to retrieve the driver

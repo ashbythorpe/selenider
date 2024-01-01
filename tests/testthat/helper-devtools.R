@@ -30,12 +30,12 @@ selenider_test_chromote <- function() {
 }
 
 
-selenider_test_chromote_view <- function() {
+selenider_test_chromote_non_headless <- function() {
   cli::cli_alert_info("Running tests using Chromote session, displayed in the browser")
   withr::with_envvar(c(
     "SELENIDER_SESSION" = "chromote",
     "SELENIDER_BROWSER" = "chrome",
-    "SELENIDER_VIEW" = "TRUE"
+    "SELENIDER_HEADLESS" = "FALSE"
   ), rlang::ns_env("devtools")$test())
 }
 

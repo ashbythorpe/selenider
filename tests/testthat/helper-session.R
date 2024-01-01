@@ -7,7 +7,7 @@ selenider_test_session <- function(x, .env = rlang::caller_env()) {
   skip_if_selenider_unavailable(session)
 
   if (session == "chromote") {
-    view <- as.logical(Sys.getenv("SELENIDER_VIEW", "FALSE"))
+    headless <- as.logical(Sys.getenv("SELENIDER_HEADLESS", "TRUE"))
 
     chromote::set_chrome_args(c(
       # https://peter.sh/experiments/chromium-command-line-switches/#disable-crash-reporter
@@ -19,7 +19,7 @@ selenider_test_session <- function(x, .env = rlang::caller_env()) {
     result <- selenider_session(
       session,
       browser = browser,
-      options = chromote_options(view = view),
+      options = chromote_options(headless = headless),
       .env = .env
     )
 

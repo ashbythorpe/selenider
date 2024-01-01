@@ -41,7 +41,7 @@ wdman_server_options(
   driver_version = "latest",
   port = 4444L,
   check = TRUE,
-  verbose = TRUE,
+  verbose = FALSE,
   retcommand = FALSE,
   ...
 )
