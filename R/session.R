@@ -655,23 +655,13 @@ create_selenium_client <- function(browser, options = selenium_client_options())
     stop_connect_selenium_server(timeout = 20)
   }
 
-  capabilities <- if (browser == "chrome" && !is.null(options$capabilities)) {
-    list(`goog:chromeOptions` = list(
-      args = list(
-        "remote-debugging-port=9222"
-      )
-    ))
-  } else {
-    options$capabilities
-  }
-
   rlang::try_fetch(
     selenium::SeleniumSession$new(
       browser = browser,
       port = options$port,
       host = options$host,
       verbose = options$verbose,
-      capabilities = capabilities,
+      capabilities = options$capabilities,
       request_body = options$request_body,
       timeout = options$timeout
     ),
