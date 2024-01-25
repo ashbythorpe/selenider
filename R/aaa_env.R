@@ -137,7 +137,9 @@ local_session <- function(session,
   check_bool(close)
 
   old <- get_session(create = FALSE)
-  withr::defer(reset_session(session, old, close), envir = .local_envir)
+  withr::with_options(list(withr.hook_source = TRUE), {
+    withr::defer(reset_session(session, old, close), envir = .local_envir)
+  })
   set_session(session = session)
 
   invisible(old)

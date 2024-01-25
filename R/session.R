@@ -306,18 +306,22 @@ selenider_session <- function(session = getOption("selenider.session"),
     local_session(session, .local_envir = .env)
 
     if (inherits(session$driver, "ChromoteSession")) {
-      withr::defer(
-        {
-          # Delete the Crashpad folder if it exists
-          unlink(file.path(tempdir(), "Crashpad"), recursive = TRUE)
-        },
-        envir = .env
-      )
       timeout <- if (on_ci()) 60 * 5 else 60
-      withr::local_options(
-        list(chromote.timeout = timeout),
-        .local_envir = .env
-      )
+
+      withr::with_options(list(withr.hook_source = TRUE), {
+        withr::defer(
+          {
+            # Delete the Crashpad folder if it exists
+            unlink(file.path(tempdir(), "Crashpad"), recursive = TRUE)
+          },
+          envir = .env
+        )
+
+        withr::local_options(
+          list(chromote.timeout = timeout),
+          .local_envir = .env
+        )
+      })
     }
   }
 
