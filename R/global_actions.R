@@ -19,11 +19,6 @@
 #' # Or:
 #' open_url(session = session, "https://r-project.org")
 #'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
-#'
 #' @export
 open_url <- function(url, session = NULL) {
   check_string(url)
@@ -73,11 +68,6 @@ open_url <- function(url, session = NULL) {
 #' back()
 #'
 #' forward()
-#'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
 #'
 #' @export
 back <- function(session = NULL) {
@@ -163,11 +153,6 @@ forward <- function(session = NULL) {
 #'
 #' reload()
 #'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
-#'
 #' @export
 reload <- function(session = NULL) {
   check_class(session, "selenider_session", allow_null = TRUE)
@@ -216,11 +201,6 @@ refresh <- reload
 #' file_path <- withr::local_tempfile(fileext = "png")
 #'
 #' take_screenshot(file_path)
-#'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
 #'
 #' @export
 take_screenshot <- function(file = NULL, view = FALSE, session = NULL) {
@@ -289,11 +269,6 @@ take_screenshot <- function(file = NULL, view = FALSE, session = NULL) {
 #'
 #' get_page_source()
 #'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
-#'
 #' @export
 get_page_source <- function(session = NULL, ...) {
   rlang::check_installed("xml2")
@@ -333,11 +308,6 @@ get_page_source <- function(session = NULL, ...) {
 #' open_url("https://r-project.org")
 #'
 #' current_url()
-#'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
 #'
 #' @export
 current_url <- function(session = NULL) {

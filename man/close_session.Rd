@@ -23,11 +23,6 @@ This will be done automatically if the session is set as the local session
 session <- selenider_session(local = FALSE)
 
 close_session(session)
-
-\dontshow{
-# Clean up all connections and invalidate default chromote object
-selenider_cleanup(FALSE)
-}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

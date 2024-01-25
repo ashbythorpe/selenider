@@ -63,11 +63,6 @@
 #'   elems[[1]]$get_rect()
 #' }
 #'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
-#'
 #' @export
 get_actual_element <- function(x, timeout = NULL) {
   check_class(x, "selenider_element")

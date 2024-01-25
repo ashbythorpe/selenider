@@ -29,11 +29,6 @@
 #' read_html(session)
 #' read_html(s("div"))
 #'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
-#'
 #' @exportS3Method xml2::read_html selenider_session
 read_html.selenider_session <- function(x,
                                         encoding = "",

@@ -82,11 +82,6 @@ elem_expect(s("p"), has_exact_text(""))
 elem_send_keys(input, keys$enter)
 
 elem_expect(s("p"), has_text("Enter pressed!"))
-
-\dontshow{
-# Clean up all connections and invalidate default chromote object
-selenider_cleanup()
-}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

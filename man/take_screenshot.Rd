@@ -30,11 +30,6 @@ open_url("https://www.google.com")
 file_path <- withr::local_tempfile(fileext = "png")
 
 take_screenshot(file_path)
-
-\dontshow{
-# Clean up all connections and invalidate default chromote object
-selenider_cleanup()
-}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

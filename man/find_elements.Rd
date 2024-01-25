@@ -83,11 +83,6 @@ session |>
 # The above can be shortened to:
 s("#outer-div") |>
   find_elements("p")
-
-\dontshow{
-# Clean up all connections and invalidate default chromote object
-selenider_cleanup()
-}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

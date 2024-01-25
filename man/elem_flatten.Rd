@@ -67,11 +67,6 @@ selectors <- c(
 lapply(selectors, ss) |>
   elem_flatten() |>
   length() # 3
-
-\dontshow{
-# Clean up all connections and invalidate default chromote object
-selenider_cleanup()
-}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

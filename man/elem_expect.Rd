@@ -195,11 +195,6 @@ try(elem_expect(stop("Uncaught error!")))
 # These will eventually throw an error, but will wait 0.5 seconds to do so.
 try(elem_expect(error_condition(), timeout = 0.5))
 try(elem_expect(error_condition_2(), timeout = 0.5))
-
-\dontshow{
-# Clean up all connections and invalidate default chromote object
-selenider_cleanup()
-}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

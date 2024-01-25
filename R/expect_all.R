@@ -67,11 +67,6 @@
 #' ss("div")[-3] |>
 #'   elem_expect_all(is_visible)
 #'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
-#'
 #' @export
 elem_expect_all <- function(x, ..., testthat = NULL, timeout = NULL) {
   dots <- enquos(...)

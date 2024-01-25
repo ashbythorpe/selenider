@@ -116,11 +116,6 @@ for (elem in as.list(p_tags)) {
 
 # Or:
 lapply(as.list(p_tags), elem_text)
-
-\dontshow{
-# Clean up all connections and invalidate default chromote object
-selenider_cleanup()
-}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

@@ -77,11 +77,6 @@
 #' # But the non-cached version works
 #' elem_click(button)
 #'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
-#'
 #' @export
 elem_cache <- function(x, timeout = NULL) {
   check_class(x, c("selenider_element", "selenider_elements"))

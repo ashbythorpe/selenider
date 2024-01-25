@@ -55,11 +55,6 @@
 #'   elem_flatten() |>
 #'   length() # 3
 #'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
-#'
 #' @export
 elem_flatten <- function(...) {
   check_dots_unnamed()

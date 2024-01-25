@@ -61,11 +61,6 @@
 #'   find_element("div") |>
 #'   find_element("p")
 #'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
-#'
 #' @export
 find_element <- function(x, ...) {
   UseMethod("find_element")

@@ -88,11 +88,6 @@ visible_elems[[1]]
 
 ss("button") |>
   elem_filter(is_enabled)
-
-\dontshow{
-# Clean up all connections and invalidate default chromote object
-selenider_cleanup()
-}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

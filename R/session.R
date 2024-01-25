@@ -189,11 +189,6 @@
 #'
 #' # `my_session` will be closed automatically.
 #'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
-#'
 #' @export
 selenider_session <- function(session = getOption("selenider.session"),
                               browser = getOption("selenider.browser"),
@@ -942,11 +937,6 @@ skip_error_if_testing <- function(expr, message) {
 #' session <- selenider_session(local = FALSE)
 #'
 #' close_session(session)
-#'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup(FALSE)
-#' }
 #'
 #' @export
 close_session <- function(x = NULL) {

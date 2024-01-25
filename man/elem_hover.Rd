@@ -51,11 +51,6 @@ elem_expect(s(".text"), has_text("Button hovered!"))
 
 s("button") |>
   elem_focus()
-
-\dontshow{
-# Clean up all connections and invalidate default chromote object
-selenider_cleanup()
-}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

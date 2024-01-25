@@ -45,11 +45,6 @@ has_attr(s("input"), "value", 1)
 has_value(s("input"), 1)
 
 attr_contains(s("input"), "data-customattr", "Custom attribute")
-
-\dontshow{
-# Clean up all connections and invalidate default chromote object
-selenider_cleanup()
-}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

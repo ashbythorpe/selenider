@@ -102,11 +102,6 @@ current |>
   elem_descendants() |>
   elem_expect(has_length(4)) |>
   elem_names() # p, div, p, br
-
-\dontshow{
-# Clean up all connections and invalidate default chromote object
-selenider_cleanup()
-}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

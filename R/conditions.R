@@ -28,11 +28,6 @@
 #'
 #' is_absent(s(".class2")) # TRUE
 #'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
-#'
 #' @export
 is_present <- function(x) {
   check_class(x, "selenider_element")
@@ -78,11 +73,6 @@ is_absent <- function(x) !is_present(x)
 #' is_invisible(ss("div")[[2]]) # TRUE
 #'
 #' is_visible(ss("div")[[3]]) # TRUE
-#'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
 #'
 #' @export
 is_visible <- function(x) {
@@ -155,11 +145,6 @@ is_invisible <- is_hidden
 #'
 #' is_disabled(ss("button")[[2]]) # TRUE
 #'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
-#'
 #' @export
 is_enabled <- function(x) {
   check_class(x, "selenider_element")
@@ -210,11 +195,6 @@ is_disabled <- function(x) !is_enabled(x)
 #'
 #' has_name(s("#mydiv"), "div")
 #'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
-#'
 #' @export
 has_name <- function(x, name) {
   check_class(x, "selenider_element")
@@ -259,11 +239,6 @@ has_name <- function(x, name) {
 #' # has_exact_text() is useful for checking when there is no text,
 #' # since has_text("") will always be TRUE.
 #' has_exact_text(s(".empty"), "")
-#'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
 #'
 #' @export
 has_text <- function(x, text) {
@@ -327,11 +302,6 @@ has_exact_text <- function(x, text) {
 #' has_value(s("input"), 1)
 #'
 #' attr_contains(s("input"), "data-customattr", "Custom attribute")
-#'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
 #'
 #' @export
 has_attr <- function(x, name, value) {
@@ -445,11 +415,6 @@ has_value <- function(x, value) {
 #'
 #' has_css_property(s("div"), "display", "none")
 #'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
-#'
 #' @export
 has_css_property <- function(x, property, value) {
   check_class(x, "selenider_element")
@@ -549,11 +514,6 @@ is_covered <- function(x) {
 #'
 #' has_length(ss("div"), 3)
 #' has_at_least(ss("div"), 2)
-#'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
 #'
 #' @export
 has_length <- function(x, n) {

@@ -45,11 +45,6 @@ has_exact_text(s("p"), "Example text") # TRUE
 # has_exact_text() is useful for checking when there is no text,
 # since has_text("") will always be TRUE.
 has_exact_text(s(".empty"), "")
-
-\dontshow{
-# Clean up all connections and invalidate default chromote object
-selenider_cleanup()
-}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

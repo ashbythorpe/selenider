@@ -37,11 +37,6 @@
 #'   elem_find(has_p_child) |>
 #'   elem_equal(s(".second")) # TRUE
 #'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
-#'
 #' @export
 elem_equal <- function(x, y, timeout = NULL) {
   check_class(x, "selenider_element")

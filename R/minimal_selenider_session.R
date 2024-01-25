@@ -19,11 +19,6 @@
 #' @examplesIf selenider::selenider_available(online = FALSE)
 #' session <- minimal_selenider_session("<p>Example</p>")
 #'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
-#'
 #' @export
 minimal_selenider_session <- function(html,
                                       js = NULL,

@@ -76,11 +76,6 @@ ss("div") |>
 
 ss("div")[-3] |>
   elem_expect_all(is_visible)
-
-\dontshow{
-# Clean up all connections and invalidate default chromote object
-selenider_cleanup()
-}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

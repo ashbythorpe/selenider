@@ -54,11 +54,6 @@
 #'
 #' execute_js_expr("arguments[0].click()", s(".mybutton"))
 #'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
-#'
 #' @export
 execute_js_fn <- function(fn,
                           ...,

@@ -55,11 +55,6 @@
 #' s("#outer-div") |>
 #'   find_elements("p")
 #'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
-#'
 #' @export
 find_elements <- function(x, ...) {
   UseMethod("find_elements")

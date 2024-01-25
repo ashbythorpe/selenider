@@ -44,11 +44,6 @@
 #'
 #' elem_expect(s("p"), is_visible)
 #'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
-#'
 #' @family actions
 #'
 #' @export
@@ -440,11 +435,6 @@ element_right_click <- function(x, session, driver) {
 #' s("button") |>
 #'   elem_focus()
 #'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
-#'
 #' @export
 elem_hover <- function(x, js = FALSE, timeout = NULL) {
   check_class(x, "selenider_element")
@@ -628,11 +618,6 @@ chromote_focus <- function(x, driver) {
 #' elem_send_keys(input, keys$enter)
 #'
 #' elem_expect(s("p"), has_text("Enter pressed!"))
-#'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
 #'
 #' @family actions
 #'
@@ -1056,11 +1041,6 @@ element_clear_value <- function(x, session, driver) {
 #'   elem_click()
 #'
 #' elem_expect(s("p"), has_text("You found me!"))
-#'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
 #'
 #' @export
 elem_scroll_to <- function(x, js = FALSE, timeout = NULL) {
@@ -1821,11 +1801,6 @@ get_select_element <- function(x,
 #'
 #' # Won't work since the element doesn't have a form ancestor
 #' try(elem_submit(s("a"), timeout = 0.5))
-#'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
 #'
 #' @export
 elem_submit <- function(x, js = FALSE, timeout = NULL) {

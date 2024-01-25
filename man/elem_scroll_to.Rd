@@ -48,11 +48,6 @@ s("button") |>
   elem_click()
 
 elem_expect(s("p"), has_text("You found me!"))
-
-\dontshow{
-# Clean up all connections and invalidate default chromote object
-selenider_cleanup()
-}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

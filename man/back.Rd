@@ -34,11 +34,6 @@ open_url("https://www.tidyverse.org/")
 back()
 
 forward()
-
-\dontshow{
-# Clean up all connections and invalidate default chromote object
-selenider_cleanup()
-}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

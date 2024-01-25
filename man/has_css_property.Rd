@@ -28,11 +28,6 @@ html <- "
 session <- minimal_selenider_session(html)
 
 has_css_property(s("div"), "display", "none")
-
-\dontshow{
-# Clean up all connections and invalidate default chromote object
-selenider_cleanup()
-}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

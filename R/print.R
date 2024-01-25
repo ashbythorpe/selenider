@@ -38,11 +38,6 @@
 #'   elem_filter(has_text("Text 3")) |>
 #'   print_lazy()
 #'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
-#'
 #' @export
 print.selenider_element <- function(x,
                                     width = getOption("width"),

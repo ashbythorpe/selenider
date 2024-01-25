@@ -39,11 +39,6 @@ elem_submit(s("p"))
 
 # Won't work since the element doesn't have a form ancestor
 try(elem_submit(s("a"), timeout = 0.5))
-
-\dontshow{
-# Clean up all connections and invalidate default chromote object
-selenider_cleanup()
-}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

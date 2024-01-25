@@ -27,11 +27,6 @@ open_url("https://r-project.org")
 
 # Or:
 open_url(session = session, "https://r-project.org")
-
-\dontshow{
-# Clean up all connections and invalidate default chromote object
-selenider_cleanup()
-}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

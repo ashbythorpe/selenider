@@ -60,11 +60,6 @@ s("button") |>
   elem_right_click()
 
 elem_expect(s("p"), is_visible)
-
-\dontshow{
-# Clean up all connections and invalidate default chromote object
-selenider_cleanup()
-}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

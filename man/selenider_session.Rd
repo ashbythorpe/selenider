@@ -210,11 +210,6 @@ my_session <- create_session()
 get_session()
 
 # `my_session` will be closed automatically.
-
-\dontshow{
-# Clean up all connections and invalidate default chromote object
-selenider_cleanup()
-}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

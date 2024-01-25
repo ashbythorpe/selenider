@@ -37,11 +37,6 @@ session <- minimal_selenider_session(html)
 is_enabled(s("button")) # TRUE
 
 is_disabled(ss("button")[[2]]) # TRUE
-
-\dontshow{
-# Clean up all connections and invalidate default chromote object
-selenider_cleanup()
-}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

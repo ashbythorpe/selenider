@@ -64,11 +64,6 @@ find_element(session, ".inner")
 s("div") |>
   find_element(".child") |>
   find_element(".inner")
-
-\dontshow{
-# Clean up all connections and invalidate default chromote object
-selenider_cleanup()
-}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

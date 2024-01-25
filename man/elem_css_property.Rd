@@ -35,11 +35,6 @@ s("p") |>
 
 s("p") |>
   elem_css_property("color")
-
-\dontshow{
-# Clean up all connections and invalidate default chromote object
-selenider_cleanup()
-}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

@@ -90,11 +90,6 @@
 #'   elem_expect(has_length(4)) |>
 #'   elem_names() # p, div, p, br
 #'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
-#'
 #' @export
 elem_ancestors <- function(x) {
   check_class(x, "selenider_element")

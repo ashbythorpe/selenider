@@ -75,11 +75,6 @@
 #' ss("button") |>
 #'   elem_filter(is_enabled)
 #'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
-#'
 #' @export
 elem_filter <- function(x, ...) {
   check_class(x, "selenider_elements")

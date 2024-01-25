@@ -46,11 +46,6 @@ has_p_child <- function(x) {
 ss("div") |>
   elem_find(has_p_child) |>
   elem_equal(s(".second")) # TRUE
-
-\dontshow{
-# Clean up all connections and invalidate default chromote object
-selenider_cleanup()
-}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

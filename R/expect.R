@@ -187,11 +187,6 @@
 #' try(elem_expect(error_condition(), timeout = 0.5))
 #' try(elem_expect(error_condition_2(), timeout = 0.5))
 #'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
-#'
 #' @export
 elem_expect <- function(x, ..., testthat = NULL, timeout = NULL) {
   x <- enquo(x)

@@ -92,11 +92,6 @@ s(xpath = "//div[contains(@class, 'class1')]/div/p")
 s("div.class1") |>
   find_element("div") |>
   find_element("p")
-
-\dontshow{
-# Clean up all connections and invalidate default chromote object
-selenider_cleanup()
-}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

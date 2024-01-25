@@ -64,11 +64,6 @@ if (inherits(driver, "ChromoteSession")) {
 } else if (inherits(elems[[1]], "WebElement")) {
   elems[[1]]$get_rect()
 }
-
-\dontshow{
-# Clean up all connections and invalidate default chromote object
-selenider_cleanup()
-}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

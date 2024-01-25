@@ -22,11 +22,6 @@ session <- selenider_session()
 open_url("https://r-project.org")
 
 current_url()
-
-\dontshow{
-# Clean up all connections and invalidate default chromote object
-selenider_cleanup()
-}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

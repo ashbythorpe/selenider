@@ -43,11 +43,6 @@ session <- minimal_selenider_session(html)
 
 has_length(ss("div"), 3)
 has_at_least(ss("div"), 2)
-
-\dontshow{
-# Clean up all connections and invalidate default chromote object
-selenider_cleanup()
-}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

@@ -18,11 +18,6 @@
 #' s(".mydiv") |>
 #'   elem_name()
 #'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
-#'
 #' @family properties
 #'
 #' @export
@@ -70,11 +65,6 @@ element_name <- function(x, session, driver) {
 #'
 #' s("p") |>
 #'   elem_text()
-#'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
 #'
 #' @export
 elem_text <- function(x, timeout = NULL) {
@@ -149,11 +139,6 @@ chromote_get_text <- function(x, driver) {
 #'
 #' s("input[type='number']") |>
 #'   elem_value(ptype = integer())
-#'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
 #'
 #' @export
 elem_attr <- function(x, name, default = NULL, timeout = NULL) {
@@ -349,11 +334,6 @@ convert_value <- function(x, ptype) {
 #' s("p") |>
 #'   elem_css_property("color")
 #'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
-#'
 #' @export
 elem_css_property <- function(x, name, timeout = NULL) {
   check_class(x, "selenider_element")
@@ -442,11 +422,6 @@ chromote_get_css_property <- function(x, name, default, driver) {
 #'
 #' ss("div") |>
 #'   length()
-#'
-#' \dontshow{
-#' # Clean up all connections and invalidate default chromote object
-#' selenider_cleanup()
-#' }
 #'
 #' @export
 elem_size <- function(x, timeout = NULL) {

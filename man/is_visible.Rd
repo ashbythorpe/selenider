@@ -46,11 +46,6 @@ is_visible(s("div")) # FALSE
 is_invisible(ss("div")[[2]]) # TRUE
 
 is_visible(ss("div")[[3]]) # TRUE
-
-\dontshow{
-# Clean up all connections and invalidate default chromote object
-selenider_cleanup()
-}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

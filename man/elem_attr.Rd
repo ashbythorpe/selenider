@@ -56,11 +56,6 @@ s("a") |>
 
 s("input[type='number']") |>
   elem_value(ptype = integer())
-
-\dontshow{
-# Clean up all connections and invalidate default chromote object
-selenider_cleanup()
-}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

@@ -80,11 +80,6 @@ try(elem_click(cached_button, timeout = 0.1))
 
 # But the non-cached version works
 elem_click(button)
-
-\dontshow{
-# Clean up all connections and invalidate default chromote object
-selenider_cleanup()
-}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

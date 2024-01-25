@@ -40,11 +40,6 @@ is_present(s(".class1")) # TRUE
 is_in_dom(s(".class2")) # FALSE
 
 is_absent(s(".class2")) # TRUE
-
-\dontshow{
-# Clean up all connections and invalidate default chromote object
-selenider_cleanup()
-}
 \dontshow{\}) # examplesIf}
 }
 \seealso{

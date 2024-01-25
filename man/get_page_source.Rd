@@ -26,11 +26,6 @@ html <- "
 session <- minimal_selenider_session(html)
 
 get_page_source()
-
-\dontshow{
-# Clean up all connections and invalidate default chromote object
-selenider_cleanup()
-}
 \dontshow{\}) # examplesIf}
 }
 \seealso{
