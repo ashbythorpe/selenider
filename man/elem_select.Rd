@@ -38,7 +38,7 @@ deselected.}
 Select or deselect \code{select} and \code{option} elements.
 }
 \details{
-If no arguents apart from \code{x} are supplied, and \code{x} is a \code{select} element,
+If no arguments apart from \code{x} are supplied, and \code{x} is a \code{select} element,
 all options will be deselected.
 }
 \examples{

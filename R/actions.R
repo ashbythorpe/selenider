@@ -1131,7 +1131,7 @@ element_scroll_to <- function(x, session, driver) {
 #'   deselected.
 #'
 #' @details
-#' If no arguents apart from `x` are supplied, and `x` is a `select` element,
+#' If no arguments apart from `x` are supplied, and `x` is a `select` element,
 #' all options will be deselected.
 #'
 #' @returns `x`, invisibly.
