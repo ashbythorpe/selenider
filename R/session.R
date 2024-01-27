@@ -202,7 +202,7 @@ selenider_session <- function(session = getOption("selenider.session"),
                               quiet = TRUE) {
   if (isTRUE(view)) {
     lifecycle::deprecate_warn(
-      "0.2.0.9000",
+      "0.3.0",
       "selenider_session(view)",
       I("`options = chromote_options(headless = FALSE)`")
     )
@@ -214,7 +214,7 @@ selenider_session <- function(session = getOption("selenider.session"),
 
   if (!isTRUE(selenium_manager)) {
     lifecycle::deprecate_warn(
-      "0.2.0.9000",
+      "0.3.0",
       "selenider_session(selenium_manager)",
       I("`options = selenium_options(server_options = wdman_server_options())`")
     )
@@ -227,7 +227,7 @@ selenider_session <- function(session = getOption("selenider.session"),
   if (!isTRUE(quiet)) {
     if (inherits(options$server_options, "wdman_server_options")) {
       lifecycle::deprecate_warn(
-        "0.2.0.9000",
+        "0.3.0",
         "selenider_session(quiet)",
         I("`options = selenium_options(server_options = wdman_server_options(verbose = TRUE))`")
       )
@@ -235,7 +235,7 @@ selenider_session <- function(session = getOption("selenider.session"),
       options$server_options$verbose <- TRUE
     } else {
       lifecycle::deprecate_warn(
-        "0.2.0.9000",
+        "0.3.0",
         "selenider_session(quiet)",
         I("`options = selenium_options(server_options = selenium_server_options(verbose = TRUE))`")
       )
@@ -371,7 +371,7 @@ get_driver <- function(browser, options, driver) {
   if (is.null(driver)) {
     if (inherits(options, "chromote_options")) {
       driver <- skip_error_if_testing(
-        create_chromote_session(options),
+        create_chromote_session_internal(options),
         message = "Chromote session failed to start."
       )
 
@@ -386,7 +386,7 @@ get_driver <- function(browser, options, driver) {
       server <- if (reuse_server) {
         default_selenium_object()
       } else if (!is.null(options$server_options)) {
-        skip_error_if_testing(create_selenium_server(
+        skip_error_if_testing(create_selenium_server_internal(
           browser,
           options$server_options
         ), message = "Selenium server failed to start.")
@@ -413,12 +413,12 @@ get_driver <- function(browser, options, driver) {
         }
 
         client <- skip_error_if_testing(
-          create_selenium_client(browser, options$client_options),
+          create_selenium_client_internal(browser, options$client_options),
           message = "Selenium client failed to start."
         )
       } else {
         client <- skip_error_if_testing(
-          create_rselenium_client(browser, options$client_options),
+          create_rselenium_client_internal(browser, options$client_options),
           message = "RSelenium client failed to start."
         )
       }
@@ -519,16 +519,48 @@ browser_and_version <- function(session,
   )
 }
 
-#' Create a Chromote session
+#' Deprecated functions
 #'
-#' Create a [chromote::ChromoteSession] object.
+#' @description
+#' `r lifecycle::badge("deprecated")`
 #'
-#' @param options A [chromote_options()] object.
+#' These functions are deprecated and will be removed in a future release.
+#' Use the `options` argument to [selenider_session()] instead. If you want
+#' to manually create a chromote or selenium session, use
+#' [chromote::ChromoteSession], [selenium::SeleniumSession] and
+#' [selenium::selenium_server()] manually, since these functions
+#' are only a thin wrapper around them.
 #'
-#' @returns A [chromote::ChromoteSession] object.
+#' @param parent,...,version,driver_version,port,quiet,host See the
+#'   documentation for [chromote_options()], [selenium_options()],
+#'   [selenium_client_options()], [wdman_server_options()],
+#'   [selenium_client_options()] and [rselenium_client_options()] for details
+#'   about what these arguments mean.
 #'
-#' @noRd
-create_chromote_session <- function(options = chromote_options()) {
+#' @returns
+#' `create_chromote_session()` returns a [chromote::ChromoteSession] object.
+#'
+#' `create_selenium_server()` returns a [processx::process] or wdman
+#' equivalent.
+#'
+#' `create_selenium_client()` returns a [selenium::SeleniumSession] object.
+#'
+#' `create_rselenium_client()` returns an [RSelenium::remoteDriver] object.
+#'
+#' @export
+create_chromote_session <- function(parent = NULL, ...) {
+  lifecycle::deprecate_warn(
+    "0.3.0",
+    "create_chromote_session()",
+    details = "Use the `options` argument to selenider_session() instead."
+  )
+
+  options <- chromote_options(parent = parent, ...)
+
+  create_chromote_session_internal(options)
+}
+
+create_chromote_session_internal <- function(options = chromote_options()) {
   rlang::check_installed("chromote")
 
   parent <- options$parent
@@ -558,18 +590,49 @@ reset_default_chromote_object <- function() {
   chromote::set_default_chromote_object(chromote::Chromote$new())
 }
 
-#' Create a Selenium Server
-#'
-#' Creates a Selenium Server using [selenium::selenium_server()], or
-#' [wdman::selenium()].
+#' @rdname create_chromote_session
 #'
 #' @param browser The browser to use.
-#' @param options A [selenium_server_options()] or [wdman_server_options()] object.
+#' @param selenium_manager If this is `FALSE`, [wdman::selenium()] will be used
+#'   instead of [selenium::selenium_server()]. The equivalent of using
+#'   [wdman_server_options()] over [selenium_server_options()] in
+#'   [selenium_options()].
 #'
-#' @returns A [processx::process] or wdman equivalent.
-#'
-#' @noRd
-create_selenium_server <- function(browser, options) {
+#' @export
+create_selenium_server <- function(browser,
+                                   version = "latest",
+                                   driver_version = "latest",
+                                   port = 4444L,
+                                   quiet = TRUE,
+                                   selenium_manager = TRUE,
+                                   ...) {
+  lifecycle::deprecate_warn(
+    "0.3.0",
+    "create_selenium_server()",
+    details = "Use the `options` argument to selenider_session() instead."
+  )
+
+  if (selenium_manager) {
+    options <- selenium_server_options(
+      version = version,
+      port = port,
+      verbose = !quiet,
+      ...
+    )
+  } else {
+    options <- wdman_server_options(
+      version = version,
+      driver_version = driver_version,
+      port = port,
+      verbose = !quiet,
+      ...
+    )
+  }
+
+  create_selenium_server_internal(browser, options)
+}
+
+create_selenium_server_internal <- function(browser, options) {
   if (inherits(options, "selenium_server_options")) {
     selenium_manager <- if (is.null(options$selenium_manager)) {
       options$version == "latest" || numeric_version(options$version) >= "4.9.0"
@@ -618,7 +681,7 @@ create_selenium_server <- function(browser, options) {
           # If the version of chrome we found is not available as a webdriver,
           # use the latest one instead.
           options$driver_version <- "latest"
-          return(create_selenium_server(browser, options))
+          return(create_selenium_server_internal(browser, options))
         }
 
         stop_selenium_server(e)
@@ -627,17 +690,29 @@ create_selenium_server <- function(browser, options) {
   }
 }
 
-#' Create a Selenium client
+#' @rdname create_chromote_session
 #'
-#' Creates a Selenium client using [selenium::SeleniumSession].
-#'
-#' @param browser The name of the browser to use.
-#' @param options A [selenium_client_options()] object.
-#'
-#' @returns A [selenium::SeleniumSession] object.
-#'
-#' @noRd
-create_selenium_client <- function(browser, options = selenium_client_options()) {
+#' @export
+create_selenium_client <- function(browser,
+                                   port = 4444L,
+                                   host = "localhost",
+                                   ...) {
+  lifecycle::deprecate_warn(
+    "0.3.0",
+    "create_selenium_client()",
+    details = "Use the `options` argument to selenider_session() instead."
+  )
+
+  options <- selenium_client_options(
+    port = port,
+    host = host,
+    ...
+  )
+
+  create_selenium_client_internal(browser, options)
+}
+
+create_selenium_client_internal <- function(browser, options = selenium_client_options()) {
   res <- rlang::try_fetch(
     selenium::wait_for_selenium_available(
       timeout = 20,
@@ -670,17 +745,25 @@ create_selenium_client <- function(browser, options = selenium_client_options())
   )
 }
 
-#' Start a Selenium session using RSelenium
+#' @rdname create_chromote_session
 #'
-#' @param browser The browser to use.
-#' @param options An [rselenium_client_options()] object.
-#'
-#' @returns An [RSelenium::remoteDriver] object.
-#'
-#' @noRd
-create_rselenium_client <- function(browser, options = rselenium_client_options()) {
-  lifecycle::signal_stage("superseded", "create_rselenium_client()")
+#' @export
+create_rselenium_client <- function(browser, port = 4444L, ...) {
+  lifecycle::deprecate_warn(
+    "0.3.0",
+    "create_rselenium_client()",
+    details = "Use the `options` argument to selenider_session() instead."
+  )
 
+  options <- rselenium_client_options(
+    port = port,
+    ...
+  )
+
+  create_rselenium_client_internal(browser, options)
+}
+
+create_rselenium_client_internal <- function(browser, options = rselenium_client_options()) {
   driver <- RSelenium::remoteDriver(
     remoteServerAddr = options$host,
     port = options$port,
@@ -774,7 +857,7 @@ check_supplied_driver <- function(x,
     client_options <- get_client_options(options, x, call = call)
 
     client <- skip_error_if_testing(
-      create_selenium_client(browser, options = client_options),
+      create_selenium_client_internal(browser, options = client_options),
       message = "Selenium client failed to start."
     )
 
@@ -843,7 +926,7 @@ check_supplied_driver_list <- function(x, browser, options, call = rlang::caller
     client_options <- get_client_options(options, server, call = call)
 
     client <- skip_error_if_testing(
-      create_selenium_client(browser, options = client_options),
+      create_selenium_client_internal(browser, options = client_options),
       message = "Selenium client failed to start."
     )
     result <- list(
