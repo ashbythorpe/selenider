@@ -2,7 +2,28 @@
 
 - Moved all session-specific options in `selenider_session()` to an option object
   (either `chromote_options()` or `selenium_options()`), which can be passed to
-  the new `options` argument of `selenider_session()`.
+  the new `options` argument of `selenider_session()`. This means that a few
+  arguments to `selenider_session()` have been deprecated and moved to into
+  option objects. Old code should be changed as follows:
+
+  - `selenider_session(view = TRUE)` should be changed to:  
+    `selenider_session(options = chromote_options(view = TRUE))`
+  - `selenider_session(selenium_manager = FALSE)` should be changed to:  
+     `selenider_session(
+  options = selenium_options(server_options = wdman_server_options())
+)
+    `
+  - `selenider_session(quiet = FALSE)` should be changed to:  
+     `selenider_session(options = selenium_options(
+  server_options = selenium_server_options(verbose = TRUE))
+))
+   `
+
+  Additionally, `create_chromote_session()`, `create_selenium_server()`, and
+  `create_selenium_client()` are now deprecated. This is because you now
+  have access to all the options of these functions in the `options` argument
+  of `selenider_session()`.
+
 - Improved reliability of functions when they use chromote, with help of code
   from the [puppeteer](https://github.com/puppeteer/puppeteer) project. Most
   notably:
@@ -12,6 +33,8 @@
     elements, including `<select>` elements.
 
 - `elem_focus()` is a new function that allows you to focus an element.
+- `selenider_session()` now uses the `withr.hook_source` option to ensure
+  that `withr` works inside `source()`.
 
 # selenider 0.2.0
 
