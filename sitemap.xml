@@ -46,10 +46,13 @@
     <loc>https://ashbythorpe.github.io/selenider/reference/back.html</loc>
   </url>
   <url>
+    <loc>https://ashbythorpe.github.io/selenider/reference/chromote_options.html</loc>
+  </url>
+  <url>
     <loc>https://ashbythorpe.github.io/selenider/reference/close_session.html</loc>
   </url>
   <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/create_rselenium_client.html</loc>
+    <loc>https://ashbythorpe.github.io/selenider/reference/create_chromote_session.html</loc>
   </url>
   <url>
     <loc>https://ashbythorpe.github.io/selenider/reference/current_url.html</loc>
@@ -182,9 +185,6 @@
   </url>
   <url>
     <loc>https://ashbythorpe.github.io/selenider/reference/selenider_available.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/selenider_cleanup.html</loc>
   </url>
   <url>
     <loc>https://ashbythorpe.github.io/selenider/reference/selenider_session.html</loc>

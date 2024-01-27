@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">selenider</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.3.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,13 +57,42 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.2.0" id="selenider-020">selenider 0.2.0<a class="anchor" aria-label="anchor" href="#selenider-020"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.3.0" id="selenider-030">selenider 0.3.0<a class="anchor" aria-label="anchor" href="#selenider-030"></a></h2>
+<ul><li>
+<p>Moved all session-specific options in <code><a href="../reference/selenider_session.html">selenider_session()</a></code> to an option object (either <code><a href="../reference/chromote_options.html">chromote_options()</a></code> or <code><a href="../reference/chromote_options.html">selenium_options()</a></code>), which can be passed to the new <code>options</code> argument of <code><a href="../reference/selenider_session.html">selenider_session()</a></code>. This means that a few arguments to <code><a href="../reference/selenider_session.html">selenider_session()</a></code> have been deprecated and moved to into option objects. Old code should be changed as follows:</p>
+<ul><li>
+<code>selenider_session(view = TRUE)</code> should be changed to:<br><code>selenider_session(options = chromote_options(view = TRUE))</code>
+</li>
+<li>
+<code>selenider_session(selenium_manager = FALSE)</code> should be changed to:<br><code>selenider_session( options = selenium_options(server_options = wdman_server_options()) )</code>
+</li>
+<li>
+<code>selenider_session(quiet = FALSE)</code> should be changed to:<br><code>selenider_session(options = selenium_options( server_options = selenium_server_options(verbose = TRUE)) ))</code>
+</li>
+</ul><p>Additionally, <code><a href="../reference/create_chromote_session.html">create_chromote_session()</a></code>, <code><a href="../reference/create_chromote_session.html">create_selenium_server()</a></code>, and <code><a href="../reference/create_chromote_session.html">create_selenium_client()</a></code> are now deprecated. This is because you now have access to all the options of these functions in the <code>options</code> argument of <code><a href="../reference/selenider_session.html">selenider_session()</a></code>.</p>
+</li>
+<li>
+<p>Improved reliability of functions when they use chromote, with help of code from the <a href="https://github.com/puppeteer/puppeteer" class="external-link">puppeteer</a> project. Most notably:</p>
+<ul><li>
+<code><a href="../reference/elem_click.html">elem_click()</a></code> and friends now work if part of the element is not visible.</li>
+<li>
+<code><a href="../reference/elem_attr.html">elem_value()</a></code> and <code><a href="../reference/elem_set_value.html">elem_set_value()</a></code> now work on a wider variety of elements, including <code>&lt;select&gt;</code> elements.</li>
+</ul></li>
+<li><p><code><a href="../reference/elem_hover.html">elem_focus()</a></code> is a new function that allows you to focus an element.</p></li>
+<li><p><code><a href="../reference/selenider_session.html">selenider_session()</a></code> now uses the <code>withr.hook_source</code> option to ensure that <code>withr</code> works inside <code><a href="https://rdrr.io/r/base/source.html" class="external-link">source()</a></code>.</p></li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.2.0" id="selenider-020">selenider 0.2.0<a class="anchor" aria-label="anchor" href="#selenider-020"></a></h2><p class="text-muted">CRAN release: 2023-12-02</p>
 <div class="section level3">
 <h3 id="new-features-0-2-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-2-0"></a></h3>
-<ul><li><p><code><a href="../reference/elem_select.html">elem_select()</a></code> is a new function for interacting with <code>&lt;select&gt;</code>/<code>&lt;option&gt;</code> elements, allowing you to easily select by value, text and index.</p></li>
-<li><p>New <code><a href="../reference/current_url.html">current_url()</a></code> returns the URL of the current page. ## Major changes</p></li>
-<li><p>Previously, <code>selenider</code> used <a href="https://docs.ropensci.org/RSelenium/" class="external-link">RSelenium</a> as a Selenium backend. However, this package did not work with latest version of Selenium, or the latest version of Google Chrome. It now uses <a href="https://ashbythorpe.github.io/selenium-r/" class="external-link">selenium</a>, which is compatible with both. This should make <code>selenider</code> more reliable, and more likely to work out of the box when using Selenium.</p></li>
-<li><p>Printing HTML elements now prints the actual HTML contained by the element. Previously, it printed the element in “lazy” form, describing how the element was to be obtained. While this new change makes viewing elements much easier, it also means that to print an element, it needs to exist in the DOM. Use <code><a href="../reference/print.selenider_element.html">print_lazy()</a></code> to use the previous behaviour when printing.</p></li>
+<ul><li>
+<code><a href="../reference/elem_select.html">elem_select()</a></code> is a new function for interacting with <code>&lt;select&gt;</code>/<code>&lt;option&gt;</code> elements, allowing you to easily select by value, text and index.</li>
+<li>New <code><a href="../reference/current_url.html">current_url()</a></code> returns the URL of the current page.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="major-changes-0-2-0">Major changes<a class="anchor" aria-label="anchor" href="#major-changes-0-2-0"></a></h3>
+<ul><li>Previously, <code>selenider</code> used <a href="https://docs.ropensci.org/RSelenium/" class="external-link">RSelenium</a> as a Selenium backend. However, this package did not work with latest version of Selenium, or the latest version of Google Chrome. It now uses <a href="https://ashbythorpe.github.io/selenium-r/" class="external-link">selenium</a>, which is compatible with both. This should make <code>selenider</code> more reliable, and more likely to work out of the box when using Selenium.</li>
+<li>Printing HTML elements now prints the actual HTML contained by the element. Previously, it printed the element in “lazy” form, describing how the element was to be obtained. While this new change makes viewing elements much easier, it also means that to print an element, it needs to exist in the DOM. Use <code><a href="../reference/print.selenider_element.html">print_lazy()</a></code> to use the previous behaviour when printing.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="minor-changes-and-bug-fixes-0-2-0">Minor changes and bug fixes<a class="anchor" aria-label="anchor" href="#minor-changes-and-bug-fixes-0-2-0"></a></h3>
