@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">selenider</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.0.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.3.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,6 +58,9 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="selenider-development-version">selenider (development version)<a class="anchor" aria-label="anchor" href="#selenider-development-version"></a></h2>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.3.0" id="selenider-030">selenider 0.3.0<a class="anchor" aria-label="anchor" href="#selenider-030"></a></h2><p class="text-muted">CRAN release: 2024-01-27</p>
 <ul><li>
 <p>Moved all session-specific options in <code><a href="../reference/selenider_session.html">selenider_session()</a></code> to an option object (either <code><a href="../reference/chromote_options.html">chromote_options()</a></code> or <code><a href="../reference/chromote_options.html">selenium_options()</a></code>), which can be passed to the new <code>options</code> argument of <code><a href="../reference/selenider_session.html">selenider_session()</a></code>. This means that a few arguments to <code><a href="../reference/selenider_session.html">selenider_session()</a></code> have been deprecated and moved to into option objects. Old code should be changed as follows:</p>
 <ul><li>
