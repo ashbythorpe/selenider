@@ -59,6 +59,7 @@ reference:
   - contents:
       - create_chromote_session
       - element_list
+      - print_lazy
 
 articles:
   - title: Articles

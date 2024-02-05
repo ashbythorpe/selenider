@@ -5,6 +5,9 @@
   replace `elem_flatmap()`, which is now deprecated and defunct.
 - `element_list()` is now deprecated in favour of
   `as.list.selenider_elements()`.
+- `print_lazy()` is now deprecated, as it offers little benefit and is complex
+  to maintain.
+
 # selenider 0.3.0
 
 - Moved all session-specific options in `selenider_session()` to an option object
