@@ -42,6 +42,12 @@ elem_equal <- function(x, y, timeout = NULL) {
   check_class(x, "selenider_element")
   check_class(y, "selenider_element")
 
+  check_active(x)
+
+  if (x$driver_id != y$driver_id) {
+    return(FALSE)
+  }
+
   timeout <- get_timeout(timeout, x$timeout)
   if (!elem_wait_until(is_present(x), is_present(y), timeout = timeout)) {
     missing_arg <- if (is_present(x)) "y" else "x"
@@ -54,10 +60,6 @@ elem_equal <- function(x, y, timeout = NULL) {
         )
       )
     )
-  }
-
-  if (x$driver_id != y$driver_id) {
-    return(FALSE)
   }
 
   element_x <- get_element(x)

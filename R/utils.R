@@ -144,6 +144,20 @@ skip_if_selenider_unavailable <- function(session = c("chromote", "selenium")) {
   )
 }
 
+check_active <- function(x) {
+  check_session_active(x$session, x$driver)
+}
+
+check_session_active <- function(session) {
+  check_driver_active(session$session, session$driver)
+}
+
+check_driver_active <- function(session, driver) {
+  if (session == "chromote") {
+    driver$check_active()
+  }
+}
+
 on_cran <- function() {
   !is_interactive() && !isTRUE(as.logical(Sys.getenv("NOT_CRAN", "false")))
 }

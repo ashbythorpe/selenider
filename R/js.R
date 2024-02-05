@@ -70,6 +70,8 @@ execute_js_fn <- function(fn,
   timeout <- info$timeout
   session <- info$session
 
+  check_session_active(session)
+
   if (session == "chromote") {
     expr_result <- parse_chromote_expr(
       fn,
@@ -147,6 +149,8 @@ execute_js_expr <- function(expr,
   driver_id <- info$driver_id
   timeout <- info$timeout
   session <- info$session
+
+  check_session_active(session)
 
   if (session == "chromote") {
     expr_result <- parse_chromote_expr(
