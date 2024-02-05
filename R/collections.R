@@ -7,8 +7,7 @@
 #'
 #' @param x A `selenider_elements` object.
 #' @param timeout How long to wait for `x` to exist while computing its length.
-#' @param .f A function to apply to each element of `x`.
-#' @param ... Passed into `.f`.
+#' @param ... Not used.
 #'
 #' @description
 #' This function essentially turns `x` into:

@@ -44,6 +44,7 @@ reference:
   - contents:
       - elem_flatten
       - as.list.selenider_elements
+      - find_each_element
   - title: Other functions
   - contents:
       - elem_cache
