@@ -58,7 +58,13 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="selenider-development-version">selenider (development version)<a class="anchor" aria-label="anchor" href="#selenider-development-version"></a></h2>
-</div>
+<ul><li>
+<code><a href="../reference/find_each_element.html">find_each_element()</a></code> and <code>find_every_element()</code> are new functions that can be used to find elements using an element collection. They are designed to replace <code><a href="../reference/elem_flatmap.html">elem_flatmap()</a></code>, which is now deprecated and defunct.</li>
+<li>
+<code><a href="../reference/elem_flatmap.html">element_list()</a></code> is now deprecated in favour of <code><a href="../reference/as.list.selenider_elements.html">as.list.selenider_elements()</a></code>.</li>
+<li>
+<code><a href="../reference/print_lazy.html">print_lazy()</a></code> is now deprecated, as it offers little benefit and is complex to maintain.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.3.0" id="selenider-030">selenider 0.3.0<a class="anchor" aria-label="anchor" href="#selenider-030"></a></h2><p class="text-muted">CRAN release: 2024-01-27</p>
 <ul><li>
@@ -95,7 +101,7 @@
 <div class="section level3">
 <h3 id="major-changes-0-2-0">Major changes<a class="anchor" aria-label="anchor" href="#major-changes-0-2-0"></a></h3>
 <ul><li>Previously, <code>selenider</code> used <a href="https://docs.ropensci.org/RSelenium/" class="external-link">RSelenium</a> as a Selenium backend. However, this package did not work with latest version of Selenium, or the latest version of Google Chrome. It now uses <a href="https://ashbythorpe.github.io/selenium-r/" class="external-link">selenium</a>, which is compatible with both. This should make <code>selenider</code> more reliable, and more likely to work out of the box when using Selenium.</li>
-<li>Printing HTML elements now prints the actual HTML contained by the element. Previously, it printed the element in “lazy” form, describing how the element was to be obtained. While this new change makes viewing elements much easier, it also means that to print an element, it needs to exist in the DOM. Use <code><a href="../reference/print.selenider_element.html">print_lazy()</a></code> to use the previous behaviour when printing.</li>
+<li>Printing HTML elements now prints the actual HTML contained by the element. Previously, it printed the element in “lazy” form, describing how the element was to be obtained. While this new change makes viewing elements much easier, it also means that to print an element, it needs to exist in the DOM. Use <code><a href="../reference/print_lazy.html">print_lazy()</a></code> to use the previous behaviour when printing.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="minor-changes-and-bug-fixes-0-2-0">Minor changes and bug fixes<a class="anchor" aria-label="anchor" href="#minor-changes-and-bug-fixes-0-2-0"></a></h3>
