@@ -85,7 +85,7 @@ elem_click(button)
 \seealso{
 \itemize{
 \item \code{\link[=find_element]{find_element()}} and \code{\link[=find_elements]{find_elements()}} to select elements.
-\item \code{\link[=element_list]{element_list()}} and \code{\link[=elem_flatmap]{elem_flatmap()}} if you want to iterate over an
-element collection.
+\item \code{\link[=element_list]{element_list()}}, \code{\link[=find_each_element]{find_each_element()}} and \code{\link[=find_all_elements]{find_all_elements()}} if you
+want to iterate over an element collection.
 }
 }

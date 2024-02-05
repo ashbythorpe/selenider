@@ -128,7 +128,7 @@ elem_find <- function(x, ...) {
 
   x <- elem_filter(x, ...)
 
-  x <- add_numeric_filter(x, 1, max_subscript_error = TRUE)
+  x <- add_numeric_filter(x, 1, max_subscript_error = TRUE, multiple = FALSE)
 
   class(x) <- "selenider_element"
 
@@ -196,7 +196,7 @@ check_subscript_vctrs <- function(i, call = rlang::caller_env()) {
     stop_subscript_max_length(i, 0L)
   }
 
-  x <- add_numeric_filter(x, i, max_subscript_error = TRUE)
+  x <- add_numeric_filter(x, i, max_subscript_error = TRUE, multiple = FALSE)
 
   class(x) <- "selenider_element"
 
@@ -206,7 +206,8 @@ check_subscript_vctrs <- function(i, call = rlang::caller_env()) {
 add_numeric_filter <- function(x,
                                i,
                                call = rlang::caller_env(),
-                               max_subscript_error = FALSE) {
+                               max_subscript_error = FALSE,
+                               multiple = TRUE) {
   selectors <- x$selectors
 
   filters <- selectors[[length(selectors)]]$filter
@@ -256,6 +257,8 @@ add_numeric_filter <- function(x,
 
   x$selectors[[length(x$selectors)]]$to_be_filtered <-
     x$selectors[[length(x$selectors)]]$to_be_filtered + 1
+
+  x$selectors[[length(x$selectors)]]$multiple <- multiple
 
   x
 }

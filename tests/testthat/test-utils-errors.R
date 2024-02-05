@@ -17,7 +17,7 @@ test_that("Errors are thrown correctly", {
 
   expect_error(ss(".class")[[s("a")]], class = "selenider_error_subscript_type")
 
-  expect_error(ss(".class")[[c(1,2)]], class = "selenider_error_subscript_length")
+  expect_error(ss(".class")[[c(1, 2)]], class = "selenider_error_subscript_length")
 
   expect_error(ss(".class")[[NA]], class = "selenider_error_subscript_na")
 
@@ -77,16 +77,6 @@ test_that("Errors are thrown correctly", {
   expect_error(
     elem_flatten(list(1)),
     class = "selenider_error_flatten_dots"
-  )
-
-  expect_error(
-    elem_flatmap(ss(".class"), function(x) stop()),
-    class = "selenider_error_flatmap_result"
-  )
-
-  expect_error(
-    elem_flatmap(ss(".class"), function(x) 1),
-    class = "selenider_error_flatmap_result"
   )
 
   expect_error(

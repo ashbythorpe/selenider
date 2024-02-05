@@ -2,15 +2,9 @@
 % Please edit documentation in R/flatmap.R
 \name{as.list.selenider_elements}
 \alias{as.list.selenider_elements}
-\alias{element_list}
-\alias{elem_flatmap}
 \title{Iterate over an element collection}
 \usage{
 \method{as.list}{selenider_elements}(x, timeout = NULL, ...)
-
-element_list(x, timeout = NULL)
-
-elem_flatmap(x, .f, ...)
 }
 \arguments{
 \item{x}{A \code{selenider_elements} object.}
@@ -22,56 +16,10 @@ elem_flatmap(x, .f, ...)
 \item{.f}{A function to apply to each element of \code{x}.}
 }
 \value{
-\code{elem_flatmap()} returns a \code{selenider_element} object.
-\code{as.list()}/\code{element_list()} returns a list of \code{selenider_element} objects.
+A list of \code{selenider_element} objects.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-
-\code{as.list()} transforms a \code{selenider_elements} object into a list of
-\code{selenider_element} objects. The result can then be used in for loops and
-higher order functions like \code{\link[=lapply]{lapply()}}/\code{\link[purrr:map]{purrr::map()}} (whereas a
-\code{selenider_element} object cannot). This function is stable.
-
-\code{element_list()} is the underlying function called by \code{element_list()}.
-
-Use \code{elem_flatmap()} when you want to select further sub-elements
-\emph{for each} element of a collection.
-
-\code{elem_flatmap()} allows you to apply a function to each element of
-a \code{selenider_elements} object, provided that the function returns a
-\code{selenider_element}/\code{selenider_elements} object itself. The result will
-then be flattened into a single \code{selenider_elements} object. The benefit
-of this over traditional iteration techniques is that the laziness of the
-elements will be maintained, and nothing will be fetched from the DOM.
-This function is experimental, and won't work if \code{.f} uses \code{\link[=elem_flatten]{elem_flatten()}}
-(or nested \code{elem_flatmap()}).
-
-\code{elem_flatmap()} works by executing \code{.f} on a mock element, then recording
-the results in \code{x}. This means that no matter the length of \code{x}, \code{.f} is
-only evaluated once, and during the \code{elem_flatmap()} call. For this reason,
-\code{.f} should not invoke any side effects or do anything other than selecting
-sub-elements.
-
-\code{elem_flatmap()} can essentially be viewed as a map operation (e.g.
-\code{\link[=lapply]{lapply()}}, \code{\link[purrr:map]{purrr::map()}}) followed by a flattening operation
-(\code{\link[=elem_flatmap]{elem_flatmap()}}). This means that:
-
-\if{html}{\out{<div class="sourceCode">}}\preformatted{x |>
-  elem_flatmap(.f)
-}\if{html}{\out{</div>}}
-
-is essentially equivalent to:
-
-\if{html}{\out{<div class="sourceCode">}}\preformatted{x |>
-  as.list() |>
-  lapply(.f) |>
-  elem_flatten()
-}\if{html}{\out{</div>}}
-
-However, the second approach is not done lazily.
-
-\code{as.list()}/\code{element_list()} essentially turns \code{x} into:
+This function essentially turns \code{x} into:
 \code{list(x[[1]], x[[2]], ...)}
 However, to do this, the length of \code{x} must be computed. This means that
 while each element inside the list is still lazy, the list itself cannot be
@@ -79,6 +27,12 @@ considered lazy, since the number of elements in the DOM may change. To
 avoid problems, it is recommended to use an element list just after it is
 created, to make sure the list is an accurate representation of the DOM
 when it is being used.
+}
+\details{
+Transform a \code{selenider_elements} object into a list of
+\code{selenider_element} objects. The result can then be used in for loops and
+higher order functions like \code{\link[=lapply]{lapply()}}/\code{\link[purrr:map]{purrr::map()}} (whereas a
+\code{selenider_element} object cannot).
 }
 \examples{
 \dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
@@ -99,30 +53,22 @@ html <- "
 
 session <- minimal_selenider_session(html)
 
-divs <- ss("div")
+p_tags <- ss("p")
 
-# Get the <p> tag inside each div.
-divs |>
-  elem_flatmap(\(x) x |> find_element("p"))
-
-# Or:
-p_tags <- divs |>
-  elem_flatmap(find_element, "p")
-
-# To get the text in each tag, we can't use elem_flatmap()
 for (elem in as.list(p_tags)) {
   print(elem_text(elem))
 }
 
-# Or:
-lapply(as.list(p_tags), elem_text)
+p_tags |>
+  as.list() |>
+  lapply(elem_text)
 \dontshow{\}) # examplesIf}
 }
 \seealso{
 \itemize{
 \item \code{\link[=elem_flatten]{elem_flatten()}} to combine multiple
 \code{selenider_element}/\code{selenider_elements} objects into a single object.
-\item \code{\link[=elem_filter]{elem_filter()}} and \code{\link[=elem_find]{elem_find()}} to filter element collections using a
-condition.
+\item \code{\link[=find_each_element]{find_each_element()}} and \code{\link[=find_all_elements]{find_all_elements()}} to select elements
+using an element collection while preserving laziness.
 }
 }

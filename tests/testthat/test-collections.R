@@ -1,18 +1,18 @@
-test_that("elem_flatmap() works", {
+test_that("find_each_element() and find_all_elements() work", {
   session <- selenider_test_session()
 
   open_url("https://ashbythorpe.github.io/selenider/articles/test-site.html")
 
-  elements <- elem_flatmap(
+  elements <- find_all_elements(
     elem_flatten(s(".toggleable"), s(".buttons")),
-    function(x) elem_children(x)
+    "*"
   )
 
   elem_expect(elements, has_length(3))
 
-  elements <- elem_flatmap(
+  elements <- find_each_element(
     elem_flatten(s(".toggleable"), s(".buttons")),
-    function(x) elem_children(x)[[1]]
+    "*"
   )
 
   elem_expect(elements, has_length(2))
@@ -23,12 +23,17 @@ test_that("element_list() works", {
 
   open_url("https://ashbythorpe.github.io/selenider/articles/test-site.html")
 
-  elements <- elem_flatmap(
+  elements <- find_all_elements(
     elem_flatten(s(".toggleable"), s(".buttons")),
-    function(x) elem_children(x)
+    "*"
   )
 
   elements_list <- as.list(elements)
+
+  expect_equal(
+    length(elements),
+    length(elements_list)
+  )
 
   expect_equal(
     elements[[1]],

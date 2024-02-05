@@ -58,6 +58,7 @@ reference:
   - title: Deprecated functions
   - contents:
       - create_chromote_session
+      - element_list
 
 articles:
   - title: Articles

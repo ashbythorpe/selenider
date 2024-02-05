@@ -539,7 +539,10 @@ as.list.lazy_list <- function(x, ...) {
     reset_iterator(x)
   }
 
-  coro::collect(x$instance$get())
+  result <- coro::collect(x$instance$get())
+  x$current_value$set(length(result))
+
+  result
 }
 
 #' Index a list/lazy list safely

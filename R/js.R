@@ -461,7 +461,7 @@ new_js_node <- function(x, session, driver, driver_id, timeout) {
     driver_id = driver_id,
     element = x,
     timeout = timeout,
-    selectors = list(new_js_selector()),
+    selectors = list(new_js_selector(FALSE)),
     to_be_found = 0
   )
 
@@ -477,7 +477,7 @@ new_js_nodes <- function(x, session, driver, driver_id, timeout) {
     driver_id = driver_id,
     element = x,
     timeout = timeout,
-    selectors = list(new_js_selector()),
+    selectors = list(new_js_selector(TRUE)),
     to_be_found = 0
   )
 
@@ -486,10 +486,10 @@ new_js_nodes <- function(x, session, driver, driver_id, timeout) {
   res
 }
 
-new_js_selector <- function() {
-  res <- list(filters = list(), to_be_filtered = 0)
+new_js_selector <- function(multiple) {
+  res <- list(filters = list(), to_be_filtered = 0, multiple = multiple)
 
-  class(res) <- "selenider_js_selector"
+  class(res) <- c("selenider_js_selector", "selenider_selector")
 
   res
 }

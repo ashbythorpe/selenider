@@ -72,7 +72,7 @@ find_elements.selenider_session <- function(x,
                                             ...) {
   check_dots_used()
 
-  selector <- new_selector(css, xpath, id, class_name, name, filter = list())
+  selector <- new_selector(css, xpath, id, class_name, name, filter = list(), multiple = TRUE)
 
   new_selenider_elements(x, selector)
 }
@@ -89,7 +89,15 @@ find_elements.selenider_element <- function(x,
                                             ...) {
   check_dots_used()
 
-  selector <- new_selector(css, xpath, id, class_name, name, filter = list())
+  selector <- new_selector(
+    css,
+    xpath,
+    id,
+    class_name,
+    name,
+    filter = list(),
+    multiple = TRUE
+  )
 
   x$selectors <- append(x$selectors, list(selector))
 

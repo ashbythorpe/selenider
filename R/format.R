@@ -202,6 +202,7 @@ format_selector <- function(selector,
   filter <- selector$filter
 
   selector$filter <- NULL
+  selector$multiple <- NULL
 
   element <- if (is.null(with)) {
     format_query(selector, element_name)

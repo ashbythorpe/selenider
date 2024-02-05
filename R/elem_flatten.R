@@ -166,7 +166,8 @@ new_flattened_selector <- function(elements) {
   res <- list(
     selectors = selectors,
     filter = list(),
-    to_be_filtered = 0
+    to_be_filtered = 0,
+    multiple = TRUE
   )
 
   class(res) <- c("selenider_flattened_selector", "selenider_selector")

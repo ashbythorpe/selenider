@@ -363,27 +363,6 @@ stop_flatten_dots <- function(x,
   }
 }
 
-stop_flatmap_return_value <- function(x,
-                                      error = FALSE,
-                                      call = rlang::caller_env()) {
-  if (error) {
-    cli::cli_abort(c(
-      "An error occurred while executing {.arg .f} on a mock element."
-    ), class = "selenider_error_flatmap_result", call = call, parent = x)
-  } else {
-    cli::cli_abort(c(
-      paste0(
-        "{.arg .f} must return a {.cls {c('selenider_element', ",
-        "'selenider_elements')}} object."
-      ),
-      paste0(
-        "When executed on a mock element, {.arg .f} returned ",
-        "{.obj_type_friendly {x}}."
-      )
-    ), class = "selenider_error_flatmap_result", call = call)
-  }
-}
-
 stop_invalid_keys <- function(key, i, expr, call = rlang::caller_env()) {
   cli::cli_abort(c(
     paste0(

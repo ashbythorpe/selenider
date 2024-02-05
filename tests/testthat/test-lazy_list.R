@@ -66,6 +66,7 @@ test_that("Subsetting lazy lists works", {
   reset_iterator(x)
 
   expect_equal(as.list(x[-1]), list(2, 3))
+  expect_equal(as.list(x), as.list(x))
 })
 
 test_that("Filtering lazy lists works", {
