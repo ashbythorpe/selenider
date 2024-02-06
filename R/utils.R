@@ -152,9 +152,17 @@ check_session_active <- function(session) {
   check_driver_active(session$session, session$driver)
 }
 
-check_driver_active <- function(session, driver) {
+check_driver_active <- function(session, driver, session_ref) {
   if (session == "chromote") {
-    driver$check_active()
+    chromote_version <- get_from_env("CHROMOTE_VERSION")
+    if (is.null(chromote_version)) {
+      chromote_version <- utils::packageVersion("chromote")
+      set_in_env(CHROMOTE_VERSION = chromote_version)
+    }
+
+    if (chromote_version >= "0.1.2.9000") {
+      driver$check_active()
+    }
   }
 }
 
