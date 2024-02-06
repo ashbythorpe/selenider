@@ -50,6 +50,10 @@ use_selector <- function(selector, element, driver) {
     elements <- lapply(
       selector$selectors,
       function(selector) {
+        if (length(selector) > 0) {
+          selector[[length(selector)]]$multiple <- TRUE
+        }
+
         get_elements(list(
           selectors = selector,
           driver = driver,
