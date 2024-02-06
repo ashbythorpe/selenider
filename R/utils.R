@@ -145,14 +145,14 @@ skip_if_selenider_unavailable <- function(session = c("chromote", "selenium")) {
 }
 
 check_active <- function(x) {
-  check_session_active(x$session, x$driver)
+  check_driver_active(x$session, x$driver)
 }
 
 check_session_active <- function(session) {
   check_driver_active(session$session, session$driver)
 }
 
-check_driver_active <- function(session, driver, session_ref) {
+check_driver_active <- function(session, driver) {
   if (session == "chromote") {
     chromote_version <- get_from_env("CHROMOTE_VERSION")
     if (is.null(chromote_version)) {
