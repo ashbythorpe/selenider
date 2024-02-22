@@ -68,6 +68,8 @@ get_actual_element <- function(x, timeout = NULL) {
   check_class(x, "selenider_element")
   check_number_decimal(timeout, allow_null = TRUE)
 
+  check_active(x)
+
   timeout <- get_timeout(timeout, x$timeout)
 
   get_with_timeout(timeout, get_element, x)
@@ -79,6 +81,8 @@ get_actual_element <- function(x, timeout = NULL) {
 get_actual_elements <- function(x, timeout = NULL) {
   check_class(x, "selenider_elements")
   check_number_decimal(timeout, allow_null = TRUE)
+
+  check_active(x)
 
   timeout <- get_timeout(timeout, x$timeout)
 

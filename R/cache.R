@@ -82,6 +82,8 @@ elem_cache <- function(x, timeout = NULL) {
   check_class(x, c("selenider_element", "selenider_elements"))
   check_number_decimal(timeout, allow_null = TRUE)
 
+  check_active(x)
+
   timeout <- get_timeout(timeout, x$timeout)
 
   if (inherits(x, "selenider_element")) {

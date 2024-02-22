@@ -24,6 +24,8 @@
 elem_name <- function(x, timeout = NULL) {
   check_number_decimal(timeout, allow_null = TRUE)
 
+  check_active(x)
+
   timeout <- get_timeout(timeout, x$timeout)
 
   element <- get_element_for_property(
@@ -69,6 +71,8 @@ element_name <- function(x, session, driver) {
 #' @export
 elem_text <- function(x, timeout = NULL) {
   check_number_decimal(timeout, allow_null = TRUE)
+
+  check_active(x)
 
   timeout <- get_timeout(timeout, x$timeout)
 
@@ -145,6 +149,8 @@ elem_attr <- function(x, name, default = NULL, timeout = NULL) {
   check_string(name)
   check_number_decimal(timeout, allow_null = TRUE)
 
+  check_active(x)
+
   timeout <- get_timeout(timeout, x$timeout)
 
   element <- get_element_for_property(
@@ -210,6 +216,8 @@ chromote_get_attributes <- function(x, driver) {
 elem_attrs <- function(x, timeout = NULL) {
   check_number_decimal(timeout, allow_null = TRUE)
 
+  check_active(x)
+
   timeout <- get_timeout(timeout, x$timeout)
 
   element <- get_element_for_property(
@@ -241,6 +249,8 @@ element_attributes <- function(x, session, driver) {
 elem_value <- function(x, ptype = character(), timeout = NULL) {
   check_class(x, "selenider_element")
   check_number_decimal(timeout, allow_null = TRUE)
+
+  check_active(x)
 
   timeout <- get_timeout(timeout, x$timeout)
 
@@ -340,6 +350,8 @@ elem_css_property <- function(x, name, timeout = NULL) {
   check_string(name)
   check_number_decimal(timeout, allow_null = TRUE)
 
+  check_active(x)
+
   timeout <- get_timeout(timeout, x$timeout)
 
   element <- get_element_for_property(
@@ -426,6 +438,8 @@ chromote_get_css_property <- function(x, name, default, driver) {
 #' @export
 elem_size <- function(x, timeout = NULL) {
   timeout <- get_timeout(timeout, x$timeout)
+
+  check_active(x)
 
   elements <- get_elements_for_property(
     x,

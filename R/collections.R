@@ -58,7 +58,11 @@
 #'
 #' @export
 as.list.selenider_elements <- function(x, timeout = NULL, ...) {
+  check_class(x, "selenider_elements")
+  check_number_whole(timeout, allow_null = TRUE)
   rlang::check_dots_empty()
+
+  check_active(x)
 
   timeout <- get_timeout(timeout, x$timeout)
 

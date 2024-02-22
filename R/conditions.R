@@ -32,6 +32,8 @@
 is_present <- function(x) {
   check_class(x, "selenider_element")
 
+  check_active(x)
+
   element <- get_element(x)
 
   !is.null(element)
@@ -77,6 +79,8 @@ is_absent <- function(x) !is_present(x)
 #' @export
 is_visible <- function(x) {
   check_class(x, "selenider_element")
+
+  check_active(x)
 
   element <- get_element(x)
 
@@ -149,6 +153,8 @@ is_invisible <- is_hidden
 is_enabled <- function(x) {
   check_class(x, "selenider_element")
 
+  check_active(x)
+
   element <- get_element(x)
 
   if (!is.null(element)) {
@@ -200,6 +206,8 @@ has_name <- function(x, name) {
   check_class(x, "selenider_element")
   check_string(name)
 
+  check_active(x)
+
   element <- get_element(x)
 
   if (!is.null(element)) {
@@ -245,6 +253,8 @@ has_text <- function(x, text) {
   check_class(x, "selenider_element")
   check_string(text)
 
+  check_active(x)
+
   element <- get_element(x)
 
   if (!is.null(element)) {
@@ -260,6 +270,8 @@ has_text <- function(x, text) {
 has_exact_text <- function(x, text) {
   check_class(x, "selenider_element")
   check_string(text)
+
+  check_active(x)
 
   element <- get_element(x)
 
@@ -311,6 +323,8 @@ has_attr <- function(x, name, value) {
     vctrs::vec_check_size(value, 1)
   }
 
+  check_active(x)
+
   element <- get_element(x)
 
   if (is.null(element)) {
@@ -344,6 +358,8 @@ attr_contains <- function(x, name, value) {
   check_string(name)
   check_string(value)
 
+  check_active(x)
+
   element <- get_element(x)
 
   if (is.null(element)) {
@@ -367,6 +383,8 @@ has_value <- function(x, value) {
   if (!is.null(value)) {
     vctrs::vec_check_size(value, 1)
   }
+
+  check_active(x)
 
   element <- get_element(x)
 
@@ -421,6 +439,8 @@ has_css_property <- function(x, property, value) {
   check_string(property)
   check_string(value, allow_null = TRUE)
 
+  check_active(x)
+
   element <- get_element(x)
 
   if (is.null(element)) {
@@ -438,6 +458,8 @@ has_css_property <- function(x, property, value) {
 
 is_covered <- function(x) {
   check_class(x, "selenider_element")
+
+  check_active(x)
 
   element <- get_element(x)
 
@@ -520,6 +542,8 @@ has_length <- function(x, n) {
   check_class(x, "selenider_elements")
   check_number_whole(n, min = 0)
 
+  check_active(x)
+
   elements <- get_elements(x)
   n <- vctrs::vec_cast(n, integer())
 
@@ -541,6 +565,8 @@ has_size <- has_length
 has_at_least <- function(x, n) {
   check_class(x, "selenider_elements")
   check_number_whole(n, min = 0)
+
+  check_active(x)
 
   x <- tryCatch(
     elem_cache(x),

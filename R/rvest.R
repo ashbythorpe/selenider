@@ -38,6 +38,8 @@ read_html.selenider_session <- function(x,
                                           "NOERROR",
                                           "NOBLANKS"
                                         )) {
+  check_session_active(x)
+
   driver <- x$driver
   if (x$session == "chromote") {
     document <- driver$DOM$getDocument()
@@ -65,6 +67,8 @@ read_html.selenider_element <- function(x,
                                           "NOERROR",
                                           "NOBLANKS"
                                         )) {
+  check_active(x)
+
   check_number_decimal(timeout, allow_null = TRUE)
   check_bool(outer)
 

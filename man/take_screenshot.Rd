@@ -27,7 +27,7 @@ session <- selenider_session()
 
 open_url("https://www.google.com")
 
-file_path <- withr::local_tempfile(fileext = "png")
+file_path <- withr::local_tempfile(fileext = ".png")
 
 take_screenshot(file_path)
 \dontshow{\}) # examplesIf}
