@@ -53,6 +53,7 @@ print.selenider_elements <- function(x,
   invisible(x)
 }
 
+#' @export
 format.selenider_element <- function(x,
                                      width = getOption("width"),
                                      ...,
