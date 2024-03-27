@@ -198,16 +198,16 @@ instead.</p>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Can't compare snapshot to reference when testing interactively.</span></span>
 <span><span class="co">#&gt; i Run `devtools::test()` or `testthat::test_file()` to see changes.</span></span>
-<span><span class="co">#&gt; New path: /tmp/Rtmp0Z6wuB/st2-1ca6ab3b1df/001_.png</span></span>
+<span><span class="co">#&gt; New path: /tmp/RtmpIaZAAs/st2-1d28cec3a06/001_.png</span></span>
 <span><span class="co">#&gt; Can't compare snapshot to reference when testing interactively.</span></span>
 <span><span class="co">#&gt; i Run `devtools::test()` or `testthat::test_file()` to see changes.</span></span>
-<span><span class="co">#&gt; New path: /tmp/Rtmp0Z6wuB/st2-1ca6ab3b1df/001.json</span></span>
+<span><span class="co">#&gt; New path: /tmp/RtmpIaZAAs/st2-1d28cec3a06/001.json</span></span>
 <span><span class="co">#&gt; Can't compare snapshot to reference when testing interactively.</span></span>
 <span><span class="co">#&gt; i Run `devtools::test()` or `testthat::test_file()` to see changes.</span></span>
-<span><span class="co">#&gt; New path: /tmp/Rtmp0Z6wuB/st2-1ca6ab3b1df/002_.png</span></span>
+<span><span class="co">#&gt; New path: /tmp/RtmpIaZAAs/st2-1d28cec3a06/002_.png</span></span>
 <span><span class="co">#&gt; Can't compare snapshot to reference when testing interactively.</span></span>
 <span><span class="co">#&gt; i Run `devtools::test()` or `testthat::test_file()` to see changes.</span></span>
-<span><span class="co">#&gt; New path: /tmp/Rtmp0Z6wuB/st2-1ca6ab3b1df/002.json</span></span>
+<span><span class="co">#&gt; New path: /tmp/RtmpIaZAAs/st2-1d28cec3a06/002.json</span></span>
 <span><span class="co">#&gt; Test passed</span></span></code></pre></div>
 <p>Note the difference in styles: while in selenider you must specify
 tests explicitly, shinytest2 uses a snapshot-based approach (specifying
@@ -239,13 +239,13 @@ information. For example, the following lines in a Github Actions yaml
 file will start a selenium server (version 4.15.0), supporting Firefox,
 on port 4444. We recommend using the “shm-size” argument to make sure
 you don’t run out of memory.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">services</span><span class="kw">:</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">selenium</span><span class="kw">:</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> selenium/standalone-firefox:4.15.0-20231108</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> 4444:4444</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">    options</span><span class="kw">: </span><span class="ch">&gt;-</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>      --shm-size="2g"</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="at">  </span><span class="fu">selenium</span><span class="kw">:</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> selenium/standalone-firefox:4.15.0-20231108</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> 4444:4444</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="fu">    options</span><span class="kw">: </span><span class="ch">&gt;-</span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>      --shm-size="2g"</span></code></pre></div>
 <p>This will download Firefox and start a Selenium server on port 4444.
 Automating a browser with Selenium consists of two parts: the server and
 the client. By default, <code><a href="../reference/selenider_session.html">selenider_session()</a></code> tries to setup
