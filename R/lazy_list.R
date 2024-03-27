@@ -386,6 +386,7 @@ combine_lazy_lists <- function(x) {
   lazy_list(generator)
 }
 
+#' @export
 c.lazy_list <- function(x, ...) {
   combine_lazy_lists(rlang::list2(x, ...))
 }
@@ -527,6 +528,7 @@ element_in_eager <- function(x, l, .f) {
   FALSE
 }
 
+#' @export
 length.lazy_list <- function(x) {
   result <- length(coro::collect(x$instance$get())) + x$current_value$get()
   x$current_value$set(result)

@@ -31,7 +31,7 @@ test_that("Global actions work", {
 
   elem_expect(s("#text-output"), has_exact_text(""))
 
-  file <- withr::local_tempfile(fileext = "png")
+  file <- withr::local_tempfile(fileext = ".png")
 
   expect_no_error(take_screenshot(file))
 
