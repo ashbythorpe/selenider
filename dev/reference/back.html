@@ -72,14 +72,18 @@ browsing history.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">back</span><span class="op">(</span>session <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">back</span><span class="op">(</span>timeout <span class="op">=</span> <span class="fl">60</span>, session <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">forward</span><span class="op">(</span>session <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">forward</span><span class="op">(</span>timeout <span class="op">=</span> <span class="fl">60</span>, session <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>session</dt>
+    <dl><dt>timeout</dt>
+<dd><p>The maximum time to wait for the page to load, in seconds.</p></dd>
+
+
+<dt>session</dt>
 <dd><p>A <code>selenider_session</code> object. If not specified, the global
 session object (the result of <code><a href="get_session.html">get_session()</a></code>) is used.</p></dd>
 
