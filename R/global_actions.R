@@ -29,6 +29,8 @@ open_url <- function(url, timeout = 60, session = NULL) {
     session <- get_session(.env = caller_env())
   }
 
+  check_session_active(session)
+
   driver <- session$driver
 
   if (session$session == "chromote") {
@@ -84,6 +86,8 @@ back <- function(timeout = 60, session = NULL) {
     session <- get_session(.env = caller_env())
   }
 
+  check_session_active(session)
+
   driver <- session$driver
 
   if (session$session == "chromote") {
@@ -120,6 +124,8 @@ forward <- function(timeout = 60, session = NULL) {
   if (is.null(session)) {
     session <- get_session(.env = caller_env())
   }
+
+  check_session_active(session)
 
   driver <- session$driver
 
@@ -173,6 +179,8 @@ reload <- function(timeout = 60, session = NULL) {
   if (is.null(session)) {
     session <- get_session(.env = caller_env())
   }
+
+  check_session_active(session)
 
   driver <- session$driver
 
@@ -237,6 +245,8 @@ take_screenshot <- function(file = NULL, view = FALSE, session = NULL) {
     session <- get_session(.env = caller_env())
   }
 
+  check_session_active(session)
+
   if (is.null(file)) {
     file <- withr::local_tempfile(fileext = ".png")
   }
@@ -294,6 +304,8 @@ get_page_source <- function(session = NULL, ...) {
     session <- get_session(.env = caller_env())
   }
 
+  check_session_active(session)
+
   driver <- session$driver
 
   if (session$session == "chromote") {
@@ -331,6 +343,8 @@ current_url <- function(session = NULL) {
   if (is.null(session)) {
     session <- get_session(.env = caller_env())
   }
+
+  check_session_active(session)
 
   driver <- session$driver
 

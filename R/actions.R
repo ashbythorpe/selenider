@@ -52,6 +52,8 @@ elem_click <- function(x, js = FALSE, timeout = NULL) {
   check_bool(js)
   check_number_decimal(timeout, allow_null = TRUE)
 
+  check_active(x)
+
   timeout <- get_timeout(timeout, x$timeout)
 
   if (js) {
@@ -142,7 +144,7 @@ element_click <- function(x, session, driver) {
 
 left_click_rselenium <- function(element, driver) {
   if (driver$browserName == "internet explorer" &&
-        identical(element$getElementTagName(), "checkbox")) {
+    identical(element$getElementTagName(), "checkbox")) {
     try(
       {
         driver$executeScript(
@@ -222,6 +224,8 @@ elem_double_click <- function(x, js = FALSE, timeout = NULL) {
   check_class(x, "selenider_element")
   check_bool(js)
   check_number_decimal(timeout, allow_null = TRUE)
+
+  check_active(x)
 
   timeout <- get_timeout(timeout, x$timeout)
 
@@ -303,6 +307,8 @@ elem_right_click <- function(x, js = FALSE, timeout = NULL) {
   check_class(x, "selenider_element")
   check_bool(js)
   check_number_decimal(timeout, allow_null = TRUE)
+
+  check_active(x)
 
   timeout <- get_timeout(timeout, x$timeout)
 
@@ -441,6 +447,8 @@ elem_hover <- function(x, js = FALSE, timeout = NULL) {
   check_bool(js)
   check_number_decimal(timeout, allow_null = TRUE)
 
+  check_active(x)
+
   timeout <- get_timeout(timeout, x$timeout)
 
   if (js) {
@@ -530,6 +538,8 @@ hover_chromote <- function(element, driver) {
 elem_focus <- function(x, timeout = NULL) {
   check_class(x, "selenider_element")
   check_number_decimal(timeout, allow_null = TRUE)
+
+  check_active(x)
 
   timeout <- get_timeout(timeout, x$timeout)
 
@@ -629,6 +639,8 @@ elem_set_value <- function(x, text, timeout = NULL) {
   }
   check_string(text)
   check_number_decimal(timeout, allow_null = TRUE)
+
+  check_active(x)
 
   timeout <- get_timeout(timeout, x$timeout)
 
@@ -791,6 +803,8 @@ elem_send_keys <- function(x, ..., modifiers = NULL, timeout = NULL) {
   check_class(x, c("selenider_element", "selenider_session"), allow_null = TRUE)
   check_number_decimal(timeout, allow_null = TRUE)
   check_dots_unnamed()
+
+  check_active(x)
 
   if (is.null(x)) {
     x <- get_session(.env = rlang::caller_env())
@@ -973,6 +987,8 @@ elem_clear_value <- function(x, timeout = NULL) {
   check_class(x, "selenider_element")
   check_number_decimal(timeout, allow_null = TRUE)
 
+  check_active(x)
+
   timeout <- get_timeout(timeout, x$timeout)
 
   element <- get_element_for_action(
@@ -1047,6 +1063,8 @@ elem_scroll_to <- function(x, js = FALSE, timeout = NULL) {
   check_class(x, "selenider_element")
   check_bool(js)
   check_number_decimal(timeout, allow_null = TRUE)
+
+  check_active(x)
 
   timeout <- get_timeout(timeout, x$timeout)
 
@@ -1185,6 +1203,8 @@ elem_select <- function(x,
   check_vector(index, check_number_whole, min = 1, allow_null = TRUE)
   check_number_decimal(timeout, allow_null = TRUE)
   check_bool(reset_other)
+
+  check_active(x)
 
   values <- c("value", "text", "index")[c(
     !is.null(value),
@@ -1807,6 +1827,8 @@ elem_submit <- function(x, js = FALSE, timeout = NULL) {
   check_class(x, "selenider_element")
   check_bool(js)
   check_number_decimal(timeout, allow_null = TRUE)
+
+  check_active(x)
 
   timeout <- get_timeout(timeout, x$timeout)
 
