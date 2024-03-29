@@ -9,6 +9,9 @@
   to maintain.
 - `ChromoteSession$check_active()` is used to make sure that the session is
   still active before performing an action.
+- The `timeout` argument to `open_url()`, `back()`, `forward()`, and
+  `reload()`/`refresh()` allows you to specify how long to wait for a page to
+  load.
 
 # selenider 0.3.0
 
