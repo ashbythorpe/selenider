@@ -5,11 +5,13 @@
 \alias{forward}
 \title{Move back or forward in browsing history}
 \usage{
-back(session = NULL)
+back(timeout = 60, session = NULL)
 
-forward(session = NULL)
+forward(timeout = 60, session = NULL)
 }
 \arguments{
+\item{timeout}{The maximum time to wait for the page to load, in seconds.}
+
 \item{session}{A \code{selenider_session} object. If not specified, the global
 session object (the result of \code{\link[=get_session]{get_session()}}) is used.}
 }
