@@ -7,6 +7,8 @@
   `as.list.selenider_elements()`.
 - `print_lazy()` is now deprecated, as it offers little benefit and is complex
   to maintain.
+- `ChromoteSession$check_active()` is used to make sure that the session is
+  still active before performing an action.
 
 # selenider 0.3.0
 
