@@ -180,7 +180,7 @@ selenium_client_options <- function(port = 4444L,
                                     verbose = FALSE,
                                     capabilities = NULL,
                                     request_body = NULL,
-                                    timeout = 20) {
+                                    timeout = 60) {
   check_number_whole(port)
   check_string(host)
   check_bool(verbose)

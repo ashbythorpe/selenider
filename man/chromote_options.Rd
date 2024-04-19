@@ -52,7 +52,7 @@ selenium_client_options(
   verbose = FALSE,
   capabilities = NULL,
   request_body = NULL,
-  timeout = 20
+  timeout = 60
 )
 
 rselenium_client_options(

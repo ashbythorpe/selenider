@@ -11,14 +11,14 @@
   still active before performing an action.
 - The `timeout` argument to `open_url()`, `back()`, `forward()`, and
   `reload()`/`refresh()` allows you to specify how long to wait for a page to
-  load.
+  load. They default to 60 seconds.
 
 # selenider 0.3.0
 
 - Moved all session-specific options in `selenider_session()` to an option object
   (either `chromote_options()` or `selenium_options()`), which can be passed to
   the new `options` argument of `selenider_session()`. This means that a few
-  arguments to `selenider_session()` have been deprecated and moved to into
+  arguments to `selenider_session()` have been deprecated and moved into
   option objects. Old code should be changed as follows:
 
   - `selenider_session(view = TRUE)` should be changed to:  
@@ -62,7 +62,7 @@
 ## Major changes
 
 - Previously, `selenider` used [RSelenium](https://docs.ropensci.org/RSelenium/)
-  as a Selenium backend. However, this package did not work with latest version
+  as a Selenium backend. However, this package did not work with the latest version
   of Selenium, or the latest version of Google Chrome. It now uses
   [selenium](https://ashbythorpe.github.io/selenium-r/), which is compatible
   with both. This should make `selenider` more reliable, and more likely to

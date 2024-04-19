@@ -715,18 +715,18 @@ create_selenium_client <- function(browser,
 create_selenium_client_internal <- function(browser, options = selenium_client_options()) {
   res <- rlang::try_fetch(
     selenium::wait_for_selenium_available(
-      timeout = 20,
+      timeout = options$timeout,
       port = options$port,
       host = options$host,
       error = TRUE
     ),
     error = function(e) {
-      stop_connect_selenium_server(timeout = 20, error = e)
+      stop_connect_selenium_server(timeout = options$timeout, error = e)
     }
   )
 
   if (!res) {
-    stop_connect_selenium_server(timeout = 20)
+    stop_connect_selenium_server(timeout = options$timeout)
   }
 
   rlang::try_fetch(
