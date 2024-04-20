@@ -97,7 +97,7 @@ as.list.selenider_elements <- function(x, timeout = NULL, ...) {
 #'
 #' @export
 elem_flatmap <- function(x, .f, ...) {
-  lifecycle::deprecate_stop("0.3.1", "elem_flatmap()", I("`find_each_element()` or `find_all_elements()`"))
+  lifecycle::deprecate_stop("0.4.0", "elem_flatmap()", I("`find_each_element()` or `find_all_elements()`"))
 }
 
 #' @rdname elem_flatmap
@@ -106,7 +106,7 @@ elem_flatmap <- function(x, .f, ...) {
 element_list <- function(x, timeout = NULL) {
   check_class(x, "selenider_elements")
 
-  lifecycle::deprecate_warn("0.3.1", "element_list()", "as.list()")
+  lifecycle::deprecate_warn("0.4.0", "element_list()", "as.list()")
 
   as.list(x, timeout = timeout)
 }

@@ -82,7 +82,7 @@ install.packages("selenium")
 ```
 
 If you are using selenium, you must also have
-[Java](https://www.java.com/) installed.
+[Java](https://www.oracle.com/java/technologies/downloads/) installed.
 
 Finally, you must have a web browser installed. For chromote, [Google
 Chrome](https://www.google.com/chrome/) is required. For selenium, any

@@ -80,7 +80,7 @@ install.packages("chromote")
 install.packages("selenium")
 ```
 
-If you are using selenium, you must also have [Java](https://www.java.com/) installed.
+If you are using selenium, you must also have [Java](https://www.oracle.com/java/technologies/downloads/) installed.
 
 Finally, you must have a web browser installed. For chromote, [Google Chrome](https://www.google.com/chrome/) is
 required. For selenium, any browser can be used, but [Firefox](https://www.mozilla.org/firefox/new/) is recommended.

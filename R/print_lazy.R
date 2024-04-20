@@ -13,7 +13,7 @@
 #'
 #' @export
 print_lazy <- function(x, ...) {
-  lifecycle::deprecate_warn("0.3.1", "print_lazy()")
+  lifecycle::deprecate_warn("0.4.0", "print_lazy()")
 
   UseMethod("print_lazy")
 

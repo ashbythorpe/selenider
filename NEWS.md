@@ -1,6 +1,6 @@
 # selenider (development version)
 
-- `find_each_element()` and `find_every_element()` are new functions that can
+- `find_each_element()` and `find_all_elements()` are new functions that can
   be used to find elements using an element collection. They are designed to
   replace `elem_flatmap()`, which is now deprecated and defunct.
 - `element_list()` is now deprecated in favour of
