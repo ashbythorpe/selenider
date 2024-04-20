@@ -8,13 +8,13 @@
   "codeRepository": "https://github.com/ashbythorpe/selenider",
   "issueTracker": "https://github.com/ashbythorpe/selenider/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.3.2 (2023-10-31)",
+  "runtimePlatform": "R version 4.3.3 (2024-02-29)",
   "provider": {
     "@id": "https://cran.r-project.org",
     "@type": "Organization",
@@ -223,6 +223,12 @@
   "softwareRequirements": {
     "1": {
       "@type": "SoftwareApplication",
+      "identifier": "R",
+      "name": "R",
+      "version": ">= 2.10"
+    },
+    "2": {
+      "@type": "SoftwareApplication",
       "identifier": "cli",
       "name": "cli",
       "provider": {
@@ -233,7 +239,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=cli"
     },
-    "2": {
+    "3": {
       "@type": "SoftwareApplication",
       "identifier": "coro",
       "name": "coro",
@@ -245,7 +251,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=coro"
     },
-    "3": {
+    "4": {
       "@type": "SoftwareApplication",
       "identifier": "curl",
       "name": "curl",
@@ -257,7 +263,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=curl"
     },
-    "4": {
+    "5": {
       "@type": "SoftwareApplication",
       "identifier": "lifecycle",
       "name": "lifecycle",
@@ -269,7 +275,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=lifecycle"
     },
-    "5": {
+    "6": {
       "@type": "SoftwareApplication",
       "identifier": "prettyunits",
       "name": "prettyunits",
@@ -281,7 +287,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=prettyunits"
     },
-    "6": {
+    "7": {
       "@type": "SoftwareApplication",
       "identifier": "processx",
       "name": "processx",
@@ -293,7 +299,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=processx"
     },
-    "7": {
+    "8": {
       "@type": "SoftwareApplication",
       "identifier": "rlang",
       "name": "rlang",
@@ -306,12 +312,12 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=rlang"
     },
-    "8": {
+    "9": {
       "@type": "SoftwareApplication",
       "identifier": "utils",
       "name": "utils"
     },
-    "9": {
+    "10": {
       "@type": "SoftwareApplication",
       "identifier": "vctrs",
       "name": "vctrs",
@@ -323,7 +329,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=vctrs"
     },
-    "10": {
+    "11": {
       "@type": "SoftwareApplication",
       "identifier": "withr",
       "name": "withr",
@@ -335,15 +341,9 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=withr"
     },
-    "11": {
-      "@type": "SoftwareApplication",
-      "identifier": "R",
-      "name": "R",
-      "version": ">= 2.10"
-    },
     "SystemRequirements": null
   },
-  "fileSize": "582.858KB",
+  "fileSize": "569.502KB",
   "releaseNotes": "https://github.com/ashbythorpe/selenider/blob/master/NEWS.md",
   "readme": "https://github.com/ashbythorpe/selenider/blob/main/README.md",
   "contIntegration": ["https://github.com/ashbythorpe/selenider/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/ashbythorpe/selenider?branch=main"],
