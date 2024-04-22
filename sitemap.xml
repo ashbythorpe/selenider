@@ -85,6 +85,9 @@
     <loc>https://ashbythorpe.github.io/selenider/reference/elem_filter.html</loc>
   </url>
   <url>
+    <loc>https://ashbythorpe.github.io/selenider/reference/elem_flatmap.html</loc>
+  </url>
+  <url>
     <loc>https://ashbythorpe.github.io/selenider/reference/elem_flatten.html</loc>
   </url>
   <url>
@@ -113,6 +116,9 @@
   </url>
   <url>
     <loc>https://ashbythorpe.github.io/selenider/reference/execute_js_fn.html</loc>
+  </url>
+  <url>
+    <loc>https://ashbythorpe.github.io/selenider/reference/find_each_element.html</loc>
   </url>
   <url>
     <loc>https://ashbythorpe.github.io/selenider/reference/find_element.html</loc>
@@ -167,6 +173,9 @@
   </url>
   <url>
     <loc>https://ashbythorpe.github.io/selenider/reference/print.selenider_element.html</loc>
+  </url>
+  <url>
+    <loc>https://ashbythorpe.github.io/selenider/reference/print_lazy.html</loc>
   </url>
   <url>
     <loc>https://ashbythorpe.github.io/selenider/reference/read_html.selenider_session.html</loc>

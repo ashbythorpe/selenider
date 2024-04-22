@@ -1,12 +1,12 @@
-pandoc: 2.19.2
-pkgdown: 2.0.7
+pandoc: 3.1.11
+pkgdown: 2.0.9
 pkgdown_sha: ~
 articles:
-  test-site: test-site.html
   selenider: selenider.html
+  test-site: test-site.html
   unit-testing: unit-testing.html
   with-rvest: with-rvest.html
-last_built: 2024-01-27T19:59Z
+last_built: 2024-04-22T22:55Z
 urls:
   reference: https://ashbythorpe.github.io/selenider/reference
   article: https://ashbythorpe.github.io/selenider/articles
