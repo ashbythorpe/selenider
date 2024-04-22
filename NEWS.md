@@ -1,3 +1,5 @@
+# selenider (development version)
+
 # selenider 0.4.0
 
 - `find_each_element()` and `find_all_elements()` are new functions that can
