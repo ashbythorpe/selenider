@@ -22,3 +22,11 @@ default_selenium_options <- function() {
 set_default_selenium_options <- function(x) {
   set_in_env(selenium_options = x)
 }
+
+default_chromote_args <- function() {
+  get_from_env("chromote")
+}
+
+set_default_chromote_args <- function(x) {
+  set_in_env(chromote = x)
+}
