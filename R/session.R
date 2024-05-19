@@ -246,8 +246,6 @@ selenider_session <- function(session = getOption("selenider.session"),
     }
   }
 
-
-
   check_string(session, allow_null = TRUE)
   check_string(browser, allow_null = TRUE)
   check_number_decimal(timeout, allow_null = TRUE)
@@ -374,10 +372,6 @@ get_driver <- function(browser, options, driver) {
         create_chromote_session_internal(options),
         message = "Chromote session failed to start."
       )
-
-      if (!options$headless) {
-        driver$view()
-      }
     } else {
       reuse_server <- inherits(options$server_options, "selenium_server_options") &&
         has_default_selenium_object() &&
@@ -564,21 +558,110 @@ create_chromote_session_internal <- function(options = chromote_options()) {
   rlang::check_installed("chromote")
 
   parent <- options$parent
-  options <- options[!names(options) %in% c("parent", "headless")]
+  headless <- options$headless
+  user_agent <- options$user_agent
+  proxy_server <- options$proxy_server
+  extra_args <- options$extra_args
+  options <- options[!names(options) %in% c("parent", "headless", "user_agent", "proxy_server", "extra_args")]
 
   timeout <- if (on_ci()) 60 * 5 else 60
 
   withr::local_options(list(chromote.timeout = timeout))
 
-  if (is.null(parent) && default_chromote_object_alive()) {
-    reset_default_chromote_object()
+  args <- NULL
+  if (!is.null(extra_args)) {
+    args <- chromote::get_chrome_args()
+    chromote::set_chrome_args(c(args, extra_args))
+  }
+
+  if (!is.null(proxy_server)) {
+    if (!is.null(args)) {
+      args <- chromote::get_chrome_args()
+    }
+
+    chromote::set_chrome_args(c(
+      args,
+      paste0("--proxy-server=", proxy_server$server)
+    ))
   }
 
   if (is.null(parent)) {
-    parent <- chromote::default_chromote_object()
+    last_args <- default_chromote_args()
+    new_args <- chromote::get_chrome_args()
+    last_driver_alive <- default_chromote_object_alive()
+
+    # We only need to create a parent if we want the browser to take different arguments.
+    if (setequal(last_args, new_args) && last_driver_alive) {
+      parent <- chromote::default_chromote_object()
+    } else {
+      if (chromote::has_default_chromote_object()) {
+        chromote::default_chromote_object()$close()
+      }
+
+      parent <- chromote::Chromote$new()
+      chromote::set_default_chromote_object(parent)
+      set_default_chromote_args(new_args)
+    }
   }
 
-  rlang::inject(chromote::ChromoteSession$new(parent = parent, !!!options))
+  driver <- rlang::inject(chromote::ChromoteSession$new(parent = parent, !!!options))
+
+  if (!headless) {
+    driver$view()
+  }
+
+  if (!is.null(user_agent)) {
+    driver$Network$setUserAgentOverride(userAgent = user_agent)
+  }
+
+  if (!is.null(args)) {
+    # Reset chromote args back to what they were before
+    chromote::set_chrome_args(args)
+  }
+
+  if (!is.null(proxy_server)) {
+    if (!is.null(proxy_server$username)) {
+      # Setup handlers for proxy server authentication
+      authenticate <- function(x) {
+        id <- x$requestId
+
+        response <- list(
+          response = "ProvideCredentials",
+          username = proxy_server$username,
+          password = proxy_server$password
+        )
+
+        driver$Fetch$continueWithAuth(
+          requestId = id,
+          authChallengeResponse = response
+        )
+      }
+
+      # Ignore requests that don't need authentication
+      continue_request <- function(x) {
+        id <- x$requestId
+
+        driver$Fetch$continueRequest(requestId = id)
+      }
+
+      driver$Fetch$enable(
+        patterns = list(
+          list(urlPattern = "*")
+        ),
+        handleAuthRequests = TRUE
+      )
+
+      driver$Fetch$requestPaused(
+        callback_ = continue_request
+      )
+
+      driver$Fetch$authRequired(
+        callback_ = authenticate
+      )
+    }
+  }
+
+  driver
 }
 
 default_chromote_object_alive <- function() {
