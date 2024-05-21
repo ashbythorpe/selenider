@@ -568,39 +568,36 @@ create_chromote_session_internal <- function(options = chromote_options()) {
 
   withr::local_options(list(chromote.timeout = timeout))
 
-  args <- NULL
+  args <- chromote::get_chrome_args()
   if (!is.null(extra_args)) {
-    args <- chromote::get_chrome_args()
-    chromote::set_chrome_args(c(args, extra_args))
+    args <- unique(c(args, extra_args))
   }
 
   if (!is.null(proxy_server)) {
-    if (!is.null(args)) {
-      args <- chromote::get_chrome_args()
-    }
-
-    chromote::set_chrome_args(c(
+    args <- args[-grepl("--proxy-server", args, fixed = TRUE)]
+    args <- c(
       args,
       paste0("--proxy-server=", proxy_server$server)
-    ))
+    )
   }
 
   if (is.null(parent)) {
     last_args <- default_chromote_args()
-    new_args <- chromote::get_chrome_args()
-    last_driver_alive <- default_chromote_object_alive()
+    last_chromote_object_alive <- has_default_chromote_object()
 
-    # We only need to create a parent if we want the browser to take different arguments.
-    if (setequal(last_args, new_args) && last_driver_alive) {
-      parent <- chromote::default_chromote_object()
+    # We only need to create a new chrome process if we want the browser to take different arguments.
+    if (setequal(last_args, args) && last_chromote_object_alive) {
+      parent <- default_chromote_object()
     } else {
-      if (chromote::has_default_chromote_object()) {
-        chromote::default_chromote_object()$close()
+      if (last_chromote_object_alive) {
+        default_chromote_object()$close()
       }
 
-      parent <- chromote::Chromote$new()
-      chromote::set_default_chromote_object(parent)
-      set_default_chromote_args(new_args)
+      parent <- chromote::Chromote$new(
+        browser = chromote::Chrome$new(args = args)
+      )
+      set_default_chromote_object(parent)
+      set_default_chromote_args(args)
     }
   }
 
@@ -614,63 +611,47 @@ create_chromote_session_internal <- function(options = chromote_options()) {
     driver$Network$setUserAgentOverride(userAgent = user_agent)
   }
 
-  if (!is.null(args)) {
-    # Reset chromote args back to what they were before
-    chromote::set_chrome_args(args)
-  }
+  if (!is.null(proxy_server) && !is.null(proxy_server$username)) {
+    # Setup handlers for proxy server authentication
+    authenticate <- function(x) {
+      id <- x$requestId
 
-  if (!is.null(proxy_server)) {
-    if (!is.null(proxy_server$username)) {
-      # Setup handlers for proxy server authentication
-      authenticate <- function(x) {
-        id <- x$requestId
-
-        response <- list(
-          response = "ProvideCredentials",
-          username = proxy_server$username,
-          password = proxy_server$password
-        )
-
-        driver$Fetch$continueWithAuth(
-          requestId = id,
-          authChallengeResponse = response
-        )
-      }
-
-      # Ignore requests that don't need authentication
-      continue_request <- function(x) {
-        id <- x$requestId
-
-        driver$Fetch$continueRequest(requestId = id)
-      }
-
-      driver$Fetch$enable(
-        patterns = list(
-          list(urlPattern = "*")
-        ),
-        handleAuthRequests = TRUE
+      response <- list(
+        response = "ProvideCredentials",
+        username = proxy_server$username,
+        password = proxy_server$password
       )
 
-      driver$Fetch$requestPaused(
-        callback_ = continue_request
-      )
-
-      driver$Fetch$authRequired(
-        callback_ = authenticate
+      driver$Fetch$continueWithAuth(
+        requestId = id,
+        authChallengeResponse = response
       )
     }
+
+    # Ignore requests that don't need authentication
+    continue_request <- function(x) {
+      id <- x$requestId
+
+      driver$Fetch$continueRequest(requestId = id)
+    }
+
+    driver$Fetch$enable(
+      patterns = list(
+        list(urlPattern = "*")
+      ),
+      handleAuthRequests = TRUE
+    )
+
+    driver$Fetch$requestPaused(
+      callback_ = continue_request
+    )
+
+    driver$Fetch$authRequired(
+      callback_ = authenticate
+    )
   }
 
   driver
-}
-
-default_chromote_object_alive <- function() {
-  chromote::has_default_chromote_object() &&
-    !chromote::default_chromote_object()$get_browser()$get_process()$is_alive()
-}
-
-reset_default_chromote_object <- function() {
-  chromote::set_default_chromote_object(chromote::Chromote$new())
 }
 
 #' @rdname create_chromote_session
