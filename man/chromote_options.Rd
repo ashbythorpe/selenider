@@ -11,6 +11,9 @@
 \usage{
 chromote_options(
   headless = TRUE,
+  user_agent = NULL,
+  proxy_server = NULL,
+  extra_args = NULL,
   parent = NULL,
   width = 992,
   height = 1323,
@@ -72,6 +75,18 @@ that you won't actually be able to see the browser as you control it.
 For debugging purposes and interactive use, it is often useful to set
 this to \code{FALSE}.}
 
+\item{user_agent}{A string containing a custom user agent to use for all
+requests.}
+
+\item{proxy_server}{A proxy server to use for all requests. Either a string
+of the form \code{"HOST:PORT"}, or a list containing the \code{host} and \code{port}.
+Optionally, \code{username} and \code{password} can be provided if the proxy server
+requires authentication.}
+
+\item{extra_args}{A character vector of arguments. In \code{chromote_options()},
+these are passed to the Chrome process. In \code{selenium_client_options()},
+these are passed to the Selenium server process.}
+
 \item{parent}{The parent chromote session.}
 
 \item{width, height, targetId, wait_, auto_events}{Passed into
@@ -86,7 +101,7 @@ this to \code{FALSE}.}
 
 \item{port}{The port number to use.}
 
-\item{selenium_manager, verbose, temp, path, interactive, echo_cmd, extra_args}{Passed into \code{\link[selenium:selenium_server]{selenium::selenium_server()}}.}
+\item{selenium_manager, verbose, temp, path, interactive, echo_cmd}{Passed into \code{\link[selenium:selenium_server]{selenium::selenium_server()}}.}
 
 \item{driver_version}{The version of the browser-specific driver to use.}
 
