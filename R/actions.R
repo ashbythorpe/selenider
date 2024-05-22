@@ -129,7 +129,8 @@ element_click_js <- function(x, session, driver) {
 
 element_click <- function(x, session, driver) {
   if (session == "chromote") {
-    promise <- driver$Page$loadEventFired(wait_ = FALSE)$catch(function(e) NULL)
+    timeout <- if (on_ci()) 60 * 5 else 60
+    promise <- driver$Page$loadEventFired(wait_ = FALSE, timeout_ = timeout)$catch(function(e) NULL)
     click_chromote(x, driver = driver)
     name <- driver$DOM$describeNode(backendNodeId = x)$node$nodeName
     if (identical(name, "A")) {

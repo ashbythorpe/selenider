@@ -20,10 +20,14 @@
 #' open_url(session = session, "https://r-project.org")
 #'
 #' @export
-open_url <- function(url, timeout = 60, session = NULL) {
+open_url <- function(url, timeout = NULL, session = NULL) {
   check_string(url)
-  check_number_decimal(timeout)
+  check_number_decimal(timeout, allow_null = TRUE)
   check_class(session, "selenider_session", allow_null = TRUE)
+
+  if (is.null(timeout)) {
+    timeout <- if (on_ci()) 60 * 5 else 60
+  }
 
   if (is.null(session)) {
     session <- get_session(.env = caller_env())
@@ -58,6 +62,8 @@ open_url <- function(url, timeout = 60, session = NULL) {
 #' browsing history.
 #'
 #' @param timeout The maximum time to wait for the page to load, in seconds.
+#'   This defaults to 60, unless in a Github Action, in which case it defaults
+#'   to 5 minutes.
 #' @param session A `selenider_session` object. If not specified, the global
 #'   session object (the result of [get_session()]) is used.
 #'
@@ -78,9 +84,13 @@ open_url <- function(url, timeout = 60, session = NULL) {
 #' forward()
 #'
 #' @export
-back <- function(timeout = 60, session = NULL) {
-  check_number_decimal(timeout)
+back <- function(timeout = NULL, session = NULL) {
+  check_number_decimal(timeout, allow_null = TRUE)
   check_class(session, "selenider_session", allow_null = TRUE)
+
+  if (is.null(timeout)) {
+    timeout <- if (on_ci()) 60 * 5 else 60
+  }
 
   if (is.null(session)) {
     session <- get_session(.env = caller_env())
@@ -117,9 +127,13 @@ back <- function(timeout = 60, session = NULL) {
 #' @rdname back
 #'
 #' @export
-forward <- function(timeout = 60, session = NULL) {
-  check_number_decimal(timeout)
+forward <- function(timeout = NULL, session = NULL) {
+  check_number_decimal(timeout, allow_null = TRUE)
   check_class(session, "selenider_session", allow_null = TRUE)
+
+  if (is.null(timeout)) {
+    timeout <- if (on_ci()) 60 * 5 else 60
+  }
 
   if (is.null(session)) {
     session <- get_session(.env = caller_env())
@@ -172,9 +186,13 @@ forward <- function(timeout = 60, session = NULL) {
 #' reload()
 #'
 #' @export
-reload <- function(timeout = 60, session = NULL) {
-  check_number_decimal(timeout)
+reload <- function(timeout = NULL, session = NULL) {
+  check_number_decimal(timeout, allow_null = TRUE)
   check_class(session, "selenider_session", allow_null = TRUE)
+
+  if (is.null(timeout)) {
+    timeout <- if (on_ci()) 60 * 5 else 60
+  }
 
   if (is.null(session)) {
     session <- get_session(.env = caller_env())

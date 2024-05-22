@@ -4,12 +4,14 @@
 \alias{open_url}
 \title{Open a URL}
 \usage{
-open_url(url, timeout = 60, session = NULL)
+open_url(url, timeout = NULL, session = NULL)
 }
 \arguments{
 \item{url}{The URL to navigate to: a string.}
 
-\item{timeout}{The maximum time to wait for the page to load, in seconds.}
+\item{timeout}{The maximum time to wait for the page to load, in seconds.
+This defaults to 60, unless in a Github Action, in which case it defaults
+to 5 minutes.}
 
 \item{session}{A \code{selenider_session} object. If not specified, the global
 session object (the result of \code{\link[=get_session]{get_session()}}) is used.}
