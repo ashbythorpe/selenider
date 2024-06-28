@@ -160,6 +160,12 @@ There are three types of functions that force an element to be collected:
 
 Most functions that act on elements use the `elem_` prefix.
 
+One of the benefits of selenider elements being lazy is that, on dynamic pages, the list of 
+matching elements adjusts automatically as elements on the page change. On the other hand, 
+although you may subset with `[[` and `[`, you must realise that `selenider_elements` does not 
+behave as a typical list() of objects – unless you choose to strip it of its dynamic behaviour 
+and turn it into a classic list using `as.list()`.
+
 ## Actions
 
 There are various ways to interact with a HTML element.
