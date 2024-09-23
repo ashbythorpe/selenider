@@ -113,3 +113,40 @@ check_list <- function(x,
     call = call
   )
 }
+
+check_proxy_server <- function(x,
+                               ...,
+                               allow_username_password = FALSE,
+                               arg = rlang::caller_arg(x),
+                               call = rlang::caller_env()) {
+  if (!is.null(x)) {
+    if (is_string(x)) {
+      x <- list(server = url)
+    } else if (is.list(x)) {
+      check_string(x$host)
+      check_number_whole(x$port)
+
+      if (allow_username_password) {
+        # TODO: Require chromote version that allows .enable() methods
+        check_string(x$username, allow_null = TRUE)
+        check_string(x$password, allow_null = TRUE)
+
+        if (!is.null(x$username) && is.null(proxy_server$password)) {
+          rlang::abort("`proxy_server$username` was provided but `proxy_server$password` was not.", call = call)
+        } else if (is.null(x$username) && !is.null(proxy_server$password)) {
+          rlang::abort("`proxy_server$password` was provided but `proxy_server$username` was not.", call = call)
+        }
+
+        list(
+          server = paste0(x$host, ":", proxy_server$port),
+          username = x$username,
+          password = x$password
+        )
+      }
+    } else {
+      stop_input_type(x, c("a string", "a list"), ..., allow_null = TRUE)
+    }
+  }
+
+  x
+}
