@@ -6,9 +6,9 @@
 #' environment where it was defined.
 #'
 #' @param session The package to use as a backend: either "chromote",
-#'   "selenium" or "rselenium". By default, chromote is used, since this tends
-#'   to be faster and more reliable. Change the default value using the
-#'   `selenider.session` option.
+#'   "selenium". By default, chromote is used, since this tends to be faster
+#'   and more reliable. Change the default value using the `selenider.session`
+#'   option.
 #' @param browser The name of the browser to run the session in; one of
 #'   "chrome", "firefox", "edge", "safari", or another valid browser name.
 #'   If `NULL`, the function will try to work out which browser you have
@@ -24,13 +24,10 @@
 #'   * A [chromote::ChromoteSession] object.
 #'   * A [shinytest2::AppDriver] object.
 #'   * An [selenium::SeleniumSession] object.
-#'   * A Selenium server object, created by [selenium::selenium_server()] or
-#'     [wdman::selenium()]. In this case, a client will be created using the
-#'     server object.
+#'   * A Selenium server object, created by [selenium::selenium_server()]. In
+#'     this case, a client will be created using the server object.
 #'   * A list/environment containing the [selenium::SeleniumSession] object,
 #'     the Selenium server object, or both.
-#'   * An [RSelenium::remoteDriver()] object can be used instead of a
-#'     [selenium::SeleniumSession] object.
 #' @param local Whether to set the session as the local session object,
 #'   using [local_session()].
 #' @param .env Passed into [local_session()], to define the
@@ -362,6 +359,11 @@ check_options <- function(session, options, call = rlang::caller_env()) {
         "x" = "A {.cls {class(options$client_options)}} object was provided instead."
       ))
     }
+  } else {
+    cli::cli_abort(
+      "Session must be \"chromote\" or \"selenium\", not {.val {session}}.",
+      call = call
+    )
   }
 
   options

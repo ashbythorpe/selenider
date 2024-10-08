@@ -19,9 +19,9 @@ selenider_session(
 }
 \arguments{
 \item{session}{The package to use as a backend: either "chromote",
-"selenium" or "rselenium". By default, chromote is used, since this tends
-to be faster and more reliable. Change the default value using the
-\code{selenider.session} option.}
+"selenium". By default, chromote is used, since this tends to be faster
+and more reliable. Change the default value using the \code{selenider.session}
+option.}
 
 \item{browser}{The name of the browser to run the session in; one of
 "chrome", "firefox", "edge", "safari", or another valid browser name.
@@ -42,13 +42,10 @@ can be one of:
 \item A \link[chromote:ChromoteSession]{chromote::ChromoteSession} object.
 \item A \link[shinytest2:AppDriver]{shinytest2::AppDriver} object.
 \item An \link[selenium:SeleniumSession]{selenium::SeleniumSession} object.
-\item A Selenium server object, created by \code{\link[selenium:selenium_server]{selenium::selenium_server()}} or
-\code{\link[wdman:selenium]{wdman::selenium()}}. In this case, a client will be created using the
-server object.
+\item A Selenium server object, created by \code{\link[selenium:selenium_server]{selenium::selenium_server()}}. In
+this case, a client will be created using the server object.
 \item A list/environment containing the \link[selenium:SeleniumSession]{selenium::SeleniumSession} object,
 the Selenium server object, or both.
-\item An \code{\link[RSelenium:remoteDriver-class]{RSelenium::remoteDriver()}} object can be used instead of a
-\link[selenium:SeleniumSession]{selenium::SeleniumSession} object.
 }}
 
 \item{local}{Whether to set the session as the local session object,
