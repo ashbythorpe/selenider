@@ -56,8 +56,9 @@ reference:
   - title: Configuration
   - contents:
       - selenider-config
-  - title: Deprecated functions
+  - title: Superceded and deprecated functions
   - contents:
+      - wdman_server_options
       - create_chromote_session
       - element_list
       - print_lazy
