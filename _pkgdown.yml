@@ -69,6 +69,7 @@ articles:
     contents:
       - unit-testing
       - with-rvest
+      - advanced-usage
   - title: Testing selenider
     desc: An article used to test selenider
     contents:

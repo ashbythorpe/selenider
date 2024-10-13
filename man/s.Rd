@@ -22,7 +22,10 @@ ss(css = NULL, xpath = NULL, id = NULL, class_name = NULL, name = NULL)
 }
 \value{
 \code{s()} returns a \code{selenider_element} object.
-\code{ss()} returns a \code{selenider_elements} object.
+\code{ss()} returns a \code{selenider_elements} object. Note that this is not a list,
+and you should be careful with the functions that you use with it. See the
+advanced usage vignette for more details:
+\code{vignette("advanced-usage", package = "selenider")}.
 }
 \description{
 Both \code{s()} and \code{ss()} allow you to select elements without specifying a

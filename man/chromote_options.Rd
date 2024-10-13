@@ -56,7 +56,8 @@ this to \code{FALSE}.}
 
 \item{client_options}{A \code{\link[=selenium_client_options]{selenium_client_options()}} object.}
 
-\item{server_options}{A \code{\link[=selenium_server_options]{selenium_server_options()}} object.}
+\item{server_options}{A \code{\link[=selenium_server_options]{selenium_server_options()}} object, or \code{NULL} if you
+don't want one to be created.}
 
 \item{version}{The version of Selenium server to use.}
 

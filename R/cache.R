@@ -38,8 +38,8 @@
 #'
 #' @seealso
 #' * [find_element()] and [find_elements()] to select elements.
-#' * [element_list()], [find_each_element()] and [find_all_elements()] if you
-#'   want to iterate over an element collection.
+#' * [as.list.selenider_elements()], [find_each_element()] and
+#'   [find_all_elements()] if you want to iterate over an element collection.
 #'
 #' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "

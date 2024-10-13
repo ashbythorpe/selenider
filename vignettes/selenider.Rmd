@@ -30,14 +30,22 @@ library(selenider)
 To use selenider, you must first start a session with `selenider_session()`. If you don't do this, it
 is done automatically for you, but you may want to change some of the options from their defaults 
 (the backend, for example). Here, we use chromote as a backend (the default), and we set the timeout
-to 10 seconds (the default is 4).
+to 10 seconds (the default is 4). Finally, we'll use [chromote_options()] to set options that are
+specific to chromote (here we want to disable headless mode, which will allow us to see the browser).
 
-```{r}
+```{r eval=FALSE}
 session <- selenider_session(
   "chromote",
-  timeout = 10
+  timeout = 10,
+  options = chromote_options(headless = FALSE)
 )
 ```
+
+```{r include=FALSE}
+session <- selenider_session()
+```
+
+
 
 The session, once created, will be set as the *local session* inside the current environment,
 meaning that in this case, it can be accessed anywhere in this script, and will be closed
