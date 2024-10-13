@@ -21,7 +21,10 @@
 #'
 #' @returns
 #' `s()` returns a `selenider_element` object.
-#' `ss()` returns a `selenider_elements` object.
+#' `ss()` returns a `selenider_elements` object. Note that this is not a list,
+#' and you should be careful with the functions that you use with it. See the
+#' advanced usage vignette for more details:
+#' `vignette("advanced-usage", package = "selenider")`.
 #'
 #' @seealso
 #' * [find_element()] and [find_elements()]
