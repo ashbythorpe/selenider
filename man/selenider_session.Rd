@@ -49,12 +49,14 @@ the Selenium server object, or both.
 }}
 
 \item{local}{Whether to set the session as the local session object,
-using \code{\link[=local_session]{local_session()}}.}
+using \code{\link[=local_session]{local_session()}}. If this is \code{FALSE}, you will have to pass this
+into the \code{session} argument of other functions (like \code{\link[=open_url]{open_url()}}), and
+close the session manually using \code{\link[=close_session]{close_session()}}.}
 
 \item{.env}{Passed into \code{\link[=local_session]{local_session()}}, to define the
 environment in which the session is used. Change this if you want to
 create the session inside a function and then use it outside the
-function.}
+function (see Examples). Use \code{\link[rlang:stack]{rlang::caller_env()}} in this case.}
 
 \item{view, selenium_manager, quiet}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 Use the \code{options} argument instead.}
@@ -64,9 +66,12 @@ A \code{selenider_session} object. Use \code{session$driver} to retrieve the dri
 object that controls the browser.
 }
 \description{
-Create a session in selenider, setting it as the local session unless
-otherwise specified, allowing the session to be accessed globally in the
-environment where it was defined.
+Create a session in selenider. If you create a session in the global
+environment it will be made available to other functions (like
+\code{\link[=open_url]{open_url()}}) without having to pass it in, and will close automatically
+when the R session is closed. Alternatively, if it is created inside a
+function, it will be closed as soon as the function finishes executing. To
+customise this, use the \code{.env} and \code{local} arguments.
 }
 \section{Useful session-specific options}{
 See \code{\link[=chromote_options]{chromote_options()}} and \code{\link[=selenium_options]{selenium_options()}} for the full range.

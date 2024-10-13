@@ -18,6 +18,8 @@
 #' @details
 #' Both functions allow the starting point for chains of selectors to be made
 #' more concise. Both use [get_session()] to get the global session object.
+#' If you want to pass in a session, use [find_element()]/[find_elements()]
+#' instead.
 #'
 #' @returns
 #' `s()` returns a `selenider_element` object.
