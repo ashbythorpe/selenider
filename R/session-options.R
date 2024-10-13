@@ -61,7 +61,8 @@ chromote_options <- function(headless = TRUE,
 #' @rdname chromote_options
 #'
 #' @param client_options A [selenium_client_options()] object.
-#' @param server_options A [selenium_server_options()] object.
+#' @param server_options A [selenium_server_options()] object, or `NULL` if you
+#'   don't want one to be created.
 #'
 #' @export
 selenium_options <- function(client_options = selenium_client_options(),

@@ -20,7 +20,7 @@
 #'
 #' @seealso
 #' * [ss()] to quickly select multiple elements without specifying the session.
-#' * [find_element()] to select multiple elements.
+#' * [find_element()] to select a single element.
 #' * [selenider_session()] to begin a session.
 #' * [elem_children()] and family to select elements using their relative
 #'   position in the DOM.

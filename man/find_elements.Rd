@@ -88,7 +88,7 @@ s("#outer-div") |>
 \seealso{
 \itemize{
 \item \code{\link[=ss]{ss()}} to quickly select multiple elements without specifying the session.
-\item \code{\link[=find_element]{find_element()}} to select multiple elements.
+\item \code{\link[=find_element]{find_element()}} to select a single element.
 \item \code{\link[=selenider_session]{selenider_session()}} to begin a session.
 \item \code{\link[=elem_children]{elem_children()}} and family to select elements using their relative
 position in the DOM.
