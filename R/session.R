@@ -1,9 +1,12 @@
 #' Start a session
 #'
 #' @description
-#' Create a session in selenider, setting it as the local session unless
-#' otherwise specified, allowing the session to be accessed globally in the
-#' environment where it was defined.
+#' Create a session in selenider. If you create a session in the global
+#' environment it will be made available to other functions (like
+#' [open_url()]) without having to pass it in, and will close automatically
+#' when the R session is closed. Alternatively, if it is created inside a
+#' function, it will be closed as soon as the function finishes executing. To
+#' customise this, use the `.env` and `local` arguments.
 #'
 #' @param session The package to use as a backend: either "chromote",
 #'   "selenium". By default, chromote is used, since this tends to be faster
@@ -29,11 +32,13 @@
 #'   * A list/environment containing the [selenium::SeleniumSession] object,
 #'     the Selenium server object, or both.
 #' @param local Whether to set the session as the local session object,
-#'   using [local_session()].
+#'   using [local_session()]. If this is `FALSE`, you will have to pass this
+#'   into the `session` argument of other functions (like [open_url()]), and
+#'   close the session manually using [close_session()].
 #' @param .env Passed into [local_session()], to define the
 #'   environment in which the session is used. Change this if you want to
 #'   create the session inside a function and then use it outside the
-#'   function.
+#'   function (see Examples). Use [rlang::caller_env()] in this case.
 #' @param view,selenium_manager,quiet `r lifecycle::badge("deprecated")`
 #'   Use the `options` argument instead.
 #'

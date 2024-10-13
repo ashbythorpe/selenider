@@ -36,6 +36,8 @@ on the current session.
 \details{
 Both functions allow the starting point for chains of selectors to be made
 more concise. Both use \code{\link[=get_session]{get_session()}} to get the global session object.
+If you want to pass in a session, use \code{\link[=find_element]{find_element()}}/\code{\link[=find_elements]{find_elements()}}
+instead.
 }
 \examples{
 \dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
