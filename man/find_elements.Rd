@@ -44,7 +44,10 @@ find_elements(x, ...)
 \item{name}{The name attribute of the element you want to select.}
 }
 \value{
-A \code{selenider_elements} object.
+A \code{selenider_elements} object. Note that this is not a list, and you should
+be careful with the functions that you use with it. See the advanced usage
+vignette for more details:
+\code{vignette("advanced-usage", package = "selenider")}.
 }
 \description{
 Find every available HTML element using a CSS selector, an XPath, or a
@@ -88,10 +91,12 @@ s("#outer-div") |>
 \seealso{
 \itemize{
 \item \code{\link[=ss]{ss()}} to quickly select multiple elements without specifying the session.
-\item \code{\link[=find_element]{find_element()}} to select multiple elements.
+\item \code{\link[=find_element]{find_element()}} to select a single element.
 \item \code{\link[=selenider_session]{selenider_session()}} to begin a session.
 \item \code{\link[=elem_children]{elem_children()}} and family to select elements using their relative
 position in the DOM.
 \item \code{\link[=elem_filter]{elem_filter()}} and \code{\link[=elem_find]{elem_find()}} for filtering element collections.
+\item \code{\link[=as.list.selenider_elements]{as.list.selenider_elements()}} to convert a \code{selenider_elements} object
+to a list.
 }
 }

@@ -35,7 +35,7 @@
 #'
 #' @seealso
 #' * [find_elements()] and [ss()] to get elements to filter.
-#' * [is_present()] and other conditions for predicates for HTML elements.
+#' * [is_present()] and other conditions for predicates on HTML elements.
 #'   (If you scroll down to the *See also* section, you will find the rest).
 #'
 #' @examplesIf selenider::selenider_available(online = FALSE)

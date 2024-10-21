@@ -16,15 +16,20 @@
 #' `xpath`), the first element which satisfies every condition will be found.
 #'
 #' @returns
-#' A `selenider_elements` object.
+#' A `selenider_elements` object. Note that this is not a list, and you should
+#' be careful with the functions that you use with it. See the advanced usage
+#' vignette for more details:
+#' `vignette("advanced-usage", package = "selenider")`.
 #'
 #' @seealso
 #' * [ss()] to quickly select multiple elements without specifying the session.
-#' * [find_element()] to select multiple elements.
+#' * [find_element()] to select a single element.
 #' * [selenider_session()] to begin a session.
 #' * [elem_children()] and family to select elements using their relative
 #'   position in the DOM.
 #' * [elem_filter()] and [elem_find()] for filtering element collections.
+#' * [as.list.selenider_elements()] to convert a `selenider_elements` object
+#'   to a list.
 #'
 #' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "

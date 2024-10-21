@@ -93,7 +93,7 @@ ss("button") |>
 \seealso{
 \itemize{
 \item \code{\link[=find_elements]{find_elements()}} and \code{\link[=ss]{ss()}} to get elements to filter.
-\item \code{\link[=is_present]{is_present()}} and other conditions for predicates for HTML elements.
+\item \code{\link[=is_present]{is_present()}} and other conditions for predicates on HTML elements.
 (If you scroll down to the \emph{See also} section, you will find the rest).
 }
 }

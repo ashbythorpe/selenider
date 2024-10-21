@@ -25,7 +25,7 @@
 #' * [s()], [ss()], [find_element()] and [find_elements()] to select selenider
 #'   elements.
 #' * [elem_cache()] and [elem_cache()] to cache these values.
-#' * The [Chrome Devtools Protocol documentation](https://chromedevtools.github.io/devtools-protocol/tot/) `r # nolint`
+#' * The [Chrome Devtools Protocol documentation](https://chromedevtools.github.io/devtools-protocol/tot/)
 #'   for the operations that can be performed using a backend node id. Note
 #'   that this requires the [chromote::ChromoteSession] object, which can be
 #'   retrieved using `<selenider_session>$driver`.
