@@ -29,6 +29,7 @@ ss() selects multiple elements, being a shorthand for find_elements()."><meta na
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/unit-testing.html">Unit testing</a></li>
     <li><a class="dropdown-item" href="../articles/with-rvest.html">selenider and rvest</a></li>
+    <li><a class="dropdown-item" href="../articles/advanced-usage.html">Advanced usage of selenider</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><a class="dropdown-item" href="../articles/index.html">More articles...</a></li>
   </ul></li>
@@ -91,7 +92,10 @@ on the current session.</p>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p><code>s()</code> returns a <code>selenider_element</code> object.
-<code>ss()</code> returns a <code>selenider_elements</code> object.</p>
+<code>ss()</code> returns a <code>selenider_elements</code> object. Note that this is not a list,
+and you should be careful with the functions that you use with it. See the
+advanced usage vignette for more details:
+<code><a href="../articles/advanced-usage.html">vignette("advanced-usage", package = "selenider")</a></code>.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>

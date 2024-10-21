@@ -37,6 +37,7 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/unit-testing.html">Unit testing</a></li>
     <li><a class="dropdown-item" href="../articles/with-rvest.html">selenider and rvest</a></li>
+    <li><a class="dropdown-item" href="../articles/advanced-usage.html">Advanced usage of selenider</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><a class="dropdown-item" href="../articles/index.html">More articles...</a></li>
   </ul>
@@ -82,11 +83,14 @@ browser using selenider.</p>
 automatically for you, but you may want to change some of the options
 from their defaults (the backend, for example). Here, we use chromote as
 a backend (the default), and we set the timeout to 10 seconds (the
-default is 4).</p>
+default is 4). Finally, we’ll use [chromote_options()] to set options
+that are specific to chromote (here we want to disable headless mode,
+which will allow us to see the browser).</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selenider_session.html">selenider_session</a></span><span class="op">(</span></span>
 <span>  <span class="st">"chromote"</span>,</span>
-<span>  timeout <span class="op">=</span> <span class="fl">10</span></span>
+<span>  timeout <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  options <span class="op">=</span> <span class="fu"><a href="../reference/chromote_options.html">chromote_options</a></span><span class="op">(</span>headless <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>The session, once created, will be set as the <em>local session</em>
 inside the current environment, meaning that in this case, it can be

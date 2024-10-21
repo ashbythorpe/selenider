@@ -23,6 +23,7 @@ variety of other methods."><meta name="robots" content="noindex"></head><body>
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/unit-testing.html">Unit testing</a></li>
     <li><a class="dropdown-item" href="../articles/with-rvest.html">selenider and rvest</a></li>
+    <li><a class="dropdown-item" href="../articles/advanced-usage.html">Advanced usage of selenider</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><a class="dropdown-item" href="../articles/index.html">More articles...</a></li>
   </ul></li>
@@ -109,7 +110,10 @@ variety of other methods.</p>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A <code>selenider_elements</code> object.</p>
+    <p>A <code>selenider_elements</code> object. Note that this is not a list, and you should
+be careful with the functions that you use with it. See the advanced usage
+vignette for more details:
+<code><a href="../articles/advanced-usage.html">vignette("advanced-usage", package = "selenider")</a></code>.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -120,11 +124,13 @@ variety of other methods.</p>
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index">
 <ul><li><p><code><a href="s.html">ss()</a></code> to quickly select multiple elements without specifying the session.</p></li>
-<li><p><code><a href="find_element.html">find_element()</a></code> to select multiple elements.</p></li>
+<li><p><code><a href="find_element.html">find_element()</a></code> to select a single element.</p></li>
 <li><p><code><a href="selenider_session.html">selenider_session()</a></code> to begin a session.</p></li>
 <li><p><code><a href="elem_ancestors.html">elem_children()</a></code> and family to select elements using their relative
 position in the DOM.</p></li>
 <li><p><code><a href="elem_filter.html">elem_filter()</a></code> and <code><a href="elem_filter.html">elem_find()</a></code> for filtering element collections.</p></li>
+<li><p><code><a href="as.list.selenider_elements.html">as.list.selenider_elements()</a></code> to convert a <code>selenider_elements</code> object
+to a list.</p></li>
 </ul></div>
     </div>
 

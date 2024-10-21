@@ -39,6 +39,7 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="articles/unit-testing.html">Unit testing</a></li>
     <li><a class="dropdown-item" href="articles/with-rvest.html">selenider and rvest</a></li>
+    <li><a class="dropdown-item" href="articles/advanced-usage.html">Advanced usage of selenider</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><a class="dropdown-item" href="articles/index.html">More articles...</a></li>
   </ul>
@@ -62,6 +63,7 @@
 </h1></div>
 <!-- badges: start -->
 
+<!-- badges: end -->
 <p>Traditionally, automating a web browser is often unreliable, especially when using R. Programmers are forced to write verbose code, utilising inconsistent workarounds (such as using <code><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep()</a></code> to wait for something to happen).</p>
 <p>selenider aims to make web testing and scraping in R much simpler, providing a wrapper for either <a href="https://rstudio.github.io/chromote/" class="external-link">chromote</a> or <a href="https://ashbythorpe.github.io/selenium-r/" class="external-link">selenium</a>. It is inspired by Java’s <a href="https://selenide.org/" class="external-link">Selenide</a> and Python’s <a href="https://yashaka.github.io/selene/" class="external-link">Selene</a>.</p>
 <p>Code reliability and reproducibility are essential when writing R code. selenider provides features to make your scripts work every time they are run, without any extra code:</p>
@@ -119,19 +121,19 @@
 <span>  <span class="fu"><a href="reference/elem_filter.html">elem_find</a></span><span class="op">(</span><span class="fu"><a href="reference/has_text.html">has_text</a></span><span class="op">(</span><span class="st">"UK"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/find_element.html">find_element</a></span><span class="op">(</span>xpath <span class="op">=</span> <span class="st">"./following-sibling::dd"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/find_elements.html">find_elements</a></span><span class="op">(</span><span class="st">"tr"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/find_each_element.html">find_each_element</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/elem_expect.html">elem_expect</a></span><span class="op">(</span><span class="fu"><a href="reference/has_length.html">has_at_least</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span></span>
 <span>    \<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu"><a href="reference/find_element.html">find_element</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>      <span class="fu"><a href="reference/elem_attr.html">elem_attr</a></span><span class="op">(</span><span class="st">"href"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#&gt; [[1]]</span></span>
 <span><span class="co">#&gt; [1] "https://www.stats.bris.ac.uk/R/"</span></span>
-<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;</span></span>
 <span><span class="co">#&gt; [[2]]</span></span>
 <span><span class="co">#&gt; [1] "https://cran.ma.imperial.ac.uk/"</span></span>
-<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;</span></span>
 <span><span class="co">#&gt; [[3]]</span></span>
 <span><span class="co">#&gt; [1] "https://anorien.csc.warwick.ac.uk/CRAN/"</span></span></code></pre></div>
 </div>
