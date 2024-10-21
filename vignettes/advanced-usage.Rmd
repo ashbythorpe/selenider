@@ -42,7 +42,7 @@ session <- selenider_session(
 )
 ```
 
-Managing selenium options is a bot more complex, since you are can provide
+Managing selenium options is a bit more complex, since you are can provide
 options to the client `selenium_client_options()` and server
 `selenium_server_options()`. One cool thing you can do is pass `NULL` into
 the `server_options` parameter of `selenium_options()` to stop selenider
