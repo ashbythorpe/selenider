@@ -222,6 +222,80 @@ reload <- function(timeout = NULL, session = NULL) {
 #' @export
 refresh <- reload
 
+#' Scroll along the page
+#'
+#' @description
+#' `scroll_to()` scrolls the page to the specified coordinates.
+#'
+#' `scroll_by()` scrolls the page by the specified amount.
+#'
+#' @param top The vertical scroll position/offset, in pixels.
+#' @param left The horizontal scroll position/offset, in pixels.
+#' @param session A `selenider_session` object. If not specified, the global
+#'   session object (the result of [get_session()]) is used.
+#'
+#' @family global actions
+#'
+#' @examplesIf selenider::selenider_available()
+#' session <- selenider_session()
+#'
+#' open_url("https://r-project.org")
+#'
+#' scroll_to(100, 100)
+#'
+#' # Scrolls an additional 100 pixels down
+#' scroll_by(100)
+#'
+#' @export
+scroll_to <- function(top = 0, left = 0, session = NULL) {
+  check_number_whole(top)
+  check_number_whole(left)
+  check_class(session, "selenider_session", allow_null = TRUE)
+
+  if (is.null(session)) {
+    session <- get_session(.env = caller_env())
+  }
+
+  driver <- session$driver
+
+  execute_js_expr_internal(
+    paste0("window.scrollTo(", left, ",", top, ");"),
+    session = session$session,
+    driver = driver
+  )
+}
+
+#' @rdname scroll_to
+#'
+#' @export
+scroll_by <- function(top = 0, left = 0, session = NULL) {
+  check_number_whole(top)
+  check_number_whole(left)
+  check_class(session, "selenider_session", allow_null = TRUE)
+
+  if (is.null(session)) {
+    session <- get_session(.env = caller_env())
+  }
+
+  driver <- session$driver
+
+  if (session$session == "chromote") {
+    driver$Input$dispatchMouseEvent(
+      type = "mouseWheel",
+      x = 0,
+      y = 0,
+      deltaX = left,
+      deltaY = top,
+    )
+  } else {
+    execute_js_expr_internal(
+      paste0("window.scrollBy(", left, ",", top, ");"),
+      session = session$session,
+      driver = driver
+    )
+  }
+}
+
 #' Take a screenshot of the current page
 #'
 #' Take a screenshot of the current session state, saving this image to a file.

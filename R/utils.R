@@ -326,6 +326,19 @@ uses_chromote <- function(x) {
   inherits(x, "ChromoteSession")
 }
 
+execute_js_expr_internal <- function(x, session, driver) {
+  if (session == "chromote") {
+    driver$Runtime$evaluate(
+      expression = x,
+      returnByValue = TRUE
+    )
+  } else if (session == "selenium") {
+    driver$execute_script(x)
+  } else {
+    driver$executeScript(x)
+  }
+}
+
 execute_js_fn_on <- function(fn, x, session, driver) {
   if (session == "chromote") {
     script <- paste0("function() { return (", fn, ")(this) }")

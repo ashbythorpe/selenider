@@ -39,3 +39,52 @@ test_that("Global actions work", {
 
   expect_s3_class(html, "xml_document")
 })
+
+test_that("Scrolling works", {
+  session <- selenider_test_session()
+
+  html <- "
+  <!DOCTYPE html>
+  <div style = 'height:110%; width:110%; min-height:110vh; min-width:110vh;'></div>
+  "
+
+  open_url(paste0("data:text/html,", URLencode(html)))
+
+  scroll_to(10, 20)
+
+  expect_equal(
+    execute_js_expr("return window.scrollY;"),
+    10
+  )
+
+  expect_equal(
+    execute_js_expr("return window.scrollX;"),
+    20
+  )
+
+  scroll_by(-5, -10)
+
+  Sys.sleep(0.1)
+
+  expect_equal(
+    execute_js_expr("return window.scrollY;"),
+    5
+  )
+
+  expect_equal(
+    execute_js_expr("return window.scrollX;"),
+    10
+  )
+
+  scroll_to(0, 0)
+
+  expect_equal(
+    execute_js_expr("return window.scrollY;"),
+    0
+  )
+
+  expect_equal(
+    execute_js_expr("return window.scrollX;"),
+    0
+  )
+})
