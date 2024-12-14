@@ -8,8 +8,8 @@
 <title>Advanced usage of selenider • selenider</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Advanced usage of selenider">
 <meta name="robots" content="noindex">
 </head>
@@ -160,7 +160,7 @@ website.</p>
 <span><span class="va">links</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/s.html">ss</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">links</span></span>
-<span><span class="co">#&gt; { selenider_elements (44) }</span></span>
+<span><span class="co">#&gt; { selenider_elements (61) }</span></span>
 <span><span class="co">#&gt; [1] &lt;a href="/"&gt;&lt;img src="/Rlogo.png" width="100" height="78" alt="R"&gt;&lt;/a&gt;</span></span>
 <span><span class="co">#&gt; [2] &lt;a href="/"&gt;[Home]&lt;/a&gt;</span></span>
 <span><span class="co">#&gt; [3] &lt;a href="https://cran.r-project.org/mirrors.html"&gt;CRAN&lt;/a&gt;</span></span>
@@ -197,7 +197,7 @@ list:</p>
 <span><span class="co">#&gt; [2] &lt;a href="/"&gt;[Home]&lt;/a&gt;</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">links</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 65</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 61</span></span></code></pre></div>
 <p>But assuming it is a list in all scenarios can result in surprising
 behavior:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -217,7 +217,7 @@ using JavaScript.</p>
 <p>Now let’s look at <code>links</code> again:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">links</span></span>
-<span><span class="co">#&gt; { selenider_elements (66) }</span></span>
+<span><span class="co">#&gt; { selenider_elements (62) }</span></span>
 <span><span class="co">#&gt; [1] &lt;a href="/"&gt;&lt;img src="/Rlogo.png" width="100" height="78" alt="R"&gt;&lt;/a&gt;</span></span>
 <span><span class="co">#&gt; [2] &lt;a href="/"&gt;[Home]&lt;/a&gt;</span></span>
 <span><span class="co">#&gt; [3] &lt;a href="https://cran.r-project.org/mirrors.html"&gt;CRAN&lt;/a&gt;</span></span>
