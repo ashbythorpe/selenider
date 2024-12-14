@@ -408,27 +408,10 @@ get_driver <- function(browser, options, driver) {
         server$read_error()
       }
 
-      if (inherits(options$client_options, "selenium_client_options")) {
-        options$capabilities <- if (is.null(options$capabilities) && browser == "chrome") {
-          list(`goog:chromeOptions` = list(
-            args = list(
-              "remote-debugging-port=9222"
-            )
-          ))
-        } else {
-          options$capabilities
-        }
-
-        client <- skip_error_if_testing(
-          create_selenium_client_internal(browser, options$client_options),
-          message = "Selenium client failed to start."
-        )
-      } else {
-        client <- skip_error_if_testing(
-          create_rselenium_client_internal(browser, options$client_options),
-          message = "RSelenium client failed to start."
-        )
-      }
+      client <- skip_error_if_testing(
+        create_selenium_client_internal(browser, options$client_options),
+        message = "Selenium client failed to start."
+      )
 
       cache <- inherits(options$server_options, "selenium_server_options") &&
         !has_default_selenium_object()
