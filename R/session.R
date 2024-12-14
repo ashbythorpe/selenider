@@ -260,19 +260,11 @@ selenider_session <- function(session = getOption("selenider.session"),
 
   options <- check_options(session, options)
 
-  browser_version <- browser_and_version(
+  browser <- get_browser(
     session,
     browser = browser,
     driver = driver
   )
-
-  browser <- browser_version$browser
-
-  if (inherits(options, "selenium_options") &&
-    inherits(options$server_options, "wdman_server_options") && # nolint: indentation_linter
-    is.null(options$server_options$version)) {
-    options$server_options$version <- browser_version$version
-  }
 
   driver <- get_driver(
     browser = browser,
@@ -475,38 +467,29 @@ check_session_dependencies <- function(session,
   session
 }
 
-browser_and_version <- function(session,
-                                browser,
-                                driver,
-                                call = rlang::caller_env()) {
-  version <- NULL
+get_browser <- function(session,
+                        browser,
+                        driver,
+                        call = rlang::caller_env()) {
   if (session == "chromote" && is.null(driver)) {
     if (!is.null(browser) && browser != "chrome") {
       warn_browser_chromote(call = call)
     }
 
-    browser <- "chrome"
+    "chrome"
   } else if (is.null(browser)) {
     if (is.null(driver) || is_selenium_server(driver)) {
-      bv <- find_browser_and_version()
+      browser <- find_browser()
 
-      if (is.null(bv)) {
+      if (is.null(browser)) {
         stop_default_browser(call = call)
       }
 
-      browser <- bv$browser
-      version <- bv$version
+      browser
     }
   } else {
-    if (browser != "phantomjs") {
-      version <- get_browser_version(browser)
-    }
+    browser
   }
-
-  list(
-    browser = browser,
-    version = version
-  )
 }
 
 #' Deprecated functions
@@ -904,13 +887,11 @@ check_supplied_driver_list <- function(x, browser, options, call = rlang::caller
     stop_invalid_driver(x, is_list = TRUE, call = call)
   } else if (is.null(client)) {
     if (is.null(browser)) {
-      bv <- find_browser_and_version()
+      browser <- find_browser()
 
       if (is.null(bv)) {
         stop_default_browser(call = call)
       }
-
-      browser <- bv$browser
     }
 
     client_options <- get_client_options(options, server, call = call)

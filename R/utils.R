@@ -129,12 +129,12 @@ selenider_available_chromote <- function() {
 
 selenider_available_selenium <- function() {
   rlang::is_installed("selenium") &&
-    !is.null(find_browser_and_version()$browser)
+    !is.null(find_browser())
 }
 
 selenider_available_rselenium <- function() {
   rlang::is_installed("RSelenium") &&
-    !is.null(find_browser_and_version()$browser)
+    !is.null(find_browser())
 }
 
 #' @rdname selenider_available
