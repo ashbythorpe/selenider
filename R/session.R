@@ -889,7 +889,7 @@ check_supplied_driver_list <- function(x, browser, options, call = rlang::caller
     if (is.null(browser)) {
       browser <- find_browser()
 
-      if (is.null(bv)) {
+      if (is.null(browser)) {
         stop_default_browser(call = call)
       }
     }
