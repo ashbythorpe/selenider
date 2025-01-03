@@ -77,6 +77,7 @@ Other global actions:
 \code{\link{get_page_source}()},
 \code{\link{open_url}()},
 \code{\link{reload}()},
+\code{\link{scroll_to}()},
 \code{\link{take_screenshot}()}
 }
 \concept{global actions}

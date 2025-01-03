@@ -35,6 +35,7 @@ Other global actions:
 \code{\link{execute_js_fn}()},
 \code{\link{open_url}()},
 \code{\link{reload}()},
+\code{\link{scroll_to}()},
 \code{\link{take_screenshot}()}
 }
 \concept{global actions}

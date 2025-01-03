@@ -40,6 +40,7 @@ Other global actions:
 \code{\link{execute_js_fn}()},
 \code{\link{get_page_source}()},
 \code{\link{reload}()},
+\code{\link{scroll_to}()},
 \code{\link{take_screenshot}()}
 }
 \concept{global actions}
