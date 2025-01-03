@@ -1,5 +1,8 @@
 # selenider (development version)
 
+- New `scroll_to()` and `scroll_by()` functions allow you to scroll the page
+  vertically and horizontally, without needing a target element.
+
 # selenider 0.4.0
 
 - `find_each_element()` and `find_all_elements()` are new functions that can
