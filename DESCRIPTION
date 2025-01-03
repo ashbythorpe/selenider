@@ -23,7 +23,6 @@ Imports:
     curl,
     lifecycle,
     prettyunits,
-    processx,
     rlang (>= 1.1.0),
     utils,
     vctrs,
