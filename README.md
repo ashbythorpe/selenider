@@ -1,3 +1,4 @@
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # selenider
@@ -9,7 +10,6 @@
 coverage](https://codecov.io/gh/ashbythorpe/selenider/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ashbythorpe/selenider?branch=main)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/selenider)](https://CRAN.R-project.org/package=selenider)
-
 <!-- badges: end -->
 
 Traditionally, automating a web browser is often unreliable, especially
@@ -59,7 +59,7 @@ concise yet expressive code that is easy to read and easy to write:
 
 ## Installation
 
-```r
+``` r
 # Install selenider from CRAN
 install.packages("selenider")
 
@@ -73,7 +73,7 @@ Additionally, you must install
 [selenium](https://ashbythorpe.github.io/selenium-r/). We recommend
 chromote, as it is quicker and easier to get up and running.
 
-```r
+``` r
 # Either:
 install.packages("chromote")
 
@@ -91,7 +91,7 @@ is recommended.
 
 ## Usage
 
-```r
+``` r
 library(selenider)
 ```
 
@@ -99,8 +99,10 @@ The following code navigates to the [R project
 website](https://www.r-project.org/), finds the link to the CRAN mirror
 list, checks that the link is correct, and clicks the link element.
 
-```r
+``` r
 open_url("https://www.r-project.org/")
+#> Can't find an existing selenider session.
+#> ℹ Creating a new session.
 
 s(".row") |>
   find_element("div") |>
@@ -113,25 +115,25 @@ s(".row") |>
 Now that we’re in the mirror list page, let’s find the link to every
 CRAN mirror in the UK.
 
-```r
+``` r
 s("dl") |>
   find_elements("dt") |>
   elem_find(has_text("UK")) |>
   find_element(xpath = "./following-sibling::dd") |>
   find_elements("tr") |>
-  find_each_element("a") |>
   elem_expect(has_at_least(1)) |>
   as.list() |>
   lapply(
     \(x) x |>
+      find_element("a") |>
       elem_attr("href")
   )
 #> [[1]]
 #> [1] "https://www.stats.bris.ac.uk/R/"
-#>
+#> 
 #> [[2]]
 #> [1] "https://cran.ma.imperial.ac.uk/"
-#>
+#> 
 #> [[3]]
 #> [1] "https://anorien.csc.warwick.ac.uk/CRAN/"
 ```
