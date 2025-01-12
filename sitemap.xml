@@ -1,204 +1,73 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/404.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/articles/selenider.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/articles/test-site.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/articles/test_site.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/articles/unit-testing.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/articles/with-rvest.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/index.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/as.list.selenider_elements.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/as_pretty_dt.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/back.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/chromote_options.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/close_session.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/create_chromote_session.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/current_url.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/elem_ancestors.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/elem_attr.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/elem_cache.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/elem_click.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/elem_css_property.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/elem_equal.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/elem_expect.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/elem_expect_all.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/elem_filter.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/elem_flatmap.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/elem_flatten.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/elem_hover.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/elem_name.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/elem_scroll_to.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/elem_select.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/elem_set_value.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/elem_size.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/elem_submit.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/elem_text.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/execute_js_fn.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/find_each_element.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/find_element.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/find_elements.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/get_actual_element.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/get_page_source.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/get_session.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/has_attr.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/has_css_property.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/has_length.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/has_name.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/has_text.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/is_enabled.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/is_present.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/is_visible.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/keys.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/minimal_selenider_session.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/open_url.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/print.selenider_element.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/print_lazy.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/read_html.selenider_session.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/reload.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/s.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/selenider-config.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/selenider-package.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/selenider_available.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/selenider_session.html</loc>
-  </url>
-  <url>
-    <loc>https://ashbythorpe.github.io/selenider/reference/take_screenshot.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://ashbythorpe.github.io/selenider/404.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/LICENSE-text.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/LICENSE.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/articles/advanced-usage.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/articles/index.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/articles/selenider.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/articles/test-site.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/articles/test_site.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/articles/unit-testing.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/articles/with-rvest.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/authors.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/index.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/news/index.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/as.list.selenider_elements.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/as_pretty_dt.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/back.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/chromote_options.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/close_session.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/create_chromote_session.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/current_url.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/elem_ancestors.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/elem_attr.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/elem_cache.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/elem_click.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/elem_css_property.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/elem_equal.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/elem_expect.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/elem_expect_all.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/elem_filter.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/elem_flatmap.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/elem_flatten.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/elem_hover.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/elem_name.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/elem_scroll_to.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/elem_select.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/elem_set_value.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/elem_size.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/elem_submit.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/elem_text.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/execute_js_fn.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/find_each_element.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/find_element.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/find_elements.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/get_actual_element.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/get_page_source.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/get_session.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/has_attr.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/has_css_property.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/has_length.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/has_name.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/has_text.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/index.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/is_enabled.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/is_present.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/is_visible.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/keys.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/minimal_selenider_session.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/open_url.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/print.selenider_element.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/print_lazy.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/read_html.selenider_session.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/reload.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/s.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/scroll_to.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/selenider-config.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/selenider-package.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/selenider_available.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/selenider_session.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/take_screenshot.html</loc></url>
+<url><loc>https://ashbythorpe.github.io/selenider/reference/wdman_server_options.html</loc></url>
 </urlset>
+
