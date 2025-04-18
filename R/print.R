@@ -96,7 +96,7 @@ format.selenider_elements <- function(x,
 
   elements <- as.list(get_elements_for_property(
     x,
-    action = paste0("Print {.arg x}"),
+    action = paste0("print {.arg x}"),
     timeout = timeout
   ))
 
