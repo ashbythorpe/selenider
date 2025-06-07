@@ -393,13 +393,6 @@ get_driver <- function(browser, options, driver) {
         NULL
       }
 
-      if (inherits(server, "SeleniumServer")) {
-        # For some reason, without this, the server would stop working
-        # after a while
-        server$read_output()
-        server$read_error()
-      }
-
       client <- skip_error_if_testing(
         create_selenium_client_internal(browser, options$client_options),
         message = "Selenium client failed to start."
@@ -845,19 +838,25 @@ check_supplied_driver <- function(x,
 }
 
 get_client_options <- function(options, server, call = rlang::caller_env()) {
-  if (is.null(options$client_options$port)) {
-    port <- find_port_from_server(server, call = call)
-
-    if (!is.null(options$client_options)) {
-      client_options <- options$client_options
-      client_options$port <- port
-      client_options
-    } else {
-      selenium_client_options(port = port)
-    }
+  if (is.null(options$client_options)) {
+    client_options <- selenium_client_options()
   } else {
-    options$client_options
+    client_options <- options$client_options
   }
+
+  if (inherits(server, "SeleniumServer")) {
+    if (is.null(client_options$host)) {
+      client_options$host <- server$host
+    }
+
+    if (is.null(client_options$port)) {
+      client_options$port <- server$port
+    }
+  } else if (is.null(client_options$port)) {
+    client_options$port <- find_port_from_server(server, call = call)
+  }
+
+  client_options
 }
 
 check_supplied_driver_list <- function(x, browser, options, call = rlang::caller_env()) {
@@ -923,16 +922,12 @@ check_supplied_driver_list <- function(x, browser, options, call = rlang::caller
 }
 
 find_port_from_server <- function(x, call = rlang::caller_env()) {
-  if (inherits(x, "process")) {
-    port <- get_with_timeout(10, find_port_selenium, x)
-  } else {
-    log <- x$log()
+  log <- x$log()
 
-    port <- find_port_from_logs(log$stderr, pattern = "port ([0-9]+)")
+  port <- find_port_from_logs(log$stderr, pattern = "port ([0-9]+)")
 
-    if (is.na(port)) {
-      port <- find_port_from_logs(log$stdout, pattern = "port ([0-9]+)")
-    }
+  if (is.na(port)) {
+    port <- find_port_from_logs(log$stdout, pattern = "port ([0-9]+)")
   }
 
   if (is.null(port) || is.na(port)) {
@@ -941,11 +936,6 @@ find_port_from_server <- function(x, call = rlang::caller_env()) {
   }
 
   port
-}
-
-find_port_selenium <- function(x) {
-  result <- find_port_from_logs(x$read_output())
-  if (is.na(result)) NULL else result
 }
 
 find_port_from_logs <- function(
