@@ -93,7 +93,7 @@ selenium_server_options <- function(version = "latest",
                                     host = "localhost",
                                     port = 4444L,
                                     selenium_manager = TRUE,
-                                    interactive = TRUE,
+                                    interactive = FALSE,
                                     stdout = NULL,
                                     stderr = NULL,
                                     verbose = TRUE,
@@ -134,7 +134,7 @@ selenium_server_options <- function(version = "latest",
 
 #' @rdname chromote_options
 #'
-#' @param host,capabilities,request_body,timeout
+#' @param capabilities,request_body,timeout
 #'   Passed into [selenium::SeleniumSession$new()][selenium::SeleniumSession].
 #'
 #' @export
