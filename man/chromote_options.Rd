@@ -24,14 +24,17 @@ selenium_options(
 
 selenium_server_options(
   version = "latest",
+  host = "localhost",
   port = 4444L,
-  selenium_manager = NULL,
-  verbose = FALSE,
+  selenium_manager = TRUE,
+  interactive = FALSE,
+  stdout = NULL,
+  stderr = NULL,
+  verbose = TRUE,
   temp = TRUE,
   path = NULL,
-  interactive = FALSE,
-  echo_cmd = FALSE,
-  extra_args = c()
+  extra_args = c(),
+  ...
 )
 
 selenium_client_options(
@@ -61,9 +64,11 @@ don't want one to be created.}
 
 \item{version}{The version of Selenium server to use.}
 
+\item{host}{The host to use.}
+
 \item{port}{The port number to use.}
 
-\item{selenium_manager, verbose, temp, path, interactive, echo_cmd, extra_args}{Passed into \code{\link[selenium:selenium_server]{selenium::selenium_server()}}.}
+\item{selenium_manager, interactive, stdout, stderr, verbose, temp, path, extra_args, ...}{Passed into \code{\link[selenium:selenium_server]{selenium::selenium_server()}}.}
 
 \item{host, capabilities, request_body, timeout}{Passed into \link[selenium:SeleniumSession]{selenium::SeleniumSession$new()}.}
 }
