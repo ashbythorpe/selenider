@@ -70,7 +70,7 @@ don't want one to be created.}
 
 \item{selenium_manager, interactive, stdout, stderr, verbose, temp, path, extra_args, ...}{Passed into \code{\link[selenium:selenium_server]{selenium::selenium_server()}}.}
 
-\item{host, capabilities, request_body, timeout}{Passed into \link[selenium:SeleniumSession]{selenium::SeleniumSession$new()}.}
+\item{capabilities, request_body, timeout}{Passed into \link[selenium:SeleniumSession]{selenium::SeleniumSession$new()}.}
 }
 \description{
 \code{chromote_options()} and \code{selenium_options()} return a list of options that
