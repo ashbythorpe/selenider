@@ -18,7 +18,7 @@ check_class <- function(x,
 }
 
 is_selenium_server <- function(x) {
-  inherits(x, "process") ||
+  inherits(x, "SeleniumServer") ||
     (is.list(x) && all(c("process", "log", "stop") %in% names(x)))
 }
 
@@ -27,7 +27,7 @@ check_selenium_server <- function(x, call = rlang::caller_env()) {
     cli::cli_abort(c(
       "{.code driver$server} must be a valid Selenium server object",
       "i" = paste0(
-        "This can be the result of {.fun selenider::create_selenium_server} ",
+        "This can be the result of {.fun selenium::selenium_server} ",
         "or {.fun wdman::selenium}."
       )
     ), class = "selenider_error_invalid_server", call = call)
@@ -44,8 +44,7 @@ check_selenium_client <- function(x, call = rlang::caller_env()) {
     cli::cli_abort(c(
       "{.code driver$client} must be a {.cls SeleniumSession} object",
       "i" = paste0(
-        "This can be the result of {.fun selenider::create_selenium_client} ",
-        "or {.fun selenium::SeleniumSession$new}."
+        "This can be the result of {.fun selenium::SeleniumSession$new}."
       )
     ), class = "selenider_error_invalid_client", call = call)
   }

@@ -408,7 +408,7 @@ warn_history_page_not_found <- function(next_page = TRUE,
     )
   } else {
     cli::cli_warn(
-      "Next page in history not found",
+      "Previous page in history not found",
       class = "selenider_warning_history_page",
       call = call
     )

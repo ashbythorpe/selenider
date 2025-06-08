@@ -107,9 +107,7 @@ back <- function(timeout = NULL, session = NULL) {
     if (index > 1) {
       new_id <- history[[index - 1]]$id
 
-      promise <- driver$Page$loadEventFired(wait_ = FALSE, timeout_ = timeout)
-      driver$Page$navigateToHistoryEntry(new_id, wait_ = FALSE, timeout_ = timeout)
-      driver$wait_for(promise)
+      driver$Page$navigateToHistoryEntry(new_id, timeout_ = timeout)
     } else {
       warn_history_page_not_found(next_page = FALSE)
     }
@@ -150,9 +148,7 @@ forward <- function(timeout = NULL, session = NULL) {
     if (index < length(history)) {
       new_id <- history[[index + 1]]$id
 
-      promise <- driver$Page$loadEventFired(wait_ = FALSE, timeout_ = timeout)
-      driver$Page$navigateToHistoryEntry(new_id, wait_ = FALSE, timeout_ = timeout)
-      driver$wait_for(promise)
+      driver$Page$navigateToHistoryEntry(new_id, timeout_ = timeout)
     } else {
       warn_history_page_not_found(next_page = TRUE)
     }

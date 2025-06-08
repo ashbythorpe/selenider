@@ -83,40 +83,47 @@ selenium_options <- function(client_options = selenium_client_options(),
 #' @rdname chromote_options
 #'
 #' @param version The version of Selenium server to use.
+#' @param host The host to use.
 #' @param port The port number to use.
-#' @param selenium_manager,verbose,temp,path,interactive,echo_cmd,extra_args
+#' @param selenium_manager,interactive,stdout,stderr,verbose,temp,path,extra_args,...
 #'   Passed into [selenium::selenium_server()].
 #'
 #' @export
 selenium_server_options <- function(version = "latest",
+                                    host = "localhost",
                                     port = 4444L,
-                                    selenium_manager = NULL,
-                                    verbose = FALSE,
+                                    selenium_manager = TRUE,
+                                    interactive = FALSE,
+                                    stdout = NULL,
+                                    stderr = NULL,
+                                    verbose = TRUE,
                                     temp = TRUE,
                                     path = NULL,
-                                    interactive = FALSE,
-                                    echo_cmd = FALSE,
-                                    extra_args = c()) {
+                                    extra_args = c(),
+                                    ...) {
   check_string(version)
+  check_string(host)
   check_number_whole(port)
   check_bool(selenium_manager, allow_null = TRUE)
   check_bool(verbose)
   check_bool(temp)
   check_string(path, allow_null = TRUE)
   check_bool(interactive)
-  check_bool(echo_cmd)
   check_character(extra_args, allow_null = TRUE)
 
   result <- list(
     version = version,
+    host = host,
     port = port,
     selenium_manager = selenium_manager,
+    interactive = interactive,
+    stdout = stdout,
+    stderr = stderr,
     verbose = verbose,
     temp = temp,
     path = path,
-    interactive = interactive,
-    echo_cmd = echo_cmd,
-    extra_args = extra_args
+    extra_args = extra_args,
+    process_args = rlang::list2(...)
   )
 
   class(result) <- "selenium_server_options"
@@ -127,7 +134,7 @@ selenium_server_options <- function(version = "latest",
 
 #' @rdname chromote_options
 #'
-#' @param host,capabilities,request_body,timeout
+#' @param capabilities,request_body,timeout
 #'   Passed into [selenium::SeleniumSession$new()][selenium::SeleniumSession].
 #'
 #' @export
