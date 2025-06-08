@@ -606,16 +606,20 @@ create_selenium_server_internal <- function(browser, options) {
       options$selenium_manager
     }
 
-    selenium::selenium_server(
+    rlang::inject(selenium::selenium_server(
       version = options$version,
+      host = options$host,
+      port = options$port,
       selenium_manager = selenium_manager,
+      interactive = options$interactive,
+      stdout = options$stdout,
+      stderr = options$stderr,
       verbose = options$verbose,
       temp = options$temp,
       path = options$path,
-      interactive = options$interactive,
-      echo_cmd = options$echo_cmd,
-      extra_args = c("-p", as.character(options$port), options$extra_args)
-    )
+      extra_args = options$extra_args,
+      !!!options$process_args
+    ))
   } else {
     if (is.null(options$driver_version)) {
       options$driver_version <- "latest"
