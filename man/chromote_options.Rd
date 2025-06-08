@@ -30,7 +30,7 @@ selenium_server_options(
   interactive = FALSE,
   stdout = NULL,
   stderr = NULL,
-  verbose = TRUE,
+  verbose = FALSE,
   temp = TRUE,
   path = NULL,
   extra_args = c(),
