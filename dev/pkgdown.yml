@@ -7,7 +7,7 @@ articles:
   articles/test-site: test-site.html
   unit-testing: unit-testing.html
   with-rvest: with-rvest.html
-last_built: 2025-06-08T11:18Z
+last_built: 2025-06-08T11:29Z
 urls:
   reference: https://ashbythorpe.github.io/selenider/reference
   article: https://ashbythorpe.github.io/selenider/articles
