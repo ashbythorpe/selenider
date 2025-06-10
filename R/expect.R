@@ -762,7 +762,7 @@ diagnose_condition_length <- function(condition,
     "does not have at least" = paste("contains less than", value, elements),
   )
 
-  if (is.null(actual_length) && !is_in_dom(x)) {
+  if (is.null(actual_length)) {
     c(
       condition,
       "i" = paste0("{.arg {x_name}} ", cond, ".")

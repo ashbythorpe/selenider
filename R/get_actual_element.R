@@ -152,7 +152,6 @@ get_elements <- function(x) {
     element <- x$driver
   }
 
-
   to_be_filtered <- if (x$to_be_found < length(x$selectors)) {
     selector_to_filter <- x$selectors[[length(x$selectors) - x$to_be_found]]
     selector_to_filter$to_be_filtered
@@ -200,7 +199,9 @@ apply_selectors <- function(x, element) {
 
   selector <- selectors[[length(selectors)]]
   elements <- use_selector(selector, element, driver = x$driver)
-  filter_elements(elements, selector$filter, multiple = selector$multiple)
+  result <- filter_elements(elements, selector$filter, multiple = selector$multiple)
+
+  return(result)
 }
 
 filter_elements <- function(elements, filter, multiple = FALSE) {

@@ -19,7 +19,7 @@ new_selector <- function(css = NULL,
   )
 
   args <- args[!vapply(args, is.null, logical(1))]
-  args_without_filter <- args[!names(args) %in% c("filter", "to_be_filtered", "multiple")]
+  args_without_filter <- remove_filters(args)
 
   if (length(args_without_filter) == 0) {
     stop_bad_selector()
@@ -34,6 +34,10 @@ new_selector <- function(css = NULL,
   class(args) <- "selenider_selector"
 
   args
+}
+
+remove_filters <- function(selector) {
+  selector[names(selector) %in% c("css", "xpath", "id", "class_name", "name")]
 }
 
 #' Use a selector to collect one or more elements from the DOM.
@@ -61,17 +65,20 @@ use_selector <- function(selector, element, driver) {
         ))
       }
     )
+
     return(elem_unique(elements, driver = driver))
   } else if (inherits(selector, "selenider_flatmap_selector")) {
+    inner_selector <- selector
     inner_multiple <- selector$inner_multiple
-    selector$multiple <- selector$inner_multiple
-    selector$inner_multiple <- NULL
-    selector$filter <- list()
-    selector$to_be_filtered <- 0
-    class(selector) <- class(selector)[class(selector) != "selenider_flatmap_selector"]
-    return(lazy_flatten(lazy_map(element, function(x) {
+    inner_selector$multiple <- selector$inner_multiple
+    inner_selector$inner_multiple <- NULL
+    inner_selector$filter <- list()
+    inner_selector$to_be_filtered <- 0
+    class(inner_selector) <- class(selector)[class(selector) != "selenider_flatmap_selector"]
+
+    res <- lazy_map(element, function(x) {
       result <- get_elements(list(
-        selectors = list(selector),
+        selectors = list(inner_selector),
         element = x,
         driver = driver,
         to_be_found = 1
@@ -82,14 +89,17 @@ use_selector <- function(selector, element, driver) {
       } else {
         result
       }
-    })))
+    })
+
+    # print(length(res))
+    # print(res)
+
+    elements <- lazy_flatten(res)
   }
 
   filter <- selector$filter
 
-  selector$filter <- NULL
-  selector$to_be_filtered <- NULL
-  selector$multiple <- NULL
+  selector <- remove_filters(selector)
 
   if (length(filter) == 1 &&
     identical(filter[[1]], 1) &&
