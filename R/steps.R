@@ -1,8 +1,26 @@
-new_single_selector <- function(css = NULL,
-                                xpath = NULL,
-                                id = NULL,
-                                class_name = NULL,
-                                name = NULL) {
+#' @title Step functions
+#'
+#' @description
+#' In selenider, elements are stored as a list of steps, which are then
+#' executed in order when the corresponding HTML element(s) need to be found.
+#' These functions make up the API used to create and execute these steps.
+#'
+#' @noRd
+NULL
+
+#' Select a single element.
+#'
+#' Select a single element using a CSS selector, an XPath, or a variety
+#' of other methods. Multiple methods can be specified, in which case the
+#' first element which satisfies all conditions will be found. If this step
+#' is applied to an existing element, then child elements will be selected.
+#'
+#' @noRd
+step_select_single <- function(css = NULL,
+                               xpath = NULL,
+                               id = NULL,
+                               class_name = NULL,
+                               name = NULL) {
   args <- list(
     css = css,
     xpath = xpath,
@@ -18,11 +36,16 @@ new_single_selector <- function(css = NULL,
   args
 }
 
-new_multiple_selector <- function(css = NULL,
-                                  xpath = NULL,
-                                  id = NULL,
-                                  class_name = NULL,
-                                  name = NULL) {
+#' Select multiple elements.
+#'
+#' Select all element matching a CSS selector, an XPath, or other methods.
+#'
+#' @noRd
+step_select_multiple <- function(css = NULL,
+                                 xpath = NULL,
+                                 id = NULL,
+                                 class_name = NULL,
+                                 name = NULL) {
   args <- list(
     css = css,
     xpath = xpath,
@@ -38,11 +61,17 @@ new_multiple_selector <- function(css = NULL,
   args
 }
 
-new_single_inner_selector <- function(css = NULL,
-                                      xpath = NULL,
-                                      id = NULL,
-                                      class_name = NULL,
-                                      name = NULL) {
+#' Select a child element of each existing element.
+#'
+#' This step should be applied to an element collection. For each element in
+#' the collection, a child element matching the given conditions will be found.
+#'
+#' @noRd
+step_select_inner_single <- function(css = NULL,
+                                     xpath = NULL,
+                                     id = NULL,
+                                     class_name = NULL,
+                                     name = NULL) {
   args <- list(
     css = css,
     xpath = xpath,
@@ -58,11 +87,18 @@ new_single_inner_selector <- function(css = NULL,
   args
 }
 
-new_multiple_inner_selector <- function(css = NULL,
-                                        xpath = NULL,
-                                        id = NULL,
-                                        class_name = NULL,
-                                        name = NULL) {
+#' Select child elements of each existing element.
+#'
+#' This step should be applied to an element collection. For each element in
+#' the collection, every child element matching the given conditions will be
+#' found.
+#'
+#' @noRd
+step_select_inner_multiple <- function(css = NULL,
+                                       xpath = NULL,
+                                       id = NULL,
+                                       class_name = NULL,
+                                       name = NULL) {
   args <- list(
     css = css,
     xpath = xpath,
@@ -78,7 +114,10 @@ new_multiple_inner_selector <- function(css = NULL,
   args
 }
 
-new_flatten <- function(elements) {
+#' Flatten a set of elements into a single element collection.
+#'
+#' @noRd
+step_flatten <- function(elements) {
   res <- list(elements = elements)
 
   class(res) <- c("selenider_selector", "selenider_flatten")
@@ -86,7 +125,10 @@ new_flatten <- function(elements) {
   res
 }
 
-new_index <- function(index) {
+#' Select an element by index.
+#'
+#' @noRd
+step_index <- function(index) {
   res <- list(index = index)
 
   class(res) <- c("selenider_filter", "selenider_index")
@@ -94,7 +136,13 @@ new_index <- function(index) {
   res
 }
 
-new_subset <- function(index) {
+#' Select a subset of elements.
+#'
+#' Extracts a subset of elements from an element collection, using normal R
+#' (numeric) subset rules.
+#'
+#' @noRd
+step_subset <- function(index) {
   res <- list(index = index)
 
   class(res) <- c("selenider_filter", "selenider_subset")
@@ -102,7 +150,10 @@ new_subset <- function(index) {
   res
 }
 
-new_filter <- function(filter) {
+#' Filter elements using a predicate.
+#'
+#' @noRd
+step_filter <- function(filter) {
   res <- list(filter = filter)
 
   class(res) <- c("selenider_filter", "selenider_predicate_filter")
@@ -110,7 +161,10 @@ new_filter <- function(filter) {
   res
 }
 
-new_find <- function(filter) {
+#' Find elements using a filter.
+#'
+#' @noRd
+step_find <- function(filter) {
   res <- list(filter = filter)
 
   class(res) <- c("selenider_filter", "selenider_find")
@@ -118,8 +172,9 @@ new_find <- function(filter) {
   res
 }
 
-
-
+#' Apply a step to an element.
+#'
+#' @noRd
 apply_step <- function(driver, element, step) {
   if (inherits(step, "selenider_filter") && is.null(element)) {
     cli::cli_abort("Cannot apply filter to `NULL` element.", .internal = TRUE)

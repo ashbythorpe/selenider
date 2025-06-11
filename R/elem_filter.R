@@ -117,7 +117,7 @@ elem_find <- function(x, ...) {
 
   check_subscript_vctrs(i)
 
-  filter <- new_subset(i)
+  filter <- step_subset(i)
 
   x$steps <- append(x$steps, list(filter))
 
@@ -145,7 +145,7 @@ elem_find <- function(x, ...) {
     stop_subscript_0()
   }
 
-  filter <- new_index(i)
+  filter <- step_index(i)
 
   x$steps <- append(x$steps, list(filter))
 
@@ -168,7 +168,7 @@ check_subscript_vctrs <- function(i, call = rlang::caller_env()) {
 make_filters <- function(x, exprs, find_last = FALSE) {
   if (length(exprs) == 0) {
     if (find_last) {
-      return(list(new_index(1)))
+      return(list(step_index(1)))
     } else {
       return(list())
     }
@@ -197,13 +197,13 @@ make_filters <- function(x, exprs, find_last = FALSE) {
     SIMPLIFY = FALSE
   )
 
-  filters <- lapply(head(functions), function(x) new_filter(x))
+  filters <- lapply(head(functions), function(x) step_filter(x))
   last_function <- functions[[length(functions)]]
 
   if (find_last) {
-    append(filters, list(new_find(last_function)))
+    append(filters, list(step_find(last_function)))
   } else {
-    append(filters, list(new_filter(last_function)))
+    append(filters, list(step_filter(last_function)))
   }
 }
 

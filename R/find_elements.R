@@ -78,7 +78,7 @@ find_elements.selenider_session <- function(x,
   check_dots_used()
   check_selector_args(css, xpath, id, class_name, name)
 
-  selector <- new_multiple_selector(css, xpath, id, class_name, name)
+  selector <- step_select_multiple(css, xpath, id, class_name, name)
 
   new_selenider_elements(x$session, x$driver, x$id, x$timeout, list(selector))
 }
@@ -96,7 +96,7 @@ find_elements.selenider_element <- function(x,
   check_dots_used()
   check_selector_args(css, xpath, id, class_name, name)
 
-  selector <- new_multiple_selector(css, xpath, id, class_name, name)
+  selector <- step_select_multiple(css, xpath, id, class_name, name)
 
   x$steps <- append(x$steps, list(selector))
 

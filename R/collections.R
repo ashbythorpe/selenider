@@ -201,7 +201,7 @@ find_each_element <- function(x,
                               name = NULL) {
   check_class(x, "selenider_elements")
 
-  selector <- new_single_inner_selector(css, xpath, id, class_name, name)
+  selector <- step_select_inner_single(css, xpath, id, class_name, name)
 
   x$steps <- append(x$steps, list(selector))
 
@@ -219,7 +219,7 @@ find_all_elements <- function(x,
                               name = NULL) {
   check_class(x, "selenider_elements")
 
-  selector <- new_multiple_inner_selector(css, xpath, id, class_name, name)
+  selector <- step_select_inner_multiple(css, xpath, id, class_name, name)
 
   x$steps <- append(x$steps, list(selector))
 

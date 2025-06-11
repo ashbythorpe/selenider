@@ -138,7 +138,7 @@ elem_combine <- function(elements) {
 
   element <- elements[[1]]
 
-  step <- new_flatten(elements)
+  step <- step_flatten(elements)
 
   new_selenider_elements(
     session = element$session,

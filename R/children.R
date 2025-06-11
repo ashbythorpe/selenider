@@ -94,7 +94,7 @@
 elem_ancestors <- function(x) {
   check_class(x, "selenider_element")
 
-  selector <- new_multiple_selector(xpath = "./ancestor::*")
+  selector <- step_select_multiple(xpath = "./ancestor::*")
 
   x$steps <- append(x$steps, list(selector))
 
@@ -109,7 +109,7 @@ elem_ancestors <- function(x) {
 elem_parent <- function(x) {
   check_class(x, "selenider_element")
 
-  selector <- new_single_selector(xpath = "./..")
+  selector <- step_select_single(xpath = "./..")
 
   x$steps <- append(x$steps, list(selector))
 
@@ -122,7 +122,7 @@ elem_parent <- function(x) {
 elem_siblings <- function(x) {
   check_class(x, "selenider_element")
 
-  selector <- new_multiple_selector(xpath = "./following-sibling::* | ./preceding-sibling::*")
+  selector <- step_select_multiple(xpath = "./following-sibling::* | ./preceding-sibling::*")
 
   x$steps <- append(x$steps, list(selector))
 
@@ -137,7 +137,7 @@ elem_siblings <- function(x) {
 elem_children <- function(x) {
   check_class(x, "selenider_element")
 
-  selector <- new_multiple_selector(xpath = "./*")
+  selector <- step_select_multiple(xpath = "./*")
 
   x$steps <- append(x$steps, list(selector))
 
@@ -152,7 +152,7 @@ elem_children <- function(x) {
 elem_descendants <- function(x) {
   check_class(x, "selenider_element")
 
-  selector <- new_multiple_selector(xpath = ".//*")
+  selector <- step_select_multiple(xpath = ".//*")
 
   x$steps <- append(x$steps, list(selector))
 
