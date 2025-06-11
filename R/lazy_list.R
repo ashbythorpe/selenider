@@ -440,9 +440,11 @@ lazy_intersect_by <- function(x, .f) {
   lazy_list(generator)
 }
 
-#' Find all unique values in a lazy list.
+#' Find all unique values in a lazy list of lazy lists.
 #'
-#' @param x A lazy list.
+#' Assumes that each lazy list contains unique values.
+#'
+#' @param x A lazy list of lazy lists.
 #' @param .f A comparison function to use.
 #'
 #' @returns A single lazy list containing the new values.
@@ -457,7 +459,46 @@ lazy_unique <- function(x, .f) {
     value <- next_value_start(x)
 
     while (!coro::is_exhausted(value)) {
-      print(value)
+      value <- check_lazylist(value)
+      inner_value <- next_value_start(value)
+      next_seen <- list()
+
+      while (!coro::is_exhausted(inner_value)) {
+        if (!element_in_eager(inner_value, seen, .f)) {
+          coro::yield(inner_value)
+          next_seen[[length(next_seen) + 1]] <- inner_value
+        }
+
+        inner_value <- next_value(value)
+      }
+
+      seen <- append(seen, next_seen)
+      value <- next_value(x)
+    }
+
+    coro::exhausted()
+  })
+
+  lazy_list(generator)
+}
+
+#' Find all unique values in a single lazy list.
+#'
+#' @param x A lazy list.
+#' @param .f A comparison function to use.
+#'
+#' @returns A single lazy list containing the new values.
+#'
+#' @noRd
+lazy_unique_single <- function(x, .f) {
+  force(.f)
+  x <- check_lazylist(x)
+
+  generator <- coro::generator(function() {
+    seen <- list()
+    value <- next_value_start(x)
+
+    while (!coro::is_exhausted(value)) {
       if (!element_in_eager(value, seen, .f)) {
         coro::yield(value)
         seen[[length(seen) + 1]] <- value
@@ -467,6 +508,31 @@ lazy_unique <- function(x, .f) {
     }
 
     coro::exhausted()
+  })
+
+  lazy_list(generator)
+}
+
+lazy_flatten <- function(x) {
+  force(x)
+  x <- check_lazylist(x)
+
+  generator <- coro::generator(function() {
+    value <- next_value_start(x)
+
+    while (!coro::is_exhausted(value)) {
+      value <- check_lazylist(value)
+      inner_value <- next_value_start(value)
+
+      while (!coro::is_exhausted(inner_value)) {
+        if (!is.null(inner_value)) {
+          coro::yield(inner_value)
+        }
+        inner_value <- next_value(value)
+      }
+
+      value <- next_value(x)
+    }
   })
 
   lazy_list(generator)
@@ -511,8 +577,6 @@ element_in_lazy <- function(x, l, .f) {
 #' @noRd
 element_in_eager <- function(x, l, .f) {
   for (a in l) {
-    print(x)
-    print(a)
     if (.f(x, a)) {
       return(TRUE)
     }

@@ -130,13 +130,13 @@ apply_step <- function(driver, element, step) {
   } else if (inherits(step, "selenider_multiple_selector")) {
     apply_multiple_selector(driver, element, step)
   } else if (inherits(step, "selenider_single_inner_selector")) {
-    elem_unique(lazy_filter(lazy_map(element, function(element) {
+    elem_unique_single(lazy_filter(lazy_map(element, function(element) {
       apply_single_selector(driver, element, step)
     }), function(x) !is.null(x)), driver = driver)
   } else if (inherits(step, "selenider_multiple_inner_selector")) {
-    elem_unique(lazy_flatten(lazy_map(element, function(x) {
+    elem_unique(lazy_map(element, function(x) {
       apply_multiple_selector(driver, x, step)
-    })), driver = driver)
+    }), driver = driver)
   } else if (inherits(step, "selenider_flatten")) {
     lazy_flatten(lazy_map(step$elements, function(element) {
       get_element(element)
