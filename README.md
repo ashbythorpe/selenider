@@ -101,6 +101,8 @@ list, checks that the link is correct, and clicks the link element.
 
 ``` r
 open_url("https://www.r-project.org/")
+#> Can't find an existing selenider session.
+#> ℹ Creating a new session.
 
 s(".row") |>
   find_element("div") |>

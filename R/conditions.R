@@ -544,7 +544,7 @@ has_length <- function(x, n) {
 
   check_active(x)
 
-  elements <- get_elements(x)
+  elements <- get_element(x)
   n <- vctrs::vec_cast(n, integer())
 
   if (!is.null(x)) {
@@ -568,10 +568,8 @@ has_at_least <- function(x, n) {
 
   check_active(x)
 
-  x <- tryCatch(
-    elem_cache(x),
+  tryCatch(
+    is_present(x[[n]]),
     error = function(e) stop_absent_parent_element()
   )
-
-  is_present(x[[n]])
 }

@@ -68,6 +68,10 @@ elem_flatten <- function(...) {
 
   to_combine <- elem_flatten_init(elements, exprs = exprs)
 
+  if (length(to_combine) == 0) {
+    stop_flatten_empty()
+  }
+
   elem_combine(to_combine)
 }
 
@@ -132,45 +136,15 @@ elem_combine <- function(elements) {
     stop_incompatible_drivers(ids)
   }
 
-  driver <- elements[[1]]$driver
+  element <- elements[[1]]
 
-  timeout <- elements[[1]]$timeout
+  step <- step_flatten(elements)
 
-  elements <- lapply(elements, remove_driver)
-
-  selector <- new_flattened_selector(elements)
-
-  res <- list(
-    session = elements[[1]]$session,
-    driver = driver,
-    driver_id = elements[[1]]$driver_id,
-    element = NULL,
-    timeout = timeout,
-    selectors = list(new_flattened_selector(elements)),
-    to_be_found = 1
+  new_selenider_elements(
+    session = element$session,
+    driver = element$driver,
+    driver_id = element$driver_id,
+    timeout = element$timeout,
+    steps = list(step)
   )
-
-  class(res) <- c("selenider_elements", "list")
-
-  res
-}
-
-remove_driver <- function(x) {
-  x$driver <- NULL
-  x
-}
-
-new_flattened_selector <- function(elements) {
-  selectors <- lapply(elements, function(x) x$selectors)
-
-  res <- list(
-    selectors = selectors,
-    filter = list(),
-    to_be_filtered = 0,
-    multiple = TRUE
-  )
-
-  class(res) <- c("selenider_flattened_selector", "selenider_selector")
-
-  res
 }

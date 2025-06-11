@@ -1,34 +1,44 @@
 test_that("Numeric filters work", {
   session <- selenider_test_session()
 
-  elements <- ss(".class")
+  open_url("https://ashbythorpe.github.io/selenider/articles/test-site.html")
 
-  expect_equal(
-    elements[2:5][[3]]$selectors[[1]]$filter[[1]],
-    4
+  elements <- ss("button")
+
+  elem_expect(
+    elements[2:5],
+    has_length(4)
   )
 
-  expect_equal(
-    elements[-1][3]$selectors[[1]]$filter[[1]],
-    4
+  elem_expect(
+    elements[2:5][[3]],
+    is_present
   )
 
-  expect_equal(
-    elements[-3:-5][1:5]$selectors[[1]]$filter[[1]],
-    c(1:2, 6:8)
+  elem_expect(
+    elements[-1],
+    has_length(length(elements) - 1)
   )
 
-  expect_equal(
-    elements[-5:-10][-2]$selectors[[1]]$filter[[1]],
-    c(-5:-10, -2)
+  elem_expect(
+    elements[-1][3],
+    has_length(1)
   )
 
-  expect_equal(
-    elements[-5:-10][-7]$selectors[[1]]$filter[[1]],
-    -5:-10
+  elem_expect(
+    elements[-3:-5],
+    has_length(length(elements) - 3)
   )
 
-  expect_s3_class(suppressWarnings(elements[1:5][6]), "empty_selenider_elements")
+  elem_expect(
+    elements[-3:-5][1:5],
+    has_length(min(5, length(elements) - 3))
+  )
+
+  elem_expect(
+    elements[-1][-1],
+    has_length(length(elements) - 2)
+  )
 })
 
 test_that("Other filters work", {

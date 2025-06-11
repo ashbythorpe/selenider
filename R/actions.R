@@ -529,7 +529,7 @@ hover_chromote <- function(element, driver) {
     type = "mouseMoved",
     x = x,
     y = y,
-    button = "middle",
+    button = "middle"
   )
 }
 
@@ -1957,7 +1957,7 @@ get_elements_for_action <- function(x,
                                     conditions_text,
                                     call = rlang::caller_env()) {
   get_elements_succeeds <- function(x) {
-    !is.null(get_elements(x))
+    !is.null(get_element(x))
   }
 
   meets_condition <-
@@ -2003,7 +2003,7 @@ get_elements_for_action <- function(x,
     }
   }
 
-  elements <- get_elements(x)
+  elements <- get_element(x)
 
   if (is.null(elements)) {
     stop_not_actionable(

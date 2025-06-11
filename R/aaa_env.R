@@ -120,6 +120,11 @@ get_session <- function(create = TRUE, .env = rlang::caller_env()) {
   session <- get_from_env("session")
 
   if (is.null(session) && create) {
+    cli::cli_inform(c(
+      "Can't find an existing selenider session.",
+      "i" = "Creating a new session."
+    ))
+
     selenider_session(.env = .env)
   } else {
     session

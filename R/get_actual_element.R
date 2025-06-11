@@ -25,7 +25,7 @@
 #' * [s()], [ss()], [find_element()] and [find_elements()] to select selenider
 #'   elements.
 #' * [elem_cache()] and [elem_cache()] to cache these values.
-#' * The [Chrome Devtools Protocol documentation](https://chromedevtools.github.io/devtools-protocol/tot/) `r # nolint`
+#' * The [Chrome Devtools Protocol documentation](https://chromedevtools.github.io/devtools-protocol/tot/)
 #'   for the operations that can be performed using a backend node id. Note
 #'   that this requires the [chromote::ChromoteSession] object, which can be
 #'   retrieved using `<selenider_session>$driver`.
@@ -86,52 +86,23 @@ get_actual_elements <- function(x, timeout = NULL) {
 
   timeout <- get_timeout(timeout, x$timeout)
 
-  # as.list in case the result is a lazy list
-  as.list(get_with_timeout(timeout, get_elements, x))
+  # as.list() in case the result is a lazy list
+  as.list(get_with_timeout(timeout, get_element, x))
 }
 
 get_element <- function(x) {
   element <- x$element
 
-  if (is.null(element)) {
-    element <- x$driver
-  }
-
-  to_be_filtered <- if (x$to_be_found < length(x$selectors)) {
-    selector_to_filter <- x$selectors[[length(x$selectors) - x$to_be_found]]
-    selector_to_filter$to_be_filtered
-  } else {
-    0
-  }
-
-  if (is_multiple_elements(element) && to_be_filtered != 0) {
-    filter <- selector_to_filter$filter
-    relevant_filters <- utils::tail(filter, to_be_filtered)
-
-    element <- filter_elements(
-      element,
-      relevant_filters,
-      multiple = selector_to_filter$multiple
-    )
-
+  if (length(x$steps) == 0) {
     if (is.null(element)) {
-      return(NULL)
+      cli::cli_abort("Element does not have any steps", .internal = TRUE)
     }
-  }
 
-  if (x$to_be_found == 0) {
     return(element)
   }
 
-  selectors <- utils::tail(x$selectors, x$to_be_found)
-
-  for (selector in selectors) {
-    elements <- use_selector(selector, element, driver = x$driver)
-    element <- filter_elements(
-      elements,
-      selector$filter,
-      multiple = selector$multiple
-    )
+  for (step in x$steps) {
+    element <- apply_step(x$driver, element, step)
 
     if (is.null(element)) {
       return(NULL)
@@ -139,99 +110,4 @@ get_element <- function(x) {
   }
 
   element
-}
-
-get_elements <- function(x) {
-  if (elements_is_empty(x)) {
-    return(list())
-  }
-
-  element <- x$element
-
-  if (is.null(element)) {
-    element <- x$driver
-  }
-
-
-  to_be_filtered <- if (x$to_be_found < length(x$selectors)) {
-    selector_to_filter <- x$selectors[[length(x$selectors) - x$to_be_found]]
-    selector_to_filter$to_be_filtered
-  } else {
-    0
-  }
-
-  if (is_multiple_elements(element) && to_be_filtered != 0) {
-    filter <- selector_to_filter$filter
-    relevant_filters <- utils::tail(filter, to_be_filtered)
-
-    element <- filter_elements(
-      element,
-      relevant_filters,
-      multiple = selector_to_filter$multiple
-    )
-
-    if (is.null(element)) {
-      return(NULL)
-    }
-  }
-
-  if (x$to_be_found == 0) {
-    return(element)
-  }
-
-  apply_selectors(x, element)
-}
-
-apply_selectors <- function(x, element) {
-  selectors <- utils::tail(x$selectors, x$to_be_found)
-
-  for (selector in utils::head(selectors, -1)) {
-    elements <- use_selector(selector, element, driver = x$driver)
-    element <- filter_elements(
-      elements,
-      selector$filter,
-      multiple = selector$multiple
-    )
-
-    if (is.null(element)) {
-      return(NULL)
-    }
-  }
-
-  selector <- selectors[[length(selectors)]]
-  elements <- use_selector(selector, element, driver = x$driver)
-  filter_elements(elements, selector$filter, multiple = selector$multiple)
-}
-
-filter_elements <- function(elements, filter, multiple = FALSE) {
-  if (length(filter) == 0) {
-    elements
-  } else if (!multiple) {
-    if (is_function(filter[[length(filter)]])) {
-      last <- 1
-    } else {
-      last <- filter[[length(filter)]]
-      filter[[length(filter)]] <- NULL
-    }
-
-    for (f in filter) {
-      if (is_function(f)) {
-        elements <- lazy_filter(elements, f)
-      } else {
-        elements <- get_items(elements, f)
-      }
-    }
-
-    get_item(elements, last)
-  } else {
-    for (f in filter) {
-      if (is_function(f)) {
-        elements <- lazy_filter(elements, f)
-      } else {
-        elements <- get_items(elements, f)
-      }
-    }
-
-    elements
-  }
 }

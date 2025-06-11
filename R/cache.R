@@ -38,8 +38,8 @@
 #'
 #' @seealso
 #' * [find_element()] and [find_elements()] to select elements.
-#' * [element_list()], [find_each_element()] and [find_all_elements()] if you
-#'   want to iterate over an element collection.
+#' * [as.list.selenider_elements()], [find_each_element()] and
+#'   [find_all_elements()] if you want to iterate over an element collection.
 #'
 #' @examplesIf selenider::selenider_available(online = FALSE)
 #' html <- "
@@ -97,13 +97,11 @@ cache_element <- function(x, timeout = NULL) {
   element <- get_element_for_property(
     x,
     action = "cache {.arg x}",
-    timeout = timeout,
+    timeout = timeout
   )
 
   x$element <- element
-
-  x$to_be_found <- 0
-  x$selectors[[length(x$selectors)]]$to_be_filtered <- 0
+  x$steps <- list()
 
   x
 }
@@ -116,9 +114,7 @@ cache_elements <- function(x, timeout = NULL) {
   )
 
   x$element <- elements
-
-  x$to_be_found <- 0
-  x$selectors[[length(x$selectors)]]$to_be_filtered <- 0
+  x$steps <- list()
 
   x
 }

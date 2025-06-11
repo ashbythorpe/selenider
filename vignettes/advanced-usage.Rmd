@@ -1,0 +1,229 @@
+---
+title: "Advanced usage of selenider"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Advanced usage of selenider}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+available <- selenider::selenider_available()
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = available
+)
+```
+```{r, eval = !available, include = FALSE}
+message("Selenider is not available")
+```
+selenider exposes some advanced features to allow for more complex automation.
+
+## Customizing the session creation
+
+```{r}
+library(selenider)
+```
+
+[selenider_session()] is really just a wrapper around either
+`chromote::ChromoteSession$new()`, or `selenium::selenium_server()` and
+`selenium::SeleniumSession$new()`. selenider exposes arguments to these
+functions (plus some additional options) via the `options` argument.
+
+The most common argument that you are going to want to use is `headless` in
+`chromote_options()`: it allows you to run chromote in non-headless mode,
+meaning that the browser you are controlling will be displayed:
+
+```{r eval=FALSE}
+session <- selenider_session(
+  "chromote",
+  options = chromote_options(headless = TRUE)
+)
+```
+
+Managing selenium options is a bit more complex, since you are can provide
+options to the client `selenium_client_options()` and server
+`selenium_server_options()`. One cool thing you can do is pass `NULL` into
+the `server_options` parameter of `selenium_options()` to stop selenider
+from creating its own server. This is useful if you have created a server
+manually (using docker, for example):
+
+```{r eval=FALSE}
+session <- selenider_session(
+  "selenium",
+  options = selenium_options(
+    server_options = NULL, # Stop selenider from creating a server
+    client_options = selenium_client_options(
+      host = "localhost", # Use the host and port of your manually created server
+      port = 4444L
+    )
+  )
+)
+```
+
+## Accessing the underlying session
+
+While selenider provides a high level interface, sometimes you need to access
+the underlying `chromote::ChromoteSession` or `selenium::SeleniumSession` to
+perform more advanced tasks. The `driver` field of a `selenider_session()`
+can be used to do this.
+
+This is especially useful for chromote, since much of the configuration is
+done after the session is created:
+
+```{r eval=FALSE}
+session <- selenider_session()
+
+chromote_session <- session$driver
+
+chromote_session$Browser$setDownloadBehavior(
+  behavior = "allow",
+  downloadPath = "<path_to_folder>"
+)
+```
+
+## Accessing underlying elements
+
+Much like you can access the underlying chromote/selenium session behind a
+selenider session, you can access the chromote/selenium element represented by
+a `selenider_element`/`selenider_elements` object using `get_actual_element()`
+and `get_actual_elements()`, respectively.
+
+If you are using chromote, the [backendNodeId](https://chromedevtools.github.io/devtools-protocol/tot/DOM/#type-BackendNodeId)
+of the element is returned, while in selenium's case, the element is returned
+as a `selenium::WebElement`. It's important to note that the element in this
+form is no longer lazy, so should be used as soon as possible to avoid errors
+as the page changes.
+
+## Element collections
+
+Let's use selenider to get every link element in the R Project's website.
+
+```{r}
+open_url("https://www.r-project.org/")
+
+links <- ss("a")
+
+links
+```
+
+But what actually is `links`? In some ways, it acts like a list:
+
+```{r}
+links[[1]]
+
+links[1:2]
+
+length(links)
+```
+
+But assuming it is a list in all scenarios can result in surprising behavior:
+
+```{r}
+names(links)
+```
+
+To reveal why this is, let's emulate adding a new link to the page using
+JavaScript.
+
+```{r}
+execute_js_expr("
+  const link = document.createElement('a');
+  link.href = 'https://ashbythorpe.github.io/selenider/';
+  link.innerText = 'Selenider';
+  document.body.appendChild(link);
+")
+```
+
+Now let's look at `links` again:
+
+```{r}
+links
+
+links[[length(links)]]
+```
+
+`links` has been updated to include the new link!
+
+### A lazy list
+
+The core reason behind this strange behavior is selenider's promise of
+*laziness*. This means that elements are only ever collected from the page right
+before they are used by an *eager* function (`print()`, `elem_text()`,
+`elem_click()`, etc.). The only thing a selenider element actually stores is
+the *path* to an element (i.e. the set of steps you specified to reach the
+element), rather than the element itself.
+
+This property offers an array of benefits when compared with the eager approach.
+It offers a far more suitable representation of a constantly-changing webpage,
+and as such side-steps many common errors encountered during web automation.
+It also powers the automatic waiting feature that is also offered by selenider.
+
+The element collection, then, is a generalisation of this concept to sets of
+elements. A `selenider_elements` object stores the path to its elements, but
+not the elements itself. It therefore cannot be represented by a list; for one
+thing, as seen above, it is necessarily unaware of its length.
+
+For all of the advantages of lazy elements, this choice of structure does come
+with some caveats. The major one is that many list operations will not work on
+an element collection; in fact, you should assume that any operation that works
+on a list will not work on a `selenider_elements` object. This is in part due
+to the fact that R does not natively support custom iterators.
+
+### So, what *can* I do?
+selenider provides an API for working with element collections. All of the
+methods below preserve the laziness of the element collection, meaning that
+none of them will actually fetch any elements from the page until the resulting
+element is used.
+
+* `elems[[x]]` and `elems[x]` work with *numeric* indices, including negative
+  numbers, allowing you to filter elements by position.
+* `elem_filter()` and `elem_find()` allow you to filter an element collection
+  or find a single element based on a condition.
+* `elem_flatten()` allow you to combine multiple elements or element collections
+  into a single collection.
+* `find_each_element()` and `find_all_elements()` allow you to easily find
+  children of all the elements in a collection.
+
+As seen before, `length()` can be used on element collections to get the number
+of elements. This is *not* lazy, meaning you shouldn't rely on this value to
+always be accurate after it is called.
+
+However, sometimes you want to perform more complex operations on a set of
+elements. One common example is iteration, either in a for loop or using
+`lapply()`/`purrr::map()`. Iteration is an operation that goes against the idea
+of a lazy collection: how do you iterate over a set that is constantly changing?
+
+In this situation, if you are willing to sacrifice some of the lazy properties
+of an element collection, use `as.list()`. This function, when called on an
+element collection `elems`, converts it to the following:
+
+```r
+list(elems[[1]], elems[[2]], ..., elems[[n]])
+```
+
+Where `n` is `length(elems)`.
+
+Notably, the elements of the list are still lazy, since `[[` preserves laziness
+on element collections. However, the length of the list is not, since the call
+to `length()` is not lazy.
+
+Since this is an actual list, it supports a much wider range of operations.
+For example, in selenider's README, `as.list()` is used to iterate over a
+collection of links to find their hyperlinks. Take a look at
+`as.list.selenider_elements()` for more examples.
+
+## Forcing eager behaviour
+
+Sometimes it may be desirable to avoid the lazy behaviour of selenider's
+elements. This is usually for performance reasons: you may have an element
+represented by a long, complex set of steps, which needs to be used many times.
+By default, selenider will follow the path every time the element is used,
+which can end up being very slow, and may be redundant if you know the element's
+position is unlikely to change.
+
+`elem_cache()` can be used to force an element or set of elements to be
+retrieved from the DOM and stored, creating an "eager" element. Note the caveat
+in the docs: further elements created using this element will not also be
+eager, but will use this eager element as a starting point.

@@ -8,14 +8,30 @@ test_that("find_each_element() and find_all_elements() work", {
     "*"
   )
 
-  elem_expect(elements, has_length(3))
+  elem_expect(elements, has_length(3), timeout = 0)
 
   elements <- find_each_element(
     elem_flatten(s(".toggleable"), s(".buttons")),
     "*"
   )
 
-  elem_expect(elements, has_length(2))
+  elem_expect(elements, has_length(2), timeout = 0)
+
+  elements <- elem_filter(find_all_elements(ss("div"), "input"), has_value("Submit"))
+
+  elem_expect(elements, has_length(1))
+
+  elements <- elem_filter(find_each_element(ss("div"), "input[type='submit']"), has_value("Submit"))
+
+  elem_expect(elements, has_length(1))
+
+  element <- elem_find(find_all_elements(ss("div"), "input"), has_value("Submit"))
+
+  elem_expect(element, is_present)
+
+  element <- elem_find(find_each_element(ss("div"), "input[type='submit']"), has_value("Submit"))
+
+  elem_expect(element, is_present)
 })
 
 test_that("element_list() works", {

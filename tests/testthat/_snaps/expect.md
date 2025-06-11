@@ -321,12 +321,6 @@
       Condition failed after waiting for 0.1 seconds:
       `is_present`
       i `x` is not present.
-      
-      Where `x` is:
-      A selenider element selecting:
-      The first element with css selector ".random-class".
-      
-      
 
 ---
 
@@ -339,10 +333,4 @@
       i `x` is not visible.
       Caused by error in `is_visible()`:
       ! `x` does not exist in the DOM.
-      
-      Where `x` is:
-      A selenider element selecting:
-      The first element with css selector ".random-class".
-      
-      
 

@@ -22,7 +22,10 @@ ss(css = NULL, xpath = NULL, id = NULL, class_name = NULL, name = NULL)
 }
 \value{
 \code{s()} returns a \code{selenider_element} object.
-\code{ss()} returns a \code{selenider_elements} object.
+\code{ss()} returns a \code{selenider_elements} object. Note that this is not a list,
+and you should be careful with the functions that you use with it. See the
+advanced usage vignette for more details:
+\code{vignette("advanced-usage", package = "selenider")}.
 }
 \description{
 Both \code{s()} and \code{ss()} allow you to select elements without specifying a
@@ -36,6 +39,8 @@ on the current session.
 \details{
 Both functions allow the starting point for chains of selectors to be made
 more concise. Both use \code{\link[=get_session]{get_session()}} to get the global session object.
+If you want to pass in a session, use \code{\link[=find_element]{find_element()}}/\code{\link[=find_elements]{find_elements()}}
+instead.
 }
 \examples{
 \dontshow{if (selenider::selenider_available(online = FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

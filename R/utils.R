@@ -51,7 +51,7 @@ retry_until_true <- function(timeout, .f, ...) {
 #' Specifically, the following is checked:
 #'
 #' * The `SELENIDER_AVAILABLE` environment variable. Set this to `"TRUE" `or
-#'   `"FALSE"` to override this function.
+#'   `"FALSE"` to override the return value of this function.
 #' * Whether we are on CRAN (using the `NOT_CRAN` environment variable). If we
 #'   are, the function returns `FALSE`.
 #' * Whether an internet connection is available (using [curl::nslookup()]).
@@ -64,7 +64,7 @@ retry_until_true <- function(timeout, .f, ...) {
 #' If `session` is `"selenium"`, we check:
 #'
 #' * Whether `selenium` is installed.
-#' * Whether we can find a valid browser that is supported by `RSelenium`.
+#' * Whether we can find a valid browser that is supported by `selenium`.
 #'
 #' @returns
 #' A boolean flag: `TRUE` or `FALSE`.
@@ -74,10 +74,13 @@ retry_until_true <- function(timeout, .f, ...) {
 #'
 #' @export
 selenider_available <- function(
-    session = c("chromote", "selenium", "rselenium"),
+    session = c("chromote", "selenium"),
     online = TRUE) {
   check_bool(online)
-  session <- arg_match(session)
+
+  if (!identical(session, "rselenium")) {
+    session <- arg_match(session)
+  }
 
   env_variable <- as.logical(Sys.getenv("SELENIDER_AVAILABLE"))
   if (isTRUE(env_variable)) {
@@ -126,12 +129,12 @@ selenider_available_chromote <- function() {
 
 selenider_available_selenium <- function() {
   rlang::is_installed("selenium") &&
-    !is.null(find_browser_and_version()$browser)
+    !is.null(find_browser())
 }
 
 selenider_available_rselenium <- function() {
   rlang::is_installed("RSelenium") &&
-    !is.null(find_browser_and_version()$browser)
+    !is.null(find_browser())
 }
 
 #' @rdname selenider_available
@@ -200,6 +203,12 @@ elem_unique <- function(x, driver) {
   comparison_function <- get_comparison_function(driver)
 
   lazy_unique(x, comparison_function)
+}
+
+elem_unique_single <- function(x, driver) {
+  comparison_function <- get_comparison_function(driver)
+
+  lazy_unique_single(x, comparison_function)
 }
 
 get_comparison_function <- function(driver) {
@@ -321,6 +330,19 @@ uses_rselenium <- function(x) {
 
 uses_chromote <- function(x) {
   inherits(x, "ChromoteSession")
+}
+
+execute_js_expr_internal <- function(x, session, driver) {
+  if (session == "chromote") {
+    driver$Runtime$evaluate(
+      expression = x,
+      returnByValue = TRUE
+    )
+  } else if (session == "selenium") {
+    driver$execute_script(x)
+  } else {
+    driver$executeScript(x)
+  }
 }
 
 execute_js_fn_on <- function(fn, x, session, driver) {

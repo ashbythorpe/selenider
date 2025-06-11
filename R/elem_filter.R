@@ -35,7 +35,7 @@
 #'
 #' @seealso
 #' * [find_elements()] and [ss()] to get elements to filter.
-#' * [is_present()] and other conditions for predicates for HTML elements.
+#' * [is_present()] and other conditions for predicates on HTML elements.
 #'   (If you scroll down to the *See also* section, you will find the rest).
 #'
 #' @examplesIf selenider::selenider_available(online = FALSE)
@@ -79,11 +79,101 @@
 elem_filter <- function(x, ...) {
   check_class(x, "selenider_elements")
 
-  if (elements_is_empty(x)) {
+  exprs <- enquos(...)
+  filters <- make_filters(x, exprs)
+
+  x$steps <- append(x$steps, filters)
+
+  x
+}
+
+#' @rdname elem_filter
+#'
+#' @export
+elem_find <- function(x, ...) {
+  check_class(x, "selenider_elements")
+
+  exprs <- enquos(...)
+  filters <- make_filters(x, exprs, find_last = TRUE)
+
+  x$steps <- append(x$steps, filters)
+
+  class(x) <- "selenider_element"
+
+  x
+}
+
+#' @rdname elem_filter
+#'
+#' @export
+`[.selenider_elements` <- function(x, i) {
+  i <- vctrs::vec_cast(i, integer())
+  i <- stats::na.omit(i)
+  i <- i[i != 0]
+
+  if (length(i) == 0) {
     return(x)
   }
 
-  exprs <- enquos(...)
+  check_subscript_vctrs(i)
+
+  filter <- step_subset(i)
+
+  x$steps <- append(x$steps, list(filter))
+
+  x
+}
+
+#' @rdname elem_filter
+#'
+#' @export
+`[[.selenider_elements` <- function(x, i) {
+  if (!is.vector(i)) {
+    stop_subscript_type(i)
+  } else if (isTRUE(is.na(i))) {
+    stop_subscript_na(i)
+  } else if (!is.numeric(i)) {
+    NextMethod()
+  } else if (length(i) != 1) {
+    stop_subscript_length(i)
+  }
+
+  check_number_whole(i)
+  i <- vctrs::vec_cast(i, integer())
+
+  if (i == 0) {
+    stop_subscript_0()
+  }
+
+  filter <- step_index(i)
+
+  x$steps <- append(x$steps, list(filter))
+
+  class(x) <- "selenider_element"
+
+  x
+}
+
+# Checks that `i` is invalid using vctrs
+# If `i` can be used to subset a vector, then it can be used to subset
+# a selenider element.
+check_subscript_vctrs <- function(i, call = rlang::caller_env()) {
+  len <- max(abs(i))
+  x <- rep.int(1L, len)
+  # Check that i is a valid subscript
+  vctrs::vec_slice(x, i, error_call = call)
+}
+
+
+make_filters <- function(x, exprs, find_last = FALSE) {
+  if (length(exprs) == 0) {
+    if (find_last) {
+      return(list(step_index(1)))
+    } else {
+      return(list())
+    }
+  }
+
   arg_names <- lapply(
     c("a1", "a2", "a3", "a4"),
     function(x) make_elem_name(exprs, x)
@@ -107,161 +197,16 @@ elem_filter <- function(x, ...) {
     SIMPLIFY = FALSE
   )
 
-  selectors <- x$selectors
+  filters <- lapply(head(functions), function(x) step_filter(x))
+  last_function <- functions[[length(functions)]]
 
-  x$selectors[[length(selectors)]]$filter <-
-    c(x$selectors[[length(selectors)]]$filter, functions)
-
-  x$selectors[[length(x$selectors)]]$to_be_filtered <-
-    x$selectors[[length(x$selectors)]]$to_be_filtered + 1
-
-  x
-}
-
-#' @rdname elem_filter
-#'
-#' @export
-elem_find <- function(x, ...) {
-  if (elements_is_empty(x)) {
-    stop_find_empty_elements()
-  }
-
-  x <- elem_filter(x, ...)
-
-  x <- add_numeric_filter(x, 1, max_subscript_error = TRUE, multiple = FALSE)
-
-  class(x) <- "selenider_element"
-
-  x
-}
-
-#' @rdname elem_filter
-#'
-#' @export
-`[.selenider_elements` <- function(x, i) {
-  i <- vctrs::vec_cast(i, integer())
-  i <- stats::na.omit(i)
-  i <- i[i != 0]
-
-  if (elements_is_empty(x)) {
-    if (all(i > 0L)) {
-      warn_subscript_max_length(max(i), 0)
-    }
-
-    return(x)
-  }
-
-  if (length(i) == 0) {
-    return(empty_selenider_elements(x$driver, x$driver_id))
-  }
-
-  check_subscript_vctrs(i)
-
-  add_numeric_filter(x, i)
-}
-
-# Checks that `i` is invalid using vctrs
-# If `i` can be used to subset a vector, then it can be used to subset
-# a selenider element.
-check_subscript_vctrs <- function(i, call = rlang::caller_env()) {
-  len <- max(abs(i))
-  x <- rep.int(1L, len)
-  # Check that i is a valid subscript
-  vctrs::vec_slice(x, i, error_call = call)
-}
-
-#' @rdname elem_filter
-#'
-#' @export
-`[[.selenider_elements` <- function(x, i) {
-  if (!is.vector(i)) {
-    stop_subscript_type(i)
-  } else if (isTRUE(is.na(i))) {
-    stop_subscript_na(i)
-  } else if (!is.numeric(i)) {
-    NextMethod()
-  } else if (length(i) != 1) {
-    stop_subscript_length(i)
-  }
-
-
-  check_number_whole(i)
-  i <- vctrs::vec_cast(i, integer())
-
-  if (i == 0) {
-    stop_subscript_0()
-  }
-
-  if (elements_is_empty(x)) {
-    stop_subscript_max_length(i, 0L)
-  }
-
-  x <- add_numeric_filter(x, i, max_subscript_error = TRUE, multiple = FALSE)
-
-  class(x) <- "selenider_element"
-
-  x
-}
-
-add_numeric_filter <- function(x,
-                               i,
-                               call = rlang::caller_env(),
-                               max_subscript_error = FALSE,
-                               multiple = TRUE) {
-  selectors <- x$selectors
-
-  filters <- selectors[[length(selectors)]]$filter
-
-  is_numeric_and_positive <- function(x) {
-    is.numeric(x) && length(x) > 0 && all(x > 0)
-  }
-  numeric_filters <- Filter(is_numeric_and_positive, filters)
-
-  min_length <- if (length(numeric_filters) != 0) {
-    min(lengths(numeric_filters))
+  if (find_last) {
+    append(filters, list(step_find(last_function)))
   } else {
-    Inf
+    append(filters, list(step_filter(last_function)))
   }
-
-  max_sub <- max(i, na.rm = TRUE)
-
-  if (max_sub >= min_length) {
-    if (max_subscript_error) {
-      stop_subscript_max_length(max_sub, min_length, call = call)
-    } else {
-      warn_subscript_max_length(max_sub, min_length, call = call)
-    }
-  }
-
-  if (length(filters) != 0 && is.numeric(filters[[length(filters)]])) {
-    filter <- filters[[length(filters)]]
-    if (all(filter > 0)) {
-      new_filter <- filter[i]
-    } else if (all(i > 0)) {
-      new_filter <- seq_len(max(i, na.rm = TRUE) + length(filter))[filter][i]
-    } else {
-      new_filter <- unique(c(filter, i))
-    }
-
-    new_filter <- stats::na.omit(new_filter)
-
-    if (length(new_filter) == 0) {
-      return(empty_selenider_elements(x$driver, x$driver_id))
-    }
-
-    x$selectors[[length(selectors)]]$filter[[length(filters)]] <- new_filter
-  } else {
-    x$selectors[[length(selectors)]]$filter <-
-      append(x$selectors[[length(selectors)]]$filter, list(i))
-  }
-
-  x$selectors[[length(x$selectors)]]$to_be_filtered <-
-    x$selectors[[length(x$selectors)]]$to_be_filtered + 1
-
-  x$selectors[[length(x$selectors)]]$multiple <- multiple
-
-  x
 }
+
 
 condition_to_function <- function(x,
                                   original_call,
@@ -276,8 +221,7 @@ condition_to_function <- function(x,
     driver,
     driver_id,
     timeout,
-    webelement_to_element = webelement_to_element,
-    webelements_to_elements = webelements_to_elements
+    webelement_to_element = webelement_to_element
   )
   names(extra_data)[1:4] <- arg_names
 
@@ -308,32 +252,8 @@ filter_elem_name <- function(elem_name, arg_names) {
 }
 
 webelement_to_element <- function(x, session, driver, driver_id, timeout) {
-  res <- list(
-    session = session,
-    driver = driver,
-    driver_id = driver_id,
-    element = x,
-    timeout = timeout,
-    selectors = list(),
-    to_be_found = 0
-  )
+  element <- new_selenider_element(session, driver, driver_id, timeout)
+  element$element <- x
 
-  class(res) <- "selenider_element"
-
-  res
-}
-
-webelements_to_elements <- function(x, driver, driver_id, timeout) {
-  res <- list(
-    driver = driver,
-    driver_id = driver_id,
-    element = x,
-    timeout = timeout,
-    selectors = list(),
-    to_be_found = 0
-  )
-
-  class(res) <- c("selenider_elements", "list")
-
-  res
+  element
 }

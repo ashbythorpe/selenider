@@ -8,13 +8,13 @@
   "codeRepository": "https://github.com/ashbythorpe/selenider",
   "issueTracker": "https://github.com/ashbythorpe/selenider/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.3.3 (2024-02-29)",
+  "runtimePlatform": "R version 4.4.2 (2024-10-31)",
   "provider": {
     "@id": "https://cran.r-project.org",
     "@type": "Organization",
@@ -289,18 +289,6 @@
     },
     "7": {
       "@type": "SoftwareApplication",
-      "identifier": "processx",
-      "name": "processx",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=processx"
-    },
-    "8": {
-      "@type": "SoftwareApplication",
       "identifier": "rlang",
       "name": "rlang",
       "version": ">= 1.1.0",
@@ -312,12 +300,12 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=rlang"
     },
-    "9": {
+    "8": {
       "@type": "SoftwareApplication",
       "identifier": "utils",
       "name": "utils"
     },
-    "10": {
+    "9": {
       "@type": "SoftwareApplication",
       "identifier": "vctrs",
       "name": "vctrs",
@@ -329,7 +317,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=vctrs"
     },
-    "11": {
+    "10": {
       "@type": "SoftwareApplication",
       "identifier": "withr",
       "name": "withr",
@@ -343,7 +331,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "569.502KB",
+  "fileSize": "660.182KB",
   "releaseNotes": "https://github.com/ashbythorpe/selenider/blob/master/NEWS.md",
   "readme": "https://github.com/ashbythorpe/selenider/blob/main/README.md",
   "contIntegration": ["https://github.com/ashbythorpe/selenider/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/ashbythorpe/selenider?branch=main"],

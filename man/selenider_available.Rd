@@ -5,10 +5,7 @@
 \alias{skip_if_selenider_unavailable}
 \title{Check if selenider can be used}
 \usage{
-selenider_available(
-  session = c("chromote", "selenium", "rselenium"),
-  online = TRUE
-)
+selenider_available(session = c("chromote", "selenium"), online = TRUE)
 
 skip_if_selenider_unavailable(session = c("chromote", "selenium"))
 }
@@ -32,7 +29,7 @@ environment where it makes sense to open a selenider session.
 Specifically, the following is checked:
 \itemize{
 \item The \code{SELENIDER_AVAILABLE} environment variable. Set this to \code{"TRUE" }or
-\code{"FALSE"} to override this function.
+\code{"FALSE"} to override the return value of this function.
 \item Whether we are on CRAN (using the \code{NOT_CRAN} environment variable). If we
 are, the function returns \code{FALSE}.
 \item Whether an internet connection is available (using \code{\link[curl:nslookup]{curl::nslookup()}}).
@@ -47,7 +44,7 @@ If \code{session} is \code{"chromote"}, we also check:
 If \code{session} is \code{"selenium"}, we check:
 \itemize{
 \item Whether \code{selenium} is installed.
-\item Whether we can find a valid browser that is supported by \code{RSelenium}.
+\item Whether we can find a valid browser that is supported by \code{selenium}.
 }
 }
 \examples{

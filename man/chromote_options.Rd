@@ -4,9 +4,7 @@
 \alias{chromote_options}
 \alias{selenium_options}
 \alias{selenium_server_options}
-\alias{wdman_server_options}
 \alias{selenium_client_options}
-\alias{rselenium_client_options}
 \title{Driver options}
 \usage{
 chromote_options(
@@ -29,23 +27,16 @@ selenium_options(
 
 selenium_server_options(
   version = "latest",
+  host = "localhost",
   port = 4444L,
-  selenium_manager = NULL,
+  selenium_manager = TRUE,
+  interactive = FALSE,
+  stdout = NULL,
+  stderr = NULL,
   verbose = FALSE,
   temp = TRUE,
   path = NULL,
-  interactive = FALSE,
-  echo_cmd = FALSE,
-  extra_args = c()
-)
-
-wdman_server_options(
-  version = "latest",
-  driver_version = "latest",
-  port = 4444L,
-  check = TRUE,
-  verbose = FALSE,
-  retcommand = FALSE,
+  extra_args = c(),
   ...
 )
 
@@ -56,17 +47,6 @@ selenium_client_options(
   capabilities = NULL,
   request_body = NULL,
   timeout = 60
-)
-
-rselenium_client_options(
-  port = 4444L,
-  host = "localhost",
-  path = "/wd/hub",
-  version = "",
-  platform = "ANY",
-  javascript = TRUE,
-  native_events = TRUE,
-  extra_capabilities = list()
 )
 }
 \arguments{
@@ -94,22 +74,18 @@ these are passed to the Selenium server process.}
 
 \item{client_options}{A \code{\link[=selenium_client_options]{selenium_client_options()}} object.}
 
-\item{server_options}{A \code{\link[=selenium_server_options]{selenium_server_options()}} or
-\code{\link[=wdman_server_options]{wdman_server_options()}} object.}
+\item{server_options}{A \code{\link[=selenium_server_options]{selenium_server_options()}} object, or \code{NULL} if you
+don't want one to be created.}
 
 \item{version}{The version of Selenium server to use.}
 
+\item{host}{The host to use.}
+
 \item{port}{The port number to use.}
 
-\item{selenium_manager, verbose, temp, path, interactive, echo_cmd}{Passed into \code{\link[selenium:selenium_server]{selenium::selenium_server()}}.}
+\item{selenium_manager, interactive, stdout, stderr, verbose, temp, path, extra_args, ...}{Passed into \code{\link[selenium:selenium_server]{selenium::selenium_server()}}.}
 
-\item{driver_version}{The version of the browser-specific driver to use.}
-
-\item{check, retcommand, ...}{Passed into \code{\link[wdman:selenium]{wdman::selenium()}}.}
-
-\item{host, capabilities, request_body, timeout}{Passed into \link[selenium:SeleniumSession]{selenium::SeleniumSession$new()}.}
-
-\item{platform, javascript, native_events, extra_capabilities}{Passed into \code{\link[RSelenium:remoteDriver-class]{RSelenium::remoteDriver()}}.}
+\item{capabilities, request_body, timeout}{Passed into \link[selenium:SeleniumSession]{selenium::SeleniumSession$new()}.}
 }
 \description{
 \code{chromote_options()} and \code{selenium_options()} return a list of options that
@@ -120,21 +96,12 @@ created using \link[chromote:ChromoteSession]{chromote::ChromoteSession$new()}.
 
 \code{selenium_options()} allows you to control the creation of a selenium driver.
 
-\code{selenium_server_options()} and \code{wdman_server_options()} should be passed to
-the \code{server_options} argument of \code{selenium_options()}. By default, the former
-is used, meaning that the server is created using
-\code{\link[selenium:selenium_server]{selenium::selenium_server()}}. If \code{wdman_server_options()} is used instead,
-the server will be created using \code{\link[wdman:selenium]{wdman::selenium()}}.
+\code{selenium_server_options()} should be passed to the \code{server_options}
+argument of \code{selenium_options()}, allowing you to control the creation of
+the server using \code{\link[selenium:selenium_server]{selenium::selenium_server()}}.
 
 \code{selenium_client_options()} should be passed to the \code{client_options} argument
 of \code{selenium_options()}, allowing you to control the creation of a Selenium
 client created using
 \link[selenium:SeleniumSession]{selenium::SeleniumSession$new()}.
-
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#superseded}{\figure{lifecycle-superseded.svg}{options: alt='[Superseded]'}}}{\strong{[Superseded]}}
-
-Instead of using \code{selenium_client_options()}, you can use
-\code{rselenium_client_options()} to control the creation of an
-\code{\link[RSelenium:remoteDriver-class]{RSelenium::remoteDriver()}} object instead. This is not recommended, since
-RSelenium is incompatible with newer versions of Selenium.
 }

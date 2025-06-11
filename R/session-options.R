@@ -9,23 +9,14 @@
 #'
 #' `selenium_options()` allows you to control the creation of a selenium driver.
 #'
-#' `selenium_server_options()` and `wdman_server_options()` should be passed to
-#' the `server_options` argument of `selenium_options()`. By default, the former
-#' is used, meaning that the server is created using
-#' [selenium::selenium_server()]. If `wdman_server_options()` is used instead,
-#' the server will be created using [wdman::selenium()].
+#' `selenium_server_options()` should be passed to the `server_options`
+#' argument of `selenium_options()`, allowing you to control the creation of
+#' the server using [selenium::selenium_server()].
 #'
 #' `selenium_client_options()` should be passed to the `client_options` argument
 #' of `selenium_options()`, allowing you to control the creation of a Selenium
 #' client created using
 #' [selenium::SeleniumSession$new()][selenium::SeleniumSession].
-#'
-#' `r lifecycle::badge("superseded")`
-#'
-#' Instead of using `selenium_client_options()`, you can use
-#' `rselenium_client_options()` to control the creation of an
-#' [RSelenium::remoteDriver()] object instead. This is not recommended, since
-#' RSelenium is incompatible with newer versions of Selenium.
 #'
 #' @param headless Whether to run the browser in headless mode, meaning
 #'   that you won't actually be able to see the browser as you control it.
@@ -126,8 +117,8 @@ chromote_options <- function(headless = TRUE,
 #' @rdname chromote_options
 #'
 #' @param client_options A [selenium_client_options()] object.
-#' @param server_options A [selenium_server_options()] or
-#'   [wdman_server_options()] object.
+#' @param server_options A [selenium_server_options()] object, or `NULL` if you
+#'   don't want one to be created.
 #'
 #' @export
 selenium_options <- function(client_options = selenium_client_options(),
@@ -148,40 +139,47 @@ selenium_options <- function(client_options = selenium_client_options(),
 #' @rdname chromote_options
 #'
 #' @param version The version of Selenium server to use.
+#' @param host The host to use.
 #' @param port The port number to use.
-#' @param selenium_manager,verbose,temp,path,interactive,echo_cmd
+#' @param selenium_manager,interactive,stdout,stderr,verbose,temp,path,extra_args,...
 #'   Passed into [selenium::selenium_server()].
 #'
 #' @export
 selenium_server_options <- function(version = "latest",
+                                    host = "localhost",
                                     port = 4444L,
-                                    selenium_manager = NULL,
+                                    selenium_manager = TRUE,
+                                    interactive = FALSE,
+                                    stdout = NULL,
+                                    stderr = NULL,
                                     verbose = FALSE,
                                     temp = TRUE,
                                     path = NULL,
-                                    interactive = FALSE,
-                                    echo_cmd = FALSE,
-                                    extra_args = c()) {
+                                    extra_args = c(),
+                                    ...) {
   check_string(version)
+  check_string(host)
   check_number_whole(port)
   check_bool(selenium_manager, allow_null = TRUE)
   check_bool(verbose)
   check_bool(temp)
   check_string(path, allow_null = TRUE)
   check_bool(interactive)
-  check_bool(echo_cmd)
   check_character(extra_args, allow_null = TRUE)
 
   result <- list(
     version = version,
+    host = host,
     port = port,
     selenium_manager = selenium_manager,
+    interactive = interactive,
+    stdout = stdout,
+    stderr = stderr,
     verbose = verbose,
     temp = temp,
     path = path,
-    interactive = interactive,
-    echo_cmd = echo_cmd,
-    extra_args = extra_args
+    extra_args = extra_args,
+    process_args = rlang::list2(...)
   )
 
   class(result) <- "selenium_server_options"
@@ -189,11 +187,69 @@ selenium_server_options <- function(version = "latest",
   result
 }
 
+
 #' @rdname chromote_options
 #'
+#' @param capabilities,request_body,timeout
+#'   Passed into [selenium::SeleniumSession$new()][selenium::SeleniumSession].
+#'
+#' @export
+selenium_client_options <- function(port = 4444L,
+                                    host = "localhost",
+                                    verbose = FALSE,
+                                    capabilities = NULL,
+                                    request_body = NULL,
+                                    timeout = 60) {
+  check_number_whole(port)
+  check_string(host)
+  check_bool(verbose)
+  check_list(capabilities, allow_null = TRUE)
+  check_list(request_body, allow_null = TRUE)
+  check_number_decimal(timeout)
+
+  result <- list(
+    port = port,
+    host = host,
+    verbose = verbose,
+    capabilities = capabilities,
+    request_body = request_body,
+    timeout = timeout
+  )
+
+  class(result) <- "selenium_client_options"
+
+  result
+}
+
+#' RSelenium options
+#'
+#' `r lifecycle::badge("superseded")`
+#' Instruct selenider to use RSelenium instead of selenium. Passed into
+#' [selenium_options()]. This is not recommended, since RSelenium does not
+#' support the latest version of Selenium, and wdman (the server manager that
+#' RSelenium) uses, is not compatible with the latest version of Chrome.
+#'
+#' @param version The version of Selenium server to use.
 #' @param driver_version The version of the browser-specific driver to use.
-#' @param check,retcommand,...
+#' @param port The port to run selenium client/server on.
+#' @param check,verbose,retcommand,...
 #'   Passed into [wdman::selenium()].
+#'
+#' @details
+#' In [selenium_options()], you can supply options to configure a server and
+#' client run by RSelenium instead of selenium.
+#' Instead of `selenium_server_options()`, you can use `wdman_server_options()`
+#' to allow `wdman` to run the Selenium server using [wdman::selenium()].
+#'
+#' Instead of using `selenium_client_options()`, you can use
+#' `rselenium_client_options()` to control the creation of an
+#' [RSelenium::remoteDriver()] object instead.
+#'
+#' Note that the `driver` option of `selenider_session()` also accepts these
+#' objects in place of their selenium equivalents.
+#'
+#' @returns
+#' An options object that can be passed into [selenium_options()].
 #'
 #' @export
 wdman_server_options <- function(version = "latest",
@@ -225,42 +281,10 @@ wdman_server_options <- function(version = "latest",
   result
 }
 
-#' @rdname chromote_options
+#' @rdname wdman_server_options
 #'
-#' @param host,capabilities,request_body,timeout
-#'   Passed into [selenium::SeleniumSession$new()][selenium::SeleniumSession].
-#'
-#' @export
-selenium_client_options <- function(port = 4444L,
-                                    host = "localhost",
-                                    verbose = FALSE,
-                                    capabilities = NULL,
-                                    request_body = NULL,
-                                    timeout = 60) {
-  check_number_whole(port)
-  check_string(host)
-  check_bool(verbose)
-  check_list(capabilities, allow_null = TRUE)
-  check_list(request_body, allow_null = TRUE)
-  check_number_decimal(timeout)
-
-  result <- list(
-    port = port,
-    host = host,
-    verbose = verbose,
-    capabilities = capabilities,
-    request_body = request_body,
-    timeout = timeout
-  )
-
-  class(result) <- "selenium_client_options"
-
-  result
-}
-
-#' @rdname chromote_options
-#'
-#' @param platform,javascript,native_events,extra_capabilities
+#' @param host The host to connect to the selenium server over.
+#' @param path,platform,javascript,native_events,extra_capabilities
 #'   Passed into [RSelenium::remoteDriver()].
 #'
 #' @export
