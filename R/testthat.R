@@ -30,20 +30,5 @@ elem_expect_fail <- function(condition,
     condition_text <- paste0(condition_text, parent_text)
   }
 
-  if (!is.null(x)) {
-    formatted <- if (inherits(x, "selenider_element")) {
-      format_lazy_selenider_element(x)
-    } else {
-      format_lazy_selenider_elements(x)
-    }
-    object_text <- paste0(
-      "Where `", x_name, "` is:\n",
-      paste(formatted, collapse = "\n"),
-      "\n"
-    )
-
-    condition_text <- paste0(condition_text, "\n\n", object_text, "\n")
-  }
-
   testthat::fail(condition_text, trace_env = call)
 }

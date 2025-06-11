@@ -110,34 +110,6 @@ stop_subscript_0 <- function(call = rlang::caller_env()) {
   )
 }
 
-stop_subscript_max_length <- function(i,
-                                      max_length,
-                                      call = rlang::caller_env()) {
-  cli::cli_abort(
-    c(
-      "Invalid subscript {.arg i}.",
-      "Attempt to select the {ordinal(i)} element of {.arg x}.",
-      "{.arg x} has a known maximum length of {.arg {max_length}}."
-    ),
-    class = c(
-      "selenider_error_subscript",
-      "selenider_error_subscript_max_length"
-    ),
-    call = call
-  )
-}
-
-warn_subscript_max_length <- function(i,
-                                      max_length,
-                                      call = rlang::caller_env()) {
-  cli::cli_warn(c(
-    "Invalid subscript {.arg i}.",
-    "Attempt to select the {ordinal(i)} element of {.arg x}.",
-    "{.arg x} has a known maximum length of {.arg {max_length}}."
-  ), class = "selenider_warning_subscript_max_length", call = call)
-}
-
-
 stop_no_conditions <- function(call = rlang::caller_env()) {
   cli::cli_abort(c(
     "No conditions were specified.",
@@ -296,20 +268,6 @@ stop_close_session <- function(error, call = rlang::caller_env()) {
   )
 }
 
-stop_find_empty_elements <- function(call = rlang::caller_env()) {
-  cli::cli_abort(
-    c(
-      "Cannot extract an element from {.arg x}.",
-      "{.arg x} contains 0 elements."
-    ),
-    class = c(
-      "selenider_error_empty_elements",
-      "selenider_error_empty_elements_find"
-    ),
-    call = call
-  )
-}
-
 stop_incompatible_drivers <- function(ids, call = rlang::caller_env()) {
   index <- which.max(ids == unique(ids)[2])
   cli::cli_abort(
@@ -327,6 +285,13 @@ stop_dots_empty <- function(call = rlang::caller_env()) {
     "`...` is empty.",
     "i" = "Supply one or more arguments to combine into an element collection."
   ), class = "selenider_error_dots_empty", call = call)
+}
+
+stop_flatten_empty <- function(call = rlang::caller_env()) {
+  cli::cli_abort(c(
+    "No elements provided to flatten.",
+    "i" = "Supply one or more arguments to combine into an element collection."
+  ), class = "selenider_error_flatten_empty", call = call)
 }
 
 stop_flatten_dots <- function(x,

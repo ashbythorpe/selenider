@@ -112,3 +112,15 @@ check_list <- function(x,
     call = call
   )
 }
+
+check_selector_args <- function(css, xpath, id, class_name, name, call = rlang::caller_env()) {
+  check_string(css, allow_null = TRUE)
+  check_string(xpath, allow_null = TRUE)
+  check_string(id, allow_null = TRUE)
+  check_string(class_name, allow_null = TRUE)
+  check_string(name, allow_null = TRUE)
+
+  if (is.null(css) && is.null(xpath) && is.null(id) && is.null(class_name) && is.null(name)) {
+    stop_bad_selector(call = call)
+  }
+}

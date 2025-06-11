@@ -205,6 +205,12 @@ elem_unique <- function(x, driver) {
   lazy_unique(x, comparison_function)
 }
 
+elem_unique_single <- function(x, driver) {
+  comparison_function <- get_comparison_function(driver)
+
+  lazy_unique_single(x, comparison_function)
+}
+
 get_comparison_function <- function(driver) {
   compare_selenium <- function(x, y) selenium_equal(x, y, driver)
   compare_rselenium <- function(x, y) rselenium_equal(x, y, driver)

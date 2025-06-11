@@ -212,6 +212,24 @@ test_that("lazy_unique() works", {
     coro::yield(1)
     coro::yield(2)
     coro::yield(3)
+    coro::yield(1)
+    coro::yield(3)
+    coro::yield(4)
+  })
+
+  x <- lazy_list(generator)
+
+  expect_s3_class(lazy_unique_single(x, `==`), "lazy_list")
+
+  expect_equal(
+    as.list(lazy_unique_single(x, `==`)),
+    list(1, 2, 3, 4)
+  )
+
+  generator <- coro::generator(function() {
+    coro::yield(1)
+    coro::yield(2)
+    coro::yield(3)
     coro::yield(5)
   })
 
@@ -232,7 +250,13 @@ test_that("lazy_unique() works", {
 
   x_3 <- lazy_list(generator_3)
 
-  final_list <- list(x_1, x_2, x_3)
+  final_generator <- coro::generator(function() {
+    coro::yield(x_1)
+    coro::yield(x_2)
+    coro::yield(x_3)
+  })
+
+  final_list <- lazy_list(final_generator)
 
   expect_s3_class(lazy_unique(final_list, `==`), "lazy_list")
 
