@@ -1970,8 +1970,6 @@ get_elements_for_action <- function(x,
 
   if (!meets_condition) {
     if (length(conditions) == 0 || !get_elements_succeeds(x)) {
-      print(get_elements_succeeds(x))
-
       stop_not_actionable(
         c(
           paste0("To ", action, ", its parent must exist."),

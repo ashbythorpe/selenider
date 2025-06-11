@@ -256,8 +256,6 @@
     Code
       elem_expect(elem_children(s(".random-class")), function(x) elem_name(x[[1]]) ==
         "biv", testthat = FALSE, timeout = 0.1)
-    Output
-      [1] FALSE
     Condition
       Error in `elem_expect()`:
       ! Condition failed after waiting for 0.1 seconds:
