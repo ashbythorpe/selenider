@@ -8,7 +8,7 @@ test_that("find_each_element() and find_all_elements() work", {
     "*"
   )
 
-  print(get_elements(elements))
+  print(get_element(elements))
   print(elements, timeout = 0)
 
   elem_expect(elements, has_length(3), timeout = 0)

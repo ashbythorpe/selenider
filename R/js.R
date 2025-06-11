@@ -269,7 +269,7 @@ parse_chromote_expr <- function(expr,
       )
       arg_n <- arg_n + 1
     } else if (is_selenider_elements(arg)) {
-      elements <- get_elements(arg)
+      elements <- get_element(arg)
 
       if (length(elements) == 0) {
         expr_body <- paste0(expr_body, "let inner_arg_", i, " = [];")

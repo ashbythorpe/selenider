@@ -201,11 +201,9 @@ find_each_element <- function(x,
                               name = NULL) {
   check_class(x, "selenider_elements")
 
-  selector <- new_flatmap_selector(css, xpath, id, class_name, name)
+  selector <- new_single_inner_selector(css, xpath, id, class_name, name)
 
-  x$selectors <- append(x$selectors, list(selector))
-
-  x$to_be_found <- x$to_be_found + 1
+  x$steps <- append(x$steps, list(selector))
 
   x
 }
@@ -221,26 +219,9 @@ find_all_elements <- function(x,
                               name = NULL) {
   check_class(x, "selenider_elements")
 
-  selector <- new_flatmap_selector(
-    css,
-    xpath,
-    id,
-    class_name,
-    name,
-    multiple = TRUE
-  )
+  selector <- new_multiple_inner_selector(css, xpath, id, class_name, name)
 
-  x$selectors <- append(x$selectors, list(selector))
-
-  x$to_be_found <- x$to_be_found + 1
+  x$steps <- append(x$steps, list(selector))
 
   x
-}
-
-new_flatmap_selector <- function(..., multiple = FALSE) {
-  res <- new_selector(..., filter = list(), multiple = FALSE, inner_multiple = multiple)
-
-  class(res) <- c("selenider_flatmap_selector", "selenider_selector")
-
-  res
 }

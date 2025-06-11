@@ -241,8 +241,7 @@ condition_to_function <- function(x,
     driver,
     driver_id,
     timeout,
-    webelement_to_element = webelement_to_element,
-    webelements_to_elements = webelements_to_elements
+    webelement_to_element = webelement_to_element
   )
   names(extra_data)[1:4] <- arg_names
 
@@ -273,32 +272,8 @@ filter_elem_name <- function(elem_name, arg_names) {
 }
 
 webelement_to_element <- function(x, session, driver, driver_id, timeout) {
-  res <- list(
-    session = session,
-    driver = driver,
-    driver_id = driver_id,
-    element = x,
-    timeout = timeout,
-    selectors = list(),
-    to_be_found = 0
-  )
+  element <- new_selenider_element(session, driver, driver_id, timeout)
+  element$element <- x
 
-  class(res) <- "selenider_element"
-
-  res
-}
-
-webelements_to_elements <- function(x, driver, driver_id, timeout) {
-  res <- list(
-    driver = driver,
-    driver_id = driver_id,
-    element = x,
-    timeout = timeout,
-    selectors = list(),
-    to_be_found = 0
-  )
-
-  class(res) <- c("selenider_elements", "list")
-
-  res
+  element
 }

@@ -1,7 +1,7 @@
 #' Find the first instance of an element using a selector
 #'
 #' @param x The parent element.
-#' @param using The type of the selector (e.g. "css selector", "xpath").
+#' @param type The type of the selector (e.g. "css selector", "xpath").
 #' @param value The value of the selector as a string.
 #' @param driver The [chromote::ChromoteSession] or [selenium::SeleniumSession].
 #'

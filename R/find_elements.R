@@ -80,7 +80,7 @@ find_elements.selenider_session <- function(x,
 
   selector <- new_multiple_selector(css, xpath, id, class_name, name)
 
-  new_selenider_elements(x, selector)
+  new_selenider_elements(x$session, x$driver, x$id, x$timeout, list(selector))
 }
 
 #' @export
@@ -105,14 +105,14 @@ find_elements.selenider_element <- function(x,
   x
 }
 
-new_selenider_elements <- function(session, selector) {
+new_selenider_elements <- function(session, driver, driver_id, timeout, steps = list()) {
   res <- list(
-    session = session$session,
-    driver = session$driver,
-    driver_id = session$id,
+    session = session,
+    driver = driver,
+    driver_id = driver_id,
     element = NULL,
-    timeout = session$timeout,
-    steps = list(selector),
+    timeout = timeout,
+    steps = steps,
   )
 
   class(res) <- c("selenider_elements", "list")

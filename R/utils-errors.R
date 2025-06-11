@@ -329,6 +329,13 @@ stop_dots_empty <- function(call = rlang::caller_env()) {
   ), class = "selenider_error_dots_empty", call = call)
 }
 
+stop_flatten_empty <- function(call = rlang::caller_env()) {
+  cli::cli_abort(c(
+    "No elements provided to flatten.",
+    "i" = "Supply one or more arguments to combine into an element collection."
+  ), class = "selenider_error_flatten_empty", call = call)
+}
+
 stop_flatten_dots <- function(x,
                               exprs,
                               i,

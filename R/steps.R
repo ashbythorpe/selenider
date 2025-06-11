@@ -138,10 +138,8 @@ apply_step <- function(driver, element, step) {
       apply_multiple_selector(driver, element, step)
     }))
   } else if (inherits(step, "selenider_flatten")) {
-    cli::cli_abort("Not implemented yet", .internal = TRUE)
-
     lazy_flatten(lazy_map(step$elements, function(element) {
-      # TODO: Fill this in
+      get_element(element)
     }))
   } else if (inherits(step, "selenider_index")) {
     get_item(element, step$index)
@@ -160,7 +158,7 @@ apply_single_selector <- function(driver, element, step) {
   if (length(step) == 1) {
     find_actual_element(
       element,
-      using = names(step),
+      type = names(step),
       value = step[[1]],
       driver = driver
     )
@@ -170,7 +168,7 @@ apply_single_selector <- function(driver, element, step) {
     elements <- elem_common(lapply(selectors, function(selector) {
       find_actual_element(
         element,
-        using = selector$type,
+        type = selector$type,
         value = selector$value,
         driver = driver
       )
@@ -186,7 +184,7 @@ apply_multiple_selector <- function(driver, element, step) {
   elem_common(lapply(selectors, function(selector) {
     find_actual_elements(
       element,
-      using = selector$type,
+      type = selector$type,
       value = selector$value,
       driver = driver
     )
