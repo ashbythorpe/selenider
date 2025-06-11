@@ -110,34 +110,6 @@ stop_subscript_0 <- function(call = rlang::caller_env()) {
   )
 }
 
-stop_subscript_max_length <- function(i,
-                                      max_length,
-                                      call = rlang::caller_env()) {
-  cli::cli_abort(
-    c(
-      "Invalid subscript {.arg i}.",
-      "Attempt to select the {ordinal(i)} element of {.arg x}.",
-      "{.arg x} has a known maximum length of {.arg {max_length}}."
-    ),
-    class = c(
-      "selenider_error_subscript",
-      "selenider_error_subscript_max_length"
-    ),
-    call = call
-  )
-}
-
-warn_subscript_max_length <- function(i,
-                                      max_length,
-                                      call = rlang::caller_env()) {
-  cli::cli_warn(c(
-    "Invalid subscript {.arg i}.",
-    "Attempt to select the {ordinal(i)} element of {.arg x}.",
-    "{.arg x} has a known maximum length of {.arg {max_length}}."
-  ), class = "selenider_warning_subscript_max_length", call = call)
-}
-
-
 stop_no_conditions <- function(call = rlang::caller_env()) {
   cli::cli_abort(c(
     "No conditions were specified.",
@@ -292,20 +264,6 @@ stop_close_session <- function(error, call = rlang::caller_env()) {
     "Could not close session",
     class = "selenider_error_close_session",
     parent = error,
-    call = call
-  )
-}
-
-stop_find_empty_elements <- function(call = rlang::caller_env()) {
-  cli::cli_abort(
-    c(
-      "Cannot extract an element from {.arg x}.",
-      "{.arg x} contains 0 elements."
-    ),
-    class = c(
-      "selenider_error_empty_elements",
-      "selenider_error_empty_elements_find"
-    ),
     call = call
   )
 }
