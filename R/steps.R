@@ -130,13 +130,13 @@ apply_step <- function(driver, element, step) {
   } else if (inherits(step, "selenider_multiple_selector")) {
     apply_multiple_selector(driver, element, step)
   } else if (inherits(step, "selenider_single_inner_selector")) {
-    lazy_map(element, function(element) {
+    elem_unique(lazy_filter(lazy_map(element, function(element) {
       apply_single_selector(driver, element, step)
-    })
+    }), function(x) !is.null(x)), driver = driver)
   } else if (inherits(step, "selenider_multiple_inner_selector")) {
-    lazy_flatten(lazy_map(element, function(element) {
-      apply_multiple_selector(driver, element, step)
-    }))
+    elem_unique(lazy_flatten(lazy_map(element, function(x) {
+      apply_multiple_selector(driver, x, step)
+    })), driver = driver)
   } else if (inherits(step, "selenider_flatten")) {
     lazy_flatten(lazy_map(step$elements, function(element) {
       get_element(element)
@@ -150,7 +150,7 @@ apply_step <- function(driver, element, step) {
   } else if (inherits(step, "selenider_find")) {
     get_item(lazy_filter(element, step$filter), 1)
   } else {
-    cli::cli_abort("Unknown step type.", .internal = TRUE)
+    cli::cli_abort("Unknown step type: {class(step)}.", .internal = TRUE)
   }
 }
 
@@ -166,13 +166,13 @@ apply_single_selector <- function(driver, element, step) {
     selectors <- lapply(names(step), function(name) list(type = name, value = step[[name]]))
 
     elements <- elem_common(lapply(selectors, function(selector) {
-      find_actual_element(
+      find_actual_elements(
         element,
         type = selector$type,
         value = selector$value,
         driver = driver
       )
-    }))
+    }), driver = driver)
 
     get_item(elements, 1)
   }
@@ -188,5 +188,5 @@ apply_multiple_selector <- function(driver, element, step) {
       value = selector$value,
       driver = driver
     )
-  }))
+  }), driver = driver)
 }

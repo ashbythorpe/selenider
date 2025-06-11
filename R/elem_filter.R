@@ -79,12 +79,8 @@
 elem_filter <- function(x, ...) {
   check_class(x, "selenider_elements")
 
-  if (elements_is_empty(x)) {
-    return(x)
-  }
-
   exprs <- enquos(...)
-  filters <- make_filters(exprs)
+  filters <- make_filters(x, exprs)
 
   x$steps <- append(x$steps, filters)
 
@@ -97,12 +93,8 @@ elem_filter <- function(x, ...) {
 elem_find <- function(x, ...) {
   check_class(x, "selenider_elements")
 
-  if (elements_is_empty(x)) {
-    stop_find_empty_elements()
-  }
-
   exprs <- enquos(...)
-  filters <- make_filters(exprs, find_last = TRUE)
+  filters <- make_filters(x, exprs, find_last = TRUE)
 
   x$steps <- append(x$steps, filters)
 
@@ -119,14 +111,6 @@ elem_find <- function(x, ...) {
   i <- stats::na.omit(i)
   i <- i[i != 0]
 
-  if (elements_is_empty(x)) {
-    if (all(i > 0L)) {
-      warn_subscript_max_length(max(i), 0)
-    }
-
-    return(x)
-  }
-
   if (length(i) == 0) {
     return(x)
   }
@@ -135,7 +119,7 @@ elem_find <- function(x, ...) {
 
   filter <- new_subset(i)
 
-  x$steps <- append(x$steps, filter)
+  x$steps <- append(x$steps, list(filter))
 
   x
 }
@@ -161,13 +145,9 @@ elem_find <- function(x, ...) {
     stop_subscript_0()
   }
 
-  if (elements_is_empty(x)) {
-    stop_subscript_max_length(i, 0L)
-  }
-
   filter <- new_index(i)
 
-  x$steps <- append(x$steps, filter)
+  x$steps <- append(x$steps, list(filter))
 
   class(x) <- "selenider_element"
 
@@ -185,7 +165,7 @@ check_subscript_vctrs <- function(i, call = rlang::caller_env()) {
 }
 
 
-make_filters <- function(exprs, find_last = FALSE) {
+make_filters <- function(x, exprs, find_last = FALSE) {
   if (length(exprs) == 0) {
     if (find_last) {
       return(list(new_index(1)))

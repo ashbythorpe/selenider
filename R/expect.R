@@ -229,7 +229,7 @@ elem_expect <- function(x, ..., testthat = NULL, timeout = NULL) {
       result = val,
       timeout = timeout,
       testthat = testthat,
-      original_env = quo_get_env(x),
+      original_env = quo_get_env(x)
     )
   }
 
@@ -297,7 +297,8 @@ diagnose_condition <- function(x,
   call_name <- if (is_call_simple(call)) call_name(call) else ""
 
   expr_print <- paste0(
-    expr_deparse(quo_squash(original_expr)), collapse = "\n"
+    expr_deparse(quo_squash(original_expr)),
+    collapse = "\n"
   )
 
   if (timeout == 0) {
@@ -608,8 +609,7 @@ diagnose_condition_attribute <- function(condition,
     negated_call_name <- negate_call_name(call_name)
   }
 
-  negated_call_name <- switch(
-    negated_call_name,
+  negated_call_name <- switch(negated_call_name,
     "has attr" = "is",
     "attr contains" = "contains",
     "does not have attr" = "is not",
@@ -700,8 +700,7 @@ diagnose_condition_css <- function(condition,
     negated_call_name <- negate_call_name(call_name)
   }
 
-  negated_call_name <- switch(
-    negated_call_name,
+  negated_call_name <- switch(negated_call_name,
     "has css property" = "is",
     "does not have css property" = "is not"
   )
@@ -754,12 +753,11 @@ diagnose_condition_length <- function(condition,
   elements <- if (value == 1) "element" else "elements"
   actual_length <- get_or_null(x, elem_size, timeout = 0)
 
-  cond <- switch(
-    negated_call_name,
+  cond <- switch(negated_call_name,
     "has length" = paste("contains", value, elements),
     "does not have length" = paste("does not contain", value, elements),
     "has at least" = paste("contains at least", value, elements),
-    "does not have at least" = paste("contains less than", value, elements),
+    "does not have at least" = paste("contains less than", value, elements)
   )
 
   if (is.null(actual_length)) {

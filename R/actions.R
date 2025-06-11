@@ -529,7 +529,7 @@ hover_chromote <- function(element, driver) {
     type = "mouseMoved",
     x = x,
     y = y,
-    button = "middle",
+    button = "middle"
   )
 }
 

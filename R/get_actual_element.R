@@ -95,19 +95,19 @@ get_element <- function(x) {
 
   if (length(x$steps) == 0) {
     if (is.null(element)) {
-      cli::cli_abort("Element does not have any steps", )
+      cli::cli_abort("Element does not have any steps", .internal = TRUE)
     }
 
     return(element)
   }
 
   for (step in x$steps) {
-    result <- apply_step(x$driver, element, step)
+    element <- apply_step(x$driver, element, step)
 
-    if (is.null(result)) {
+    if (is.null(element)) {
       return(NULL)
     }
   }
 
-  result
+  element
 }

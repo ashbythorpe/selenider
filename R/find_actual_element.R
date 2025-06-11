@@ -78,6 +78,10 @@ find_actual_elements <- function(x, type, value, driver) {
     type
   )
 
+  if (is.null(x)) {
+    x <- driver
+  }
+
   if (inherits_any(x, c("webElement", "mock_element"))) {
     x$findChildElements(using = using, value = value)
   } else if (inherits_any(x, c("remoteDriver", "mock_client"))) {

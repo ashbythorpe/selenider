@@ -112,7 +112,7 @@ new_selenider_elements <- function(session, driver, driver_id, timeout, steps = 
     driver_id = driver_id,
     element = NULL,
     timeout = timeout,
-    steps = steps,
+    steps = steps
   )
 
   class(res) <- c("selenider_elements", "list")

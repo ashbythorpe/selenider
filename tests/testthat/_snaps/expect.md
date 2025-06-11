@@ -256,6 +256,8 @@
     Code
       elem_expect(elem_children(s(".random-class")), function(x) elem_name(x[[1]]) ==
         "biv", testthat = FALSE, timeout = 0.1)
+    Output
+      [1] FALSE
     Condition
       Error in `elem_expect()`:
       ! Condition failed after waiting for 0.1 seconds:
@@ -321,12 +323,6 @@
       Condition failed after waiting for 0.1 seconds:
       `is_present`
       i `x` is not present.
-      
-      Where `x` is:
-      A selenider element selecting:
-      The first element with css selector ".random-class".
-      
-      
 
 ---
 
@@ -339,10 +335,4 @@
       i `x` is not visible.
       Caused by error in `is_visible()`:
       ! `x` does not exist in the DOM.
-      
-      Where `x` is:
-      A selenider element selecting:
-      The first element with css selector ".random-class".
-      
-      
 

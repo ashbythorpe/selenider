@@ -31,7 +31,7 @@ elem_name <- function(x, timeout = NULL) {
   element <- get_element_for_property(
     x,
     action = "get the tag name of {.arg x}",
-    timeout = timeout,
+    timeout = timeout
   )
 
   element_name(element, x$session, x$driver)
@@ -79,7 +79,7 @@ elem_text <- function(x, timeout = NULL) {
   element <- get_element_for_property(
     x,
     action = "get the text inside {.arg x}",
-    timeout = timeout,
+    timeout = timeout
   )
 
   element_text(element, x$session, x$driver)

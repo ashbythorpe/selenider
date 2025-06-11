@@ -281,7 +281,7 @@ scroll_by <- function(top = 0, left = 0, session = NULL) {
       x = 0,
       y = 0,
       deltaX = left,
-      deltaY = top,
+      deltaY = top
     )
   } else {
     execute_js_expr_internal(

@@ -81,7 +81,7 @@ find_element.selenider_session <- function(x,
 
   selector <- new_single_selector(css, xpath, id, class_name, name)
 
-  new_selenider_element(x$session, x$driver, x$driver_id, x$timeout, list(selector))
+  new_selenider_element(x$session, x$driver, x$id, x$timeout, list(selector))
 }
 
 #' @export

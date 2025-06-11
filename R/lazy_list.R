@@ -352,7 +352,9 @@ lazy_flatten <- function(x) {
       inner_value <- next_value_start(value)
 
       while (!coro::is_exhausted(inner_value)) {
-        coro::yield(inner_value)
+        if (!is.null(inner_value)) {
+          coro::yield(inner_value)
+        }
         inner_value <- next_value(value)
       }
 
@@ -438,44 +440,33 @@ lazy_intersect_by <- function(x, .f) {
   lazy_list(generator)
 }
 
-#' Find all unique values in a list of lazy lists.
+#' Find all unique values in a lazy list.
 #'
-#' Find all unique values that occur in at least one lazy list in a set,
-#' assuming that the individual lazy lists do not have duplicate values.
-#'
-#' @param x A list of lazy lists.
+#' @param x A lazy list.
 #' @param .f A comparison function to use.
 #'
 #' @returns A single lazy list containing the new values.
 #'
 #' @noRd
 lazy_unique <- function(x, .f) {
-  if (length(x) == 0) {
-    return(NULL)
-  } else if (length(x) == 1) {
-    return(x[[1]])
-  }
-
   force(.f)
-  x <- lapply(x, check_lazylist)
+  x <- check_lazylist(x)
 
   generator <- coro::generator(function() {
     seen <- list()
-    for (l in x) {
-      local_seen <- list()
+    value <- next_value_start(x)
 
-      value <- next_value_start(l)
-
-      while (!coro::is_exhausted(value)) {
-        if (!element_in_eager(value, seen, .f)) {
-          coro::yield(value)
-          local_seen <- append(local_seen, list(value))
-        }
-        value <- next_value(l)
+    while (!coro::is_exhausted(value)) {
+      print(value)
+      if (!element_in_eager(value, seen, .f)) {
+        coro::yield(value)
+        seen[[length(seen) + 1]] <- value
       }
 
-      seen <- c(seen, local_seen)
+      value <- next_value(x)
     }
+
+    coro::exhausted()
   })
 
   lazy_list(generator)
@@ -520,6 +511,8 @@ element_in_lazy <- function(x, l, .f) {
 #' @noRd
 element_in_eager <- function(x, l, .f) {
   for (a in l) {
+    print(x)
+    print(a)
     if (.f(x, a)) {
       return(TRUE)
     }

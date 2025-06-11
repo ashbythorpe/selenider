@@ -23,16 +23,6 @@ test_that("Errors are thrown correctly", {
 
   expect_error(ss(".class")[[0]], class = "selenider_error_subscript_zero")
 
-  expect_error(
-    ss(".class")[1:5][[6]],
-    class = "selenider_error_subscript_max_length"
-  )
-
-  expect_warning(
-    ss(".class")[1:5][6],
-    class = "selenider_warning_subscript_max_length"
-  )
-
   expect_error(elem_expect(s(".random-class")), class = "selenider_error_no_conditions")
 
   expect_error(elem_expect(s(".random-class"), exists), class = "selenider_error_base_exists")
@@ -45,13 +35,6 @@ test_that("Errors are thrown correctly", {
   expect_error(
     selenider_session(driver = 1),
     class = "selenider_error_invalid_driver"
-  )
-
-  empty_elements <- suppressWarnings(ss(".class1")[0])
-
-  expect_error(
-    elem_find(empty_elements, is_visible),
-    class = "selenider_error_empty_elements_find"
   )
 
   element_1 <- s(".class1")

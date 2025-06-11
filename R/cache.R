@@ -97,7 +97,7 @@ cache_element <- function(x, timeout = NULL) {
   element <- get_element_for_property(
     x,
     action = "cache {.arg x}",
-    timeout = timeout,
+    timeout = timeout
   )
 
   x$element <- element
