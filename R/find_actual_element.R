@@ -9,7 +9,17 @@
 #' A backendNodeId (chromote) or a WebElement (selenium)
 #'
 #' @noRd
-find_actual_element <- function(x, using, value, driver) {
+find_actual_element <- function(x, type, value, driver) {
+  using <- switch(type,
+    css = "css selector",
+    class_name = "class name",
+    type
+  )
+
+  if (is.null(x)) {
+    x <- driver
+  }
+
   if (inherits_any(x, c("webElement", "mock_element"))) {
     try_fetch(
       suppressMessages(x$findChildElement(using = using, value = value)),
@@ -33,13 +43,13 @@ find_actual_element <- function(x, using, value, driver) {
       }
     )
   } else if (inherits_any(x, c("SeleniumSession", "WebElement"))) {
-    if (!using %in% c("css selector", "xpath", "tag name", "link text")) {
-      value <- selector_to_css(using, value)
+    if (!using %in% c("css", "xpath", "tag name", "link text")) {
+      value <- selector_to_css(type, value)
       using <- "css selector"
     }
 
     try_fetch(
-      x$find_element(using = using, value = value),
+      x$find_element(using = type, value = value),
       error = function(cnd) {
         if (grepl("No such element", cnd$message, fixed = TRUE)) {
           NULL
@@ -49,18 +59,66 @@ find_actual_element <- function(x, using, value, driver) {
       }
     )
   } else if (inherits(x, "ChromoteSession")) {
-    find_element_chromote_session(x, using, value)
+    find_element_chromote_session(x, type, value)
   } else if (is.numeric(x)) {
-    find_element_chromote_node(x, using, value, driver)
+    find_element_chromote_node(x, type, value, driver)
   }
 }
 
-find_element_chromote_session <- function(x, using, value) {
-  if (using == "xpath") {
+#' Find every occurance of an element using a selector
+#'
+#' Same as `find_element()`, but returns every element instead of just the
+#' first one.
+#'
+#' @noRd
+find_actual_elements <- function(x, type, value, driver) {
+  using <- switch(type,
+    css = "css selector",
+    class_name = "class name",
+    type
+  )
+
+  if (inherits_any(x, c("webElement", "mock_element"))) {
+    x$findChildElements(using = using, value = value)
+  } else if (inherits_any(x, c("remoteDriver", "mock_client"))) {
+    x$findElements(using = using, value = value)
+  } else if (inherits(x, "ChromoteSession")) {
+    if (type == "xpath") {
+      return(use_xpath_chromote(value, x, NULL, multiple = TRUE))
+    }
+
+    selector <- selector_to_css(type, value)
+    document <- x$DOM$getDocument()
+    node_ids <- x$DOM$querySelectorAll(document$root$nodeId, selector)$nodeIds
+    lapply(node_ids, chromote_backend_id, driver = x)
+  } else if (inherits_any(x, c("SeleniumSession", "WebElement"))) {
+    if (!type %in% c("css selector", "xpath", "tag name", "link text")) {
+      value <- selector_to_css(type, value)
+      using <- "css selector"
+    }
+
+    x$find_elements(using = type, value = value)
+  } else if (is.numeric(x)) {
+    if (type == "xpath") {
+      return(use_xpath_chromote(value, x, driver, multiple = TRUE))
+    }
+
+    selector <- selector_to_css(type, value)
+    node_ids <- driver$DOM$querySelectorAll(
+      chromote_node_id(backend_id = x, driver = driver),
+      selector
+    )$nodeIds
+    lapply(node_ids, chromote_backend_id, driver = driver)
+  }
+}
+
+
+find_element_chromote_session <- function(x, type, value) {
+  if (type == "xpath") {
     return(use_xpath_chromote(value, x, NULL))
   }
 
-  selector <- selector_to_css(using, value)
+  selector <- selector_to_css(type, value)
   document <- x$DOM$getDocument()
 
   node_id <- try_fetch(
@@ -84,12 +142,12 @@ find_element_chromote_session <- function(x, using, value) {
   chromote_backend_id(node_id, driver = x)
 }
 
-find_element_chromote_node <- function(x, using, value, driver) {
-  if (using == "xpath") {
+find_element_chromote_node <- function(x, type, value, driver) {
+  if (type == "xpath") {
     return(use_xpath_chromote(value, x, driver = driver))
   }
 
-  selector <- selector_to_css(using, value)
+  selector <- selector_to_css(type, value)
   node_id <- try_fetch(
     driver$DOM$querySelector(
       chromote_node_id(backend_id = x, driver = driver),
@@ -114,55 +172,13 @@ find_element_chromote_node <- function(x, using, value, driver) {
   chromote_backend_id(node_id, driver = driver)
 }
 
-#' Find every occurance of an element using a selector
-#'
-#' Same as `find_element()`, but returns every element instead of just the
-#' first one.
-#'
-#' @noRd
-find_actual_elements <- function(x, using, value, driver) {
-  if (inherits_any(x, c("webElement", "mock_element"))) {
-    x$findChildElements(using = using, value = value)
-  } else if (inherits_any(x, c("remoteDriver", "mock_client"))) {
-    x$findElements(using = using, value = value)
-  } else if (inherits(x, "ChromoteSession")) {
-    if (using == "xpath") {
-      return(use_xpath_chromote(value, x, NULL, multiple = TRUE))
-    }
-
-    selector <- selector_to_css(using, value)
-    document <- x$DOM$getDocument()
-    node_ids <- x$DOM$querySelectorAll(document$root$nodeId, selector)$nodeIds
-    lapply(node_ids, chromote_backend_id, driver = x)
-  } else if (inherits_any(x, c("SeleniumSession", "WebElement"))) {
-    if (!using %in% c("css selector", "xpath", "tag name", "link text")) {
-      value <- selector_to_css(using, value)
-      using <- "css selector"
-    }
-
-    x$find_elements(using = using, value = value)
-  } else if (is.numeric(x)) {
-    if (using == "xpath") {
-      return(use_xpath_chromote(value, x, driver, multiple = TRUE))
-    }
-
-    selector <- selector_to_css(using, value)
-    node_ids <- driver$DOM$querySelectorAll(
-      chromote_node_id(backend_id = x, driver = driver),
-      selector
-    )$nodeIds
-    lapply(node_ids, chromote_backend_id, driver = driver)
-  }
-}
-
-selector_to_css <- function(using, value) {
-  switch(using,
-    "css selector" = value,
+selector_to_css <- function(type, value) {
+  switch(type,
+    "css" = value,
     "id" = paste0("#", value),
-    "class name" = paste0(".", value),
+    "class_name" = paste0(".", value),
     "name" = paste0("[name = '", value, "']"),
-    "link text" = paste0("a:contains(^", value, "$)"),
-    stop(paste0("Unexpected `using` value: ", using))
+    cli::cli_abort(paste0("Unexpected `type` value: ", type), .internal = TRUE)
   )
 }
 
@@ -172,12 +188,12 @@ selector_to_css <- function(using, value) {
 #'
 #' @noRd
 use_xpath_chromote <- function(xpath, element, driver, multiple = FALSE) {
-  xpath <- escape_single_quotes(xpath)
+  xpath <- jsonlite::toJSON(xpath, auto_unbox = TRUE)
   if (multiple) {
     if (is.null(driver)) {
       driver <- element
       array_object_id <- driver$Runtime$evaluate(paste0("(() => {
-        let xpath = document.evaluate('", xpath, "', document, null, 5, null);
+        let xpath = document.evaluate(", xpath, ", document, null, 5, null);
 
         let nodes = [];
         for (let node = xpath.iterateNext(); node; node = xpath.iterateNext()) {
@@ -193,7 +209,7 @@ use_xpath_chromote <- function(xpath, element, driver, multiple = FALSE) {
       )
 
       array_object_id <- driver$Runtime$callFunctionOn(paste0("function() {
-        let xpath = document.evaluate('", xpath, "', this, null, 5, null);
+        let xpath = document.evaluate(", xpath, ", this, null, 5, null);
 
         let nodes = [];
         for (let node = xpath.iterateNext(); node; node = xpath.iterateNext()) {
@@ -222,7 +238,7 @@ use_xpath_chromote <- function(xpath, element, driver, multiple = FALSE) {
     if (is.null(driver)) {
       driver <- element
       result <- driver$Runtime$evaluate(paste0("(() => {
-        let xpath = document.evaluate('", xpath, "', document, null, 9, null);
+        let xpath = document.evaluate(", xpath, ", document, null, 9, null);
 
         let node = xpath.singleNodeValue;
 
@@ -235,7 +251,7 @@ use_xpath_chromote <- function(xpath, element, driver, multiple = FALSE) {
       )
 
       result <- driver$Runtime$callFunctionOn(paste0("function() {
-        let xpath = document.evaluate('", xpath, "', this, null, 9, null);
+        let xpath = document.evaluate(", xpath, ", this, null, 9, null);
 
         let node = xpath.singleNodeValue;
 

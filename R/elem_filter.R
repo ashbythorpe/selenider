@@ -84,36 +84,9 @@ elem_filter <- function(x, ...) {
   }
 
   exprs <- enquos(...)
-  arg_names <- lapply(
-    c("a1", "a2", "a3", "a4"),
-    function(x) make_elem_name(exprs, x)
-  )
-  elem_name <- make_elem_name(exprs)
-  elem_expr <- filter_elem_name(elem_name, arg_names)
-  calls <- lapply(exprs, parse_condition, elem_expr)
+  filters <- make_filters(exprs)
 
-  functions <- mapply(
-    condition_to_function,
-    calls,
-    exprs,
-    MoreArgs = list(
-      elem_name = elem_name,
-      arg_names = arg_names,
-      session = x$session,
-      driver = x$driver,
-      driver_id = x$driver_id,
-      timeout = x$timeout
-    ),
-    SIMPLIFY = FALSE
-  )
-
-  selectors <- x$selectors
-
-  x$selectors[[length(selectors)]]$filter <-
-    c(x$selectors[[length(selectors)]]$filter, functions)
-
-  x$selectors[[length(x$selectors)]]$to_be_filtered <-
-    x$selectors[[length(x$selectors)]]$to_be_filtered + 1
+  x$steps <- append(x$steps, filters)
 
   x
 }
@@ -122,13 +95,16 @@ elem_filter <- function(x, ...) {
 #'
 #' @export
 elem_find <- function(x, ...) {
+  check_class(x, "selenider_elements")
+
   if (elements_is_empty(x)) {
     stop_find_empty_elements()
   }
 
-  x <- elem_filter(x, ...)
+  exprs <- enquos(...)
+  filters <- make_filters(exprs, find_last = TRUE)
 
-  x <- add_numeric_filter(x, 1, max_subscript_error = TRUE, multiple = FALSE)
+  x$steps <- append(x$steps, filters)
 
   class(x) <- "selenider_element"
 
@@ -152,22 +128,16 @@ elem_find <- function(x, ...) {
   }
 
   if (length(i) == 0) {
-    return(empty_selenider_elements(x$driver, x$driver_id))
+    return(x)
   }
 
   check_subscript_vctrs(i)
 
-  add_numeric_filter(x, i)
-}
+  filter <- new_subset(i)
 
-# Checks that `i` is invalid using vctrs
-# If `i` can be used to subset a vector, then it can be used to subset
-# a selenider element.
-check_subscript_vctrs <- function(i, call = rlang::caller_env()) {
-  len <- max(abs(i))
-  x <- rep.int(1L, len)
-  # Check that i is a valid subscript
-  vctrs::vec_slice(x, i, error_call = call)
+  x$steps <- append(x$steps, filter)
+
+  x
 }
 
 #' @rdname elem_filter
@@ -184,7 +154,6 @@ check_subscript_vctrs <- function(i, call = rlang::caller_env()) {
     stop_subscript_length(i)
   }
 
-
   check_number_whole(i)
   i <- vctrs::vec_cast(i, integer())
 
@@ -196,72 +165,68 @@ check_subscript_vctrs <- function(i, call = rlang::caller_env()) {
     stop_subscript_max_length(i, 0L)
   }
 
-  x <- add_numeric_filter(x, i, max_subscript_error = TRUE, multiple = FALSE)
+  filter <- new_index(i)
+
+  x$steps <- append(x$steps, filter)
 
   class(x) <- "selenider_element"
 
   x
 }
 
-add_numeric_filter <- function(x,
-                               i,
-                               call = rlang::caller_env(),
-                               max_subscript_error = FALSE,
-                               multiple = TRUE) {
-  selectors <- x$selectors
-
-  filters <- selectors[[length(selectors)]]$filter
-
-  is_numeric_and_positive <- function(x) {
-    is.numeric(x) && length(x) > 0 && all(x > 0)
-  }
-  numeric_filters <- Filter(is_numeric_and_positive, filters)
-
-  min_length <- if (length(numeric_filters) != 0) {
-    min(lengths(numeric_filters))
-  } else {
-    Inf
-  }
-
-  max_sub <- max(i, na.rm = TRUE)
-
-  if (max_sub >= min_length) {
-    if (max_subscript_error) {
-      stop_subscript_max_length(max_sub, min_length, call = call)
-    } else {
-      warn_subscript_max_length(max_sub, min_length, call = call)
-    }
-  }
-
-  if (length(filters) != 0 && is.numeric(filters[[length(filters)]])) {
-    filter <- filters[[length(filters)]]
-    if (all(filter > 0)) {
-      new_filter <- filter[i]
-    } else if (all(i > 0)) {
-      new_filter <- seq_len(max(i, na.rm = TRUE) + length(filter))[filter][i]
-    } else {
-      new_filter <- unique(c(filter, i))
-    }
-
-    new_filter <- stats::na.omit(new_filter)
-
-    if (length(new_filter) == 0) {
-      return(empty_selenider_elements(x$driver, x$driver_id))
-    }
-
-    x$selectors[[length(selectors)]]$filter[[length(filters)]] <- new_filter
-  } else {
-    x$selectors[[length(selectors)]]$filter <-
-      append(x$selectors[[length(selectors)]]$filter, list(i))
-  }
-
-  x$selectors[[length(x$selectors)]]$to_be_filtered <-
-    x$selectors[[length(x$selectors)]]$to_be_filtered + 1
-
-  x$selectors[[length(x$selectors)]]$multiple <- multiple
-
-  x
+# Checks that `i` is invalid using vctrs
+# If `i` can be used to subset a vector, then it can be used to subset
+# a selenider element.
+check_subscript_vctrs <- function(i, call = rlang::caller_env()) {
+  len <- max(abs(i))
+  x <- rep.int(1L, len)
+  # Check that i is a valid subscript
+  vctrs::vec_slice(x, i, error_call = call)
 }
+
+
+make_filters <- function(exprs, find_last = FALSE) {
+  if (length(exprs) == 0) {
+    if (find_last) {
+      return(list(new_index(1)))
+    } else {
+      return(list())
+    }
+  }
+
+  arg_names <- lapply(
+    c("a1", "a2", "a3", "a4"),
+    function(x) make_elem_name(exprs, x)
+  )
+  elem_name <- make_elem_name(exprs)
+  elem_expr <- filter_elem_name(elem_name, arg_names)
+  calls <- lapply(exprs, parse_condition, elem_expr)
+
+  functions <- mapply(
+    condition_to_function,
+    calls,
+    exprs,
+    MoreArgs = list(
+      elem_name = elem_name,
+      arg_names = arg_names,
+      session = x$session,
+      driver = x$driver,
+      driver_id = x$driver_id,
+      timeout = x$timeout
+    ),
+    SIMPLIFY = FALSE
+  )
+
+  filters <- lapply(head(functions), function(x) new_filter(x))
+  last_function <- functions[[length(functions)]]
+
+  if (find_last) {
+    append(filters, list(new_find(last_function)))
+  } else {
+    append(filters, list(new_filter(last_function)))
+  }
+}
+
 
 condition_to_function <- function(x,
                                   original_call,

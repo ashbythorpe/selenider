@@ -76,8 +76,9 @@ find_elements.selenider_session <- function(x,
                                             name = NULL,
                                             ...) {
   check_dots_used()
+  check_selector_args(css, xpath, id, class_name, name)
 
-  selector <- new_selector(css, xpath, id, class_name, name, filter = list(), multiple = TRUE)
+  selector <- new_multiple_selector(css, xpath, id, class_name, name)
 
   new_selenider_elements(x, selector)
 }
@@ -93,20 +94,11 @@ find_elements.selenider_element <- function(x,
                                             name = NULL,
                                             ...) {
   check_dots_used()
+  check_selector_args(css, xpath, id, class_name, name)
 
-  selector <- new_selector(
-    css,
-    xpath,
-    id,
-    class_name,
-    name,
-    filter = list(),
-    multiple = TRUE
-  )
+  selector <- new_multiple_selector(css, xpath, id, class_name, name)
 
-  x$selectors <- append(x$selectors, list(selector))
-
-  x$to_be_found <- x$to_be_found + 1
+  x$steps <- append(x$steps, list(selector))
 
   class(x) <- c("selenider_elements", "list")
 
@@ -120,8 +112,7 @@ new_selenider_elements <- function(session, selector) {
     driver_id = session$id,
     element = NULL,
     timeout = session$timeout,
-    selectors = list(selector),
-    to_be_found = 1
+    steps = list(selector),
   )
 
   class(res) <- c("selenider_elements", "list")

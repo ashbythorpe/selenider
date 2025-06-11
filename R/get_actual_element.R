@@ -199,9 +199,7 @@ apply_selectors <- function(x, element) {
 
   selector <- selectors[[length(selectors)]]
   elements <- use_selector(selector, element, driver = x$driver)
-  result <- filter_elements(elements, selector$filter, multiple = selector$multiple)
-
-  return(result)
+  filter_elements(elements, selector$filter, multiple = selector$multiple)
 }
 
 filter_elements <- function(elements, filter, multiple = FALSE) {

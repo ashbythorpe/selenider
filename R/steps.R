@@ -18,11 +18,11 @@ new_single_selector <- function(css = NULL,
   args
 }
 
-new_single_selector <- function(css = NULL,
-                                xpath = NULL,
-                                id = NULL,
-                                class_name = NULL,
-                                name = NULL) {
+new_multiple_selector <- function(css = NULL,
+                                  xpath = NULL,
+                                  id = NULL,
+                                  class_name = NULL,
+                                  name = NULL) {
   args <- list(
     css = css,
     xpath = xpath,
@@ -116,4 +116,79 @@ new_find <- function(filter) {
   class(res) <- c("selenider_filter", "selenider_find")
 
   res
+}
+
+
+
+apply_step <- function(driver, element, step) {
+  if (inherits(step, "selenider_filter") && is.null(element)) {
+    cli::cli_abort("Cannot apply filter to `NULL` element.", .internal = TRUE)
+  }
+
+  if (inherits(step, "selenider_single_selector")) {
+    apply_single_selector(driver, element, step)
+  } else if (inherits(step, "selenider_multiple_selector")) {
+    apply_multiple_selector(driver, element, step)
+  } else if (inherits(step, "selenider_single_inner_selector")) {
+    lazy_map(element, function(element) {
+      apply_single_selector(driver, element, step)
+    })
+  } else if (inherits(step, "selenider_multiple_inner_selector")) {
+    lazy_flatten(lazy_map(element, function(element) {
+      apply_multiple_selector(driver, element, step)
+    }))
+  } else if (inherits(step, "selenider_flatten")) {
+    cli::cli_abort("Not implemented yet", .internal = TRUE)
+
+    lazy_flatten(lazy_map(step$elements, function(element) {
+      # TODO: Fill this in
+    }))
+  } else if (inherits(step, "selenider_index")) {
+    get_item(element, step$index)
+  } else if (inherits(step, "selenider_subset")) {
+    get_items(element, step$index)
+  } else if (inherits(step, "selenider_predicate_filter")) {
+    lazy_filter(element, step$filter)
+  } else if (inherits(step, "selenider_find")) {
+    get_item(lazy_filter(element, step$filter), 1)
+  } else {
+    cli::cli_abort("Unknown step type.", .internal = TRUE)
+  }
+}
+
+apply_single_selector <- function(driver, element, step) {
+  if (length(step) == 1) {
+    find_actual_element(
+      element,
+      using = names(step),
+      value = step[[1]],
+      driver = driver
+    )
+  } else {
+    selectors <- lapply(names(step), function(name) list(type = name, value = step[[name]]))
+
+    elements <- elem_common(lapply(selectors, function(selector) {
+      find_actual_element(
+        element,
+        using = selector$type,
+        value = selector$value,
+        driver = driver
+      )
+    }))
+
+    get_item(elements, 1)
+  }
+}
+
+apply_multiple_selector <- function(driver, element, step) {
+  selectors <- lapply(names(step), function(name) list(type = name, value = step[[name]]))
+
+  elem_common(lapply(selectors, function(selector) {
+    find_actual_elements(
+      element,
+      using = selector$type,
+      value = selector$value,
+      driver = driver
+    )
+  }))
 }
