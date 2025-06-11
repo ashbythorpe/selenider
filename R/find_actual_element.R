@@ -49,7 +49,7 @@ find_actual_element <- function(x, type, value, driver) {
     }
 
     try_fetch(
-      x$find_element(using = type, value = value),
+      x$find_element(using = using, value = value),
       error = function(cnd) {
         if (grepl("No such element", cnd$message, fixed = TRUE)) {
           NULL
@@ -101,7 +101,7 @@ find_actual_elements <- function(x, type, value, driver) {
       using <- "css selector"
     }
 
-    x$find_elements(using = type, value = value)
+    x$find_elements(using = using, value = value)
   } else if (is.numeric(x)) {
     if (type == "xpath") {
       return(use_xpath_chromote(value, x, driver, multiple = TRUE))

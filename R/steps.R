@@ -139,7 +139,12 @@ apply_step <- function(driver, element, step) {
     }), driver = driver)
   } else if (inherits(step, "selenider_flatten")) {
     lazy_flatten(lazy_map(step$elements, function(element) {
-      get_element(element)
+      result <- get_element(element)
+      if (inherits(element, "selenider_element")) {
+        list(result)
+      } else {
+        result
+      }
     }))
   } else if (inherits(step, "selenider_index")) {
     get_item(element, step$index)
