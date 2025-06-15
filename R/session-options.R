@@ -22,13 +22,24 @@
 #'   that you won't actually be able to see the browser as you control it.
 #'   For debugging purposes and interactive use, it is often useful to set
 #'   this to `FALSE`.
+#' @param user_agent A string containing a custom user agent to use for all
+#'   requests.
+#' @param proxy_server A proxy server to use for all requests. Either a string
+#'   of the form `"HOST:PORT"`, or a list containing the `host` and `port`.
+#'   Optionally, `username` and `password` can be provided if the proxy server
+#'   requires authentication.
+#' @param extra_args A character vector of arguments. In `chromote_options()`,
+#'   these are passed to the Chrome process. In `selenium_client_options()`,
+#'   these are passed to the Selenium server process.
 #' @param parent The parent chromote session.
 #' @param width,height,targetId,wait_,auto_events,mobile Passed into
 #'   [chromote::ChromoteSession$new()][chromote::ChromoteSession].
 #'
-#'
 #' @export
 chromote_options <- function(headless = TRUE,
+                             user_agent = NULL,
+                             proxy_server = NULL,
+                             extra_args = NULL,
                              parent = NULL,
                              width = 992,
                              height = 1323,
@@ -37,6 +48,9 @@ chromote_options <- function(headless = TRUE,
                              auto_events = NULL,
                              mobile = FALSE) {
   check_bool(headless)
+  check_string(user_agent, allow_null = TRUE)
+  proxy_server <- check_proxy_server(proxy_server)
+  check_string(extra_args, allow_null = TRUE)
   check_class(parent, "Chromote", allow_null = TRUE)
   check_number_whole(width)
   check_number_whole(height)
@@ -45,8 +59,23 @@ chromote_options <- function(headless = TRUE,
   check_bool(auto_events, allow_null = TRUE)
   check_bool(mobile)
 
+  if (!is.null(parent)) {
+    if (!is.null(proxy_server)) {
+      rlang::warn(c(
+        "`proxy_server` requires passing in arguments to the Chrome process",
+        "x" = "Since `parent` was provided, `proxy_server` will be ignored."
+      ))
+    }
+    if (!is.null(extra_args)) {
+      rlang::warn("Since `parent` was provided, `extra_args` will be ignored.")
+    }
+  }
+
   result <- list(
     headless = headless,
+    user_agent = user_agent,
+    proxy_server = proxy_server,
+    extra_args = extra_args,
     parent = parent,
     width = width,
     height = height,
@@ -88,7 +117,7 @@ selenium_options <- function(client_options = selenium_client_options(),
 #' @param version The version of Selenium server to use.
 #' @param host The host to use.
 #' @param port The port number to use.
-#' @param selenium_manager,interactive,stdout,stderr,verbose,temp,path,extra_args,...
+#' @param selenium_manager,interactive,stdout,stderr,verbose,temp,path,...
 #'   Passed into [selenium::selenium_server()].
 #'
 #' @export
