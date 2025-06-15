@@ -115,6 +115,73 @@ One example of when this may be useful is when you are managing the Selenium
 server using Docker.
 }
 
+\subsection{Using a proxy server}{
+
+When using chromote, the \code{proxy_server} argument to \code{\link[=chromote_options]{chromote_options()}}
+can be used to specify a proxy server to use.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{session <- selenider_session(
+  "chromote",
+  options = chromote_options(
+    proxy_server = list(
+      host = "HOST_IP"
+      port = PORT,
+      username = "USERNAME", # Leave blank if authentication is not required
+      password = "PASSWORD"
+    )
+  )
+)
+}\if{html}{\out{</div>}}
+
+With selenium, you have to use the \code{capabilities} client option. Usage
+varies depending on the browser you are using.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Chrome
+session <- selenider_session(
+  "selenium",
+  browser = "chrome",
+  options = selenium_options(
+    client_options = selenium_client_options(
+      capabilities = selenium::chrome_options(
+        args = c("--proxy-server=HOST:PORT")
+      )
+    )
+  )
+)
+
+# Firefox
+session <- selenider_session(
+  "selenium",
+  browser = "firefox",
+  options = selenium_options(
+    client_options = selenium_client_options(
+      capabilities = selenium::firefox_options(
+        prefs = list(
+          "network.proxy.type" = 1,
+          "network.proxy.socks" = "HOST",
+          "network.proxy.socks_port" = PORT,
+          "network.proxy.socks_remote_dns" = FALSE
+        )
+      )
+    )
+  )
+)
+
+# Edge
+session <- selenider_session(
+  "selenium",
+  browser = "edge",
+  options = selenium_options(
+    client_options = selenium_client_options(
+      capabilities = selenium::edge_options(
+        args = c("--proxy-server=HOST:PORT")
+      )
+    )
+  )
+)
+}\if{html}{\out{</div>}}
+}
+
 \subsection{Store the Selenium server persistently}{
 
 By default, selenium will download and store the Selenium server JAR file
