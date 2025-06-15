@@ -163,6 +163,12 @@ test_that("actions work", {
   elem_set_value(editable, "my text")
 
   elem_expect(editable_output, has_text("my text"))
+
+  link <- s("#google-link")
+
+  elem_click(link, wait_for_navigation = TRUE)
+
+  expect_equal(current_url(), "https://www.google.com/")
 })
 
 test_that("get_element_for_selection() works", {
