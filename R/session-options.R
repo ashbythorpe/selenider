@@ -48,34 +48,7 @@ chromote_options <- function(headless = TRUE,
                              auto_events = NULL) {
   check_bool(headless)
   check_string(user_agent, allow_null = TRUE)
-
-  if (!is.null(proxy_server)) {
-    if (is_string(proxy_server)) {
-      proxy_server <- list(server = url)
-    } else if (is.list(proxy_server)) {
-      check_string(proxy_server$host)
-      check_number_whole(proxy_server$port)
-
-      # TODO: Require chromote version that allows .enable() methods
-      check_string(proxy_server$username, allow_null = TRUE)
-      check_string(proxy_server$password, allow_null = TRUE)
-
-      if (!is.null(proxy_server$username) && is.null(proxy_server$password)) {
-        rlang::abort("`proxy_server$username` was provided but `proxy_server$password` was not.")
-      } else if (is.null(proxy_server$username) && !is.null(proxy_server$password)) {
-        rlang::abort("`proxy_server$password` was provided but `proxy_server$username` was not.")
-      }
-
-      proxy_server <- list(
-        server = paste0(proxy_server$host, ":", proxy_server$port),
-        username = proxy_server$username,
-        password = proxy_server$password
-      )
-    } else {
-      stop_input_type(proxy_server, c("a string", "a list"), allow_null = TRUE)
-    }
-  }
-
+  proxy_server <- check_proxy_server(proxy_server, allow_username_password = TRUE)
   check_string(extra_args, allow_null = TRUE)
   check_class(parent, "Chromote", allow_null = TRUE)
   check_number_whole(width)

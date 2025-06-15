@@ -113,41 +113,40 @@ check_list <- function(x,
   )
 }
 
-check_proxy_server <- function(x,
+check_proxy_server <- function(proxy_server,
                                ...,
                                allow_username_password = FALSE,
                                arg = rlang::caller_arg(x),
                                call = rlang::caller_env()) {
-  if (!is.null(x)) {
-    if (is_string(x)) {
-      x <- list(server = url)
-    } else if (is.list(x)) {
-      check_string(x$host)
-      check_number_whole(x$port)
-
-      if (allow_username_password) {
-        # TODO: Require chromote version that allows .enable() methods
-        check_string(x$username, allow_null = TRUE)
-        check_string(x$password, allow_null = TRUE)
-
-        if (!is.null(x$username) && is.null(proxy_server$password)) {
-          rlang::abort("`proxy_server$username` was provided but `proxy_server$password` was not.", call = call)
-        } else if (is.null(x$username) && !is.null(proxy_server$password)) {
-          rlang::abort("`proxy_server$password` was provided but `proxy_server$username` was not.", call = call)
-        }
-
-        list(
-          server = paste0(x$host, ":", proxy_server$port),
-          username = x$username,
-          password = x$password
-        )
-      }
-    } else {
-      stop_input_type(x, c("a string", "a list"), ..., allow_null = TRUE)
-    }
+  if (is.null(proxy_server)) {
+    return(NULL)
   }
 
-  x
+  if (is_string(proxy_server)) {
+    list(server = url)
+  } else if (proxy_server) {
+    check_string(proxy_server$host, call = call)
+    check_number_whole(proxy_server$port, call = call)
+
+    if (allow_username_password) {
+      check_string(proxy_server$username, allow_null = TRUE, call = call)
+      check_string(proxy_server$password, allow_null = TRUE, call = call)
+
+      if (!is.null(proxy_server$username) && is.null(proxy_server$password)) {
+        rlang::abort("`proxy_server$username` was provided but `proxy_server$password` was not.", call = call)
+      } else if (is.null(proxy_server$username) && !is.null(proxy_server$password)) {
+        rlang::abort("`proxy_server$password` was provided but `proxy_server$username` was not.", call = call)
+      }
+
+      list(
+        server = paste0(proxy_server$host, ":", proxy_server$port),
+        username = proxy_server$username,
+        password = proxy_server$password
+      )
+    }
+  } else {
+    stop_input_type(proxy_server, c("a string", "a list"), ..., allow_null = TRUE, call = call)
+  }
 }
 
 check_selector_args <- function(css, xpath, id, class_name, name, call = rlang::caller_env()) {
