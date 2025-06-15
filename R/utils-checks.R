@@ -116,7 +116,6 @@ check_list <- function(x,
 check_proxy_server <- function(proxy_server,
                                ...,
                                allow_username_password = FALSE,
-                               arg = rlang::caller_arg(x),
                                call = rlang::caller_env()) {
   if (is.null(proxy_server)) {
     return(NULL)
