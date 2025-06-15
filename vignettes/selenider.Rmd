@@ -172,15 +172,18 @@ Most functions that act on elements use the `elem_` prefix.
 
 There are various ways to interact with a HTML element.
 
-Use `elem_click()`, `elem_right_click()`, or `elem_double_click()` to click on an element, and
-`elem_hover()` to hover over an element. Use `elem_scroll_to()` to scroll to an element
-before clicking it, which is useful if the element is not currently in view.
+Use `elem_click()`, `elem_right_click()`, or `elem_double_click()` to click on
+an element, and `elem_hover()` to hover over an element. Use `elem_scroll_to()`
+to scroll to an element before clicking it, which is useful if the element is
+not currently in view. Here, we're clicking on a link, so we use the
+`wait_for_navigation` argument to wait for the next page to load before
+continuing.
 
 ```{r}
 s(".blurb") |>
   find_element("a") |> # List of packages
   elem_scroll_to() |>
-  elem_click()
+  elem_click(wait_for_navigation = TRUE)
 ```
 
 Some links will not work when clicked on, since they will open their content in a new tab.
