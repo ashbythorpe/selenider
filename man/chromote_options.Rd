@@ -83,7 +83,7 @@ don't want one to be created.}
 
 \item{port}{The port number to use.}
 
-\item{selenium_manager, interactive, stdout, stderr, verbose, temp, path, extra_args, ...}{Passed into \code{\link[selenium:selenium_server]{selenium::selenium_server()}}.}
+\item{selenium_manager, interactive, stdout, stderr, verbose, temp, path, ...}{Passed into \code{\link[selenium:selenium_server]{selenium::selenium_server()}}.}
 
 \item{capabilities, request_body, timeout}{Passed into \link[selenium:SeleniumSession]{selenium::SeleniumSession$new()}.}
 }
