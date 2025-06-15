@@ -60,7 +60,7 @@ on the element two times in a short period of time, while
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">elem_click</span><span class="op">(</span><span class="va">x</span>, js <span class="op">=</span> <span class="cn">FALSE</span>, timeout <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">elem_click</span><span class="op">(</span><span class="va">x</span>, js <span class="op">=</span> <span class="cn">FALSE</span>, timeout <span class="op">=</span> <span class="cn">NULL</span>, wait_for_navigation <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">elem_double_click</span><span class="op">(</span><span class="va">x</span>, js <span class="op">=</span> <span class="cn">FALSE</span>, timeout <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
@@ -81,6 +81,13 @@ on the element two times in a short period of time, while
 
 <dt id="arg-timeout">timeout<a class="anchor" aria-label="anchor" href="#arg-timeout"></a></dt>
 <dd><p>How long to wait for the element to exist.</p></dd>
+
+
+<dt id="arg-wait-for-navigation">wait_for_navigation<a class="anchor" aria-label="anchor" href="#arg-wait-for-navigation"></a></dt>
+<dd><p>Whether to wait for the page to navigate after
+clicking the element. This is useful if you are clicking on a link. This
+argument is ignored if you are using selenium. This will not work for
+links that open in a new tab.</p></dd>
 
 </dl></div>
     <div class="section level2">

@@ -278,12 +278,14 @@ prefix.</p>
 <code><a href="../reference/elem_click.html">elem_double_click()</a></code> to click on an element, and
 <code><a href="../reference/elem_hover.html">elem_hover()</a></code> to hover over an element. Use
 <code><a href="../reference/elem_scroll_to.html">elem_scroll_to()</a></code> to scroll to an element before clicking
-it, which is useful if the element is not currently in view.</p>
+it, which is useful if the element is not currently in view. Here, we’re
+clicking on a link, so we use the <code>wait_for_navigation</code>
+argument to wait for the next page to load before continuing.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/s.html">s</a></span><span class="op">(</span><span class="st">".blurb"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/find_element.html">find_element</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="co"># List of packages</span></span>
 <span>  <span class="fu"><a href="../reference/elem_scroll_to.html">elem_scroll_to</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/elem_click.html">elem_click</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="../reference/elem_click.html">elem_click</a></span><span class="op">(</span>wait_for_navigation <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>Some links will not work when clicked on, since they will open their
 content in a new tab. Use <code><a href="../reference/open_url.html">open_url()</a></code> manually to solve
 this. This approach is recommended over using <code><a href="../reference/elem_click.html">elem_click()</a></code>,
