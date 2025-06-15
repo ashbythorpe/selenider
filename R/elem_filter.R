@@ -197,7 +197,7 @@ make_filters <- function(x, exprs, find_last = FALSE) {
     SIMPLIFY = FALSE
   )
 
-  filters <- lapply(head(functions), function(x) step_filter(x))
+  filters <- lapply(utils::head(functions, n = -1L), function(x) step_filter(x))
   last_function <- functions[[length(functions)]]
 
   if (find_last) {
