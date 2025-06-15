@@ -2,15 +2,9 @@
 % Please edit documentation in R/print_lazy.R
 \name{print_lazy}
 \alias{print_lazy}
-\alias{print_lazy.selenider_element}
-\alias{print_lazy.selenider_elements}
 \title{Print an element without fetching it}
 \usage{
 print_lazy(x, ...)
-
-\method{print_lazy}{selenider_element}(x, ...)
-
-\method{print_lazy}{selenider_elements}(x, ...)
 }
 \arguments{
 \item{x}{A \code{selenider_element} or \code{selenider_elements} object.}

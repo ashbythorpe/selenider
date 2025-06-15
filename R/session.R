@@ -271,48 +271,34 @@ selenider_session <- function(session = getOption("selenider.session"),
                               selenium_manager = TRUE,
                               quiet = TRUE) {
   if (isTRUE(view)) {
-    lifecycle::deprecate_warn(
+    lifecycle::deprecate_stop(
       "0.3.0",
       "selenider_session(view)",
       I("`options = chromote_options(headless = FALSE)`")
     )
-
-    if (inherits(options, "chromote_options")) {
-      options$headless <- FALSE
-    }
   }
 
   if (!isTRUE(selenium_manager)) {
-    lifecycle::deprecate_warn(
+    lifecycle::deprecate_stop(
       "0.3.0",
       "selenider_session(selenium_manager)",
       I("`options = selenium_options(server_options = wdman_server_options())`")
     )
-
-    if (inherits(options, "selenium_options") && !inherits(options$server_options, "wdman_server_options")) {
-      options$server_options <- wdman_server_options()
-    }
   }
 
   if (!isTRUE(quiet)) {
     if (inherits(options$server_options, "wdman_server_options")) {
-      lifecycle::deprecate_warn(
+      lifecycle::deprecate_stop(
         "0.3.0",
         "selenider_session(quiet)",
         I("`options = selenium_options(server_options = wdman_server_options(verbose = TRUE))`")
       )
-
-      options$server_options$verbose <- TRUE
     } else {
-      lifecycle::deprecate_warn(
+      lifecycle::deprecate_stop(
         "0.3.0",
         "selenider_session(quiet)",
         I("`options = selenium_options(server_options = selenium_server_options(verbose = TRUE))`")
       )
-
-      if (inherits(options$server_options, "selenium_server_options")) {
-        options$server_options$verbose <- TRUE
-      }
     }
   }
 
@@ -577,15 +563,11 @@ get_browser <- function(session,
 #'
 #' @export
 create_chromote_session <- function(parent = NULL, ...) {
-  lifecycle::deprecate_warn(
+  lifecycle::deprecate_stop(
     "0.3.0",
     "create_chromote_session()",
     details = "Use the `options` argument to selenider_session() instead."
   )
-
-  options <- chromote_options(parent = parent, ...)
-
-  create_chromote_session_internal(options)
 }
 
 create_chromote_session_internal <- function(options = chromote_options()) {
@@ -710,30 +692,11 @@ create_selenium_server <- function(browser,
                                    quiet = TRUE,
                                    selenium_manager = TRUE,
                                    ...) {
-  lifecycle::deprecate_warn(
+  lifecycle::deprecate_stop(
     "0.3.0",
     "create_selenium_server()",
     details = "Use the `options` argument to selenider_session() instead."
   )
-
-  if (selenium_manager) {
-    options <- selenium_server_options(
-      version = version,
-      port = port,
-      verbose = !quiet,
-      ...
-    )
-  } else {
-    options <- wdman_server_options(
-      version = version,
-      driver_version = driver_version,
-      port = port,
-      verbose = !quiet,
-      ...
-    )
-  }
-
-  create_selenium_server_internal(browser, options)
 }
 
 create_selenium_server_internal <- function(browser, options) {
@@ -805,19 +768,11 @@ create_selenium_client <- function(browser,
                                    port = 4444L,
                                    host = "localhost",
                                    ...) {
-  lifecycle::deprecate_warn(
+  lifecycle::deprecate_stop(
     "0.3.0",
     "create_selenium_client()",
     details = "Use the `options` argument to selenider_session() instead."
   )
-
-  options <- selenium_client_options(
-    port = port,
-    host = host,
-    ...
-  )
-
-  create_selenium_client_internal(browser, options)
 }
 
 create_selenium_client_internal <- function(browser, options = selenium_client_options()) {
@@ -857,18 +812,11 @@ create_selenium_client_internal <- function(browser, options = selenium_client_o
 #'
 #' @export
 create_rselenium_client <- function(browser, port = 4444L, ...) {
-  lifecycle::deprecate_warn(
+  lifecycle::deprecate_stop(
     "0.3.0",
     "create_rselenium_client()",
     details = "Use the `options` argument to selenider_session() instead."
   )
-
-  options <- rselenium_client_options(
-    port = port,
-    ...
-  )
-
-  create_rselenium_client_internal(browser, options)
 }
 
 create_rselenium_client_internal <- function(browser, options = rselenium_client_options()) {
