@@ -166,6 +166,8 @@ test_that("actions work", {
 
   link <- s("#google-link")
 
+  elem_scroll_to(link)
+
   elem_click(link, wait_for_navigation = TRUE)
 
   expect_equal(current_url(), "https://www.google.com/")
