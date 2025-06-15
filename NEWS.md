@@ -2,6 +2,8 @@
 
 - New `proxy_server` argument to `chromote_options()` allows you to specify a
   proxy server, with authentication if needed.
+- New `wait_for_navigation` argument to `elem_click()` allows you to wait for
+  navigation to complete after clicking a link.
 
 # selenider 0.4.1
 
