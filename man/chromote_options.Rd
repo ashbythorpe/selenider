@@ -14,7 +14,8 @@ chromote_options(
   height = 1323,
   targetId = NULL,
   wait_ = TRUE,
-  auto_events = NULL
+  auto_events = NULL,
+  mobile = FALSE
 )
 
 selenium_options(
@@ -54,7 +55,7 @@ this to \code{FALSE}.}
 
 \item{parent}{The parent chromote session.}
 
-\item{width, height, targetId, wait_, auto_events}{Passed into
+\item{width, height, targetId, wait_, auto_events, mobile}{Passed into
 \link[chromote:ChromoteSession]{chromote::ChromoteSession$new()}.}
 
 \item{client_options}{A \code{\link[=selenium_client_options]{selenium_client_options()}} object.}
