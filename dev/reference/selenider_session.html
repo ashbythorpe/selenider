@@ -182,6 +182,71 @@ server using Docker.</p>
 </div>
 
 <div class="section">
+<h3 id="using-a-proxy-server">Using a proxy server<a class="anchor" aria-label="anchor" href="#using-a-proxy-server"></a></h3>
+
+
+<p>When using chromote, the <code>proxy_server</code> argument to <code><a href="chromote_options.html">chromote_options()</a></code>
+can be used to specify a proxy server to use.</p>
+<p></p><div class="sourceCode r"><pre><code>session &lt;- selenider_session(
+  "chromote",
+  options = chromote_options(
+    proxy_server = list(
+      host = "HOST_IP"
+      port = PORT,
+      username = "USERNAME", # Leave blank if authentication is not required
+      password = "PASSWORD"
+    )
+  )
+)
+</code></pre><p></p></div>
+<p>With selenium, you have to use the <code>capabilities</code> client option. Usage
+varies depending on the browser you are using.</p>
+<p></p><div class="sourceCode r"><pre><code><span><span class="co"># Chrome</span></span>
+<span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selenider_session.html">selenider_session</a></span><span class="op">(</span></span>
+<span>  <span class="st">"selenium"</span>,</span>
+<span>  browser <span class="op">=</span> <span class="st">"chrome"</span>,</span>
+<span>  options <span class="op">=</span> <span class="fu"><a href="../reference/chromote_options.html">selenium_options</a></span><span class="op">(</span></span>
+<span>    client_options <span class="op">=</span> <span class="fu"><a href="../reference/chromote_options.html">selenium_client_options</a></span><span class="op">(</span></span>
+<span>      capabilities <span class="op">=</span> <span class="fu">selenium</span><span class="fu">::</span><span class="fu"><a href="https://ashbythorpe.github.io/selenium-r/reference/chrome_options.html" class="external-link">chrome_options</a></span><span class="op">(</span></span>
+<span>        args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"--proxy-server=HOST:PORT"</span><span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Firefox</span></span>
+<span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selenider_session.html">selenider_session</a></span><span class="op">(</span></span>
+<span>  <span class="st">"selenium"</span>,</span>
+<span>  browser <span class="op">=</span> <span class="st">"firefox"</span>,</span>
+<span>  options <span class="op">=</span> <span class="fu"><a href="../reference/chromote_options.html">selenium_options</a></span><span class="op">(</span></span>
+<span>    client_options <span class="op">=</span> <span class="fu"><a href="../reference/chromote_options.html">selenium_client_options</a></span><span class="op">(</span></span>
+<span>      capabilities <span class="op">=</span> <span class="fu">selenium</span><span class="fu">::</span><span class="fu"><a href="https://ashbythorpe.github.io/selenium-r/reference/chrome_options.html" class="external-link">firefox_options</a></span><span class="op">(</span></span>
+<span>        prefs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>          <span class="st">"network.proxy.type"</span> <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>          <span class="st">"network.proxy.socks"</span> <span class="op">=</span> <span class="st">"HOST"</span>,</span>
+<span>          <span class="st">"network.proxy.socks_port"</span> <span class="op">=</span> <span class="va">PORT</span>,</span>
+<span>          <span class="st">"network.proxy.socks_remote_dns"</span> <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>        <span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Edge</span></span>
+<span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selenider_session.html">selenider_session</a></span><span class="op">(</span></span>
+<span>  <span class="st">"selenium"</span>,</span>
+<span>  browser <span class="op">=</span> <span class="st">"edge"</span>,</span>
+<span>  options <span class="op">=</span> <span class="fu"><a href="../reference/chromote_options.html">selenium_options</a></span><span class="op">(</span></span>
+<span>    client_options <span class="op">=</span> <span class="fu"><a href="../reference/chromote_options.html">selenium_client_options</a></span><span class="op">(</span></span>
+<span>      capabilities <span class="op">=</span> <span class="fu">selenium</span><span class="fu">::</span><span class="fu"><a href="https://ashbythorpe.github.io/selenium-r/reference/chrome_options.html" class="external-link">edge_options</a></span><span class="op">(</span></span>
+<span>        args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"--proxy-server=HOST:PORT"</span><span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre><p></p></div>
+</div>
+
+<div class="section">
 <h3 id="store-the-selenium-server-persistently">Store the Selenium server persistently<a class="anchor" aria-label="anchor" href="#store-the-selenium-server-persistently"></a></h3>
 
 
