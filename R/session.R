@@ -601,7 +601,8 @@ create_chromote_session_internal <- function(options = chromote_options()) {
       driver$Fetch$continueRequest(requestId = id)
     }
 
-    driver$Fetch$enable(
+    driver$auto_events_enable_args(
+      "Fetch",
       patterns = list(
         list(urlPattern = "*")
       ),

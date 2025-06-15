@@ -28,7 +28,7 @@ Imports:
     vctrs,
     withr
 Suggests: 
-    chromote,
+    chromote (>= 0.5.0),
     jsonlite,
     knitr,
     purrr,
