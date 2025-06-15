@@ -163,6 +163,14 @@ test_that("actions work", {
   elem_set_value(editable, "my text")
 
   elem_expect(editable_output, has_text("my text"))
+
+  link <- s("#google-link")
+
+  elem_scroll_to(link)
+
+  elem_click(link, wait_for_navigation = TRUE)
+
+  expect_equal(current_url(), "https://www.google.com/")
 })
 
 test_that("get_element_for_selection() works", {
@@ -277,17 +285,6 @@ test_that("elem_scroll_to() works", {
   open_url(paste0("data:text/html,", URLencode(html)))
 
   elem_scroll_to(s("p"))
-
-  elem_click(s("button"))
-
-  elem_expect(s("p"), has_text("You found me!"))
-
-  file <- withr::local_tempfile(fileext = ".html")
-  writeLines(html, file(file))
-
-  open_url(paste0("file://", file))
-
-  elem_scroll_to(s("p"), js = TRUE)
 
   elem_click(s("button"))
 

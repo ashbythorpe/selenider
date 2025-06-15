@@ -11,6 +11,10 @@
 #' @param x A `selenider_element` object.
 #' @param js Whether to click the element using JavaScript.
 #' @param timeout How long to wait for the element to exist.
+#' @param wait_for_navigation Whether to wait for the page to navigate after
+#'   clicking the element. This is useful if you are clicking on a link. This
+#'   argument is ignored if you are using selenium. This will not work for
+#'   links that open in a new tab.
 #'
 #' @returns `x`, invisibly.
 #'
@@ -47,7 +51,7 @@
 #' @family actions
 #'
 #' @export
-elem_click <- function(x, js = FALSE, timeout = NULL) {
+elem_click <- function(x, js = FALSE, timeout = NULL, wait_for_navigation = FALSE) {
   check_class(x, "selenider_element")
   check_bool(js)
   check_number_decimal(timeout, allow_null = TRUE)
@@ -55,6 +59,11 @@ elem_click <- function(x, js = FALSE, timeout = NULL) {
   check_active(x)
 
   timeout <- get_timeout(timeout, x$timeout)
+
+  if (x$session == "chromote" && wait_for_navigation) {
+    timeout <- if (on_ci()) 60 * 5 else 60
+    promise <- x$driver$Page$loadEventFired(wait_ = FALSE, timeout_ = timeout)$catch(function(e) NULL)
+  }
 
   if (js) {
     element <- get_element_for_action(
@@ -78,6 +87,10 @@ elem_click <- function(x, js = FALSE, timeout = NULL) {
     )
 
     element_click(element, x$session, x$driver)
+  }
+
+  if (x$session == "chromote" && wait_for_navigation) {
+    x$driver$wait_for(promise)
   }
 
   invisible(x)
@@ -129,13 +142,7 @@ element_click_js <- function(x, session, driver) {
 
 element_click <- function(x, session, driver) {
   if (session == "chromote") {
-    timeout <- if (on_ci()) 60 * 5 else 60
-    promise <- driver$Page$loadEventFired(wait_ = FALSE, timeout_ = timeout)$catch(function(e) NULL)
     click_chromote(x, driver = driver)
-    name <- driver$DOM$describeNode(backendNodeId = x)$node$nodeName
-    if (identical(name, "A")) {
-      driver$wait_for(promise)
-    }
   } else if (session == "selenium") {
     x$click()
   } else {
@@ -1023,7 +1030,6 @@ element_clear_value <- function(x, session, driver) {
 #' Scrolls to an HTML element.
 #'
 #' @param x A `selenider_element` object.
-#' @param js Whether to scroll to the element using JavaScript.
 #' @param timeout How long to wait for the element to exist.
 #'
 #' @returns `x`, invisibly.
@@ -1060,50 +1066,29 @@ element_clear_value <- function(x, session, driver) {
 #' elem_expect(s("p"), has_text("You found me!"))
 #'
 #' @export
-elem_scroll_to <- function(x, js = FALSE, timeout = NULL) {
+elem_scroll_to <- function(x, timeout = NULL) {
   check_class(x, "selenider_element")
-  check_bool(js)
   check_number_decimal(timeout, allow_null = TRUE)
 
   check_active(x)
 
   timeout <- get_timeout(timeout, x$timeout)
 
-  # Firefox does not allow you to scroll to an element if not in view.
-  if (js || cant_scroll_to_manually(x)) {
-    element <- get_element_for_action(
-      x,
-      action = "scroll to {.arg x} using JavaScript",
-      conditions = list(),
-      timeout = timeout,
-      failure_messages = c("was not enabled"),
-      conditions_text = c("be enabled")
-    )
+  element <- get_element_for_action(
+    x,
+    action = "scroll to {.arg x}",
+    conditions = list(),
+    timeout = timeout,
+    failure_messages = c("was not enabled"),
+    conditions_text = c("be enabled")
+  )
 
-    element_scroll_to_js(element, x$session, x$driver)
-  } else {
-    element <- get_element_for_action(
-      x,
-      action = "scroll to {.arg x}",
-      conditions = list(is_visible),
-      timeout = timeout,
-      failure_messages = c("was not visible"),
-      conditions_text = c("be visible")
-    )
-
-    element_scroll_to(element, x$session, x$driver)
-  }
+  element_scroll_to(element, x$session, x$driver)
 
   invisible(x)
 }
 
-cant_scroll_to_manually <- function(x) {
-  x$session == "chromote" ||
-    (x$session == "selenium" && x$driver$browser == "firefox") ||
-    (x$session == "rselenium" && x$driver$browserName == "firefox")
-}
-
-element_scroll_to_js <- function(x, session, driver) {
+element_scroll_to <- function(x, session, driver) {
   execute_js_fn_on("function(x) {
     x.scrollIntoView({
       block: 'center',
@@ -1111,26 +1096,6 @@ element_scroll_to_js <- function(x, session, driver) {
       behaviour: 'instant',
     })
   }", x, session = session, driver = driver)
-}
-
-element_scroll_to <- function(x, session, driver) {
-  if (session == "selenium") {
-    actions <- selenium::actions_stream(
-      selenium::actions_scroll(
-        x = 0,
-        y = 0,
-        delta_x = 0,
-        delta_y = 0,
-        origin = x
-      )
-    )
-
-    driver$perform_actions(actions)
-  } else {
-    driver$mouseMoveToLocation(
-      webElement = x
-    )
-  }
 }
 
 #' Select an HTML element

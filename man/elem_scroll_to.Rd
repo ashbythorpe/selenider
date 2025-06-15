@@ -4,12 +4,10 @@
 \alias{elem_scroll_to}
 \title{Scroll to an element}
 \usage{
-elem_scroll_to(x, js = FALSE, timeout = NULL)
+elem_scroll_to(x, timeout = NULL)
 }
 \arguments{
 \item{x}{A \code{selenider_element} object.}
-
-\item{js}{Whether to scroll to the element using JavaScript.}
 
 \item{timeout}{How long to wait for the element to exist.}
 }

@@ -6,7 +6,7 @@
 \alias{elem_right_click}
 \title{Click an element}
 \usage{
-elem_click(x, js = FALSE, timeout = NULL)
+elem_click(x, js = FALSE, timeout = NULL, wait_for_navigation = FALSE)
 
 elem_double_click(x, js = FALSE, timeout = NULL)
 
@@ -18,6 +18,11 @@ elem_right_click(x, js = FALSE, timeout = NULL)
 \item{js}{Whether to click the element using JavaScript.}
 
 \item{timeout}{How long to wait for the element to exist.}
+
+\item{wait_for_navigation}{Whether to wait for the page to navigate after
+clicking the element. This is useful if you are clicking on a link. This
+argument is ignored if you are using selenium. This will not work for
+links that open in a new tab.}
 }
 \value{
 \code{x}, invisibly.
