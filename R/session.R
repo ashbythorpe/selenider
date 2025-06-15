@@ -532,6 +532,11 @@ create_chromote_session_internal <- function(options = chromote_options()) {
   parent <- options$parent
   options <- options[!names(options) %in% c("parent", "headless")]
 
+  if (utils::packageVersion("chromote") < "0.5.0") {
+    # The `mobile` argument is not supported in chromote < 0.5.0
+    options <- options[names(options) != "mobile"]
+  }
+
   timeout <- if (on_ci()) 60 * 5 else 60
 
   withr::local_options(list(chromote.timeout = timeout))

@@ -23,7 +23,7 @@
 #'   For debugging purposes and interactive use, it is often useful to set
 #'   this to `FALSE`.
 #' @param parent The parent chromote session.
-#' @param width,height,targetId,wait_,auto_events Passed into
+#' @param width,height,targetId,wait_,auto_events,mobile Passed into
 #'   [chromote::ChromoteSession$new()][chromote::ChromoteSession].
 #'
 #'
@@ -34,7 +34,8 @@ chromote_options <- function(headless = TRUE,
                              height = 1323,
                              targetId = NULL, # nolint: object_name_linter
                              wait_ = TRUE,
-                             auto_events = NULL) {
+                             auto_events = NULL,
+                             mobile = FALSE) {
   check_bool(headless)
   check_class(parent, "Chromote", allow_null = TRUE)
   check_number_whole(width)
@@ -42,6 +43,7 @@ chromote_options <- function(headless = TRUE,
   check_string(targetId, allow_null = TRUE)
   check_bool(wait_)
   check_bool(auto_events, allow_null = TRUE)
+  check_bool(mobile)
 
   result <- list(
     headless = headless,
@@ -50,7 +52,8 @@ chromote_options <- function(headless = TRUE,
     height = height,
     targetId = targetId,
     wait = wait_,
-    auto_events = auto_events
+    auto_events = auto_events,
+    mobile = mobile
   )
 
   class(result) <- c("chromote_options")
