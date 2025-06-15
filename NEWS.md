@@ -1,5 +1,8 @@
 # selenider (development version)
 
+- New `proxy_server` argument to `chromote_options()` allows you to specify a
+  proxy server, with authentication if needed.
+
 # selenider 0.4.1
 
 - New `scroll_to()` and `scroll_by()` functions allow you to scroll the page
