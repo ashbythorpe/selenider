@@ -114,7 +114,7 @@ selenium_options <- function(client_options = selenium_client_options(),
 #' @param version The version of Selenium server to use.
 #' @param host The host to use.
 #' @param port The port number to use.
-#' @param selenium_manager,interactive,stdout,stderr,verbose,temp,path,extra_args,...
+#' @param selenium_manager,interactive,stdout,stderr,verbose,temp,path,...
 #'   Passed into [selenium::selenium_server()].
 #'
 #' @export
