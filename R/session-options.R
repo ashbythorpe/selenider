@@ -48,7 +48,7 @@ chromote_options <- function(headless = TRUE,
                              auto_events = NULL) {
   check_bool(headless)
   check_string(user_agent, allow_null = TRUE)
-  proxy_server <- check_proxy_server(proxy_server, allow_username_password = TRUE)
+  proxy_server <- check_proxy_server(proxy_server)
   check_string(extra_args, allow_null = TRUE)
   check_class(parent, "Chromote", allow_null = TRUE)
   check_number_whole(width)

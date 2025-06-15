@@ -115,7 +115,6 @@ check_list <- function(x,
 
 check_proxy_server <- function(proxy_server,
                                ...,
-                               allow_username_password = FALSE,
                                call = rlang::caller_env()) {
   if (is.null(proxy_server)) {
     return(NULL)
@@ -123,11 +122,11 @@ check_proxy_server <- function(proxy_server,
 
   if (is_string(proxy_server)) {
     list(server = url)
-  } else if (proxy_server) {
+  } else if (is_list(proxy_server)) {
     check_string(proxy_server$host, call = call)
     check_number_whole(proxy_server$port, call = call)
 
-    if (allow_username_password) {
+    if (!is.null(proxy_server$username) || !is.null(proxy_server$password)) {
       check_string(proxy_server$username, allow_null = TRUE, call = call)
       check_string(proxy_server$password, allow_null = TRUE, call = call)
 
@@ -142,6 +141,8 @@ check_proxy_server <- function(proxy_server,
         username = proxy_server$username,
         password = proxy_server$password
       )
+    } else {
+      list(server = paste0(proxy_server$host, ":", proxy_server$port))
     }
   } else {
     stop_input_type(proxy_server, c("a string", "a list"), ..., allow_null = TRUE, call = call)
