@@ -102,7 +102,7 @@ s(".row") |>
   find_elements("a") |>
   elem_find(has_text("CRAN")) |>
   elem_expect(attr_contains("href", "cran.r-project.org")) |>
-  elem_click()
+  elem_click(wait_for_navigation = TRUE)
 ```
 
 Now that we're in the mirror list page, let's find the link to every CRAN mirror in the UK.
