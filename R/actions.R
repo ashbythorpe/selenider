@@ -1068,7 +1068,6 @@ element_clear_value <- function(x, session, driver) {
 #' @export
 elem_scroll_to <- function(x, timeout = NULL) {
   check_class(x, "selenider_element")
-  check_bool(js)
   check_number_decimal(timeout, allow_null = TRUE)
 
   check_active(x)

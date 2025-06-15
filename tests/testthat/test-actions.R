@@ -289,15 +289,4 @@ test_that("elem_scroll_to() works", {
   elem_click(s("button"))
 
   elem_expect(s("p"), has_text("You found me!"))
-
-  file <- withr::local_tempfile(fileext = ".html")
-  writeLines(html, file(file))
-
-  open_url(paste0("file://", file))
-
-  elem_scroll_to(s("p"), js = TRUE)
-
-  elem_click(s("button"))
-
-  elem_expect(s("p"), has_text("You found me!"))
 })
