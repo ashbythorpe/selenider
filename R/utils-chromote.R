@@ -1,27 +1,19 @@
-chromote_object_id <- function(node_id = NULL, backend_id = NULL, driver) {
+chromote_object_id <- function(node_id = NULL, backend_id = NULL, driver, error = TRUE) {
   if (!is.null(node_id)) {
-    ignore_error_chromote(
-      driver$DOM$resolveNode(node_id)$object$objectId,
-      chromote_errors$RESOLVE_NODE
-    )
+    wrap_error_chromote(driver$DOM$resolveNode(node_id)$object$objectId)
   } else {
-    ignore_error_chromote(
-      driver$DOM$resolveNode(backendNodeId = backend_id)$object$objectId,
-      chromote_errors$BACKEND_ID_NOT_FOUND
+    wrap_error_chromote(
+      driver$DOM$resolveNode(backendNodeId = backend_id)$object$objectId
     )
   }
 }
 
-chromote_backend_id <- function(node_id = NULL, object_id = NULL, driver) {
+chromote_backend_id <- function(node_id = NULL, object_id = NULL, driver, error = TRUE) {
   if (!is.null(node_id)) {
-    ignore_error_chromote(
-      driver$DOM$describeNode(node_id)$node$backendNodeId,
-      chromote_errors$NODE_NOT_FOUND
-    )
+    wrap_error_chromote(driver$DOM$describeNode(node_id)$node$backendNodeId)
   } else {
-    ignore_error_chromote(
-      driver$DOM$describeNode(objectId = object_id)$node$backendNodeId,
-      chromote_errors$OBJECT_ID_NOT_FOUND
+    wrap_error_chromote(
+      driver$DOM$describeNode(objectId = object_id)$node$backendNodeId
     )
   }
 }
@@ -31,19 +23,12 @@ chromote_root_id <- function(x) {
   document$root$nodeId
 }
 
-chromote_node_id <- function(object_id = NULL, backend_id = NULL, driver) {
+chromote_node_id <- function(object_id = NULL, backend_id = NULL, driver, error = TRUE) {
   if (is.null(object_id)) {
     object_id <- chromote_object_id(backend_id = backend_id, driver = driver)
-
-    if (is.null(object_id)) {
-      return(NULL)
-    }
   }
 
-  ignore_error_chromote(
-    driver$DOM$requestNode(object_id)$nodeId,
-    chromote_errors$OBJECT_ID_NOT_FOUND
-  )
+  wrap_error_chromote(driver$DOM$requestNode(object_id)$nodeId)
 }
 
 chromote_errors <- list(
@@ -56,20 +41,11 @@ chromote_errors <- list(
 chromote_get_xy <- function(node_id = NULL, backend_id = NULL, driver) {
   if (is.null(node_id)) {
     node_id <- chromote_node_id(backend_id = backend_id, driver = driver)
-
-    if (is.null(node_id)) {
-      return(NULL)
-    }
   }
 
-  coords <- ignore_error_chromote(
-    driver$DOM$getBoxModel(nodeId = node_id)$model$content,
-    chromote_errors$NODE_NOT_FOUND
+  coords <- wrap_error_chromote(
+    driver$DOM$getBoxModel(nodeId = node_id)$model$content
   )
-
-  if (is.null(coords)) {
-    return(NULL)
-  }
 
   x <- mean(range(unlist(coords[seq(1, 7, 2)])))
   y <- mean(range(unlist(coords[seq(2, 8, 2)])))
@@ -81,10 +57,6 @@ chromote_is_in_view <- function(node_id = NULL, backend_id = NULL, driver) {
   width <- layout$clientWidth
   height <- layout$clientHeight
   coords <- chromote_get_xy(node_id, backend_id, driver = driver)
-
-  if (is.null(coords)) {
-    return(NULL)
-  }
 
   x <- coords$x
   y <- coords$y
@@ -205,6 +177,21 @@ intersect_box <- function(box, width, height) {
     y = box$y,
     width = width,
     height = height
+  )
+}
+
+wrap_error_chromote <- function(expr) {
+  rlang::try_fetch(
+    expr,
+    error = function(e) {
+      parsed_error <- parse_error_chromote(e)
+
+      if (is.null(parsed_error) || is.null(parsed_error$message) || !parsed_error$message %in% chromote_errors) {
+        rlang::zap()
+      } else {
+        stop_resolve_element()
+      }
+    }
   )
 }
 

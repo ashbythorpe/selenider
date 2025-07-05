@@ -32,6 +32,18 @@ stop_invisible_element <- function(call = rlang::caller_env()) {
   )
 }
 
+stop_resolve_element <- function(call = rlang::caller_env(), parent = NULL) {
+  cli::cli_abort(
+    c("{.arg x} could not be resolved."),
+    class = c(
+      "selenider_error_resolve_element",
+      "expect_error_continue"
+    ),
+    call = call,
+    parent = parent
+  )
+}
+
 stop_expect_error <- function(condition,
                               parent,
                               call,

@@ -14,15 +14,39 @@ test_that("chromote errors are caught correctly", {
 
   session$go_to("https://google.com")
 
-  expect_null(chromote_node_id(object_id = object_id, driver = session))
-  expect_null(chromote_node_id(backend_id = backend_id, driver = session))
+  expect_error(
+    chromote_node_id(object_id = object_id, driver = session),
+    class = "selenider_error_resolve_element"
+  )
+  expect_error(
+    chromote_node_id(backend_id = backend_id, driver = session),
+    class = "selenider_error_resolve_element"
+  )
 
-  expect_null(chromote_backend_id(node_id = node_id, driver = session))
-  expect_null(chromote_backend_id(object_id = object_id, driver = session))
+  expect_error(
+    chromote_backend_id(node_id = node_id, driver = session),
+    class = "selenider_error_resolve_element"
+  )
+  expect_error(
+    chromote_backend_id(object_id = object_id, driver = session),
+    class = "selenider_error_resolve_element"
+  )
 
-  expect_null(chromote_object_id(node_id = node_id, driver = session))
-  expect_null(chromote_object_id(backend_id = backend_id, driver = session))
+  expect_error(
+    chromote_object_id(node_id = node_id, driver = session),
+    class = "selenider_error_resolve_element"
+  )
+  expect_error(
+    chromote_object_id(backend_id = backend_id, driver = session),
+    class = "selenider_error_resolve_element"
+  )
 
-  expect_null(chromote_get_xy(node_id = node_id, driver = session))
-  expect_null(chromote_get_xy(backend_id = backend_id, driver = session))
+  expect_error(
+    chromote_get_xy(node_id = node_id, driver = session),
+    class = "selenider_error_resolve_element"
+  )
+  expect_error(
+    chromote_get_xy(backend_id = backend_id, driver = session),
+    class = "selenider_error_resolve_element"
+  )
 })
