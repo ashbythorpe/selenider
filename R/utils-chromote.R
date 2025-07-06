@@ -31,7 +31,7 @@ chromote_node_id <- function(object_id = NULL, backend_id = NULL, driver, error 
   wrap_error_chromote(driver$DOM$requestNode(object_id)$nodeId)
 }
 
-chromote_errors <- list(
+chromote_errors <- c(
   RESOLVE_NODE = "No node with given id found",
   NODE_NOT_FOUND = "Could not find node with given id",
   BACKEND_ID_NOT_IN_DOCUMENT = "Node with given id does not belong to the document",
@@ -181,13 +181,19 @@ intersect_box <- function(box, width, height) {
   )
 }
 
+is_wrappable_error <- function(error) {
+  any(vapply(
+    chromote_errors,
+    function(text) grepl(text, error$message, fixed = TRUE),
+    logical(1)
+  ))
+}
+
 wrap_error_chromote <- function(expr) {
   rlang::try_fetch(
     expr,
     error = function(e) {
-      parsed_error <- parse_error_chromote(e)
-
-      if (inherits(e, "selenider_error_resolve_element") || is.null(parsed_error) || is.null(parsed_error$message) || !parsed_error$message %in% chromote_errors) {
+      if (inherits(e, "selenider_error_resolve_element") || !is_wrappable_error(e)) {
         rlang::zap()
       } else {
         stop_resolve_element(parent = e)
