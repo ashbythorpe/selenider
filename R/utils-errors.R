@@ -332,7 +332,7 @@ stop_flatten_dots <- function(x,
       ),
       "x" = paste0(
         "Argument {.val {index}} was a list, but contained ",
-        "{.obj_type_friendly {x}} as its {ordinal(i)} element."
+        "{.obj_type_friendly {x}}"
       ),
       "x" = "Problematic argument:",
       "i" = "`{exprs[[i]]}`"
