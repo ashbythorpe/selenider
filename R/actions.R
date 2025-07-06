@@ -51,7 +51,12 @@
 #' @family actions
 #'
 #' @export
-elem_click <- function(x, js = FALSE, timeout = NULL, wait_for_navigation = FALSE) {
+elem_click <- function(
+  x,
+  js = FALSE,
+  timeout = NULL,
+  wait_for_navigation = FALSE
+) {
   check_class(x, "selenider_element")
   check_bool(js)
   check_number_decimal(timeout, allow_null = TRUE)
@@ -60,33 +65,33 @@ elem_click <- function(x, js = FALSE, timeout = NULL, wait_for_navigation = FALS
 
   timeout <- get_timeout(timeout, x$timeout)
 
-  if (x$session == "chromote" && wait_for_navigation) {
+  session <- x$session
+  driver <- x$driver
+
+  if (session == "chromote" && wait_for_navigation) {
     timeout <- if (on_ci()) 60 * 5 else 60
-    promise <- x$driver$Page$loadEventFired(wait_ = FALSE, timeout_ = timeout)$catch(function(e) NULL)
+    promise <- driver$Page$loadEventFired(
+      wait_ = FALSE,
+      timeout_ = timeout
+    )$catch(function(e) NULL)
   }
 
   if (js) {
-    element <- get_element_for_action(
+    perform_action(
       x,
-      action = "click {.arg x} using JavaScript",
-      conditions = list(is_enabled),
-      timeout = timeout,
-      failure_messages = c("was not enabled"),
-      conditions_text = c("be enabled")
+      action = function(x) element_click_js(x, session, driver),
+      action_name = "click {.arg x} using JavaScript",
+      conditions = list(preset_conditions$enabled),
+      timeout = timeout
     )
-
-    element_click_js(element, x$session, x$driver)
   } else {
-    element <- get_element_for_action(
+    perform_action(
       x,
-      action = "click {.arg x}",
-      conditions = list(is_visible, is_enabled),
-      timeout = timeout,
-      failure_messages = c("was not visible", "was not enabled"),
-      conditions_text = c("be visible and enabled")
+      action = function(x) element_click(x, session, driver),
+      action_name = "click {.arg x}",
+      conditions = list(preset_conditions$visible, preset_conditions$enabled),
+      timeout = timeout
     )
-
-    element_click(element, x$session, x$driver)
   }
 
   if (x$session == "chromote" && wait_for_navigation) {
@@ -97,7 +102,8 @@ elem_click <- function(x, js = FALSE, timeout = NULL, wait_for_navigation = FALS
 }
 
 element_click_js <- function(x, session, driver) {
-  execute_js_fn_on("function(x) {
+  execute_js_fn_on(
+    "function(x) {
     if (window.MouseEvent) {
       const ev1 = new MouseEvent('mousedown', {
           bubbles: true,
@@ -137,7 +143,11 @@ element_click_js <- function(x, session, driver) {
       );
       x.dispatchEvent(event);
     }
-  }", x, session = session, driver = driver)
+  }",
+    x,
+    session = session,
+    driver = driver
+  )
 }
 
 element_click <- function(x, session, driver) {
@@ -151,8 +161,10 @@ element_click <- function(x, session, driver) {
 }
 
 left_click_rselenium <- function(element, driver) {
-  if (driver$browserName == "internet explorer" &&
-    identical(element$getElementTagName(), "checkbox")) {
+  if (
+    driver$browserName == "internet explorer" &&
+      identical(element$getElementTagName(), "checkbox")
+  ) {
     try(
       {
         driver$executeScript(
@@ -238,34 +250,29 @@ elem_double_click <- function(x, js = FALSE, timeout = NULL) {
   timeout <- get_timeout(timeout, x$timeout)
 
   if (js) {
-    element <- get_element_for_action(
+    perform_action(
       x,
-      action = "double click {.arg x} using javascript",
-      conditions = list(is_enabled),
-      timeout = timeout,
-      failure_messages = c("was not enabled"),
-      conditions_text = c("be enabled")
+      action = function(x) element_double_click_js(x, session, driver),
+      action_name = "double click {.arg x} using JavaScript",
+      conditions = list(preset_conditions$enabled),
+      timeout = timeout
     )
-
-    element_double_click_js(element, x$session, x$driver)
   } else {
-    element <- get_element_for_action(
+    perform_action(
       x,
-      action = "double click {.arg x}",
-      conditions = list(is_visible, is_enabled),
-      timeout = timeout,
-      failure_messages = c("was not visible", "was not enabled"),
-      conditions_text = c("be visible and enabled")
+      action = function(x) element_double_click(x, session, driver),
+      action_name = "double click {.arg x}",
+      conditions = list(preset_conditions$visible, preset_conditions$enabled),
+      timeout = timeout
     )
-
-    element_double_click(element, x$session, x$driver)
   }
 
   invisible(x)
 }
 
 element_double_click_js <- function(x, session, driver) {
-  execute_js_fn_on("function(x) {
+  execute_js_fn_on(
+    "function(x) {
     if (window.MouseEvent) {
       const event = new MouseEvent('dblclick');
       x.dispatchEvent(event)
@@ -274,7 +281,11 @@ element_double_click_js <- function(x, session, driver) {
       event.initEvent('dblclick', true, true);
       x.dispatchEvent(event);
     }
-  }", x, session = session, driver = driver)
+  }",
+    x,
+    session = session,
+    driver = driver
+  )
 }
 
 element_double_click <- function(x, session, driver) {
@@ -321,34 +332,29 @@ elem_right_click <- function(x, js = FALSE, timeout = NULL) {
   timeout <- get_timeout(timeout, x$timeout)
 
   if (js || x$session == "rselenium") {
-    element <- get_element_for_action(
+    perform_action(
       x,
-      action = "right click {.arg x} using javascript",
-      conditions = list(is_enabled),
-      timeout = timeout,
-      failure_messages = c("was not enabled"),
-      conditions_text = c("be enabled")
+      action = function(x) element_right_click_js(x, session, driver),
+      action_name = "right click {.arg x} using JavaScript",
+      conditions = list(preset_conditions$enabled),
+      timeout = timeout
     )
-
-    element_right_click_js(element, x$session, x$driver)
   } else {
-    element <- get_element_for_action(
+    perform_action(
       x,
-      action = "right click {.arg x}",
-      conditions = list(is_visible, is_enabled),
-      timeout = timeout,
-      failure_messages = c("was not visible", "was not enabled"),
-      conditions_text = c("be visible and enabled")
+      action = function(x) element_right_click(x, session, driver),
+      action_name = "right click {.arg x}",
+      conditions = list(preset_conditions$visible, preset_conditions$enabled),
+      timeout = timeout
     )
-
-    element_right_click(element, x$session, x$driver)
   }
 
   invisible(x)
 }
 
 element_right_click_js <- function(x, session, driver) {
-  execute_js_fn_on("function(x) {
+  execute_js_fn_on(
+    "function(x) {
     if (window.MouseEvent) {
       const ev1 = new MouseEvent('mousedown', {
           bubbles: true,
@@ -386,7 +392,11 @@ element_right_click_js <- function(x, session, driver) {
       event.initEvent('contextmenu', true, true);
       x.dispatchEvent(event);
     }
-  }", x, session = session, driver = driver)
+  }",
+    x,
+    session = session,
+    driver = driver
+  )
 }
 
 element_right_click <- function(x, session, driver) {
@@ -460,34 +470,29 @@ elem_hover <- function(x, js = FALSE, timeout = NULL) {
   timeout <- get_timeout(timeout, x$timeout)
 
   if (js) {
-    element <- get_element_for_action(
+    perform_action(
       x,
-      action = "hover over {.arg x} using javascript",
-      conditions = list(is_enabled),
-      timeout = timeout,
-      failure_messages = c("was not enabled"),
-      conditions_text = c("be enabled")
+      action = function(x) element_hover_js(x, session, driver),
+      action_name = "hover over {.arg x} using JavaScript",
+      conditions = list(preset_conditions$enabled),
+      timeout = timeout
     )
-
-    element_hover_js(element, x$session, x$driver)
   } else {
-    element <- get_element_for_action(
+    perform_action(
       x,
-      action = "hover over {.arg x}",
-      conditions = list(is_visible, is_enabled),
-      timeout = timeout,
-      failure_messages = c("was not visible", "was not enabled"),
-      conditions_text = c("be visible and enabled")
+      action = function(x) element_hover(x, session, driver),
+      action_name = "hover over {.arg x}",
+      conditions = list(preset_conditions$visible, preset_conditions$enabled),
+      timeout = timeout
     )
-
-    element_hover(element, x$session, x$driver)
   }
 
   invisible(x)
 }
 
 element_hover_js <- function(x, session, driver) {
-  execute_js_fn_on("function(x) {
+  execute_js_fn_on(
+    "function(x) {
     if (window.MouseEvent) {
       const event = new MouseEvent('mouseover');
       x.dispatchEvent(event)
@@ -498,7 +503,11 @@ element_hover_js <- function(x, session, driver) {
       event.initEvent('mouseover', true, true);
       x.dispatchEvent(event);
     }
-  }", x, session = session, driver = driver)
+  }",
+    x,
+    session = session,
+    driver = driver
+  )
 }
 
 element_hover <- function(x, session, driver) {
@@ -551,16 +560,13 @@ elem_focus <- function(x, timeout = NULL) {
 
   timeout <- get_timeout(timeout, x$timeout)
 
-  element <- get_element_for_action(
+  perform_action(
     x,
-    action = "focus {.arg x}",
-    conditions = list(is_visible),
-    timeout = timeout,
-    failure_messages = c("was not visible"),
-    conditions_text = c("be visible")
+    action = function(x) element_focus(x, session, driver),
+    action_name = "focus {.arg x}",
+    conditions = list(preset_conditions$visible),
+    timeout = timeout
   )
-
-  element_focus(element, x$session, x$driver)
 
   invisible(x)
 }
@@ -652,22 +658,20 @@ elem_set_value <- function(x, text, timeout = NULL) {
 
   timeout <- get_timeout(timeout, x$timeout)
 
-  element <- get_element_for_action(
+  perform_action(
     x,
-    action = "set the value of {.arg x}",
-    conditions = list(is_enabled),
-    timeout = timeout,
-    failure_messages = c("was not enabled"),
-    conditions_text = c("be enabled")
+    action = function(x) element_set_value(x, text, session, driver),
+    action_name = "set the value of {.arg x}",
+    conditions = list(preset_conditions$enabled),
+    timeout = timeout
   )
-
-  element_set_value(element, text, x$session, x$driver)
 
   invisible(x)
 }
 
 element_input_type <- function(x, session, driver) {
-  execute_js_fn_on("function(x) {
+  execute_js_fn_on(
+    "function(x) {
     if (x instanceof HTMLSelectElement) {
       return 'select';
     }
@@ -700,7 +704,11 @@ element_input_type <- function(x, session, driver) {
     }
 
     return 'unknown';
-  }", x, session = session, driver = driver)
+  }",
+    x,
+    session = session,
+    driver = driver
+  )
 }
 
 element_set_value <- function(x, text, session, driver) {
@@ -731,17 +739,30 @@ element_set_value <- function(x, text, session, driver) {
   } else {
     element_focus(x, session = session, driver = driver)
 
-    execute_js_fn_on(paste0("function(x) {
-      (x as HTMLInputElement).value = '", text, "';
+    execute_js_fn_on(
+      paste0(
+        "function(x) {
+      (x as HTMLInputElement).value = '",
+        text,
+        "';
       x.dispatchEvent(new Event('input', {bubbles: true}));
       x.dispatchEvent(new Event('change', {bubbles: true}));
-    }"), x, session = session, driver = driver)
+    }"
+      ),
+      x,
+      session = session,
+      driver = driver
+    )
   }
 }
 
 partially_type <- function(x, text, session, driver) {
-  execute_js_fn_on(paste0("function(x) {
-    const text = '", text, "';
+  execute_js_fn_on(
+    paste0(
+      "function(x) {
+    const text = '",
+      text,
+      "';
     const currentValue = x.isContentEditable ? x.innerText : x.value;
 
     if (text.length <= currentValue.length || !text.startsWith(x.value)) {
@@ -764,11 +785,15 @@ partially_type <- function(x, text, session, driver) {
     }
 
     return text.substring(originalValue.length);
-  }"), x, session = session, driver = driver)
+  }"
+    ),
+    x,
+    session = session,
+    driver = driver
+  )
 }
 
-chromote_clear <- function(x,
-                           driver) {
+chromote_clear <- function(x, driver) {
   if (is_mac()) {
     click_chromote(x, driver = driver, count = 3)
   } else {
@@ -832,20 +857,18 @@ elem_send_keys <- function(x, ..., modifiers = NULL, timeout = NULL) {
 
   timeout <- get_timeout(timeout, x$timeout)
 
-  element <- if (inherits(x, "selenider_element")) {
-    get_element_for_action(
-      x,
-      action = "send keys to {.arg x}",
-      conditions = list(is_enabled),
-      timeout = timeout,
-      failure_messages = c("was not enabled"),
-      conditions_text = c("be enabled")
-    )
-  } else {
-    NULL
+  if (is.null(x)) {
+    element_send_keys(NULL, modifiers, keys, x$session, x$driver)
+    return(invisible())
   }
 
-  element_send_keys(element, modifiers, keys, x$session, x$driver)
+  perform_action(
+    x,
+    action = function(x) element_send_keys(x, modifiers, keys, session, driver),
+    action_name = "send keys to {.arg x}",
+    conditions = list(preset_conditions$enabled),
+    timeout = timeout
+  )
 
   invisible(x)
 }
@@ -983,7 +1006,9 @@ get_numeric_modifier <- function(modifiers) {
 
   modifiers <- vapply(modifiers, tolower, FUN.VALUE = character(1))
 
-  1L * ("alt" %in% modifiers) + 2L * any(c("ctrl", "control") %in% modifiers) +
+  1L *
+    ("alt" %in% modifiers) +
+    2L * any(c("ctrl", "control") %in% modifiers) +
     4L * any(c("meta", "command") %in% modifiers) +
     8L * ("shift" %in% modifiers)
 }
@@ -999,16 +1024,16 @@ elem_clear_value <- function(x, timeout = NULL) {
 
   timeout <- get_timeout(timeout, x$timeout)
 
-  element <- get_element_for_action(
-    x,
-    action = "send keys to {.arg x}",
-    conditions = list(is_enabled),
-    timeout = timeout,
-    failure_messages = c("was not enabled"),
-    conditions_text = c("be enabled")
-  )
+  session <- x$session
+  driver <- x$driver
 
-  element_clear_value(element, x$session, x$driver)
+  perform_action(
+    x,
+    action = function(x) element_clear_value(x, session, driver),
+    action_name = "clear the value of {.arg x}",
+    conditions = list(preset_conditions$enabled),
+    timeout = timeout
+  )
 
   invisible(x)
 }
@@ -1074,28 +1099,29 @@ elem_scroll_to <- function(x, timeout = NULL) {
 
   timeout <- get_timeout(timeout, x$timeout)
 
-  element <- get_element_for_action(
+  perform_action(
     x,
-    action = "scroll to {.arg x}",
-    conditions = list(),
-    timeout = timeout,
-    failure_messages = c("was not enabled"),
-    conditions_text = c("be enabled")
+    action = function(x) element_scroll_to(x, session, driver),
+    action_name = "scroll to {.arg x}",
+    timeout = timeout
   )
-
-  element_scroll_to(element, x$session, x$driver)
 
   invisible(x)
 }
 
 element_scroll_to <- function(x, session, driver) {
-  execute_js_fn_on("function(x) {
+  execute_js_fn_on(
+    "function(x) {
     x.scrollIntoView({
       block: 'center',
       inline: 'center',
       behaviour: 'instant',
     })
-  }", x, session = session, driver = driver)
+  }",
+    x,
+    session = session,
+    driver = driver
+  )
 }
 
 #' Select an HTML element
@@ -1149,12 +1175,14 @@ element_scroll_to <- function(x, session, driver) {
 #'   elem_select("b")
 #'
 #' @export
-elem_select <- function(x,
-                        value = NULL,
-                        text = NULL,
-                        index = NULL,
-                        timeout = NULL,
-                        reset_other = TRUE) {
+elem_select <- function(
+  x,
+  value = NULL,
+  text = NULL,
+  index = NULL,
+  timeout = NULL,
+  reset_other = TRUE
+) {
   check_class(x, c("selenider_element", "selenider_elements"))
   if (!is.null(value)) {
     vctrs::obj_check_vector(value)
@@ -1205,91 +1233,82 @@ elem_select <- function(x,
 
   timeout <- get_timeout(timeout, x$timeout)
 
+  session <- x$session
+  driver <- x$driver
+
   if (inherits(x, "selenider_element")) {
-    element <- get_element_for_selection(
+    conditions <- get_selection_conditions(
       x,
       value = value,
       text = text,
       index = index,
-      timeout = timeout,
       reset_other = reset_other
     )
-
-    elem_name <- element_name(element, x$session, x$driver)
   } else {
-    all_enabled <- function(x) {
-      all(vapply(as.list(x), is_enabled, logical(1)))
-    }
-
-    element <- as.list(get_elements_for_action(
-      x,
-      action = "select {.arg x}",
-      conditions = list(
-        all_enabled
+    conditions <- list(
+      list(
+        fun = function(x) {
+          all(vapply(
+            x,
+            function(element) {
+              identical(element_name(element, session, driver), "option")
+            },
+            logical(1)
+          ))
+        },
+        desc = "every element in {.arg x} must be an `<option>` element",
+        failure_message = "an element was not an `<option>` element"
       ),
-      timeout = timeout,
-      failure_messages = c("an element in {.arg x} was not enabled"),
-      conditions_text = c("every element in {.arg x} must be enabled")
-    ))
-
-    elem_name <- "option"
+      list(
+        fun = function(x) {
+          all(vapply(
+            x,
+            function(element) element_is_enabled(element, session, driver),
+            logical(1)
+          ))
+        },
+        desc = "every element in {.arg x} must be enabled",
+        failure_message = "an element was not enabled"
+      )
+    )
   }
 
-  element_select(
-    element,
-    elem_name = elem_name,
-    value = value,
-    text = text,
-    index = index,
-    reset_other = reset_other,
-    session = x$session,
-    driver = x$driver
+  perform_action(
+    x,
+    action = function(x) {
+      element_select(
+        x,
+        value = value,
+        text = text,
+        index = index,
+        reset_other = reset_other,
+        session = x$session,
+        driver = x$driver
+      )
+    },
+    action_name = "select {.arg x}",
+    timeout = timeout,
+    conditions = conditions
   )
 
   invisible(x)
 }
 
-element_select <- function(x,
-                           elem_name,
-                           value,
-                           text,
-                           index,
-                           reset_other,
-                           session,
-                           driver) {
+element_select <- function(
+  x,
+  value,
+  text,
+  index,
+  reset_other,
+  session,
+  driver
+) {
   reset_other_json <- tolower(as.character(reset_other))
 
-  if (elem_name == "option" && !identical(class(x), "list")) {
-    execute_js_fn_on(paste0("function(x) {
-      x.selected = true;
-
-      let selectElement = x.parentElement;
-
-      while (selectElement.tagName != 'SELECT') {
-        if (selectElement == null) {
-          return false;
-        }
-
-        selectElement = selectElement.parentElement;
-      }
-
-      if (selectElement.type == 'select-one') {
-        for (let i = 0; i < selectElement.options.length; i++) {
-          if (selectElement.options[i] == x) {
-            selectElement.selectedIndex = i;
-          } else if (", reset_other_json, ") {
-            selectElement.options[i].selected = false;
-          }
-        }
-      }
-
-      selectElement.dispatchEvent(new Event('input', {bubbles: true}));
-      selectElement.dispatchEvent(new Event('change', {bubbles: true}));
-
-      return true;
-    }"), x, session = session, driver = driver)
-  } else if (elem_name == "option") {
-    execute_js_fn_on_multiple(paste0("function(x) {
+  if (identical(class(x), "list")) {
+    execute_js_fn_on_multiple(
+      paste0(
+        "function(x) {
       for (let i = 0; i < x.length; i++) {
         x[i].selected = true;
       }
@@ -1311,7 +1330,9 @@ element_select <- function(x,
           if (selectElement.type == 'select-one') {
             selectElement.selectedIndex = i;
           }
-        } else if (", reset_other_json, ") {
+        } else if (",
+        reset_other_json,
+        ") {
           selectElement.options[i].selected = false;
         }
       }
@@ -1320,12 +1341,59 @@ element_select <- function(x,
       selectElement.dispatchEvent(new Event('change', {bubbles: true}));
 
       return true;
-    }"), x, session = session, driver = driver)
-  } else if (length(value) == 1) {
-    result <- execute_js_fn_on(paste0("function(x) {
+    }"
+      ),
+      x,
+      session = session,
+      driver = driver
+    )
+  } else if (element_name(x, session, driver) == "option") {
+    execute_js_fn_on(
+      paste0(
+        "function(x) {
+      x.selected = true;
+
+      let selectElement = x.parentElement;
+
+      while (selectElement.tagName != 'SELECT') {
+        if (selectElement == null) {
+          return false;
+        }
+
+        selectElement = selectElement.parentElement;
+      }
+
+      if (selectElement.type == 'select-one') {
+        for (let i = 0; i < selectElement.options.length; i++) {
+          if (selectElement.options[i] == x) {
+            selectElement.selectedIndex = i;
+          } else if (",
+        reset_other_json,
+        ") {
+            selectElement.options[i].selected = false;
+          }
+        }
+      }
+
+      selectElement.dispatchEvent(new Event('input', {bubbles: true}));
+      selectElement.dispatchEvent(new Event('change', {bubbles: true}));
+
+      return true;
+    }"
+      ),
+      x,
+      session = session,
+      driver = driver
+    )
+  } else if (!is.null(value) && length(value) == 1) {
+    result <- execute_js_fn_on(
+      paste0(
+        "function(x) {
       let selected = false;
       for (let i = 0; i < x.options.length; i++) {
-        if (x.options[i].value == ", value, ") {
+        if (x.options[i].value == ",
+        value,
+        ") {
           if (x.type == 'select-one') {
             x.selectedIndex = i;
             x.options[i].selected = true;
@@ -1334,7 +1402,9 @@ element_select <- function(x,
             x.options[i].selected = true;
             selected = true;
           }
-        } else if (", reset_other_json, ") {
+        } else if (",
+        reset_other_json,
+        ") {
           x.options[i].selected = false;
         }
       }
@@ -1343,10 +1413,19 @@ element_select <- function(x,
       x.dispatchEvent(new Event('change', {bubbles: true}));
 
       return selected;
-    }"), x, session = session, driver = driver)
+    }"
+      ),
+      x,
+      session = session,
+      driver = driver
+    )
   } else if (!is.null(value)) {
-    execute_js_fn_on(paste0("function(x) {
-      const values = [", paste0("'", value, "'", collapse = ", "), "];
+    execute_js_fn_on(
+      paste0(
+        "function(x) {
+      const values = [",
+        paste0("'", value, "'", collapse = ", "),
+        "];
       let selected = false;
 
       if (x.type == 'select-one') {
@@ -1357,7 +1436,9 @@ element_select <- function(x,
         if (values.includes(x.options[i].value)) {
           x.options[i].selected = true;
           selected = true;
-        } else if (", reset_other_json, ") {
+        } else if (",
+        reset_other_json,
+        ") {
           x.options[i].selected = false;
         }
       }
@@ -1370,13 +1451,22 @@ element_select <- function(x,
       } else {
         return 0;
       }
-    }"), x, session = session, driver = driver)
-  } else if (length(text) == 1) {
-    execute_js_fn_on(paste0("function(x) {
+    }"
+      ),
+      x,
+      session = session,
+      driver = driver
+    )
+  } else if (!is.null(text) && length(text) == 1) {
+    execute_js_fn_on(
+      paste0(
+        "function(x) {
       let selected = false;
 
       for (let i = 0; i < x.options.length; i++) {
-        if (x.options[i].textContent.indexOf('", text, "') >= 0) {
+        if (x.options[i].textContent.indexOf('",
+        text,
+        "') >= 0) {
           if (x.type == 'select-one') {
             x.options[i].selected = true;
             x.selectedIndex = i;
@@ -1385,7 +1475,9 @@ element_select <- function(x,
             x.options[i].selected = true;
             selected = true;
           }
-        } else if (", reset_other_json, ") {
+        } else if (",
+        reset_other_json,
+        ") {
           x.options[i].selected = false;
         }
       }
@@ -1394,10 +1486,19 @@ element_select <- function(x,
       x.dispatchEvent(new Event('change', {bubbles: true}));
 
       return selected;
-    }"), x, session = session, driver = driver)
+    }"
+      ),
+      x,
+      session = session,
+      driver = driver
+    )
   } else if (!is.null(text)) {
-    execute_js_fn_on(paste0("function(x) {
-      const values = [", paste0("'", text, "'", collapse = ", "), "];
+    execute_js_fn_on(
+      paste0(
+        "function(x) {
+      const values = [",
+        paste0("'", text, "'", collapse = ", "),
+        "];
       let selected = false;
 
       if (x.type == 'select-one') {
@@ -1408,7 +1509,9 @@ element_select <- function(x,
         if (values.some(v => x.options[i].textContent.indexOf(v) >= 0)) {
           x.options[i].selected = true;
           selected = true;
-        } else if (", reset_other_json, ") {
+        } else if (",
+        reset_other_json,
+        ") {
           x.options[i].selected = false;
         }
       }
@@ -1421,23 +1524,38 @@ element_select <- function(x,
       } else {
         return 0;
       }
-    }"), x, session = session, driver = driver)
-  } else if (length(index) == 1) {
+    }"
+      ),
+      x,
+      session = session,
+      driver = driver
+    )
+  } else if (!is.null(index) && length(index) == 1) {
     index <- index - 1
 
-    execute_js_fn_on(paste0("function(x) {
+    execute_js_fn_on(
+      paste0(
+        "function(x) {
       let selected = false;
 
-      if (", reset_other_json, ") {
+      if (",
+        reset_other_json,
+        ") {
         for (let i = 0; i < x.options.length; i++) {
           x.options[i].selected = false;
         }
       }
 
       if (x.type == 'select-one') {
-        if (x.options.length > ", index, ") {
-          x.selectedIndex = ", index, ";
-          x.options[", index, "].selected = true;
+        if (x.options.length > ",
+        index,
+        ") {
+          x.selectedIndex = ",
+        index,
+        ";
+          x.options[",
+        index,
+        "].selected = true;
 
           x.dispatchEvent(new Event('input', {bubbles: true}));
           x.dispatchEvent(new Event('change', {bubbles: true}));
@@ -1447,8 +1565,12 @@ element_select <- function(x,
           return -1;
         }
       } else {
-        if (x.options.length > ", index, ") {
-          x.options[", index, "].selected = true;
+        if (x.options.length > ",
+        index,
+        ") {
+          x.options[",
+        index,
+        "].selected = true;
           selected = true;
         }
       }
@@ -1461,22 +1583,33 @@ element_select <- function(x,
       } else {
         return 0;
       }
-    }"), x, session = session, driver = driver)
+    }"
+      ),
+      x,
+      session = session,
+      driver = driver
+    )
   } else if (!is.null(index)) {
     index <- index - 1
 
-    execute_js_fn_on(paste0("function(x) {
+    execute_js_fn_on(
+      paste0(
+        "function(x) {
       if (x.type == 'select-one') {
         return -1;
       }
 
-      if (", reset_other_json, ") {
+      if (",
+        reset_other_json,
+        ") {
         for (let i = 0; i < x.options.length; i++) {
           x.options[i].selected = false;
         }
       }
 
-      const values = [", paste0(index, collapse = ", "), "];
+      const values = [",
+        paste0(index, collapse = ", "),
+        "];
 
       let selected = false;
 
@@ -1495,9 +1628,15 @@ element_select <- function(x,
       } else {
         return 0;
       }
-    }"), x, session = session, driver = driver)
+    }"
+      ),
+      x,
+      session = session,
+      driver = driver
+    )
   } else if (reset_other_json) {
-    execute_js_fn_on("function(x) {
+    execute_js_fn_on(
+      "function(x) {
       for (let i = 0; i < x.options.length; i++) {
         x.options[i].selected = false;
       }
@@ -1508,252 +1647,201 @@ element_select <- function(x,
 
       x.dispatchEvent(new Event('input', {bubbles: true}));
       x.dispatchEvent(new Event('change', {bubbles: true}));
-    }", x, session = session, driver = driver)
+    }",
+      x,
+      session = session,
+      driver = driver
+    )
   }
 }
 
-get_element_for_selection <- function(x,
-                                      value = NULL,
-                                      text = NULL,
-                                      index = NULL,
-                                      timeout = NULL,
-                                      reset_other = TRUE,
-                                      call = rlang::caller_env()) {
+get_selection_conditions <- function(
+  x,
+  value = NULL,
+  text = NULL,
+  index = NULL,
+  reset_other = TRUE,
+  call = rlang::caller_env()
+) {
+  session <- x$session
+  driver <- x$driver
+
+  conditions <- list(
+    preset_conditions$visible,
+    preset_conditions$enabled,
+  )
+
+  is_select_or_option <- list(
+    fun = function(x) {
+      element_name(x, session, driver) %in% c("option", "select")
+    },
+    desc = "it must be a `<select>` or `<option>` element",
+    failure_message = "did not have the correct tag name"
+  )
+
   if (is.null(value) && is.null(text) && is.null(index)) {
     if (reset_other) {
-      condition <- function(x) elem_name(x) %in% c("option", "select")
-
-      return(get_element_for_action(
-        x,
-        "select {.arg x}",
-        list(is_enabled, condition),
-        timeout = timeout,
-        failure_messages = c(
-          "was not enabled",
-          "did not have the correct tag name"
-        ),
-        conditions_text = c(
-          "be enabled",
-          "be a `<select>` or `<option>` element"
-        ),
-        call = call
-      ))
+      conditions <- append(conditions, list(is_select_or_option))
     } else {
-      name <- "option"
+      condition_text <-
+        "it must be an `<option>` element, not a `<select>` element (as all arguments are `NULL` and {.arg reset_other} is `FALSE`)"
 
-      condition_text <- paste0(
-        "be an `<option>` element, not a `<select>` element (as all other ",
-        "arguments are `NULL` and {.arg reset_other} is `FALSE`)"
+      option_condition <- list(
+        fun = function(x) {
+          name <- element_name(x, session, driver)
+
+          if (identical(name, "option")) {
+            TRUE
+          } else if (identical(name, "select")) {
+            list(desc = condition_text)
+          }
+        },
+        desc = "it must be an `<option>` element",
+        failure_message = "did not have the correct tag name"
       )
+
+      conditions <- append(conditions, list(option_condition))
+
       check_multiple <- FALSE
       specific_condition <- NULL
     }
   } else {
-    if (!is.null(value)) {
-      name <- "select"
-      check_multiple <- length(value) > 1
-      arg <- "value"
+    arg <- c("value", "text", "index")[c(
+      !is.null(value),
+      !is.null(text),
+      !is.null(index)
+    )][1]
 
-      specific_condition <- function(x) {
-        has_at_least(elem_filter(find_elements(x, "option"), function(x) {
-          elem_value(x) %in% value
-        }), 1)
-      }
-
-      specific_condition_text <- paste0(
-        "have an `<option>` element with value {.or {.val ", value, "}}"
-      )
-      specific_failure_message <- "did not have contain the required option"
-    } else if (!is.null(text)) {
-      name <- "select"
-      check_multiple <- length(text) > 1
-      arg <- "text"
-
-      specific_condition <- function(x) {
-        has_at_least(elem_filter(find_elements(x, "option"), function(x) {
-          actual_text <- elem_text(x, timeout = 0)
-          any(vapply(text, function(x) {
-            grepl(x, actual_text, fixed = TRUE)
-          }, logical(1)))
-        }), 1)
-      }
-
-      specific_condition_text <- paste0(
-        "have an `<option>` element with text {.or {.val ", text, "}}"
-      )
-      specific_failure_message <- "did not have contain the required option"
-    } else if (!is.null(index)) {
-      name <- "select"
-      check_multiple <- length(index) > 1
-      arg <- "index"
-
-      specific_condition <- function(x) {
-        execute_js_fn(paste0("x => x.options.length >= ", min(index)), x)
-      }
-
-      specific_condition_text <- paste0(
-        "have at least {.val {", min(index), "}} options"
-      )
-      specific_failure_message <- NULL
-    }
-
-    condition_text <- paste0(
-      "be a `<select>` element, not an `<option>` element (as {.arg ", arg, "}",
-      " is not `NULL`)"
+    condition_text <- cli::format_inline(
+      "it must be a `<select>` element, not an `<option>` element (as {.arg {arg}} is not `NULL`",
     )
-    if (check_multiple) {
-      multiple_condition <- function(x) {
-        execute_js_fn("x => x.type != 'select-one'", x)
+
+    select_condition <- list(
+      fun = function(x) {
+        name <- element_name(x, session, driver)
+
+        if (identical(name, "select")) {
+          TRUE
+        } else if (identical(name, "option")) {
+          list(desc = condition_text)
+        }
+      },
+      desc = "it must be a `<select>` element",
+      failure_message = "did not have the correct tag name"
+    )
+
+    conditions <- append(conditions, list(select_condition))
+
+    if (!is.null(value)) {
+      if (length(value) > 1) {
+        conditions <- append(
+          conditions,
+          list(multiple_select_condition("value", session, driver))
+        )
       }
-      multiple_condition_text <- paste0(
-        "support multiple selections (as {.arg ", arg, "} contains multiple ",
-        "items)"
+
+      specific_condition <- list(
+        fun = function(x) {
+          options <- find_actual_elements(x, "css selector", "option", driver)
+
+          for (option in options) {
+            if (element_value(option, session, driver) %in% value) {
+              return(TRUE)
+            }
+          }
+
+          FALSE
+        },
+        desc = cli::format_inline(
+          "it must have an `<option>` element with value {.or {.val {value}}}"
+        ),
+        failure_message = "did not have contain the required option"
       )
+
+      conditions <- append(conditions, list(specific_condition))
+    } else if (!is.null(text)) {
+      if (length(text) > 1) {
+        conditions <- append(
+          conditions,
+          list(multiple_select_condition("text", session, driver))
+        )
+      }
+
+      specific_condition <- list(
+        fun = function(x) {
+          options <- find_actual_elements(x, "css selector", "option", driver)
+
+          for (option in options) {
+            text <- element_text(option, session, driver)
+            text_matches <- vapply(
+              text,
+              function(x) grepl(x, text, fixed = TRUE),
+              logical(1)
+            )
+
+            if (text_matches) {
+              return(TRUE)
+            }
+          }
+
+          FALSE
+        },
+        desc = cli::format_inline(
+          "it must have an `<option>` element with text {.or {.val {text}}}"
+        ),
+        failure_message = "did not have contain the required option"
+      )
+
+      conditions <- append(conditions, list(specific_condition))
+    } else if (!is.null(index)) {
+      if (length(index) > 1) {
+        conditions <- append(
+          conditions,
+          list(multiple_select_condition("index", session, driver))
+        )
+      }
+
+      specific_condition <- list(
+        fun = function(x) {
+          n_options <- execute_js_fn_on(
+            paste0("x => x.options.length", min(index)),
+            x,
+            session,
+            driver
+          )
+
+          if (n_options >= min(index)) {
+            TRUE
+          } else {
+            list(
+              failure_message = cli::format_inline(
+                "had {.val {n_options}} options"
+              )
+            )
+          }
+        },
+        desc = cli::format_inline(
+          "it must have at least {.val {min(index)}} options"
+        )
+      )
+
+      conditions <- append(conditions, list(specific_condition))
     }
   }
 
-  conditions <- list(
-    is_present,
-    is_enabled,
-    function(x) has_name(x, name)
-  )
-
-  if (!is.null(specific_condition)) {
-    conditions <- append(conditions, list(specific_condition))
-  }
-
-  if (check_multiple) {
-    conditions <- append(conditions, list(multiple_condition))
-  }
-
-  get_select_element(
-    x,
-    conditions = conditions,
-    timeout = timeout,
-    name = name,
-    condition_text = condition_text,
-    specific_condition = specific_condition,
-    specific_failure_message = specific_failure_message,
-    specific_condition_text = specific_condition_text,
-    check_multiple = check_multiple,
-    multiple_condition = multiple_condition,
-    multiple_condition_text = multiple_condition_text,
-    call = call
-  )
+  conditions
 }
 
-get_select_element <- function(x,
-                               conditions,
-                               timeout,
-                               name,
-                               condition_text,
-                               specific_condition,
-                               specific_failure_message,
-                               specific_condition_text,
-                               check_multiple,
-                               multiple_condition,
-                               multiple_condition_text,
-                               call = rlang::caller_env()) {
-  meets_condition <- inject(elem_wait_until(
-    x,
-    !!!conditions,
-    timeout = timeout
-  ))
-
-  other_name <- switch(name,
-    "option" = "select",
-    "select" = "option",
-    stop()
+multiple_select_condition <- function(arg, session, driver) {
+  list(
+    fun = function(x) {
+      execute_js_fn_on("x => x.type != 'select-one'", x, session, driver)
+    },
+    desc = cli::format_inline(
+      "it must support multiple selections (as {.arg {arg}} contains multiple items)"
+    ),
+    failure_message = "did not support multiple selections"
   )
-
-  if (!meets_condition) {
-    if (!is_present(x)) {
-      stop_not_actionable(c(
-        "To select {.arg x}, it must exist.",
-        "i" = paste0(
-          format_timeout_for_error(timeout),
-          "{.arg x} was not present."
-        )
-      ), call = call, class = "selenider_error_absent_element")
-    }
-
-    if (!is_enabled(x)) {
-      stop_not_actionable(c(
-        "To select {.arg x}, it be enabled.",
-        "i" = paste0(
-          format_timeout_for_error(timeout),
-          "{.arg x} was not enabled."
-        )
-      ), call = call)
-    }
-
-    if (!has_name(x, name)) {
-      if (elem_name(x, timeout = 0) == other_name) {
-        stop_not_actionable(c(
-          paste0("To select {.arg x}, it must ", condition_text, "."),
-          "i" = paste0(
-            format_timeout_for_error(timeout),
-            "{.arg x} did not have the correct tag name."
-          )
-        ))
-      } else {
-        stop_not_actionable(c(
-          "To select {.arg x}, it must be a `<select>` or `<option>` element.",
-          "i" = paste0(
-            format_timeout_for_error(timeout),
-            "{.arg x} did not have the correct tag name."
-          )
-        ))
-      }
-    }
-
-    if (!is.null(specific_condition) && !specific_condition(x)) {
-      if (is.null(specific_failure_message)) {
-        # The failure message for the `index` argument requires the element to
-        # be collected.
-        n_options <- execute_js_fn_on(
-          "x => x.options.length",
-          get_element(x),
-          session = x$session,
-          driver = x$driver
-        )
-        specific_failure_message <- paste0("had {.val {n_options}} options")
-      }
-      stop_not_actionable(c(
-        paste0("To select {.arg x}, it must ", specific_condition_text, "."),
-        "i" = paste0(
-          format_timeout_for_error(timeout),
-          "{.arg x} ",
-          specific_failure_message,
-          "."
-        )
-      ))
-    }
-
-    if (check_multiple && !multiple_condition(x)) {
-      stop_not_actionable(c(
-        paste0("To select {.arg x}, it must ", multiple_condition_text, "."),
-        "i" = paste0(
-          format_timeout_for_error(timeout),
-          "{.arg x} did not support multiple selections."
-        )
-      ))
-    }
-  }
-
-  element <- get_element(x)
-
-  if (is.null(element)) {
-    stop_not_actionable(c(
-      paste0("To select {.arg x}, it must exist."),
-      "i" = paste0(
-        format_timeout_for_error(timeout),
-        "{.arg x} was not present."
-      )
-    ), call = call, class = "selenider_error_absent_element")
-  }
-
-  element
 }
 
 #' Submit an element
@@ -1798,46 +1886,54 @@ elem_submit <- function(x, js = FALSE, timeout = NULL) {
 
   timeout <- get_timeout(timeout, x$timeout)
 
-  has_form_parent <- function(x) {
-    has_at_least(elem_filter(elem_ancestors(x), has_name("form")), 1)
-  }
+  session <- x$session
+  driver <- x$driver
+
+  has_form_parent <- list(
+    fun = function(x) {
+      ancestors <- find_actual_elements(
+        x,
+        "xpath",
+        "./ancestor::*",
+        driver
+      )
+
+      for (ancestor in ancestors) {
+        if (identical(element_tag(ancestor, session, driver), "form")) {
+          return(TRUE)
+        }
+      }
+
+      FALSE
+    },
+    desc = "it must be contained in a form",
+    failure_message = "was not contained in a form"
+  )
 
   if (js || x$session != "rselenium") {
-    element <- get_element_for_action(
+    perform_action(
       x,
-      action = "submit {.arg x} using JavaScript",
-      conditions = list(has_form_parent),
+      action = function(x) element_submit_js(x, session, driver),
+      action_name = "submit {.arg x} using JavaScript",
       timeout = timeout,
-      failure_messages = c("did not have a form ancestor"),
-      conditions_text = c("have a form element as its ancestor")
+      conditions = list(has_form_parent)
     )
-
-    result <- element_submit_js(element, x$session, x$driver)
-
-    if (!result) {
-      # Shouldn't happen
-      cli::cli_abort(c(
-        "To submit {.arg x}, it must be the descendant of a <form> element"
-      ))
-    }
   } else {
-    element <- get_element_for_action(
+    perform_action(
       x,
-      action = "submit {.arg x}",
-      conditions = list(has_form_parent),
+      action = function(x) element_submit(x, session, driver),
+      action_name = "submit {.arg x}",
       timeout = timeout,
-      failure_messages = c("did not have a form ancestor"),
-      conditions_text = c("have a form element as its ancestor")
+      conditions = list(has_form_parent)
     )
-
-    element_submit(element, x$session, x$driver)
   }
 
   invisible(x)
 }
 
 element_submit_js <- function(x, session, driver) {
-  execute_js_fn_on("function(element) {
+  execute_js_fn_on(
+    "function(element) {
     while (element != null) {
       if (element.tagName == 'FORM') {
         if (element.requestSubmit) {
@@ -1851,20 +1947,26 @@ element_submit_js <- function(x, session, driver) {
       element = element.parentElement;
     }
     return false;
-  }", x, session = session, driver = driver)
+  }",
+    x,
+    session = session,
+    driver = driver
+  )
 }
 
 element_submit <- function(x, session, driver) {
   x$submitElement()
 }
 
-get_element_for_action <- function(x,
-                                   action,
-                                   conditions,
-                                   timeout,
-                                   failure_messages,
-                                   conditions_text,
-                                   call = rlang::caller_env()) {
+get_element_for_action <- function(
+  x,
+  action,
+  conditions,
+  timeout,
+  failure_messages,
+  conditions_text,
+  call = rlang::caller_env()
+) {
   meets_condition <-
     inject(elem_wait_until(
       x,
@@ -1875,26 +1977,33 @@ get_element_for_action <- function(x,
 
   if (!meets_condition) {
     if (length(conditions) == 0 || !is_present(x)) {
-      stop_not_actionable(c(
-        paste0("To ", action, ", it must exist."),
-        "i" = paste0(
-          format_timeout_for_error(timeout),
-          "{.arg x} was not present."
-        )
-      ), call = call, class = "selenider_error_absent_element")
+      stop_not_actionable(
+        c(
+          paste0("To ", action, ", it must exist."),
+          "i" = paste0(
+            format_timeout_for_error(timeout),
+            "{.arg x} was not present."
+          )
+        ),
+        call = call,
+        class = "selenider_error_absent_element"
+      )
     }
 
     for (n in seq_along(conditions)) {
       condition <- conditions[[n]]
 
       if (!condition(x)) {
-        stop_not_actionable(c(
-          paste0("To ", action, ", it must ", conditions_text[[n]], "."),
-          "i" = paste0(
-            format_timeout_for_error(timeout),
-            "{.arg x} {failure_messages[[n]]}."
-          )
-        ), call = call)
+        stop_not_actionable(
+          c(
+            paste0("To ", action, ", it must ", conditions_text[[n]], "."),
+            "i" = paste0(
+              format_timeout_for_error(timeout),
+              "{.arg x} {failure_messages[[n]]}."
+            )
+          ),
+          call = call
+        )
       }
     }
   }
@@ -1902,25 +2011,31 @@ get_element_for_action <- function(x,
   element <- get_element(x)
 
   if (is.null(element)) {
-    stop_not_actionable(c(
-      paste0("To ", action, ", it must exist."),
-      "i" = paste0(
-        format_timeout_for_error(timeout),
-        "{.arg x} was not present."
-      )
-    ), call = call, class = "selenider_error_absent_element")
+    stop_not_actionable(
+      c(
+        paste0("To ", action, ", it must exist."),
+        "i" = paste0(
+          format_timeout_for_error(timeout),
+          "{.arg x} was not present."
+        )
+      ),
+      call = call,
+      class = "selenider_error_absent_element"
+    )
   }
 
   element
 }
 
-get_elements_for_action <- function(x,
-                                    action,
-                                    conditions,
-                                    timeout,
-                                    failure_messages,
-                                    conditions_text,
-                                    call = rlang::caller_env()) {
+get_elements_for_action <- function(
+  x,
+  action,
+  conditions,
+  timeout,
+  failure_messages,
+  conditions_text,
+  call = rlang::caller_env()
+) {
   get_elements_succeeds <- function(x) {
     !is.null(get_element(x))
   }
@@ -1960,7 +2075,8 @@ get_elements_for_action <- function(x,
             paste0("To ", action, " ", conditions_text[[n]], "."),
             "i" = paste0(
               format_timeout_for_error(timeout),
-              failure_messages[[n]], "."
+              failure_messages[[n]],
+              "."
             )
           )
         )
@@ -2006,18 +2122,27 @@ get_elements_for_action <- function(x,
 #' ``` r
 #' list(
 #'   fun = function(x) TRUE,
-#'   desc = "be visible",
+#'   desc = "it must be visible",
 #'   failure_message = "was not visible"
 #' )
 #' ```
 #'
+#' `fun` should be a function that returns `TRUE` if the condition is met.
+#' Optionally, it can return a list containing `desc` and/or `failure_message`,
+#' which will then override the defaults.
+#'
+#' @returns
+#' The return value of the action, if it succeeds.
+#'
 #' @noRd
-perform_action <- function(x,
-                           action,
-                           action_name,
-                           conditions,
-                           timeout,
-                           call = rlang::caller_env()) {
+perform_action <- function(
+  x,
+  action,
+  action_name,
+  timeout,
+  conditions = list(),
+  call = rlang::caller_env()
+) {
   action_fun <- function() {
     tryCatch(
       {
@@ -2025,41 +2150,51 @@ perform_action <- function(x,
 
         if (is.null(element)) {
           return(list(
+            success = FALSE,
             type = "null_element"
           ))
         }
 
         for (condition in conditions) {
-          if (!condition$fun(element)) {
+          result <- condition$fun(element)
+          if (!isTRUE(result)) {
             return(list(
+              success = FALSE,
               type = "condition_failed",
-              condition = condition
+              condition = condition,
+              result = result
             ))
           }
         }
 
-        action(element)
-        TRUE
+        result <- action(element)
+        list(success = TRUE, result = result)
       },
-      expect_error_continue = function(error) list(type = "error", error = error)
+      expect_error_continue = function(error) {
+        list(success = FALSE, type = "error", error = error)
+      }
     )
   }
 
   result <- retry_until_true(timeout, action_fun)
 
-  if (isTRUE(result)) {
-    return()
+  if (result$success) {
+    return(result$result)
   }
 
   if (result$type == "null_element") {
     if (inherits(x, "selenider_element")) {
-      stop_not_actionable(c(
-        paste0("To ", action_name, ", it must exist."),
-        "i" = paste0(
-          format_timeout_for_error(timeout),
-          "{.arg x} was not present."
-        )
-      ), call = call, class = "selenider_error_absent_element")
+      stop_not_actionable(
+        c(
+          paste0("To ", action_name, ", it must exist."),
+          "i" = paste0(
+            format_timeout_for_error(timeout),
+            "{.arg x} was not present."
+          )
+        ),
+        call = call,
+        class = "selenider_error_absent_element"
+      )
     } else {
       stop_not_actionable(
         c(
@@ -2079,15 +2214,32 @@ perform_action <- function(x,
   } else if (result$type == "condition_failed") {
     condition <- result$condition
 
-    stop_not_actionable(c(
-      paste0("To ", action_name, ", it must ", condition$desc, "."),
-      "i" = paste0(
-        format_timeout_for_error(timeout),
-        "{.arg x} ",
-        condition$failure_message,
-        "."
-      )
-    ), call = call)
+    desc <- if (is.list(condition$result) && !is.null(condition$result$desc)) {
+      condition$result$desc
+    } else {
+      condition$desc
+    }
+
+    failure_message <- if (
+      is.list(condition$result) && !is.null(condition$result$failure_message)
+    ) {
+      condition$result$failure_message
+    } else {
+      condition$failure_message
+    }
+
+    stop_not_actionable(
+      c(
+        paste0("To ", action_name, ", ", desc, "."),
+        "i" = paste0(
+          format_timeout_for_error(timeout),
+          "{.arg x} ",
+          failure_message,
+          "."
+        )
+      ),
+      call = call
+    )
   } else if (result$type == "error") {
     stop_action_failed(
       paste0("While trying to ", action_name, ", an error occurred."),
@@ -2096,6 +2248,19 @@ perform_action <- function(x,
     )
   }
 }
+
+preset_conditions <- list(
+  visible = list(
+    fun = function(x) element_is_visible(x, session, driver),
+    desc = "it must be visible",
+    failure_message = "was not visible"
+  ),
+  enabled = list(
+    fun = function(x) element_is_enabled(x, session, driver),
+    desc = "it must be enabled",
+    failure_message = "was not enabled"
+  ),
+)
 
 format_timeout_for_error <- function(x) {
   if (x == 0) {
