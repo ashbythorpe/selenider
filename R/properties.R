@@ -28,19 +28,23 @@ elem_name <- function(x, timeout = NULL) {
 
   timeout <- get_timeout(timeout, x$timeout)
 
-  element <- get_element_for_property(
+  session <- x$session
+  driver <- x$driver
+
+  perform_action(
     x,
-    action = "get the tag name of {.arg x}",
+    action = function(x) element_name(x, session, driver),
+    action_name = "get the tag name of {.arg x}",
     timeout = timeout
   )
-
-  element_name(element, x$session, x$driver)
 }
 
 element_name <- function(x, session, driver) {
   if (session == "chromote") {
     driver <- driver
-    tolower(wrap_error_chromote(driver$DOM$describeNode(backendNodeId = x)$node$nodeName))
+    tolower(wrap_error_chromote(
+      driver$DOM$describeNode(backendNodeId = x)$node$nodeName
+    ))
   } else if (session == "selenium") {
     x$get_tag_name()
   } else {
@@ -76,13 +80,15 @@ elem_text <- function(x, timeout = NULL) {
 
   timeout <- get_timeout(timeout, x$timeout)
 
-  element <- get_element_for_property(
+  session <- x$session
+  driver <- x$driver
+
+  perform_action(
     x,
-    action = "get the text inside {.arg x}",
+    action = function(x) element_text(x, session, driver),
+    action_name = "get the text inside {.arg x}",
     timeout = timeout
   )
-
-  element_text(element, x$session, x$driver)
 }
 
 element_text <- function(x, session, driver) {
@@ -96,9 +102,14 @@ element_text <- function(x, session, driver) {
 }
 
 chromote_get_text <- function(x, driver) {
-  wrap_error_chromote(driver$Runtime$callFunctionOn("function() {
+  wrap_error_chromote(
+    driver$Runtime$callFunctionOn(
+      "function() {
     return this.textContent;
-  }", chromote_object_id(backend_id = x, driver = driver))$result$value)
+  }",
+      chromote_object_id(backend_id = x, driver = driver)
+    )$result$value
+  )
 }
 
 #' Get attributes of an element
@@ -153,13 +164,17 @@ elem_attr <- function(x, name, default = NULL, timeout = NULL) {
 
   timeout <- get_timeout(timeout, x$timeout)
 
-  element <- get_element_for_property(
+  session <- x$session
+  driver <- x$driver
+
+  perform_action(
     x,
-    action = paste0("get the \"", name, "\" attribute of {.arg x}"),
+    action = function(x) element_attribute(x, name, default, session, driver),
+    action_name = cli::format_inline(
+      "get the {.val name} attribute of {.arg x}"
+    ),
     timeout = timeout
   )
-
-  element_attribute(element, name, default, x$session, x$driver)
 }
 
 element_attribute <- function(x, name, default, session, driver) {
@@ -174,10 +189,12 @@ element_attribute <- function(x, name, default, session, driver) {
 }
 
 chromote_get_attribute <- function(x, name, default, driver) {
-  response <- wrap_error_chromote(driver$DOM$getAttributes(chromote_node_id(
-    backend_id = x,
-    driver = driver
-  ))$attributes)
+  response <- wrap_error_chromote(
+    driver$DOM$getAttributes(chromote_node_id(
+      backend_id = x,
+      driver = driver
+    ))$attributes
+  )
 
   # CDP returns a list of interleaved names and values
   # So the names are the 1st, 3rd, etc. elements.
@@ -192,10 +209,12 @@ chromote_get_attribute <- function(x, name, default, driver) {
 }
 
 chromote_get_attributes <- function(x, driver) {
-  response <- wrap_error_chromote(driver$DOM$getAttributes(chromote_node_id(
-    backend_id = x,
-    driver = driver
-  ))$attributes)
+  response <- wrap_error_chromote(
+    driver$DOM$getAttributes(chromote_node_id(
+      backend_id = x,
+      driver = driver
+    ))$attributes
+  )
 
   # CDP returns a list of interleaved names and values
   # We convert this to a named list
@@ -220,26 +239,33 @@ elem_attrs <- function(x, timeout = NULL) {
 
   timeout <- get_timeout(timeout, x$timeout)
 
-  element <- get_element_for_property(
+  session <- x$session
+  driver <- x$driver
+
+  perform_action(
     x,
-    action = "get the attributes of {.arg x}",
+    action = function(x) element_attributes(x, session, driver),
+    action_name = "get the attributes of {.arg x}",
     timeout = timeout
   )
-
-  element_attributes(element, x$session, x$driver)
 }
 
 element_attributes <- function(x, session, driver) {
   if (session == "chromote") {
     chromote_get_attributes(x, driver = driver)
   } else {
-    execute_js_fn_on("function(x) {
+    execute_js_fn_on(
+      "function(x) {
       let attributes = {};
       for (let i = 0; i < x.attributes.length; i++) {
         attributes[x.attributes[i].name] = x.attributes[i].value;
       }
       return attributes;
-    }", x, session = session, driver = driver)
+    }",
+      x,
+      session = session,
+      driver = driver
+    )
   }
 }
 
@@ -254,13 +280,15 @@ elem_value <- function(x, ptype = character(), timeout = NULL) {
 
   timeout <- get_timeout(timeout, x$timeout)
 
-  element <- get_element_for_property(
+  session <- x$session
+  driver <- x$driver
+
+  result <- perform_action(
     x,
-    action = "get the value of {.arg x}",
+    action = function(x) element_value(x, session, driver),
+    action_name = "get the value of {.arg x}",
     timeout = timeout
   )
-
-  result <- element_value(element, x$session, x$driver)
 
   if (is.null(result)) {
     NULL
@@ -282,7 +310,8 @@ element_value <- function(x, session, driver) {
 }
 
 element_select_value <- function(x, session, driver) {
-  result <- execute_js_fn_on("function(x) {
+  result <- execute_js_fn_on(
+    "function(x) {
     if (x.type == 'select-one') {
       return x.options[x.selectedIndex].value;
     } else {
@@ -296,7 +325,11 @@ element_select_value <- function(x, session, driver) {
 
       return result;
     }
-  }", x, session = session, driver = driver)
+  }",
+    x,
+    session = session,
+    driver = driver
+  )
 
   if (is.list(result)) {
     unlist(result)
@@ -354,13 +387,17 @@ elem_css_property <- function(x, name, timeout = NULL) {
 
   timeout <- get_timeout(timeout, x$timeout)
 
-  element <- get_element_for_property(
+  session <- x$session
+  driver <- x$driver
+
+  perform_action(
     x,
-    action = paste0("get the \"", name, "\" CSS property of {.arg x}"),
+    action = function(x) element_css_property(x, name, session, driver),
+    action_name = cli::format_inline(
+      "get the {.val name} CSS property of {.arg x}"
+    ),
     timeout = timeout
   )
-
-  element_css_property(element, name, x$session, x$driver)
 }
 
 element_css_property <- function(x, name, session, driver) {
@@ -380,9 +417,14 @@ chromote_get_css_property <- function(x, name, default, driver) {
   }
 
   if (is.null(driver$CSS$getComputedStyleForNode)) {
-    result <- wrap_error_chromote(driver$Runtime$callFunctionOn("function() {
+    result <- wrap_error_chromote(
+      driver$Runtime$callFunctionOn(
+        "function() {
       return getComputedStyle(this).getPropertyValue('aa')
-    }", chromote_object_id(backend_id = x, driver = driver))$result$value)
+    }",
+        chromote_object_id(backend_id = x, driver = driver)
+      )$result$value
+    )
 
     if (result == "") {
       default
@@ -390,10 +432,12 @@ chromote_get_css_property <- function(x, name, default, driver) {
       result
     }
   } else {
-    response <- unlist(wrap_error_chromote(driver$CSS$getComputedStyleForNode(chromote_node_id(
-      backend_id = x,
-      driver = driver
-    ))$computedStyle))
+    response <- unlist(wrap_error_chromote(
+      driver$CSS$getComputedStyleForNode(chromote_node_id(
+        backend_id = x,
+        driver = driver
+      ))$computedStyle
+    ))
 
     # Same as chromote_get_attribute()
     names <- response[seq_len(length(response) / 2) * 2 - 1]
@@ -441,13 +485,15 @@ elem_size <- function(x, timeout = NULL) {
 
   check_active(x)
 
-  elements <- get_elements_for_property(
+  session <- x$session
+  driver <- x$driver
+
+  perform_action(
     x,
-    action = "get the number of elements in {.arg x}",
+    action = function(x) length(x),
+    action_name = "get the number of elements in {.arg x}",
     timeout = timeout
   )
-
-  length(elements)
 }
 
 #' @rdname elem_size
@@ -455,34 +501,4 @@ elem_size <- function(x, timeout = NULL) {
 #' @export
 length.selenider_elements <- function(x) {
   elem_size(x)
-}
-
-get_element_for_property <- function(x,
-                                     action,
-                                     timeout,
-                                     call = rlang::caller_env()) {
-  get_element_for_action(
-    x,
-    action = action,
-    conditions = list(),
-    timeout = timeout,
-    failure_messages = c(),
-    conditions_text = c(),
-    call = call
-  )
-}
-
-get_elements_for_property <- function(x,
-                                      action,
-                                      timeout,
-                                      call = rlang::caller_env()) {
-  get_elements_for_action(
-    x,
-    action = action,
-    conditions = list(),
-    timeout = timeout,
-    failure_messages = c(),
-    conditions_text = c(),
-    call = call
-  )
 }

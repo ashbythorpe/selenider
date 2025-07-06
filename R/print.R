@@ -31,10 +31,12 @@
 #' print(ss("p"), n = 3)
 #'
 #' @export
-print.selenider_element <- function(x,
-                                    width = getOption("width"),
-                                    ...,
-                                    timeout = NULL) {
+print.selenider_element <- function(
+  x,
+  width = getOption("width"),
+  ...,
+  timeout = NULL
+) {
   cat(format(x, width = width, ..., timeout = timeout), sep = "\n")
 
   invisible(x)
@@ -43,30 +45,36 @@ print.selenider_element <- function(x,
 #' @rdname print.selenider_element
 #'
 #' @export
-print.selenider_elements <- function(x,
-                                     width = getOption("width"),
-                                     ...,
-                                     n = 20,
-                                     timeout = NULL) {
+print.selenider_elements <- function(
+  x,
+  width = getOption("width"),
+  ...,
+  n = 20,
+  timeout = NULL
+) {
   cat(format(x, width = width, ..., n = n, timeout = timeout), sep = "\n")
 
   invisible(x)
 }
 
 #' @export
-format.selenider_element <- function(x,
-                                     width = getOption("width"),
-                                     ...,
-                                     timeout = NULL) {
+format.selenider_element <- function(
+  x,
+  width = getOption("width"),
+  ...,
+  timeout = NULL
+) {
   timeout <- get_timeout(timeout, x$timeout)
 
-  element <- get_element_for_property(
+  session <- x$session
+  driver <- x$driver
+
+  html <- perform_action(
     x,
-    action = paste0("print {.arg x}"),
+    action = function(x) element_outer_html(x, session, driver),
+    action_name = "print {.arg x}",
     timeout = timeout
   )
-
-  html <- element_outer_html(element, x$session, x$driver)
 
   match <- regmatches(html, regexec("^(<.*?>)(.*)(</.*?>)$", html))[[1]]
 
@@ -87,19 +95,27 @@ format.selenider_element <- function(x,
 }
 
 #' @export
-format.selenider_elements <- function(x,
-                                      width = getOption("width"),
-                                      ...,
-                                      n = 20,
-                                      timeout = NULL) {
+format.selenider_elements <- function(
+  x,
+  width = getOption("width"),
+  ...,
+  n = 20,
+  timeout = NULL
+) {
   timeout <- get_timeout(timeout, x$timeout)
 
-  elements <- as.list(get_elements_for_property(
-    x,
-    action = paste0("print {.arg x}"),
-    timeout = timeout
-  ))
+  session <- x$session
+  driver <- x$driver
 
+  perform_action(
+    x,
+    action = function(x) format_elements(as.list(x), width, n, session, driver),
+    action_name = "print {.arg x}",
+    timeout = timeout
+  )
+}
+
+format_elements <- function(elements, width, n, session, driver) {
   length <- length(elements)
 
   extra <- FALSE
@@ -119,7 +135,9 @@ format.selenider_elements <- function(x,
   html <- encode_with_width(html, width)
 
   html <- paste0(
-    "[", seq_along(elements), "] ",
+    "[",
+    seq_along(elements),
+    "] ",
     html
   )
 

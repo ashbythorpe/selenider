@@ -249,6 +249,9 @@ elem_double_click <- function(x, js = FALSE, timeout = NULL) {
 
   timeout <- get_timeout(timeout, x$timeout)
 
+  session <- x$session
+  driver <- x$driver
+
   if (js) {
     perform_action(
       x,
@@ -330,6 +333,9 @@ elem_right_click <- function(x, js = FALSE, timeout = NULL) {
   check_active(x)
 
   timeout <- get_timeout(timeout, x$timeout)
+
+  session <- x$session
+  driver <- x$driver
 
   if (js || x$session == "rselenium") {
     perform_action(
@@ -469,6 +475,9 @@ elem_hover <- function(x, js = FALSE, timeout = NULL) {
 
   timeout <- get_timeout(timeout, x$timeout)
 
+  session <- x$session
+  driver <- x$driver
+
   if (js) {
     perform_action(
       x,
@@ -559,6 +568,9 @@ elem_focus <- function(x, timeout = NULL) {
   check_active(x)
 
   timeout <- get_timeout(timeout, x$timeout)
+
+  session <- x$session
+  driver <- x$driver
 
   perform_action(
     x,
@@ -657,6 +669,9 @@ elem_set_value <- function(x, text, timeout = NULL) {
   check_active(x)
 
   timeout <- get_timeout(timeout, x$timeout)
+
+  session <- x$session
+  driver <- x$driver
 
   perform_action(
     x,
@@ -856,6 +871,9 @@ elem_send_keys <- function(x, ..., modifiers = NULL, timeout = NULL) {
   }
 
   timeout <- get_timeout(timeout, x$timeout)
+
+  session <- x$session
+  driver <- x$driver
 
   if (is.null(x)) {
     element_send_keys(NULL, modifiers, keys, x$session, x$driver)
@@ -1099,6 +1117,9 @@ elem_scroll_to <- function(x, timeout = NULL) {
 
   timeout <- get_timeout(timeout, x$timeout)
 
+  session <- x$session
+  driver <- x$driver
+
   perform_action(
     x,
     action = function(x) element_scroll_to(x, session, driver),
@@ -1275,15 +1296,19 @@ elem_select <- function(
 
   perform_action(
     x,
-    action = function(x) {
+    action = function(element) {
+      if (inherits(x, "selenider_elements")) {
+        element <- as.list(element)
+      }
+
       element_select(
         x,
         value = value,
         text = text,
         index = index,
         reset_other = reset_other,
-        session = x$session,
-        driver = x$driver
+        session = session,
+        driver = driver
       )
     },
     action_name = "select {.arg x}",
@@ -1956,154 +1981,6 @@ element_submit_js <- function(x, session, driver) {
 
 element_submit <- function(x, session, driver) {
   x$submitElement()
-}
-
-get_element_for_action <- function(
-  x,
-  action,
-  conditions,
-  timeout,
-  failure_messages,
-  conditions_text,
-  call = rlang::caller_env()
-) {
-  meets_condition <-
-    inject(elem_wait_until(
-      x,
-      is_present,
-      !!!conditions,
-      timeout = timeout
-    ))
-
-  if (!meets_condition) {
-    if (length(conditions) == 0 || !is_present(x)) {
-      stop_not_actionable(
-        c(
-          paste0("To ", action, ", it must exist."),
-          "i" = paste0(
-            format_timeout_for_error(timeout),
-            "{.arg x} was not present."
-          )
-        ),
-        call = call,
-        class = "selenider_error_absent_element"
-      )
-    }
-
-    for (n in seq_along(conditions)) {
-      condition <- conditions[[n]]
-
-      if (!condition(x)) {
-        stop_not_actionable(
-          c(
-            paste0("To ", action, ", it must ", conditions_text[[n]], "."),
-            "i" = paste0(
-              format_timeout_for_error(timeout),
-              "{.arg x} {failure_messages[[n]]}."
-            )
-          ),
-          call = call
-        )
-      }
-    }
-  }
-
-  element <- get_element(x)
-
-  if (is.null(element)) {
-    stop_not_actionable(
-      c(
-        paste0("To ", action, ", it must exist."),
-        "i" = paste0(
-          format_timeout_for_error(timeout),
-          "{.arg x} was not present."
-        )
-      ),
-      call = call,
-      class = "selenider_error_absent_element"
-    )
-  }
-
-  element
-}
-
-get_elements_for_action <- function(
-  x,
-  action,
-  conditions,
-  timeout,
-  failure_messages,
-  conditions_text,
-  call = rlang::caller_env()
-) {
-  get_elements_succeeds <- function(x) {
-    !is.null(get_element(x))
-  }
-
-  meets_condition <-
-    inject(elem_wait_until(
-      x,
-      get_elements_succeeds,
-      !!!conditions,
-      timeout = timeout
-    ))
-
-  if (!meets_condition) {
-    if (length(conditions) == 0 || !get_elements_succeeds(x)) {
-      stop_not_actionable(
-        c(
-          paste0("To ", action, ", its parent must exist."),
-          "i" = paste0(
-            format_timeout_for_error(timeout),
-            "{.arg x}'s parent did not exist."
-          )
-        ),
-        call = call,
-        class = c(
-          "selenider_error_absent_parent",
-          "selenider_error_absent_element"
-        )
-      )
-    }
-
-    for (n in seq_along(conditions)) {
-      condition <- conditions[[n]]
-
-      if (!condition(x)) {
-        stop_not_actionable(
-          c(
-            paste0("To ", action, " ", conditions_text[[n]], "."),
-            "i" = paste0(
-              format_timeout_for_error(timeout),
-              failure_messages[[n]],
-              "."
-            )
-          )
-        )
-      }
-    }
-  }
-
-  elements <- get_element(x)
-
-  if (is.null(elements)) {
-    stop_not_actionable(
-      c(
-        paste0("To ", action, ", its parent must exist."),
-        "i" = paste0(
-          format_timeout_for_error(timeout),
-          "{.arg x}'s parent did not exist."
-        )
-      ),
-      call = call,
-      class = c(
-        "selenider_error_absent_parent",
-        "selenider_error_absent_element"
-      )
-    )
-  }
-
-  elements
 }
 
 #' Collect an element, and perform an action on it
