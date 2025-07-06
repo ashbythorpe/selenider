@@ -1,7 +1,9 @@
 test_that("actions work", {
   session <- selenider_test_session()
 
-  open_url("https://ashbythorpe.github.io/selenider/dev/articles/test-site.html")
+  open_url(
+    "https://ashbythorpe.github.io/selenider/dev/articles/test-site.html"
+  )
 
   # Button tests
 
@@ -168,6 +170,8 @@ test_that("actions work", {
 
   elem_scroll_to(link)
 
+  Sys.sleep(0.1)
+
   elem_click(link, wait_for_navigation = TRUE)
 
   expect_equal(current_url(), "https://www.google.com/")
@@ -176,7 +180,9 @@ test_that("actions work", {
 test_that("get_element_for_selection() works", {
   session <- selenider_test_session()
 
-  open_url("https://ashbythorpe.github.io/selenider/dev/articles/test-site.html")
+  open_url(
+    "https://ashbythorpe.github.io/selenider/dev/articles/test-site.html"
+  )
 
   selection <- s("#selection")
   option <- find_element(selection, "option")

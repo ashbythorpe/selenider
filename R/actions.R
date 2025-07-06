@@ -768,7 +768,7 @@ element_set_value <- function(x, text, session, driver) {
     execute_js_fn_on(
       paste0(
         "function(x) {
-      (x as HTMLInputElement).value = '",
+      x.value = '",
         text,
         "';
       x.dispatchEvent(new Event('input', {bubbles: true}));
