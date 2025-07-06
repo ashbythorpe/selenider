@@ -78,6 +78,21 @@ stop_not_actionable <- function(x,
   )
 }
 
+stop_action_failed <- function(x,
+                               error,
+                               call = rlang::caller_env(),
+                               env = rlang::caller_env()) {
+  class <- c("selenider_error_action_failed", "expect_error_continue")
+
+  cli::cli_abort(
+    x,
+    parent = error,
+    class = class,
+    call = call,
+    .envir = env
+  )
+}
+
 stop_subscript_type <- function(i, call = rlang::caller_env()) {
   cli::cli_abort(
     c(

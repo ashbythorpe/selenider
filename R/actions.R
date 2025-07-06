@@ -1990,6 +1990,113 @@ get_elements_for_action <- function(x,
   elements
 }
 
+#' Collect an element, and perform an action on it
+#'
+#' @param x A `selenider_element`/`selenider_elements` object.
+#' @param action A function to call on the element.
+#' @param action_name A string to use in error messages, e.g. "click {.arg x}.
+#' @param conditions A list of conditions to check before performing the
+#'   action.
+#' @param timeout How long to wait for the element to exist, satisfy all the
+#'   given conditions, and for the action to succeed.
+#' @param call The environment to throw errors in.
+#'
+#' @details
+#' Conditions should be lists of the form:
+#' ``` r
+#' list(
+#'   fun = function(x) TRUE,
+#'   desc = "be visible",
+#'   failure_message = "was not visible"
+#' )
+#' ```
+#'
+#' @noRd
+perform_action <- function(x,
+                           action,
+                           action_name,
+                           conditions,
+                           timeout,
+                           call = rlang::caller_env()) {
+  action_fun <- function() {
+    tryCatch(
+      {
+        element <- get_element(x)
+
+        if (is.null(element)) {
+          return(list(
+            type = "null_element"
+          ))
+        }
+
+        for (condition in conditions) {
+          if (!condition$fun(element)) {
+            return(list(
+              type = "condition_failed",
+              condition = condition
+            ))
+          }
+        }
+
+        action(element)
+        TRUE
+      },
+      expect_error_continue = function(error) list(type = "error", error = error)
+    )
+  }
+
+  result <- retry_until_true(timeout, action_fun)
+
+  if (isTRUE(result)) {
+    return()
+  }
+
+  if (result$type == "null_element") {
+    if (inherits(x, "selenider_element")) {
+      stop_not_actionable(c(
+        paste0("To ", action_name, ", it must exist."),
+        "i" = paste0(
+          format_timeout_for_error(timeout),
+          "{.arg x} was not present."
+        )
+      ), call = call, class = "selenider_error_absent_element")
+    } else {
+      stop_not_actionable(
+        c(
+          paste0("To ", action_name, ", its parent must exist."),
+          "i" = paste0(
+            format_timeout_for_error(timeout),
+            "{.arg x}'s parent did not exist."
+          )
+        ),
+        call = call,
+        class = c(
+          "selenider_error_absent_parent",
+          "selenider_error_absent_element"
+        )
+      )
+    }
+  } else if (result$type == "condition_failed") {
+    condition <- result$condition
+
+    stop_not_actionable(c(
+      paste0("To ", action_name, ", it must ", condition$desc, "."),
+      "i" = paste0(
+        format_timeout_for_error(timeout),
+        "{.arg x} ",
+        condition$failure_message,
+        "."
+      )
+    ), call = call)
+  } else if (result$type == "error") {
+    stop_action_failed(
+      paste0("While trying to ", action_name, ", an error occurred."),
+      error = result$error,
+      call = call,
+    )
+  }
+}
+
 format_timeout_for_error <- function(x) {
   if (x == 0) {
     ""
