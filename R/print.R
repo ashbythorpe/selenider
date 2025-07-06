@@ -128,8 +128,8 @@ format_elements <- function(elements, width, n, session, driver) {
     elements,
     element_outer_html,
     character(1),
-    session = x$session,
-    driver = x$driver
+    session = session,
+    driver = driver
   )
 
   html <- encode_with_width(html, width)

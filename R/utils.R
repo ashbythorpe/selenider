@@ -34,6 +34,24 @@ retry_until_true <- function(timeout, .f, ...) {
   }
 }
 
+retry_until_success <- function(timeout, .f, ...) {
+  if (timeout == 0) {
+    .f(...)
+  } else {
+    end <- Sys.time() + timeout
+
+    while (Sys.time() <= end) {
+      result <- .f(...)
+
+      if (isTRUE(result$success)) {
+        return(result)
+      }
+    }
+
+    result
+  }
+}
+
 #' Check if selenider can be used
 #'
 #' @description
@@ -74,8 +92,9 @@ retry_until_true <- function(timeout, .f, ...) {
 #'
 #' @export
 selenider_available <- function(
-    session = c("chromote", "selenium"),
-    online = TRUE) {
+  session = c("chromote", "selenium"),
+  online = TRUE
+) {
   check_bool(online)
 
   if (!identical(session, "rselenium")) {
@@ -113,7 +132,8 @@ selenider_available <- function(
 }
 
 selenider_available_chromote <- function() {
-  Sys.getenv("SELENIDER_SESSION") %in% c("", "chromote") &&
+  Sys.getenv("SELENIDER_SESSION") %in%
+    c("", "chromote") &&
     is_installed("chromote") &&
     tryCatch(
       {
@@ -279,7 +299,8 @@ is_multiple_elements <- function(x) {
       "WebElement",
       "SeleniumSession"
     )
-  ) || (is.numeric(x) && length(x) == 1))
+  ) ||
+    (is.numeric(x) && length(x) == 1))
 }
 
 uses_selenium <- function(x) {
@@ -343,7 +364,13 @@ execute_js_fn_on_multiple <- function(fn, x, session, driver) {
     args <- paste0(arg_names[-1], collapse = ", ")
     inner_args <- paste0(arg_names, collapse = ", ")
     script <- paste0(
-      "function(", args, ") { return (", fn, ")([", inner_args, "]) }"
+      "function(",
+      args,
+      ") { return (",
+      fn,
+      ")([",
+      inner_args,
+      "]) }"
     )
 
     first_element <- chromote_object_id(backend_id = x[[1]], driver = driver)

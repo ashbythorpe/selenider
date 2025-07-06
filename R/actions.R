@@ -81,7 +81,7 @@ elem_click <- function(
       x,
       action = function(x) element_click_js(x, session, driver),
       action_name = "click {.arg x} using JavaScript",
-      conditions = list(preset_conditions$enabled),
+      conditions = list(enabled_condition(session, driver)),
       timeout = timeout
     )
   } else {
@@ -89,7 +89,10 @@ elem_click <- function(
       x,
       action = function(x) element_click(x, session, driver),
       action_name = "click {.arg x}",
-      conditions = list(preset_conditions$visible, preset_conditions$enabled),
+      conditions = list(
+        visible_condition(session, driver),
+        enabled_condition(session, driver)
+      ),
       timeout = timeout
     )
   }
@@ -257,7 +260,7 @@ elem_double_click <- function(x, js = FALSE, timeout = NULL) {
       x,
       action = function(x) element_double_click_js(x, session, driver),
       action_name = "double click {.arg x} using JavaScript",
-      conditions = list(preset_conditions$enabled),
+      conditions = list(enabled_condition(session, driver)),
       timeout = timeout
     )
   } else {
@@ -265,7 +268,10 @@ elem_double_click <- function(x, js = FALSE, timeout = NULL) {
       x,
       action = function(x) element_double_click(x, session, driver),
       action_name = "double click {.arg x}",
-      conditions = list(preset_conditions$visible, preset_conditions$enabled),
+      conditions = list(
+        visible_condition(session, driver),
+        enabled_condition(session, driver)
+      ),
       timeout = timeout
     )
   }
@@ -342,7 +348,7 @@ elem_right_click <- function(x, js = FALSE, timeout = NULL) {
       x,
       action = function(x) element_right_click_js(x, session, driver),
       action_name = "right click {.arg x} using JavaScript",
-      conditions = list(preset_conditions$enabled),
+      conditions = list(enabled_condition(session, driver)),
       timeout = timeout
     )
   } else {
@@ -350,7 +356,10 @@ elem_right_click <- function(x, js = FALSE, timeout = NULL) {
       x,
       action = function(x) element_right_click(x, session, driver),
       action_name = "right click {.arg x}",
-      conditions = list(preset_conditions$visible, preset_conditions$enabled),
+      conditions = list(
+        visible_condition(session, driver),
+        enabled_condition(session, driver)
+      ),
       timeout = timeout
     )
   }
@@ -483,7 +492,7 @@ elem_hover <- function(x, js = FALSE, timeout = NULL) {
       x,
       action = function(x) element_hover_js(x, session, driver),
       action_name = "hover over {.arg x} using JavaScript",
-      conditions = list(preset_conditions$enabled),
+      conditions = list(enabled_condition(session, driver)),
       timeout = timeout
     )
   } else {
@@ -491,7 +500,10 @@ elem_hover <- function(x, js = FALSE, timeout = NULL) {
       x,
       action = function(x) element_hover(x, session, driver),
       action_name = "hover over {.arg x}",
-      conditions = list(preset_conditions$visible, preset_conditions$enabled),
+      conditions = list(
+        visible_condition(session, driver),
+        enabled_condition(session, driver)
+      ),
       timeout = timeout
     )
   }
@@ -576,7 +588,7 @@ elem_focus <- function(x, timeout = NULL) {
     x,
     action = function(x) element_focus(x, session, driver),
     action_name = "focus {.arg x}",
-    conditions = list(preset_conditions$visible),
+    conditions = list(visible_condition(session, driver)),
     timeout = timeout
   )
 
@@ -677,7 +689,7 @@ elem_set_value <- function(x, text, timeout = NULL) {
     x,
     action = function(x) element_set_value(x, text, session, driver),
     action_name = "set the value of {.arg x}",
-    conditions = list(preset_conditions$enabled),
+    conditions = list(enabled_condition(session, driver)),
     timeout = timeout
   )
 
@@ -732,7 +744,6 @@ element_set_value <- function(x, text, session, driver) {
   if (type == "select") {
     element_select(
       x,
-      elem_name = "select",
       value = text,
       text = NULL,
       index = NULL,
@@ -884,7 +895,7 @@ elem_send_keys <- function(x, ..., modifiers = NULL, timeout = NULL) {
     x,
     action = function(x) element_send_keys(x, modifiers, keys, session, driver),
     action_name = "send keys to {.arg x}",
-    conditions = list(preset_conditions$enabled),
+    conditions = list(enabled_condition(session, driver)),
     timeout = timeout
   )
 
@@ -1049,7 +1060,7 @@ elem_clear_value <- function(x, timeout = NULL) {
     x,
     action = function(x) element_clear_value(x, session, driver),
     action_name = "clear the value of {.arg x}",
-    conditions = list(preset_conditions$enabled),
+    conditions = list(enabled_condition(session, driver)),
     timeout = timeout
   )
 
@@ -1302,7 +1313,7 @@ elem_select <- function(
       }
 
       element_select(
-        x,
+        element,
         value = value,
         text = text,
         index = index,
@@ -1692,8 +1703,7 @@ get_selection_conditions <- function(
   driver <- x$driver
 
   conditions <- list(
-    preset_conditions$visible,
-    preset_conditions$enabled,
+    enabled_condition(session, driver)
   )
 
   is_select_or_option <- list(
@@ -1709,7 +1719,7 @@ get_selection_conditions <- function(
       conditions <- append(conditions, list(is_select_or_option))
     } else {
       condition_text <-
-        "it must be an `<option>` element, not a `<select>` element (as all arguments are `NULL` and {.arg reset_other} is `FALSE`)"
+        "it must be an `<option>` element, not a `<select>` element (as all other arguments are `NULL` and {.arg reset_other} is `FALSE`)"
 
       option_condition <- list(
         fun = function(x) {
@@ -1738,7 +1748,7 @@ get_selection_conditions <- function(
     )][1]
 
     condition_text <- cli::format_inline(
-      "it must be a `<select>` element, not an `<option>` element (as {.arg {arg}} is not `NULL`",
+      "it must be a `<select>` element, not an `<option>` element (as {.arg {arg}} is not `NULL`)"
     )
 
     select_condition <- list(
@@ -1767,7 +1777,7 @@ get_selection_conditions <- function(
 
       specific_condition <- list(
         fun = function(x) {
-          options <- find_actual_elements(x, "css selector", "option", driver)
+          options <- find_actual_elements(x, "css", "option", driver)
 
           for (option in options) {
             if (element_value(option, session, driver) %in% value) {
@@ -1794,15 +1804,15 @@ get_selection_conditions <- function(
 
       specific_condition <- list(
         fun = function(x) {
-          options <- find_actual_elements(x, "css selector", "option", driver)
+          options <- find_actual_elements(x, "css", "option", driver)
 
           for (option in options) {
-            text <- element_text(option, session, driver)
-            text_matches <- vapply(
+            elem_text <- element_text(option, session, driver)
+            text_matches <- any(vapply(
               text,
-              function(x) grepl(x, text, fixed = TRUE),
+              function(x) grepl(x, elem_text, fixed = TRUE),
               logical(1)
-            )
+            ))
 
             if (text_matches) {
               return(TRUE)
@@ -1829,7 +1839,7 @@ get_selection_conditions <- function(
       specific_condition <- list(
         fun = function(x) {
           n_options <- execute_js_fn_on(
-            paste0("x => x.options.length", min(index)),
+            "x => x.options.length",
             x,
             session,
             driver
@@ -1924,7 +1934,7 @@ elem_submit <- function(x, js = FALSE, timeout = NULL) {
       )
 
       for (ancestor in ancestors) {
-        if (identical(element_tag(ancestor, session, driver), "form")) {
+        if (identical(element_name(ancestor, session, driver), "form")) {
           return(TRUE)
         }
       }
@@ -2053,7 +2063,7 @@ perform_action <- function(
     )
   }
 
-  result <- retry_until_true(timeout, action_fun)
+  result <- retry_until_success(timeout, action_fun)
 
   if (result$success) {
     return(result$result)
@@ -2090,17 +2100,18 @@ perform_action <- function(
     }
   } else if (result$type == "condition_failed") {
     condition <- result$condition
+    result <- result$result
 
-    desc <- if (is.list(condition$result) && !is.null(condition$result$desc)) {
-      condition$result$desc
+    desc <- if (is.list(result) && !is.null(result$desc)) {
+      result$desc
     } else {
       condition$desc
     }
 
     failure_message <- if (
-      is.list(condition$result) && !is.null(condition$result$failure_message)
+      is.list(result) && !is.null(result$failure_message)
     ) {
-      condition$result$failure_message
+      result$failure_message
     } else {
       condition$failure_message
     }
@@ -2126,18 +2137,21 @@ perform_action <- function(
   }
 }
 
-preset_conditions <- list(
-  visible = list(
+visible_condition <- function(session, driver) {
+  list(
     fun = function(x) element_is_visible(x, session, driver),
     desc = "it must be visible",
     failure_message = "was not visible"
-  ),
-  enabled = list(
+  )
+}
+
+enabled_condition <- function(session, driver) {
+  list(
     fun = function(x) element_is_enabled(x, session, driver),
     desc = "it must be enabled",
     failure_message = "was not enabled"
-  ),
-)
+  )
+}
 
 format_timeout_for_error <- function(x) {
   if (x == 0) {

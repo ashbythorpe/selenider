@@ -76,7 +76,7 @@ read_html.selenider_element <- function(
   check_number_decimal(timeout, allow_null = TRUE)
   check_bool(outer)
 
-  timout <- get_timeout(timeout, x$timeout)
+  timeout <- get_timeout(timeout, x$timeout)
 
   session <- x$session
   driver <- x$driver
