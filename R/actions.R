@@ -574,7 +574,7 @@ element_focus <- function(x, session, driver) {
 }
 
 chromote_focus <- function(x, driver) {
-  driver$DOM$focus(backendNodeId = x)
+  wrap_error_chromote(driver$DOM$focus(backendNodeId = x))
 }
 
 #' Set the value of an input

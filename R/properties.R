@@ -40,7 +40,7 @@ elem_name <- function(x, timeout = NULL) {
 element_name <- function(x, session, driver) {
   if (session == "chromote") {
     driver <- driver
-    tolower(driver$DOM$describeNode(backendNodeId = x)$node$nodeName)
+    tolower(wrap_error_chromote(driver$DOM$describeNode(backendNodeId = x)$node$nodeName))
   } else if (session == "selenium") {
     x$get_tag_name()
   } else {
@@ -96,9 +96,9 @@ element_text <- function(x, session, driver) {
 }
 
 chromote_get_text <- function(x, driver) {
-  driver$Runtime$callFunctionOn("function() {
+  wrap_error_chromote(driver$Runtime$callFunctionOn("function() {
     return this.textContent;
-  }", chromote_object_id(backend_id = x, driver = driver))$result$value
+  }", chromote_object_id(backend_id = x, driver = driver))$result$value)
 }
 
 #' Get attributes of an element
@@ -174,10 +174,10 @@ element_attribute <- function(x, name, default, session, driver) {
 }
 
 chromote_get_attribute <- function(x, name, default, driver) {
-  response <- driver$DOM$getAttributes(chromote_node_id(
+  response <- wrap_error_chromote(driver$DOM$getAttributes(chromote_node_id(
     backend_id = x,
     driver = driver
-  ))$attributes
+  ))$attributes)
 
   # CDP returns a list of interleaved names and values
   # So the names are the 1st, 3rd, etc. elements.
@@ -192,10 +192,10 @@ chromote_get_attribute <- function(x, name, default, driver) {
 }
 
 chromote_get_attributes <- function(x, driver) {
-  response <- driver$DOM$getAttributes(chromote_node_id(
+  response <- wrap_error_chromote(driver$DOM$getAttributes(chromote_node_id(
     backend_id = x,
     driver = driver
-  ))$attributes
+  ))$attributes)
 
   # CDP returns a list of interleaved names and values
   # We convert this to a named list
@@ -380,9 +380,9 @@ chromote_get_css_property <- function(x, name, default, driver) {
   }
 
   if (is.null(driver$CSS$getComputedStyleForNode)) {
-    result <- driver$Runtime$callFunctionOn("function() {
+    result <- wrap_error_chromote(driver$Runtime$callFunctionOn("function() {
       return getComputedStyle(this).getPropertyValue('aa')
-    }", chromote_object_id(backend_id = x, driver = driver))$result$value
+    }", chromote_object_id(backend_id = x, driver = driver))$result$value)
 
     if (result == "") {
       default
@@ -390,10 +390,10 @@ chromote_get_css_property <- function(x, name, default, driver) {
       result
     }
   } else {
-    response <- unlist(driver$CSS$getComputedStyleForNode(chromote_node_id(
+    response <- unlist(wrap_error_chromote(driver$CSS$getComputedStyleForNode(chromote_node_id(
       backend_id = x,
       driver = driver
-    ))$computedStyle)
+    ))$computedStyle))
 
     # Same as chromote_get_attribute()
     names <- response[seq_len(length(response) / 2) * 2 - 1]

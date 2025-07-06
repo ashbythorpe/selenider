@@ -132,7 +132,7 @@ format.selenider_elements <- function(x,
 
 element_outer_html <- function(x, session, driver) {
   html <- if (session == "chromote") {
-    driver$DOM$getOuterHTML(backendNodeId = x)$outerHTML
+    wrap_error_chromote(driver$DOM$getOuterHTML(backendNodeId = x)$outerHTML)
   } else {
     execute_js_fn_on(
       "x => x.outerHTML",

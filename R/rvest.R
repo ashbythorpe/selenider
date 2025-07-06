@@ -84,7 +84,7 @@ read_html.selenider_element <- function(x,
 
   if (outer) {
     if (x$session == "chromote") {
-      x <- driver$DOM$getOuterHTML(backendNodeId = element)$outerHTML
+      x <- wrap_error_chromote(driver$DOM$getOuterHTML(backendNodeId = element)$outerHTML)
     } else {
       x <- execute_js_fn_on(
         "x => x.outerHTML",

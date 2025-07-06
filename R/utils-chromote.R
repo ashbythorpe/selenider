@@ -34,7 +34,8 @@ chromote_node_id <- function(object_id = NULL, backend_id = NULL, driver, error 
 chromote_errors <- list(
   RESOLVE_NODE = "No node with given id found",
   NODE_NOT_FOUND = "Could not find node with given id",
-  BACKEND_ID_NOT_FOUND = "Node with given id does not belong to the document",
+  BACKEND_ID_NOT_IN_DOCUMENT = "Node with given id does not belong to the document",
+  BACKEND_ID_NOT_FOUND = "No node found for given backend id",
   OBJECT_ID_NOT_FOUND = "Cannot find context with specified id"
 )
 
@@ -84,13 +85,13 @@ chromote_is_in_view <- function(node_id = NULL, backend_id = NULL, driver) {
 chromote_scroll_into_view <- function(node_id = NULL,
                                       backend_id = NULL,
                                       driver) {
-  driver$Runtime$callFunctionOn("function() {
+  wrap_error_chromote(driver$Runtime$callFunctionOn("function() {
     this.scrollIntoView({
       block: 'center',
       inline: 'center',
       behaviour: 'instant',
     })
-  }", chromote_object_id(node_id, backend_id, driver = driver))
+  }", chromote_object_id(node_id, backend_id, driver = driver)))
 }
 
 chromote_scroll_into_view_if_needed <- function(node_id = NULL, # nolint: object_length_linter
@@ -98,9 +99,9 @@ chromote_scroll_into_view_if_needed <- function(node_id = NULL, # nolint: object
                                                 driver) {
   if (!is.null(driver$DOM$scrollIntoViewIfNeeded)) {
     if (!is.null(node_id)) {
-      driver$DOM$scrollIntoViewIfNeeded(node_id)
+      wrap_error_chromote(driver$DOM$scrollIntoViewIfNeeded(node_id))
     } else {
-      driver$DOM$scrollIntoViewIfNeeded(backendNodeId = backend_id)
+      wrap_error_chromote(driver$DOM$scrollIntoViewIfNeeded(backendNodeId = backend_id))
     }
   }
   if (!isTRUE(chromote_is_in_view(node_id, backend_id, driver = driver))) {
@@ -118,7 +119,7 @@ chromote_clickable_point <- function(node_id = NULL,
                                      driver) {
   chromote_scroll_into_view_if_needed(node_id, backend_id, driver = driver)
 
-  boxes <- driver$Runtime$callFunctionOn(
+  boxes <- wrap_error_chromote(driver$Runtime$callFunctionOn(
     "function() {
       return [...this.getClientRects()].map(rect => {
         return {x: rect.x, y: rect.y, width: rect.width, height: rect.height};
@@ -130,7 +131,7 @@ chromote_clickable_point <- function(node_id = NULL,
       driver = driver
     ),
     returnByValue = TRUE
-  )$result$value
+  )$result$value)
 
   if (length(boxes) == 0) {
     return(NULL)
@@ -186,38 +187,10 @@ wrap_error_chromote <- function(expr) {
     error = function(e) {
       parsed_error <- parse_error_chromote(e)
 
-      if (is.null(parsed_error) || is.null(parsed_error$message) || !parsed_error$message %in% chromote_errors) {
+      if (inherits(e, "selenider_error_resolve_element") || is.null(parsed_error) || is.null(parsed_error$message) || !parsed_error$message %in% chromote_errors) {
         rlang::zap()
       } else {
-        stop_resolve_element()
-      }
-    }
-  )
-}
-
-ignore_error_chromote <- function(expr, message) {
-  catch_error_chromote(
-    expr,
-    error = function(error) {
-      if (error$message == message) {
-        NULL
-      } else {
-        rlang::zap()
-      }
-    }
-  )
-}
-
-catch_error_chromote <- function(expr, error) {
-  rlang::try_fetch(
-    expr,
-    error = function(e) {
-      parsed_error <- parse_error_chromote(e)
-
-      if (is.null(parsed_error) || is.null(parsed_error$code)) {
-        rlang::zap()
-      } else {
-        error(parsed_error)
+        stop_resolve_element(parent = e)
       }
     }
   )

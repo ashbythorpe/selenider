@@ -89,8 +89,7 @@ is_visible <- function(x) {
       driver <- x$driver
       tryCatch(
         {
-          coords <-
-            driver$DOM$getBoxModel(backendNodeId = element)$model$content
+          coords <- driver$DOM$getBoxModel(backendNodeId = element)$model$content
           !chromote_get_css_property(
             element,
             "visibility",
@@ -161,9 +160,10 @@ is_enabled <- function(x) {
     if (x$session == "chromote") {
       driver <- x$driver
       id <- chromote_object_id(backend_id = element, driver = driver)
-      driver$Runtime$callFunctionOn("function() {
+
+      wrap_error_chromote(driver$Runtime$callFunctionOn("function() {
         return !this.disabled
-      }", id)$result$value
+      }", id)$result$value)
     } else if (x$session == "selenium") {
       element$is_enabled()
     } else {
@@ -486,11 +486,19 @@ is_covered <- function(x) {
     } else if (x$session == "chromote") {
       driver <- x$driver
       coords <- chromote_get_xy(backend_id = element, driver = driver)
-      node_at_location <- driver$DOM$getNodeForLocation(
-        x = coords$x,
-        y = coords$y
+
+      node_at_location <- rlang::try_fetch(
+        driver$DOM$getNodeForLocation(x = coords$x, y = coords$y),
+        error = function(e) {
+          if (grepl("No node found at given location", e$message)) {
+            NULL
+          } else {
+            rlang::zap()
+          }
+        }
       )
-      node_at_location$backendNodeId == element
+
+      !is.null(node_at_location) && node_at_location$backendNodeId == element
     } else {
       execute_js_fn_on("
         let element = arguments[0];
