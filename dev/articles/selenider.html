@@ -139,7 +139,7 @@ are used, but other options are available.</p>
 <span><span class="va">header</span></span>
 <span><span class="co">#&gt; { selenider_element }</span></span>
 <span><span class="co">#&gt; &lt;div id="rStudioHeader"&gt;</span></span>
-<span><span class="co">#&gt;   \n          &lt;div class="band"&gt;\n            &lt;div class="innards bandContent ...</span></span>
+<span><span class="co">#&gt;   \n        &lt;nav class="band"&gt;\n          &lt;div class="innards bandContent"&gt;\n ...</span></span>
 <span><span class="co">#&gt; &lt;/div&gt;</span></span></code></pre></div>
 <p>For example, an XPath can be used instead. XPaths can be useful for
 more complex selectors, and are not limited to selecting from the
@@ -148,7 +148,7 @@ read.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/s.html">s</a></span><span class="op">(</span>xpath <span class="op">=</span> <span class="st">"//div/a"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; { selenider_element }</span></span>
-<span><span class="co">#&gt; &lt;a class="productName" href="/"&gt;</span></span>
+<span><span class="co">#&gt; &lt;a class="productName" href="/%20/"&gt;</span></span>
 <span><span class="co">#&gt;   Tidyverse</span></span>
 <span><span class="co">#&gt; &lt;/a&gt;</span></span></code></pre></div>
 <p>Use <code><a href="../reference/s.html">ss()</a></code> to select multiple elements.</p>
@@ -157,7 +157,7 @@ read.</p>
 <span></span>
 <span><span class="va">all_links</span></span>
 <span><span class="co">#&gt; { selenider_elements (26) }</span></span>
-<span><span class="co">#&gt; [1] &lt;a class="productName" href="/"&gt;Tidyverse&lt;/a&gt;</span></span>
+<span><span class="co">#&gt; [1] &lt;a class="productName" href="/%20/"&gt;Tidyverse&lt;/a&gt;</span></span>
 <span><span class="co">#&gt; [2] &lt;a class="menuItem " href="/packages/"&gt;Packages&lt;/a&gt;</span></span>
 <span><span class="co">#&gt; [3] &lt;a class="menuItem " href="/blog/"&gt;Blog&lt;/a&gt;</span></span>
 <span><span class="co">#&gt; [4] &lt;a class="menuItem " href="/learn/"&gt;Learn&lt;/a&gt;</span></span>
@@ -190,7 +190,7 @@ types are available, but CSS selectors are used by default.</p>
 <span></span>
 <span><span class="va">tidyverse_title</span></span>
 <span><span class="co">#&gt; { selenider_element }</span></span>
-<span><span class="co">#&gt; &lt;a class="productName" href="/"&gt;</span></span>
+<span><span class="co">#&gt; &lt;a class="productName" href="/%20/"&gt;</span></span>
 <span><span class="co">#&gt;   Tidyverse</span></span>
 <span><span class="co">#&gt; &lt;/a&gt;</span></span>
 <span></span>
@@ -221,12 +221,12 @@ their relative position to another.</p>
 <span>  <span class="fu"><a href="../reference/elem_ancestors.html">elem_ancestors</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; { selenider_elements (8) }</span></span>
 <span><span class="co">#&gt; [1] &lt;html lang="en-us"&gt;&lt;head&gt;\n\n\n\n\n\n&lt;link rel="stylesheet" href="/css/fonts. ...</span></span>
-<span><span class="co">#&gt; [2] &lt;body&gt;\n    &lt;div id="appTidyverseSite"&gt;\n      &lt;div id="main"&gt;\n        \n    ...</span></span>
-<span><span class="co">#&gt; [3] &lt;div id="appTidyverseSite"&gt;\n      &lt;div id="main"&gt;\n        \n        &lt;div id ...</span></span>
-<span><span class="co">#&gt; [4] &lt;div id="main"&gt;\n        \n        &lt;div id="rStudioHeader"&gt;\n          &lt;div c ...</span></span>
-<span><span class="co">#&gt; [5] &lt;div id="rStudioHeader"&gt;\n          &lt;div class="band"&gt;\n            &lt;div clas ...</span></span>
-<span><span class="co">#&gt; [6] &lt;div class="band"&gt;\n            &lt;div class="innards bandContent"&gt;\n           ...</span></span>
-<span><span class="co">#&gt; [7] &lt;div class="innards bandContent"&gt;\n              &lt;div&gt;\n                &lt;a cl ...</span></span>
+<span><span class="co">#&gt; [2] &lt;body&gt;\n  &lt;div id="appTidyverseSite"&gt;\n    &lt;div id="main"&gt;\n      \n      &lt;di ...</span></span>
+<span><span class="co">#&gt; [3] &lt;div id="appTidyverseSite"&gt;\n    &lt;div id="main"&gt;\n      \n      &lt;div id="rStu ...</span></span>
+<span><span class="co">#&gt; [4] &lt;div id="main"&gt;\n      \n      &lt;div id="rStudioHeader"&gt;\n        &lt;nav class=" ...</span></span>
+<span><span class="co">#&gt; [5] &lt;div id="rStudioHeader"&gt;\n        &lt;nav class="band"&gt;\n          &lt;div class="i ...</span></span>
+<span><span class="co">#&gt; [6] &lt;nav class="band"&gt;\n          &lt;div class="innards bandContent"&gt;\n             ...</span></span>
+<span><span class="co">#&gt; [7] &lt;div class="innards bandContent"&gt;\n            &lt;div&gt;\n              &lt;a class= ...</span></span>
 <span><span class="co">#&gt; [8] &lt;div id="menu"&gt;\n  &lt;div id="menuToggler"&gt;&lt;/div&gt;\n  &lt;div id="menuItems" class= ...</span></span></code></pre></div>
 <p>You can use <code><a href="../reference/elem_filter.html">elem_filter()</a></code> and <code><a href="../reference/elem_filter.html">elem_find()</a></code>
 to filter collections of elements using a custom function.
