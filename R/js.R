@@ -89,18 +89,18 @@ execute_js_fn <- function(fn,
     arguments <- expr_result$arguments
 
     result <- if (length(other_elements) == 0) {
-      driver$Runtime$callFunctionOn(
+      wrap_error_chromote(driver$Runtime$callFunctionOn(
         expr,
         objectId = first_element,
         returnByValue = FALSE
-      )
+      ))
     } else {
-      driver$Runtime$callFunctionOn(
+      wrap_error_chromote(driver$Runtime$callFunctionOn(
         expr,
         objectId = first_element,
         arguments = other_elements,
         returnByValue = FALSE
-      )
+      ))
     }
 
     parse_chromote_result(result, session, driver, driver_id, timeout)
@@ -169,18 +169,18 @@ execute_js_expr <- function(expr,
     arguments <- expr_result$arguments
 
     result <- if (length(other_elements) == 0) {
-      driver$Runtime$callFunctionOn(
+      wrap_error_chromote(driver$Runtime$callFunctionOn(
         expr,
         objectId = first_element,
         returnByValue = FALSE
-      )
+      ))
     } else {
-      driver$Runtime$callFunctionOn(
+      wrap_error_chromote(driver$Runtime$callFunctionOn(
         expr,
         objectId = first_element,
         arguments = other_elements,
         returnByValue = FALSE
-      )
+      ))
     }
 
     parse_chromote_result(result, session, driver, driver_id, timeout)
@@ -439,11 +439,11 @@ parse_selenium_result <- function(x, session, driver, driver_id, timeout) {
 }
 
 get_objectid_value <- function(x, driver) {
-  driver$Runtime$callFunctionOn(
+  wrap_error_chromote(driver$Runtime$callFunctionOn(
     "function() { return this; }",
     objectId = x,
     returnByValue = TRUE
-  )$result$value
+  )$result$value)
 }
 
 get_argument_name <- function(n) {

@@ -1,9 +1,3 @@
-test_that("ordinal works", {
-  expect_equal(ordinal(1), "first")
-  expect_equal(ordinal(c(1, 3, 6)), c("first", "third", "6th"))
-  expect_equal(ordinal_numbers(c(1, 3, 6)), c("1st", "3rd", "6th"))
-})
-
 test_that("call_insert works", {
   call <- rlang::call2("c", 1, 2, 3)
   expect_equal(

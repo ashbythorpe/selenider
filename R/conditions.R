@@ -85,28 +85,30 @@ is_visible <- function(x) {
   element <- get_element(x)
 
   if (!is.null(element)) {
-    if (x$session == "chromote") {
-      driver <- x$driver
-      tryCatch(
-        {
-          coords <-
-            driver$DOM$getBoxModel(backendNodeId = element)$model$content
-          !chromote_get_css_property(
-            element,
-            "visibility",
-            default = NULL,
-            driver = driver
-          ) %in% c("hidden", "collapse")
-        },
-        error = function(e) FALSE
-      )
-    } else if (x$session == "selenium") {
-      element$is_displayed()
-    } else {
-      unpack_list(element$isElementDisplayed())
-    }
+    element_is_visible(element, x$session, x$driver)
   } else {
     stop_absent_element()
+  }
+}
+
+element_is_visible <- function(x, session, driver) {
+  if (session == "chromote") {
+    tryCatch(
+      {
+        coords <- driver$DOM$getBoxModel(backendNodeId = x)$model$content
+        !chromote_get_css_property(
+          x,
+          "visibility",
+          default = NULL,
+          driver = driver
+        ) %in% c("hidden", "collapse")
+      },
+      error = function(e) FALSE
+    )
+  } else if (session == "selenium") {
+    x$is_displayed()
+  } else {
+    unpack_list(x$isElementDisplayed())
   }
 }
 
@@ -158,19 +160,23 @@ is_enabled <- function(x) {
   element <- get_element(x)
 
   if (!is.null(element)) {
-    if (x$session == "chromote") {
-      driver <- x$driver
-      id <- chromote_object_id(backend_id = element, driver = driver)
-      driver$Runtime$callFunctionOn("function() {
-        return !this.disabled
-      }", id)$result$value
-    } else if (x$session == "selenium") {
-      element$is_enabled()
-    } else {
-      unpack_list(element$isElementEnabled())
-    }
+    element_is_enabled(element, x$session, x$driver)
   } else {
     stop_absent_element()
+  }
+}
+
+element_is_enabled <- function(x, session, driver) {
+  if (session == "chromote") {
+    id <- chromote_object_id(backend_id = x, driver = driver)
+
+    wrap_error_chromote(driver$Runtime$callFunctionOn("function() {
+      return !this.disabled
+    }", id)$result$value)
+  } else if (session == "selenium") {
+    x$is_enabled()
+  } else {
+    unpack_list(x$isElementEnabled())
   }
 }
 
@@ -486,11 +492,19 @@ is_covered <- function(x) {
     } else if (x$session == "chromote") {
       driver <- x$driver
       coords <- chromote_get_xy(backend_id = element, driver = driver)
-      node_at_location <- driver$DOM$getNodeForLocation(
-        x = coords$x,
-        y = coords$y
+
+      node_at_location <- rlang::try_fetch(
+        driver$DOM$getNodeForLocation(x = coords$x, y = coords$y),
+        error = function(e) {
+          if (grepl("No node found at given location", e$message)) {
+            NULL
+          } else {
+            rlang::zap()
+          }
+        }
       )
-      node_at_location$backendNodeId == element
+
+      !is.null(node_at_location) && node_at_location$backendNodeId == element
     } else {
       execute_js_fn_on("
         let element = arguments[0];

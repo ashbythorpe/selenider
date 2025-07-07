@@ -32,6 +32,18 @@ stop_invisible_element <- function(call = rlang::caller_env()) {
   )
 }
 
+stop_resolve_element <- function(call = rlang::caller_env(), parent = NULL) {
+  cli::cli_abort(
+    c("{.arg x} could not be resolved."),
+    class = c(
+      "selenider_error_resolve_element",
+      "expect_error_continue"
+    ),
+    call = call,
+    parent = parent
+  )
+}
+
 stop_expect_error <- function(condition,
                               parent,
                               call,
@@ -60,6 +72,21 @@ stop_not_actionable <- function(x,
 
   cli::cli_abort(
     x,
+    class = class,
+    call = call,
+    .envir = env
+  )
+}
+
+stop_action_failed <- function(x,
+                               error,
+                               call = rlang::caller_env(),
+                               env = rlang::caller_env()) {
+  class <- c("selenider_error_action_failed", "expect_error_continue")
+
+  cli::cli_abort(
+    x,
+    parent = error,
     class = class,
     call = call,
     .envir = env
@@ -320,7 +347,7 @@ stop_flatten_dots <- function(x,
       ),
       "x" = paste0(
         "Argument {.val {index}} was a list, but contained ",
-        "{.obj_type_friendly {x}} as its {ordinal(i)} element."
+        "{.obj_type_friendly {x}}"
       ),
       "x" = "Problematic argument:",
       "i" = "`{exprs[[i]]}`"

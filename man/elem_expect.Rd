@@ -29,7 +29,7 @@ local session if an element is not given.}
 \code{elem_expect()} invisibly returns the element(s) \code{x}, or \code{NULL} if an
 element or collection of elements was not given in \code{x}.
 
-\code{elem_wait_for()} returns a boolean flag: TRUE if the test passes, FALSE
+\code{elem_wait_until()} returns a boolean flag: TRUE if the test passes, FALSE
 otherwise.
 }
 \description{

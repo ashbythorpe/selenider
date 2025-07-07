@@ -86,34 +86,14 @@ elem_cache <- function(x, timeout = NULL) {
 
   timeout <- get_timeout(timeout, x$timeout)
 
-  if (inherits(x, "selenider_element")) {
-    cache_element(x, timeout)
-  } else {
-    cache_elements(x, timeout)
-  }
-}
-
-cache_element <- function(x, timeout = NULL) {
-  element <- get_element_for_property(
+  element <- perform_action(
     x,
-    action = "cache {.arg x}",
+    action = function(x) x,
+    action_name = "cache {.arg x}",
     timeout = timeout
   )
 
   x$element <- element
-  x$steps <- list()
-
-  x
-}
-
-cache_elements <- function(x, timeout = NULL) {
-  elements <- get_elements_for_property(
-    x,
-    action = "cache the elements in {.arg x}",
-    timeout = timeout
-  )
-
-  x$element <- elements
   x$steps <- list()
 
   x

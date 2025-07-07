@@ -59,9 +59,19 @@ find_actual_element <- function(x, type, value, driver) {
       }
     )
   } else if (inherits(x, "ChromoteSession")) {
-    find_element_chromote_session(x, type, value)
+    tryCatch(
+      wrap_error_chromote(find_element_chromote_session(x, type, value)),
+      selenider_error_resolve_element = function(e) {
+        NULL
+      }
+    )
   } else if (is.numeric(x)) {
-    find_element_chromote_node(x, type, value, driver)
+    tryCatch(
+      wrap_error_chromote(find_element_chromote_node(x, type, value, driver)),
+      selenider_error_resolve_element = function(e) {
+        NULL
+      }
+    )
   }
 }
 
@@ -125,23 +135,7 @@ find_element_chromote_session <- function(x, type, value) {
   selector <- selector_to_css(type, value)
   document <- x$DOM$getDocument()
 
-  node_id <- try_fetch(
-    x$DOM$querySelector(document$root$nodeId, selector)$nodeId,
-    error = function(e) {
-      if (grepl(
-        "Could not find node with given id",
-        e$message,
-        fixed = TRUE
-      )) {
-        0
-      } else {
-        rlang::zap()
-      }
-    }
-  )
-  if (node_id == 0) {
-    return(NULL)
-  }
+  node_id <- x$DOM$querySelector(document$root$nodeId, selector)$nodeId
 
   chromote_backend_id(node_id, driver = x)
 }
@@ -152,26 +146,10 @@ find_element_chromote_node <- function(x, type, value, driver) {
   }
 
   selector <- selector_to_css(type, value)
-  node_id <- try_fetch(
-    driver$DOM$querySelector(
-      chromote_node_id(backend_id = x, driver = driver),
-      selector
-    )$nodeId,
-    error = function(e) {
-      if (grepl(
-        "Could not find node with given id",
-        e$message,
-        fixed = TRUE
-      )) {
-        0
-      } else {
-        rlang::zap()
-      }
-    }
-  )
-  if (node_id == 0) {
-    return(NULL)
-  }
+  node_id <- driver$DOM$querySelector(
+    chromote_node_id(backend_id = x, driver = driver),
+    selector
+  )$nodeId
 
   chromote_backend_id(node_id, driver = driver)
 }

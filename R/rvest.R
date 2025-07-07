@@ -30,14 +30,16 @@
 #' read_html(s("div"))
 #'
 #' @exportS3Method xml2::read_html selenider_session
-read_html.selenider_session <- function(x,
-                                        encoding = "",
-                                        ...,
-                                        options = c(
-                                          "RECOVER",
-                                          "NOERROR",
-                                          "NOBLANKS"
-                                        )) {
+read_html.selenider_session <- function(
+  x,
+  encoding = "",
+  ...,
+  options = c(
+    "RECOVER",
+    "NOERROR",
+    "NOBLANKS"
+  )
+) {
   check_session_active(x)
 
   driver <- x$driver
@@ -57,57 +59,65 @@ read_html.selenider_session <- function(x,
 #' @rdname read_html.selenider_session
 #'
 #' @exportS3Method xml2::read_html selenider_element
-read_html.selenider_element <- function(x,
-                                        encoding = "",
-                                        timeout = NULL,
-                                        outer = TRUE,
-                                        ...,
-                                        options = c(
-                                          "RECOVER",
-                                          "NOERROR",
-                                          "NOBLANKS"
-                                        )) {
+read_html.selenider_element <- function(
+  x,
+  encoding = "",
+  timeout = NULL,
+  outer = TRUE,
+  ...,
+  options = c(
+    "RECOVER",
+    "NOERROR",
+    "NOBLANKS"
+  )
+) {
   check_active(x)
 
   check_number_decimal(timeout, allow_null = TRUE)
   check_bool(outer)
 
-  timout <- get_timeout(timeout, x$timeout)
+  timeout <- get_timeout(timeout, x$timeout)
 
+  session <- x$session
   driver <- x$driver
 
-  element <- get_element_for_property(
+  x <- perform_action(
     x,
-    action = paste0("Read the HTML of {.arg x}"),
+    action = function(x) element_html(x, outer, session, driver),
+    action_name = "read the HTML of {.arg x}",
     timeout = timeout
   )
 
+  NextMethod()
+}
+
+element_html <- function(x, outer, session, driver) {
   if (outer) {
-    if (x$session == "chromote") {
-      x <- driver$DOM$getOuterHTML(backendNodeId = element)$outerHTML
+    if (session == "chromote") {
+      wrap_error_chromote(
+        driver$DOM$getOuterHTML(backendNodeId = x)$outerHTML
+      )
     } else {
-      x <- execute_js_fn_on(
+      execute_js_fn_on(
         "x => x.outerHTML",
-        element,
-        session = x$session,
+        x,
+        session = session,
         driver = driver
       )
     }
-  } else if (x$session != "rselenium") {
-    x <- execute_js_fn_on(
+  } else if (session != "rselenium") {
+    execute_js_fn_on(
       "x => x.innerHTML",
-      element,
-      session = x$session,
+      x,
+      session = session,
       driver = driver
     )
   } else {
-    x <- unpack_list(execute_js_fn_on(
+    unpack_list(execute_js_fn_on(
       "x => x.innerHTML",
-      element,
-      session = x$session,
+      x,
+      session = session,
       driver = driver
     ))
   }
-
-  NextMethod()
 }

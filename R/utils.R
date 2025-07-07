@@ -34,6 +34,24 @@ retry_until_true <- function(timeout, .f, ...) {
   }
 }
 
+retry_until_success <- function(timeout, .f, ...) {
+  if (timeout == 0) {
+    .f(...)
+  } else {
+    end <- Sys.time() + timeout
+
+    while (Sys.time() <= end) {
+      result <- .f(...)
+
+      if (isTRUE(result$success)) {
+        return(result)
+      }
+    }
+
+    result
+  }
+}
+
 #' Check if selenider can be used
 #'
 #' @description
@@ -74,8 +92,9 @@ retry_until_true <- function(timeout, .f, ...) {
 #'
 #' @export
 selenider_available <- function(
-    session = c("chromote", "selenium"),
-    online = TRUE) {
+  session = c("chromote", "selenium"),
+  online = TRUE
+) {
   check_bool(online)
 
   if (!identical(session, "rselenium")) {
@@ -113,7 +132,8 @@ selenider_available <- function(
 }
 
 selenider_available_chromote <- function() {
-  Sys.getenv("SELENIDER_SESSION") %in% c("", "chromote") &&
+  Sys.getenv("SELENIDER_SESSION") %in%
+    c("", "chromote") &&
     is_installed("chromote") &&
     tryCatch(
       {
@@ -228,38 +248,6 @@ every <- function(x, .f) {
   all(vapply(x, .f, FUN.VALUE = logical(1)))
 }
 
-# Adapted from scales::ordinal()
-ordinal <- function(x) {
-  res <- character(length(x))
-
-  res[x == 1] <- "first"
-  res[x == 2] <- "second"
-  res[x == 3] <- "third"
-  res[res == ""] <- ordinal_numbers(x[res == ""])
-
-  res
-}
-
-ordinal_numbers <- function(x) {
-  rules <- list(
-    st = "(?<!1)1$",
-    nd = "(?<!1)2$",
-    rd = "(?<!1)3$",
-    th = "(?<=1)[123]$",
-    th = "[0456789]$",
-    th = "."
-  )
-
-  out <- utils::stack(lapply(rules, grep, x = x, perl = TRUE))
-  out <- out[!duplicated(out$values), ] # only first result should be considered
-  res <- paste0(
-    x,
-    out$ind[order(out$values)]
-  )
-
-  res
-}
-
 call_insert <- function(call, elem_name, quo = TRUE) {
   if (quo) {
     new_call <- call2(
@@ -289,10 +277,6 @@ find_using <- function(x, .f, .default = NULL) {
   .default
 }
 
-escape_single_quotes <- function(x) {
-  gsub("'", "\\'", x, fixed = TRUE)
-}
-
 format_value <- function(x) {
   if (is.null(x)) {
     "{.code NULL}"
@@ -315,7 +299,8 @@ is_multiple_elements <- function(x) {
       "WebElement",
       "SeleniumSession"
     )
-  ) || (is.numeric(x) && length(x) == 1))
+  ) ||
+    (is.numeric(x) && length(x) == 1))
 }
 
 uses_selenium <- function(x) {
@@ -334,10 +319,10 @@ uses_chromote <- function(x) {
 
 execute_js_expr_internal <- function(x, session, driver) {
   if (session == "chromote") {
-    driver$Runtime$evaluate(
+    wrap_error_chromote(driver$Runtime$evaluate(
       expression = x,
       returnByValue = TRUE
-    )
+    ))
   } else if (session == "selenium") {
     driver$execute_script(x)
   } else {
@@ -348,11 +333,11 @@ execute_js_expr_internal <- function(x, session, driver) {
 execute_js_fn_on <- function(fn, x, session, driver) {
   if (session == "chromote") {
     script <- paste0("function() { return (", fn, ")(this) }")
-    result <- driver$Runtime$callFunctionOn(
+    result <- wrap_error_chromote(driver$Runtime$callFunctionOn(
       script,
       chromote_object_id(backend_id = x, driver = driver),
       returnByValue = TRUE
-    )
+    ))
 
     if (!is.null(result$exceptionDetails)) {
       print(result$exceptionDetails)
@@ -379,7 +364,13 @@ execute_js_fn_on_multiple <- function(fn, x, session, driver) {
     args <- paste0(arg_names[-1], collapse = ", ")
     inner_args <- paste0(arg_names, collapse = ", ")
     script <- paste0(
-      "function(", args, ") { return (", fn, ")([", inner_args, "]) }"
+      "function(",
+      args,
+      ") { return (",
+      fn,
+      ")([",
+      inner_args,
+      "]) }"
     )
 
     first_element <- chromote_object_id(backend_id = x[[1]], driver = driver)
@@ -387,12 +378,12 @@ execute_js_fn_on_multiple <- function(fn, x, session, driver) {
       list(objectId = chromote_object_id(backend_id = y, driver = driver))
     })
 
-    result <- driver$Runtime$callFunctionOn(
+    result <- wrap_error_chromote(driver$Runtime$callFunctionOn(
       script,
       chromote_object_id(backend_id = x[[1]], driver = driver),
       arguments = other_elements,
       returnByValue = TRUE
-    )
+    ))
 
     if (!is.null(result$exceptionDetails)) {
       print(result$exceptionDetails)

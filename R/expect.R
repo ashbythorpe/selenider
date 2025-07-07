@@ -67,7 +67,7 @@
 #' `elem_expect()` invisibly returns the element(s) `x`, or `NULL` if an
 #' element or collection of elements was not given in `x`.
 #'
-#' `elem_wait_for()` returns a boolean flag: TRUE if the test passes, FALSE
+#' `elem_wait_until()` returns a boolean flag: TRUE if the test passes, FALSE
 #' otherwise.
 #'
 #' @seealso
