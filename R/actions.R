@@ -886,8 +886,8 @@ elem_send_keys <- function(x, ..., modifiers = NULL, timeout = NULL) {
   session <- x$session
   driver <- x$driver
 
-  if (is.null(x)) {
-    element_send_keys(NULL, modifiers, keys, x$session, x$driver)
+  if (!inherits(x, "selenider_element")) {
+    element_send_keys(NULL, modifiers, keys, session, driver)
     return(invisible())
   }
 
