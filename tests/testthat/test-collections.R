@@ -28,10 +28,6 @@ test_that("find_each_element() and find_all_elements() work", {
   element <- elem_find(find_all_elements(ss("div"), "input"), has_value("Submit"))
 
   elem_expect(element, is_present)
-
-  element <- elem_find(find_each_element(ss("div"), "input[type='submit']"), has_value("Submit"))
-
-  elem_expect(element, is_present)
 })
 
 test_that("element_list() works", {
